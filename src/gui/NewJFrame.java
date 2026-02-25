@@ -84,7 +84,7 @@ public class NewJFrame extends javax.swing.JFrame {
         setLocation(new java.awt.Point(500, 100));
         setResizable(false);
 
-        jLabel1.setText("Movies:");
+        jLabel1.setText("TestEdit:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a movie...", "Everything Everywhere All At Once", "The Mitchells Vs. The Machines", "Puss In Boots: The Last Wish", "Lego Batman", "Turning Red", "Nimona", "Coco", " " }));
 
@@ -95,7 +95,7 @@ public class NewJFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
-        jLabel2.setText("Cinema Type:");
+        jLabel2.setText("TestEdit:");
 
         jLabel3.setText("Cinema:");
 
@@ -155,7 +155,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jButton4.setText("Exit");
 
-        jPanel1.setBackground(new java.awt.Color(255, 51, 153));
+        jPanel1.setBackground(new java.awt.Color(51, 255, 51));
         jPanel1.setForeground(new java.awt.Color(51, 255, 51));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -421,7 +421,9 @@ public class NewJFrame extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
+        /*TestCommentEditHello*/
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new NewJFrame().setVisible(true));
     }
