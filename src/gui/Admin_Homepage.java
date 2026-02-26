@@ -34,9 +34,14 @@ public class Admin_Homepage extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_bookings = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_accounts = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(900, 580));
@@ -77,18 +82,19 @@ public class Admin_Homepage extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(209, 209, 209));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jTable1.setForeground(new java.awt.Color(51, 51, 51));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_bookings.setBackground(new java.awt.Color(255, 255, 255));
+        tbl_bookings.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        tbl_bookings.setForeground(new java.awt.Color(51, 51, 51));
+        tbl_bookings.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null}
+                {"00123", "Michael Realman", "09912136547", "03/09/26", "6:00", 10, 5, "02/01/26", "UPCOMING"},
+                {"00122", "Chidi Anagonye", "09756423175", "03/01/26", "8:00", 6, 1, "02/01/26", "UPCOMING"}
             },
             new String [] {
-                "ID", "Cust Name", "Guest Count", "Table Num", "Date", "Time"
+                "ID", "Cust Name", "Contact", "Date ", "Time", "Pax", "Table #", "Date Booked", "Status"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_bookings);
 
         jButton1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jButton1.setText("Delete");
@@ -119,15 +125,61 @@ public class Admin_Homepage extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(209, 209, 209));
 
+        tbl_accounts.setBackground(new java.awt.Color(255, 255, 255));
+        tbl_accounts.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        tbl_accounts.setForeground(new java.awt.Color(51, 51, 51));
+        tbl_accounts.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"2025112", "Al-Jamil", "Tahani","tahanialjamil@business.com", "********", "FrontDesk"},
+                {"2023987", "Mendoza", "Jason","jasonbortles@hotmail.com", "********", "Customer"},
+                {"2023155", "Shellstrop", "Eleanor","shrimpstropel@gmail.com", "********", "Manager"}
+
+            },
+            new String [] {
+                "ID", " Last Name","First Name", "Email", "Password", "Acc Type"
+            }
+        ));
+        jScrollPane2.setViewportView(tbl_accounts);
+
+        jButton2.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jButton2.setText("Delete");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+
+        jButton3.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jButton3.setText("Edit");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+
+        jButton4.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jButton4.setText("Add");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 781, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 415, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addGap(15, 15, 15))
         );
 
         jTabbedPane1.addTab(" Accounts ", jPanel2);
@@ -178,6 +230,18 @@ public class Admin_Homepage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -207,11 +271,16 @@ public class Admin_Homepage extends javax.swing.JFrame {
     private javax.swing.JPanel MainPanel;
     private javax.swing.JComboBox<String> cb_logout;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel pnl_top;
+    private javax.swing.JTable tbl_accounts;
+    private javax.swing.JTable tbl_bookings;
     // End of variables declaration//GEN-END:variables
 }
