@@ -86,7 +86,7 @@ public class Customer_MenuList extends javax.swing.JFrame {
         jButton5.setText("More⌄");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel1.setText("Best selling");
+        jLabel1.setText("Best Dish");
 
         jButton6.setText("food 1");
         jButton6.addActionListener(this::jButton6ActionPerformed);
