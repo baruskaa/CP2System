@@ -69,7 +69,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
 
         combobox_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Time" }));
 
-        btn_reserve.setText("Reserve a Table");
+        btn_reserve.setText("Reserve");
         btn_reserve.addActionListener(this::btn_reserveActionPerformed);
 
         javax.swing.GroupLayout panel_reservationLayout = new javax.swing.GroupLayout(panel_reservation);
@@ -85,9 +85,9 @@ public class Customer_Homepage extends javax.swing.JFrame {
                 .addComponent(combobox_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
                 .addComponent(combobox_time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(btn_reserve, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
         panel_reservationLayout.setVerticalGroup(
             panel_reservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,7 +99,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
                     .addComponent(combobox_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(combobox_time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_reserve, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         txt_desc.setText(" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum libero lectus, id cursus mauris sodales ac.");
@@ -159,7 +159,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
                 .addComponent(txt_desc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panel_reservation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(57, 57, 57))
         );
 
         pack();
