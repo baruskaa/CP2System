@@ -1,3 +1,7 @@
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -27,29 +31,16 @@ public class Manager_Homepage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenu1 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
         jPanel1 = new javax.swing.JPanel();
         Back_Button = new javax.swing.JButton();
         List_Label = new javax.swing.JLabel();
         Remove_button = new javax.swing.JButton();
         Assign_Button = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        Profile_Button = new javax.swing.JButton();
+        New_table = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-
-        jMenu1.setText("Booking 1");
-
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
-
-        jCheckBoxMenuItem2.setSelected(true);
-        jCheckBoxMenuItem2.setText("jCheckBoxMenuItem2");
-
-        jCheckBoxMenuItem3.setSelected(true);
-        jCheckBoxMenuItem3.setText("jCheckBoxMenuItem3");
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Table_ofBooking = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(900, 580));
@@ -59,18 +50,22 @@ public class Manager_Homepage extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(51, 153, 255));
 
         Back_Button.setText("Back");
+        Back_Button.addActionListener(this::Back_ButtonActionPerformed);
 
         List_Label.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         List_Label.setText("Booking List");
 
         Remove_button.setText("Remove");
+        Remove_button.addActionListener(this::Remove_buttonActionPerformed);
 
         Assign_Button.setText("Assign");
+        Assign_Button.addActionListener(this::Assign_ButtonActionPerformed);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
+        Profile_Button.setText("Profile");
+        Profile_Button.addActionListener(this::Profile_ButtonActionPerformed);
 
-        jButton1.setText("Profile");
+        New_table.setText("New Table#");
+        New_table.addActionListener(this::New_tableActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -80,20 +75,20 @@ public class Manager_Homepage extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(Back_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Profile_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(99, 99, 99)
                         .addComponent(List_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 330, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 315, Short.MAX_VALUE)
                         .addComponent(Remove_button, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(Assign_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(New_table, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,28 +99,44 @@ public class Manager_Homepage extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Remove_button)
                             .addComponent(Assign_Button)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(New_table, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(5, 5, 5)
                         .addComponent(List_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Back_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))))
+                            .addComponent(Profile_Button))))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        Table_ofBooking.setAutoCreateRowSorter(true);
+        Table_ofBooking.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Table_ofBooking.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"John", "3", "4", "Lunch"},
+                {"may", "4", "2", null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Guest Name", "Number of Seats", "Table#", "Time"
+            }
+        ));
+        jScrollPane1.setViewportView(Table_ofBooking);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 407, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -146,15 +157,61 @@ public class Manager_Homepage extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+   
+    private void Profile_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Profile_ButtonActionPerformed
+        // TODO add your handling code here: 
+        Manager_Account_Profile profile = new Manager_Account_Profile();
+        profile.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_Profile_ButtonActionPerformed
+// This tells Java: "Take the table's model and treat it as a DefaultTableModel"
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void Remove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Remove_buttonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+         DefaultTableModel model = (DefaultTableModel) Table_ofBooking.getModel();
+        int selectedRow = Table_ofBooking.getSelectedRow();
+
+        if (selectedRow != -1) {
+    // Remove the highlighted reservation
+            model.removeRow(selectedRow);
+    } else {
+        JOptionPane.showMessageDialog(this, "Select a reservation to remove.");
+}
+
+    }//GEN-LAST:event_Remove_buttonActionPerformed
+
+    private void Assign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Assign_ButtonActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) Table_ofBooking.getModel();
+        int selectedRow = Table_ofBooking.getSelectedRow();
+
+        if (selectedRow != -1) {
+            String tableNum = New_table.getText();  
+    
+            model.setValueAt(tableNum, selectedRow, 2); 
+    
+            New_table.setText(""); 
+    } else {
+            JOptionPane.showMessageDialog(this, "Select a guest first!");
+}
+
+    }//GEN-LAST:event_Assign_ButtonActionPerformed
+
+    private void New_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_New_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_New_tableActionPerformed
+
+    private void Back_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Back_ButtonActionPerformed
+        // TODO add your handling code here:
+        Employee_Login employee= new Employee_Login();
+        employee.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_Back_ButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,14 +242,12 @@ public class Manager_Homepage extends javax.swing.JFrame {
     private javax.swing.JButton Assign_Button;
     private javax.swing.JButton Back_Button;
     private javax.swing.JLabel List_Label;
+    private javax.swing.JTextField New_table;
+    private javax.swing.JButton Profile_Button;
     private javax.swing.JButton Remove_button;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JTable Table_ofBooking;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
