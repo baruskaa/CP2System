@@ -1,3 +1,5 @@
+package gui;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -39,7 +41,6 @@ public class Reservation_History extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Res_History");
         setLocation(new java.awt.Point(50, 118));
-        setMaximumSize(new java.awt.Dimension(900, 850));
         setMinimumSize(new java.awt.Dimension(900, 850));
         setUndecorated(true);
         setSize(new java.awt.Dimension(900, 850));
