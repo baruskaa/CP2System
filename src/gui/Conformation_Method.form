@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="3"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="Btn_confirmation" min="-2" pref="106" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="branch_confirm" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_branch_confirm" min="-2" pref="190" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="no_guest_confirm" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_no_guests" min="-2" pref="51" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="date_rsv" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_date_rsv" min="-2" pref="115" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="time_rsv" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_time_rsv" min="-2" pref="115" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="Personal_info_confirm" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="code_conformation" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_code_conformation" min="-2" pref="155" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="name_confirm" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_name_confirm" min="-2" pref="235" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="contact_no_confirm" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_contact_no_confirm" min="-2" pref="155" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="Email_conform" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_Email_confirm" min="-2" pref="175" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="Rsv_Fee_confirm" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txt_Rsv_Fee_confirm" min="-2" pref="155" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="Payment_Meth_confirm" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="txt_Payment_Meth_Confirm" min="-2" pref="130" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="branch_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_branch_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="no_guest_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_no_guests" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="date_rsv" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_date_rsv" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="time_rsv" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_time_rsv" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="code_conformation" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_code_conformation" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+              <Component id="Personal_info_confirm" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="name_confirm" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txt_name_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="contact_no_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_contact_no_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="Email_conform" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_Email_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="Rsv_Fee_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_Rsv_Fee_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="Payment_Meth_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_Payment_Meth_Confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="123" max="32767" attributes="0"/>
+              <Component id="Btn_confirmation" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="jLabel5">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Conformation Method"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="branch_confirm">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Branch"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_branch_confirm">
+    </Component>
+    <Component class="javax.swing.JLabel" name="no_guest_confirm">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Number of Guests"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_no_guests">
+    </Component>
+    <Component class="javax.swing.JLabel" name="date_rsv">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Date of Reservation"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_date_rsv">
+    </Component>
+    <Component class="javax.swing.JLabel" name="time_rsv">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Time of Reservation"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_time_rsv">
+    </Component>
+    <Component class="javax.swing.JLabel" name="code_conformation">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Promo Code"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_code_conformation">
+    </Component>
+    <Component class="javax.swing.JLabel" name="name_confirm">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Name"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_name_confirm">
+    </Component>
+    <Component class="javax.swing.JLabel" name="contact_no_confirm">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Contact Number"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_contact_no_confirm">
+    </Component>
+    <Component class="javax.swing.JLabel" name="Email_conform">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Email"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_Email_confirm">
+    </Component>
+    <Component class="javax.swing.JButton" name="Btn_confirmation">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Confirm"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="Personal_info_confirm">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Personal Information"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel6">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Payment Method"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Booking"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="Rsv_Fee_confirm">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reservation Fee"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_Rsv_Fee_confirm">
+    </Component>
+    <Component class="javax.swing.JLabel" name="Payment_Meth_confirm">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Payment Method"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_Payment_Meth_Confirm">
+    </Component>
+  </SubComponents>
+</Form>
