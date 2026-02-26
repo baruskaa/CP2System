@@ -1,3 +1,5 @@
+package gui;
+
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
@@ -43,7 +45,6 @@ public class Manager_Homepage extends javax.swing.JFrame {
         Table_ofBooking = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 580));
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
