@@ -41,7 +41,7 @@ public class Customer_Signup extends javax.swing.JFrame {
         txt_email = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txt_pass = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btn_signup = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -124,11 +124,11 @@ public class Customer_Signup extends javax.swing.JFrame {
         txt_pass.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         txt_pass.addActionListener(this::txt_passActionPerformed);
 
-        jButton1.setBackground(new java.awt.Color(51, 51, 51));
-        jButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(238, 238, 238));
-        jButton1.setText("SIGN-UP");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btn_signup.setBackground(new java.awt.Color(51, 51, 51));
+        btn_signup.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_signup.setForeground(new java.awt.Color(238, 238, 238));
+        btn_signup.setText("SIGN-UP");
+        btn_signup.addActionListener(this::btn_signupActionPerformed);
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 2, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
@@ -167,7 +167,7 @@ public class Customer_Signup extends javax.swing.JFrame {
                                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txt_pass, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(btn_signup, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel5)))
@@ -204,7 +204,7 @@ public class Customer_Signup extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_pass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
-                .addComponent(jButton1)
+                .addComponent(btn_signup)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(21, 21, 21))
@@ -233,9 +233,9 @@ public class Customer_Signup extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_passActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_signupActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_signupActionPerformed
 
     private void txt_name_firstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_name_firstActionPerformed
         // TODO add your handling code here:
@@ -273,7 +273,7 @@ public class Customer_Signup extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel PicPanel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_signup;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
