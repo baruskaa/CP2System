@@ -247,7 +247,7 @@
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Sign-up."/>
+            <Property name="text" type="java.lang.String" value="Sign-up"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
