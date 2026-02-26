@@ -28,59 +28,57 @@ public class FrontDesk_Homepage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        panel_frontdesk = new javax.swing.JPanel();
+        lbl_frontdesk = new javax.swing.JLabel();
         btn_fdprofile = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lbl_lunch = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_lunch = new javax.swing.JTable();
+        lbl_dinner = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_dinner = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Front Desk Homepage");
 
-        jPanel1.setBackground(new java.awt.Color(102, 204, 255));
+        panel_frontdesk.setBackground(new java.awt.Color(104, 177, 213));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
-        jLabel1.setText("Front Desk Booking List");
+        lbl_frontdesk.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lbl_frontdesk.setText("Front Desk Booking List");
 
         btn_fdprofile.setText("Profile");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+        javax.swing.GroupLayout panel_frontdeskLayout = new javax.swing.GroupLayout(panel_frontdesk);
+        panel_frontdesk.setLayout(panel_frontdeskLayout);
+        panel_frontdeskLayout.setHorizontalGroup(
+            panel_frontdeskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_frontdeskLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
                 .addComponent(btn_fdprofile)
-                .addGap(99, 99, 99)
-                .addComponent(jLabel1)
+                .addGap(145, 145, 145)
+                .addComponent(lbl_frontdesk)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(btn_fdprofile))
-                .addGap(18, 18, 18))
+        panel_frontdeskLayout.setVerticalGroup(
+            panel_frontdeskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_frontdeskLayout.createSequentialGroup()
+                .addContainerGap(39, Short.MAX_VALUE)
+                .addGroup(panel_frontdeskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_frontdeskLayout.createSequentialGroup()
+                        .addComponent(btn_fdprofile)
+                        .addGap(16, 16, 16))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_frontdeskLayout.createSequentialGroup()
+                        .addComponent(lbl_frontdesk)
+                        .addGap(28, 28, 28))))
         );
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Lunch");
+        lbl_lunch.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lbl_lunch.setText("Lunch");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Dinner");
-
-        tbl_lunch.setBorder(new javax.swing.border.MatteBorder(null));
         tbl_lunch.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"John Cruz",  new Integer(3),  new Integer(4)},
-                {"Aly Domingo",  new Integer(4),  new Integer(5)},
-                {"Kiana Santos",  new Integer(6),  new Integer(2)},
+                {"John Cruz",  new Integer(4),  new Integer(1)},
+                {"May Santos",  new Integer(7),  new Integer(6)},
+                {null, null, null},
                 {null, null, null},
                 {null, null, null},
                 {null, null, null},
@@ -106,11 +104,13 @@ public class FrontDesk_Homepage extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_lunch);
 
-        tbl_dinner.setBorder(new javax.swing.border.MatteBorder(null));
+        lbl_dinner.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lbl_dinner.setText("Dinner");
+
         tbl_dinner.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Joshua Lopez",  new Integer(7),  new Integer(6)},
-                {"Anna Go",  new Integer(3),  new Integer(2)},
+                {"Sophia Go",  new Integer(11),  new Integer(8)},
+                {"Kyla",  new Integer(2),  new Integer(5)},
                 {null, null, null},
                 {null, null, null},
                 {null, null, null},
@@ -141,38 +141,35 @@ public class FrontDesk_Homepage extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(panel_frontdesk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(14, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGap(23, 23, 23)
+                        .addComponent(lbl_lunch))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 871, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lbl_dinner)))))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jLabel2)
+                .addComponent(panel_frontdesk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lbl_lunch)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_dinner)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11))
         );
 
         pack();
@@ -205,12 +202,12 @@ public class FrontDesk_Homepage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_fdprofile;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbl_dinner;
+    private javax.swing.JLabel lbl_frontdesk;
+    private javax.swing.JLabel lbl_lunch;
+    private javax.swing.JPanel panel_frontdesk;
     private javax.swing.JTable tbl_dinner;
     private javax.swing.JTable tbl_lunch;
     // End of variables declaration//GEN-END:variables
