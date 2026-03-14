@@ -38,18 +38,16 @@ public class draft extends javax.swing.JFrame {
         sp_guest = new javax.swing.JSpinner();
         cb_time = new javax.swing.JComboBox<>();
         dc_date = new com.toedter.calendar.JDateChooser();
-        jButton1 = new javax.swing.JButton();
+        btn_bookNow = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         logo_homepage = new javax.swing.JLabel();
         btn_profile = new javax.swing.JButton();
-        btn_rsv = new javax.swing.JButton();
         btn_menu = new javax.swing.JButton();
-        btn_branches = new javax.swing.JButton();
+        btn_dc = new javax.swing.JButton();
         btn_abt = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btn_rsv = new javax.swing.JButton();
         bg_homepage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -60,44 +58,47 @@ public class draft extends javax.swing.JFrame {
 
         cb_branch.setBackground(new java.awt.Color(57, 77, 94));
         cb_branch.setForeground(new java.awt.Color(255, 255, 255));
-        cb_branch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Manila", "BGC" }));
-        jPanel1.add(cb_branch, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 390, 120, 30));
+        cb_branch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SM North Edsa", "SM Megamall" }));
+        jPanel1.add(cb_branch, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 410, 120, 30));
 
         sp_guest.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
-        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 390, 110, 30));
+        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 80, 30));
 
         cb_time.setBackground(new java.awt.Color(57, 77, 94));
         cb_time.setForeground(new java.awt.Color(255, 255, 255));
         cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lunch", "Dinner" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
-        jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 390, 80, 30));
+        jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 410, 70, 30));
 
         dc_date.setBackground(new java.awt.Color(57, 77, 94));
         dc_date.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 390, 140, 30));
+        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 410, 110, 30));
 
-        jButton1.setBackground(new java.awt.Color(153, 0, 0));
-        jButton1.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Reserve");
-        jButton1.setBorder(null);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setFocusPainted(false);
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 440, 80, 30));
+        btn_bookNow.setBackground(new java.awt.Color(153, 0, 0));
+        btn_bookNow.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
+        btn_bookNow.setForeground(new java.awt.Color(255, 255, 255));
+        btn_bookNow.setText("Book Now");
+        btn_bookNow.setBorder(null);
+        btn_bookNow.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_bookNow.setFocusPainted(false);
+        btn_bookNow.setFocusable(false);
+        btn_bookNow.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_bookNow.addActionListener(this::btn_bookNowActionPerformed);
+        jPanel1.add(btn_bookNow, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 400, 90, 30));
 
         jPanel3.setBackground(new java.awt.Color(57, 77, 94));
+        jPanel3.setMaximumSize(new java.awt.Dimension(158, 580));
+        jPanel3.setMinimumSize(new java.awt.Dimension(158, 580));
+        jPanel3.setPreferredSize(new java.awt.Dimension(158, 580));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logo_homepage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logo_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/imresizer-inverted logo.png"))); // NOI18N
-        jPanel3.add(logo_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 130, 110));
+        jPanel3.add(logo_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 160, 110));
 
         btn_profile.setBackground(new java.awt.Color(57, 77, 94));
         btn_profile.setForeground(new java.awt.Color(255, 255, 255));
-        btn_profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/profile.png"))); // NOI18N
-        btn_profile.setText("Profile");
+        btn_profile.setText("    PROFILE");
         btn_profile.setBorder(null);
         btn_profile.setContentAreaFilled(false);
         btn_profile.setFocusPainted(false);
@@ -110,30 +111,11 @@ public class draft extends javax.swing.JFrame {
             }
         });
         btn_profile.addActionListener(this::btn_profileActionPerformed);
-        jPanel3.add(btn_profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 80, -1));
-
-        btn_rsv.setBackground(new java.awt.Color(57, 77, 94));
-        btn_rsv.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        btn_rsv.setForeground(new java.awt.Color(255, 255, 255));
-        btn_rsv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/history.png"))); // NOI18N
-        btn_rsv.setText("Reservation History");
-        btn_rsv.setBorder(null);
-        btn_rsv.setContentAreaFilled(false);
-        btn_rsv.setFocusPainted(false);
-        btn_rsv.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_rsvMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_rsvMouseExited(evt);
-            }
-        });
-        jPanel3.add(btn_rsv, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 130, -1));
+        jPanel3.add(btn_profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 90, 30));
 
         btn_menu.setBackground(new java.awt.Color(57, 77, 94));
         btn_menu.setForeground(new java.awt.Color(255, 255, 255));
-        btn_menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/menu.png"))); // NOI18N
-        btn_menu.setText("Menu");
+        btn_menu.setText(" MENU & SPECIALS");
         btn_menu.setBorder(null);
         btn_menu.setContentAreaFilled(false);
         btn_menu.setFocusPainted(false);
@@ -146,30 +128,28 @@ public class draft extends javax.swing.JFrame {
             }
         });
         btn_menu.addActionListener(this::btn_menuActionPerformed);
-        jPanel3.add(btn_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 80, -1));
+        jPanel3.add(btn_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 130, 20));
 
-        btn_branches.setBackground(new java.awt.Color(57, 77, 94));
-        btn_branches.setForeground(new java.awt.Color(255, 255, 255));
-        btn_branches.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/branches.png"))); // NOI18N
-        btn_branches.setText("Branches");
-        btn_branches.setBorder(null);
-        btn_branches.setContentAreaFilled(false);
-        btn_branches.setFocusPainted(false);
-        btn_branches.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_dc.setBackground(new java.awt.Color(57, 77, 94));
+        btn_dc.setForeground(new java.awt.Color(255, 255, 255));
+        btn_dc.setText("DINE CLUB");
+        btn_dc.setBorder(null);
+        btn_dc.setContentAreaFilled(false);
+        btn_dc.setFocusPainted(false);
+        btn_dc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_branchesMouseEntered(evt);
+                btn_dcMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_branchesMouseExited(evt);
+                btn_dcMouseExited(evt);
             }
         });
-        btn_branches.addActionListener(this::btn_branchesActionPerformed);
-        jPanel3.add(btn_branches, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 80, -1));
+        btn_dc.addActionListener(this::btn_dcActionPerformed);
+        jPanel3.add(btn_dc, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 90, 20));
 
         btn_abt.setBackground(new java.awt.Color(57, 77, 94));
         btn_abt.setForeground(new java.awt.Color(255, 255, 255));
-        btn_abt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/about.png"))); // NOI18N
-        btn_abt.setText(" About Us");
+        btn_abt.setText("   ABOUT US");
         btn_abt.setBorder(null);
         btn_abt.setContentAreaFilled(false);
         btn_abt.setFocusPainted(false);
@@ -182,31 +162,35 @@ public class draft extends javax.swing.JFrame {
             }
         });
         btn_abt.addActionListener(this::btn_abtActionPerformed);
-        jPanel3.add(btn_abt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 80, -1));
+        jPanel3.add(btn_abt, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 100, 20));
 
-        jLabel1.setFont(new java.awt.Font("Monotype Corsiva", 0, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Buffet");
-        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 60, 40));
-
-        jLabel2.setFont(new java.awt.Font("Monotype Corsiva", 0, 19)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("The House of  7");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 110, 50));
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("7 Buffet.. All Rights Reserved.");
+        jLabel3.setText("All Rights Reserved.");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 130, 20));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("© 2026 The House of");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 530, 140, 20));
+        jLabel4.setText("© 2026 The House of 7 Buffet.");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 180, 30));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 140, 580));
+        btn_rsv.setFont(new java.awt.Font("Courier New", 1, 12)); // NOI18N
+        btn_rsv.setForeground(new java.awt.Color(55, 77, 94));
+        btn_rsv.setText("RESERVATIONS");
+        btn_rsv.setBorder(null);
+        btn_rsv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_rsvMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_rsvMouseExited(evt);
+            }
+        });
+        jPanel3.add(btn_rsv, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 284, 120, 20));
 
-        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bg8.png"))); // NOI18N
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 158, -1));
+
+        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bg10.png"))); // NOI18N
         bg_homepage.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         bg_homepage.setMaximumSize(new java.awt.Dimension(760, 580));
         bg_homepage.setMinimumSize(new java.awt.Dimension(760, 580));
@@ -219,7 +203,7 @@ public class draft extends javax.swing.JFrame {
                 bg_homepageMouseExited(evt);
             }
         });
-        jPanel1.add(bg_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, 760, 580));
+        jPanel1.add(bg_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, 750, 580));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -236,52 +220,43 @@ public class draft extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bg_homepageMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bg_homepageMouseEntered
-        jButton1.setBackground(new java.awt.Color(153, 0, 0));
+        btn_bookNow.setBackground(new java.awt.Color(153, 0, 0));
     }//GEN-LAST:event_bg_homepageMouseEntered
 
     private void bg_homepageMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bg_homepageMouseExited
-    jButton1.setBackground(new java.awt.Color(172, 0, 0));
+    btn_bookNow.setBackground(new java.awt.Color(172, 0, 0));
     }//GEN-LAST:event_bg_homepageMouseExited
 
     private void cb_timeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_timeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_timeActionPerformed
 
-    private void btn_rsvMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_rsvMouseEntered
-    btn_rsv.setForeground(new Color(255,200,120));        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_rsvMouseEntered
-
     private void btn_menuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menuMouseEntered
-    btn_menu.setForeground(new Color(255,200,120));        // TODO add your handling code here:
+    btn_menu.setForeground(new Color(255,200,120));   
+    btn_menu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
     }//GEN-LAST:event_btn_menuMouseEntered
 
-    private void btn_branchesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_branchesMouseEntered
-    btn_branches.setForeground(new Color(255,200,120));        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_branchesMouseEntered
+    private void btn_dcMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dcMouseEntered
+    btn_dc.setForeground(new Color(255,200,120));
+    btn_dc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
+    }//GEN-LAST:event_btn_dcMouseEntered
 
     private void btn_abtMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_abtMouseEntered
-    btn_abt.setForeground(new Color(255,200,120));        // TODO add your handling code here:
+    btn_abt.setForeground(new Color(255,200,120)); 
+    btn_abt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
     }//GEN-LAST:event_btn_abtMouseEntered
-
-    private void btn_rsvMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_rsvMouseExited
-    btn_rsv.setForeground(Color.WHITE);        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_rsvMouseExited
 
     private void btn_menuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menuMouseExited
     btn_menu.setForeground(Color.WHITE);        // TODO add your handling code here:
     }//GEN-LAST:event_btn_menuMouseExited
 
-    private void btn_branchesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_branchesMouseExited
-    btn_branches.setForeground(Color.WHITE);        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_branchesMouseExited
+    private void btn_dcMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dcMouseExited
+    btn_dc.setForeground(Color.WHITE);        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_dcMouseExited
 
     private void btn_abtMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_abtMouseExited
     btn_abt.setForeground(Color.WHITE);        // TODO add your handling code here:
     }//GEN-LAST:event_btn_abtMouseExited
-
-    private void btn_branchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_branchesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_branchesActionPerformed
 
     private void btn_abtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_abtActionPerformed
         // TODO add your handling code here:
@@ -297,11 +272,31 @@ public class draft extends javax.swing.JFrame {
 
     private void btn_profileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_profileMouseEntered
         btn_profile.setForeground(new Color(255,200,120));
+        btn_profile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_profileMouseEntered
+
+    private void btn_dcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_dcActionPerformed
 
     private void btn_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menuActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_menuActionPerformed
+
+    private void btn_bookNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bookNowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_bookNowActionPerformed
+
+    private void btn_rsvMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_rsvMouseEntered
+    btn_rsv.setBackground(new java.awt.Color(110,135,154));
+    btn_rsv.setForeground(Color.WHITE);
+    btn_rsv.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_rsvMouseEntered
+
+    private void btn_rsvMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_rsvMouseExited
+    btn_rsv.setBackground(Color.WHITE);
+    btn_rsv.setForeground(new java.awt.Color(55,77,94));
+    }//GEN-LAST:event_btn_rsvMouseExited
 
     /**
      * @param args the command line arguments
@@ -331,16 +326,14 @@ public class draft extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bg_homepage;
     private javax.swing.JButton btn_abt;
-    private javax.swing.JButton btn_branches;
+    private javax.swing.JButton btn_bookNow;
+    private javax.swing.JButton btn_dc;
     private javax.swing.JButton btn_menu;
     private javax.swing.JButton btn_profile;
     private javax.swing.JButton btn_rsv;
     private javax.swing.JComboBox<String> cb_branch;
     private javax.swing.JComboBox<String> cb_time;
     private com.toedter.calendar.JDateChooser dc_date;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
