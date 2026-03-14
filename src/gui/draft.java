@@ -21,21 +21,7 @@ public class draft extends javax.swing.JFrame {
      */
     public draft() {
         initComponents();
-        // 1. Kunin ang image (Siguraduhin na tama ang path /gui/logo.png base sa folder mo)
-java.net.URL imgURL = getClass().getResource("/gui/logo.png");
-
-if (imgURL != null) {
-    ImageIcon icon = new ImageIcon(imgURL);
-    
-    // 2. DITO MO MAPAPALIIT: Palitan ang 80, 80 kung gusto mo mas maliit pa
-    Image img = icon.getImage();
-    Image resizedImg = img.getScaledInstance(80, 80, java.awt.Image.SCALE_SMOOTH);
-    
-    // 3. I-apply sa label mo
-    logo_homepage.setIcon(new ImageIcon(resizedImg));
-} else {
-    System.out.println("Image not found.");
-}
+        
     }
 
     /**
@@ -62,6 +48,8 @@ if (imgURL != null) {
         btn_abt = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         bg_homepage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -103,11 +91,12 @@ if (imgURL != null) {
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logo_homepage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logo_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Screenshot 2026-03-12 201255.png"))); // NOI18N
-        jPanel3.add(logo_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 110, 110));
+        logo_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/imresizer-inverted logo.png"))); // NOI18N
+        jPanel3.add(logo_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 130, 110));
 
         btn_profile.setBackground(new java.awt.Color(57, 77, 94));
         btn_profile.setForeground(new java.awt.Color(255, 255, 255));
+        btn_profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/profile.png"))); // NOI18N
         btn_profile.setText("Profile");
         btn_profile.setBorder(null);
         btn_profile.setContentAreaFilled(false);
@@ -121,10 +110,12 @@ if (imgURL != null) {
             }
         });
         btn_profile.addActionListener(this::btn_profileActionPerformed);
-        jPanel3.add(btn_profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 80, -1));
+        jPanel3.add(btn_profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 80, -1));
 
         btn_rsv.setBackground(new java.awt.Color(57, 77, 94));
+        btn_rsv.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         btn_rsv.setForeground(new java.awt.Color(255, 255, 255));
+        btn_rsv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/history.png"))); // NOI18N
         btn_rsv.setText("Reservation History");
         btn_rsv.setBorder(null);
         btn_rsv.setContentAreaFilled(false);
@@ -137,10 +128,11 @@ if (imgURL != null) {
                 btn_rsvMouseExited(evt);
             }
         });
-        jPanel3.add(btn_rsv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 140, -1));
+        jPanel3.add(btn_rsv, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 130, -1));
 
         btn_menu.setBackground(new java.awt.Color(57, 77, 94));
         btn_menu.setForeground(new java.awt.Color(255, 255, 255));
+        btn_menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/menu.png"))); // NOI18N
         btn_menu.setText("Menu");
         btn_menu.setBorder(null);
         btn_menu.setContentAreaFilled(false);
@@ -153,10 +145,12 @@ if (imgURL != null) {
                 btn_menuMouseExited(evt);
             }
         });
-        jPanel3.add(btn_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 80, -1));
+        btn_menu.addActionListener(this::btn_menuActionPerformed);
+        jPanel3.add(btn_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 80, -1));
 
         btn_branches.setBackground(new java.awt.Color(57, 77, 94));
         btn_branches.setForeground(new java.awt.Color(255, 255, 255));
+        btn_branches.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/branches.png"))); // NOI18N
         btn_branches.setText("Branches");
         btn_branches.setBorder(null);
         btn_branches.setContentAreaFilled(false);
@@ -170,11 +164,12 @@ if (imgURL != null) {
             }
         });
         btn_branches.addActionListener(this::btn_branchesActionPerformed);
-        jPanel3.add(btn_branches, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 80, -1));
+        jPanel3.add(btn_branches, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 80, -1));
 
         btn_abt.setBackground(new java.awt.Color(57, 77, 94));
         btn_abt.setForeground(new java.awt.Color(255, 255, 255));
-        btn_abt.setText("About Us");
+        btn_abt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/about.png"))); // NOI18N
+        btn_abt.setText(" About Us");
         btn_abt.setBorder(null);
         btn_abt.setContentAreaFilled(false);
         btn_abt.setFocusPainted(false);
@@ -187,17 +182,27 @@ if (imgURL != null) {
             }
         });
         btn_abt.addActionListener(this::btn_abtActionPerformed);
-        jPanel3.add(btn_abt, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 80, -1));
+        jPanel3.add(btn_abt, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 80, -1));
 
         jLabel1.setFont(new java.awt.Font("Monotype Corsiva", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Buffet");
-        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 60, 40));
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 60, 40));
 
         jLabel2.setFont(new java.awt.Font("Monotype Corsiva", 0, 19)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("The House of  7");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 110, 50));
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 110, 50));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("7 Buffet.. All Rights Reserved.");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 130, 20));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("© 2026 The House of");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 530, 140, 20));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 140, 580));
 
@@ -214,7 +219,7 @@ if (imgURL != null) {
                 bg_homepageMouseExited(evt);
             }
         });
-        jPanel1.add(bg_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, -10, 770, 590));
+        jPanel1.add(bg_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 0, 760, 580));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,14 +247,6 @@ if (imgURL != null) {
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_timeActionPerformed
 
-    private void btn_profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_profileActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_profileActionPerformed
-
-    private void btn_profileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_profileMouseEntered
-    btn_profile.setForeground(new Color(255,200,120));
-    }//GEN-LAST:event_btn_profileMouseEntered
-
     private void btn_rsvMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_rsvMouseEntered
     btn_rsv.setForeground(new Color(255,200,120));        // TODO add your handling code here:
     }//GEN-LAST:event_btn_rsvMouseEntered
@@ -265,10 +262,6 @@ if (imgURL != null) {
     private void btn_abtMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_abtMouseEntered
     btn_abt.setForeground(new Color(255,200,120));        // TODO add your handling code here:
     }//GEN-LAST:event_btn_abtMouseEntered
-
-    private void btn_profileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_profileMouseExited
-    btn_profile.setForeground(Color.WHITE);        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_profileMouseExited
 
     private void btn_rsvMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_rsvMouseExited
     btn_rsv.setForeground(Color.WHITE);        // TODO add your handling code here:
@@ -293,6 +286,22 @@ if (imgURL != null) {
     private void btn_abtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_abtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_abtActionPerformed
+
+    private void btn_profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_profileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_profileActionPerformed
+
+    private void btn_profileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_profileMouseExited
+        btn_profile.setForeground(Color.WHITE);        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_profileMouseExited
+
+    private void btn_profileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_profileMouseEntered
+        btn_profile.setForeground(new Color(255,200,120));
+    }//GEN-LAST:event_btn_profileMouseEntered
+
+    private void btn_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_menuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -332,6 +341,8 @@ if (imgURL != null) {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel logo_homepage;
