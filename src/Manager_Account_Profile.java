@@ -32,6 +32,8 @@ public class Manager_Account_Profile extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(900, 580));
+        setPreferredSize(new java.awt.Dimension(900, 580));
 
         jPanel1.setBackground(new java.awt.Color(57, 77, 94));
 
