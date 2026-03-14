@@ -19,12 +19,14 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_panel1 = new javax.swing.JPanel();
         aboutus_button1 = new javax.swing.JButton();
         Aboutus_text1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         Aboutus_text2 = new javax.swing.JLabel();
         Aboutus_panel2 = new javax.swing.JPanel();
         aboutus_button5 = new javax.swing.JButton();
         aboutus_button3 = new javax.swing.JButton();
         aboutus_button4 = new javax.swing.JButton();
         aboutus_button2 = new javax.swing.JButton();
+        aboutus_button6 = new javax.swing.JLabel();
         Aboutus_text3 = new javax.swing.JLabel();
         Aboutus_text4 = new javax.swing.JLabel();
         Aboutus_text5 = new javax.swing.JLabel();
@@ -70,27 +72,32 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_text1.setForeground(new java.awt.Color(255, 255, 255));
         Aboutus_text1.setText("About Us");
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Untitled design(3).png"))); // NOI18N
+
         javax.swing.GroupLayout Aboutus_panel1Layout = new javax.swing.GroupLayout(Aboutus_panel1);
         Aboutus_panel1.setLayout(Aboutus_panel1Layout);
         Aboutus_panel1Layout.setHorizontalGroup(
             Aboutus_panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Aboutus_panel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Aboutus_text1)
-                .addGap(373, 373, 373))
             .addGroup(Aboutus_panel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(aboutus_button1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(Aboutus_panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(aboutus_button1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(267, 267, 267)
+                .addComponent(Aboutus_text1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Aboutus_panel1Layout.setVerticalGroup(
             Aboutus_panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Aboutus_panel1Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(aboutus_button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(Aboutus_text1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Aboutus_panel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(Aboutus_panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Aboutus_text1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(Aboutus_panel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(aboutus_button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(63, 63, 63))
         );
 
         Aboutus_text2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
@@ -130,6 +137,9 @@ public class Customer_About_Us extends javax.swing.JFrame {
         aboutus_button2.setName("Aboutus_button2"); // NOI18N
         aboutus_button2.addActionListener(this::aboutus_button2ActionPerformed);
 
+        aboutus_button6.setForeground(new java.awt.Color(255, 255, 255));
+        aboutus_button6.setText("Profile");
+
         javax.swing.GroupLayout Aboutus_panel2Layout = new javax.swing.GroupLayout(Aboutus_panel2);
         Aboutus_panel2.setLayout(Aboutus_panel2Layout);
         Aboutus_panel2Layout.setHorizontalGroup(
@@ -143,6 +153,10 @@ public class Customer_About_Us extends javax.swing.JFrame {
                         .addComponent(aboutus_button3)
                         .addComponent(aboutus_button2)))
                 .addGap(20, 20, 20))
+            .addGroup(Aboutus_panel2Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(aboutus_button6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Aboutus_panel2Layout.setVerticalGroup(
             Aboutus_panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,7 +167,9 @@ public class Customer_About_Us extends javax.swing.JFrame {
                 .addComponent(aboutus_button3)
                 .addGap(29, 29, 29)
                 .addComponent(aboutus_button4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
+                .addComponent(aboutus_button6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(aboutus_button5, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(66, 66, 66))
         );
@@ -239,13 +255,13 @@ public class Customer_About_Us extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(Aboutus_panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(Aboutus_panel1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Aboutus_panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
                         .addComponent(Aboutus_text3)
                         .addGap(0, 0, 0)
                         .addComponent(Aboutus_text2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -275,30 +291,30 @@ public class Customer_About_Us extends javax.swing.JFrame {
                         .addComponent(Aboutus_text15, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
                         .addComponent(Aboutus_text16)
-                        .addContainerGap())))
+                        .addContainerGap(61, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtoAboutus_text2nPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void aboutus_button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutus_button2ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_aboutus_button2ActionPerformed
 
     private void aboutus_button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutus_button5ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_aboutus_button5ActionPerformed
 
     private void aboutus_button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutus_button3ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_aboutus_button3ActionPerformed
 
     private void aboutus_button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutus_button4ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_aboutus_button4ActionPerformed
 
   
@@ -331,6 +347,8 @@ public class Customer_About_Us extends javax.swing.JFrame {
     private javax.swing.JButton aboutus_button3;
     private javax.swing.JButton aboutus_button4;
     private javax.swing.JButton aboutus_button5;
+    private javax.swing.JLabel aboutus_button6;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
