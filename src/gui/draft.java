@@ -62,7 +62,7 @@ public class draft extends javax.swing.JFrame {
         jPanel1.add(cb_branch, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 410, 120, 30));
 
         sp_guest.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
-        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 80, 30));
+        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 70, 30));
 
         cb_time.setBackground(new java.awt.Color(57, 77, 94));
         cb_time.setForeground(new java.awt.Color(255, 255, 255));
@@ -72,7 +72,7 @@ public class draft extends javax.swing.JFrame {
 
         dc_date.setBackground(new java.awt.Color(57, 77, 94));
         dc_date.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 410, 110, 30));
+        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, 130, 30));
 
         btn_bookNow.setBackground(new java.awt.Color(153, 0, 0));
         btn_bookNow.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
