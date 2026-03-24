@@ -67,7 +67,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
 
         Aboutus_navipanel.setBackground(new java.awt.Color(57, 77, 94));
 
-        Aboutus_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Untitled design(3).png"))); // NOI18N
+        Aboutus_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Houseof7Logo.png"))); // NOI18N
 
         Aboutus_button4.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         Aboutus_button4.setForeground(new java.awt.Color(255, 255, 255));
@@ -118,6 +118,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_button1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         Aboutus_button1.setBorderPainted(false);
         Aboutus_button1.setContentAreaFilled(false);
+        Aboutus_button1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Aboutus_button1.setName("Brancheslist_button1"); // NOI18N
         Aboutus_button1.addActionListener(this::Aboutus_button1ActionPerformed);
 
@@ -267,7 +268,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 130, -1, -1));
 
-        Aboutus_labelpanel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/top design revised.png"))); // NOI18N
+        Aboutus_labelpanel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/top_design_revised.png"))); // NOI18N
         Aboutus_labelpanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(41, 68, 93)));
         getContentPane().add(Aboutus_labelpanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, -1, -1));
 
@@ -388,13 +389,15 @@ public class Customer_About_Us extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(13, 13, 13)
                                 .addComponent(jLabel6))
-                            .addComponent(Aboutus_text16)
-                            .addComponent(Aboutus_text15)
+                            .addComponent(Aboutus_text13)
+                            .addComponent(Aboutus_text12, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addComponent(Aboutus_text14))
-                            .addComponent(Aboutus_text13)
-                            .addComponent(Aboutus_text12, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(Aboutus_text15)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(Aboutus_text16)))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -431,10 +434,10 @@ public class Customer_About_Us extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(Aboutus_text14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Aboutus_text15, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Aboutus_text15)
                 .addGap(0, 0, 0)
                 .addComponent(Aboutus_text16)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 440, -1));
@@ -447,23 +450,35 @@ public class Customer_About_Us extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void Aboutus_button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button4ActionPerformed
-
+Placeholder second = new Placeholder();
+                    //yung Placeholder ay placeholder lang, no shit me
+                    second.setVisible(true);
+                    this.setVisible(false);
     }//GEN-LAST:event_Aboutus_button4ActionPerformed
 
     private void Aboutus_button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button3ActionPerformed
-        // TODO add your handling code here:
+    Placeholder second = new Placeholder();
+                    second.setVisible(true);
+                    this.setVisible(false);
     }//GEN-LAST:event_Aboutus_button3ActionPerformed
 
     private void Aboutus_button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button2ActionPerformed
-
+    Placeholder second = new Placeholder();                 
+                    second.setVisible(true);
+                    this.setVisible(false);
     }//GEN-LAST:event_Aboutus_button2ActionPerformed
 
     private void Aboutus_button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button5ActionPerformed
-
+    Placeholder second = new Placeholder();                  
+                    second.setVisible(true);
+                    this.setVisible(false);
     }//GEN-LAST:event_Aboutus_button5ActionPerformed
 
     private void Aboutus_button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button1ActionPerformed
-        // TODO add your handling code here:
+            Placeholder second = new Placeholder();
+                    //yung Placeholder ay placeholder lang, no shit me
+                    second.setVisible(true);
+                    this.setVisible(false);
     }//GEN-LAST:event_Aboutus_button1ActionPerformed
 
   
