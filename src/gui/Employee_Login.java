@@ -48,6 +48,9 @@ public class Employee_Login extends javax.swing.JFrame {
 
         MainPanel.setBackground(new java.awt.Color(153, 153, 153));
         MainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        MainPanel.setMaximumSize(new java.awt.Dimension(900, 580));
+        MainPanel.setMinimumSize(new java.awt.Dimension(900, 580));
+        MainPanel.setPreferredSize(new java.awt.Dimension(900, 580));
 
         PicPanel.setBackground(new java.awt.Color(238, 238, 238));
         PicPanel.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -155,7 +158,7 @@ public class Employee_Login extends javax.swing.JFrame {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(210, 210, 210)
                 .addComponent(PicPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
