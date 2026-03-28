@@ -34,10 +34,10 @@ public class Customer_Homepage extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        dc_date = new com.toedter.calendar.JDateChooser();
         cb_branch = new javax.swing.JComboBox<>();
         sp_guest = new javax.swing.JSpinner();
         cb_time = new javax.swing.JComboBox<>();
-        dc_date = new org.netbeans.modules.form.InvalidComponent();
         btn_bookNow = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         logo_homepage = new javax.swing.JLabel();
@@ -55,6 +55,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
         setResizable(false);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 410, 100, 30));
 
         cb_branch.setBackground(new java.awt.Color(57, 77, 94));
         cb_branch.setForeground(new java.awt.Color(255, 255, 255));
@@ -62,15 +63,13 @@ public class Customer_Homepage extends javax.swing.JFrame {
         jPanel1.add(cb_branch, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 410, 120, 30));
 
         sp_guest.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
-        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 70, 30));
+        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 410, 70, 30));
 
         cb_time.setBackground(new java.awt.Color(57, 77, 94));
         cb_time.setForeground(new java.awt.Color(255, 255, 255));
         cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lunch", "Dinner" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
         jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 410, 70, 30));
-
-        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, 130, 30));
 
         btn_bookNow.setBackground(new java.awt.Color(153, 0, 0));
         btn_bookNow.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
@@ -331,7 +330,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
     private javax.swing.JButton btn_rsv;
     private javax.swing.JComboBox<String> cb_branch;
     private javax.swing.JComboBox<String> cb_time;
-    private org.netbeans.modules.form.InvalidComponent dc_date;
+    private com.toedter.calendar.JDateChooser dc_date;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

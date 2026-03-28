@@ -8,14 +8,14 @@ package gui;
  *
  * @author lotte
  */
-public class Reward_Points extends javax.swing.JFrame {
+public class Customer_RewardPoints extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Reward_Points.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_RewardPoints.class.getName());
 
     /**
      * Creates new form Reward_Points
      */
-    public Reward_Points() {
+    public Customer_RewardPoints() {
         initComponents();
     }
 
@@ -77,7 +77,7 @@ public class Reward_Points extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Reward_Points().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_RewardPoints().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,7 +1,7 @@
 package gui;
-public class Booking_Window extends javax.swing.JFrame {
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Booking_Window.class.getName());
-    public Booking_Window() {
+public class Customer_Booking extends javax.swing.JFrame {
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_Booking.class.getName());
+    public Customer_Booking() {
         initComponents();
     }
 
@@ -291,7 +291,7 @@ public class Booking_Window extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Booking_Window().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_Booking().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

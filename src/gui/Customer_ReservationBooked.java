@@ -8,14 +8,14 @@ package gui;
  *
  * @author lotte
  */
-public class Reservation_Booked extends javax.swing.JFrame {
+public class Customer_ReservationBooked extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Reservation_Booked.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_ReservationBooked.class.getName());
 
     /**
      * Creates new form Reservation_Booked
      */
-    public Reservation_Booked() {
+    public Customer_ReservationBooked() {
         initComponents();
     }
 
@@ -95,7 +95,7 @@ public class Reservation_Booked extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Reservation_Booked().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_ReservationBooked().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
