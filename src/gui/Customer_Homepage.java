@@ -12,14 +12,14 @@ import javax.swing.ImageIcon;
  *
  * @author kyshgel
  */
-public class draft extends javax.swing.JFrame {
+public class Customer_Homepage extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(draft.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_Homepage.class.getName());
 
     /**
      * Creates new form draft
      */
-    public draft() {
+    public Customer_Homepage() {
         initComponents();
         
     }
@@ -37,7 +37,7 @@ public class draft extends javax.swing.JFrame {
         cb_branch = new javax.swing.JComboBox<>();
         sp_guest = new javax.swing.JSpinner();
         cb_time = new javax.swing.JComboBox<>();
-        dc_date = new com.toedter.calendar.JDateChooser();
+        dc_date = new org.netbeans.modules.form.InvalidComponent();
         btn_bookNow = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         logo_homepage = new javax.swing.JLabel();
@@ -70,8 +70,6 @@ public class draft extends javax.swing.JFrame {
         cb_time.addActionListener(this::cb_timeActionPerformed);
         jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 410, 70, 30));
 
-        dc_date.setBackground(new java.awt.Color(57, 77, 94));
-        dc_date.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, 130, 30));
 
         btn_bookNow.setBackground(new java.awt.Color(153, 0, 0));
@@ -320,7 +318,7 @@ public class draft extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new draft().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_Homepage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -333,7 +331,7 @@ public class draft extends javax.swing.JFrame {
     private javax.swing.JButton btn_rsv;
     private javax.swing.JComboBox<String> cb_branch;
     private javax.swing.JComboBox<String> cb_time;
-    private com.toedter.calendar.JDateChooser dc_date;
+    private org.netbeans.modules.form.InvalidComponent dc_date;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
