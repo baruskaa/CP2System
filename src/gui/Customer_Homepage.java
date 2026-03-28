@@ -90,7 +90,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logo_homepage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logo_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/imresizer-inverted logo.png"))); // NOI18N
+        logo_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/imresizer-invertedlogo.png"))); // NOI18N
         jPanel3.add(logo_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 160, 110));
 
         btn_profile.setBackground(new java.awt.Color(57, 77, 94));
