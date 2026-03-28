@@ -55,6 +55,9 @@ public class Customer_Homepage extends javax.swing.JFrame {
         setResizable(false);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dc_date.setMaxSelectableDate(new java.util.Date(1798650075000L));
+        dc_date.setMinSelectableDate(new java.util.Date(1772298075000L));
         jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 410, 100, 30));
 
         cb_branch.setBackground(new java.awt.Color(57, 77, 94));
