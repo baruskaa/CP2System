@@ -13,7 +13,7 @@ public class ImagePanelemplogin extends JPanel{
   private Image bg;
 
     public ImagePanelemplogin() {
-        bg = new ImageIcon(getClass().getResource("/gui/emplogin.png")).getImage();
+        bg = new ImageIcon(getClass().getResource("/gui/employeelogin.png")).getImage();
         setOpaque(false);
     }
 
