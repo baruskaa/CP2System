@@ -4,25 +4,21 @@
  */
 package gui;
 import gui.Customer_Signup;
-import java.awt.Graphics;
-import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.Timer;
 
 /**
  *
  * @author Ska
  */
-public class Customer_LoginTest extends javax.swing.JFrame {
+public class Employee_Login2 extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_LoginTest.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Employee_Login2.class.getName());
 
     /**
      * Creates new form Customer_Login
      */
-    public Customer_LoginTest() {
+    public Employee_Login2() {
         initComponents();
-        
     }
 
     /**
@@ -35,41 +31,33 @@ public class Customer_LoginTest extends javax.swing.JFrame {
     private void initComponents() {
 
         imagePanel1 = new gui.ImagePanel();
-        imagePanelwelcome2 = new gui.ImagePanelwelcome();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setSize(new java.awt.Dimension(900, 580));
-        getContentPane().setLayout(null);
 
-        javax.swing.GroupLayout imagePanelwelcome2Layout = new javax.swing.GroupLayout(imagePanelwelcome2);
-        imagePanelwelcome2.setLayout(imagePanelwelcome2Layout);
-        imagePanelwelcome2Layout.setHorizontalGroup(
-            imagePanelwelcome2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        imagePanel1.setMinimumSize(new java.awt.Dimension(900, 580));
+        imagePanel1.setLayout(null);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 900, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(imagePanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE))
         );
-        imagePanelwelcome2Layout.setVerticalGroup(
-            imagePanelwelcome2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 580, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(imagePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE))
         );
-
-        javax.swing.GroupLayout imagePanel1Layout = new javax.swing.GroupLayout(imagePanel1);
-        imagePanel1.setLayout(imagePanel1Layout);
-        imagePanel1Layout.setHorizontalGroup(
-            imagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imagePanelwelcome2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        imagePanel1Layout.setVerticalGroup(
-            imagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imagePanelwelcome2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(imagePanel1);
-        imagePanel1.setBounds(0, 0, 900, 580);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+   
     /**
      * @param args the command line arguments
      */
@@ -92,10 +80,10 @@ public class Customer_LoginTest extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Customer_LoginTest().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Employee_Login2().setVisible(true));
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.ImagePanel imagePanel1;
-    private gui.ImagePanelwelcome imagePanelwelcome2;
     // End of variables declaration//GEN-END:variables
 }

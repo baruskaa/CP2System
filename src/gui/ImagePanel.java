@@ -14,7 +14,7 @@ public class ImagePanel extends JPanel {
     private Image bg;
 
     public ImagePanel() {
-        bg = new ImageIcon(getClass().getResource("/gui/loginbg.png")).getImage();
+        bg = new ImageIcon(getClass().getResource("/gui/welcome.png")).getImage();
     }
 
     @Override

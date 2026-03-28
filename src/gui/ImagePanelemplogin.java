@@ -9,11 +9,11 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class ImagePanelcreate extends JPanel{
+public class ImagePanelemplogin extends JPanel{
   private Image bg;
 
-    public ImagePanelcreate() {
-        bg = new ImageIcon(getClass().getResource("/gui/create.png")).getImage();
+    public ImagePanelemplogin() {
+        bg = new ImageIcon(getClass().getResource("/gui/emplogin.png")).getImage();
         setOpaque(false);
     }
 
