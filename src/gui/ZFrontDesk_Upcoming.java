@@ -15,15 +15,15 @@ import javax.swing.table.TableRowSorter;
  *
  * @author kyshgel
  */
-public class FrontDesk_Upcoming extends javax.swing.JFrame {
+public class ZFrontDesk_Upcoming extends javax.swing.JFrame {
 
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrontDesk_Upcoming.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ZFrontDesk_Upcoming.class.getName());
 
     /**
      * Creates new form FrontDesk_Upcoming
      */
-    public FrontDesk_Upcoming() {
+    public ZFrontDesk_Upcoming() {
         initComponents();
         this.setLocationRelativeTo(null);
         
@@ -314,14 +314,14 @@ public class FrontDesk_Upcoming extends javax.swing.JFrame {
     }//GEN-LAST:event_search_todayKeyReleased
 
     private void btn_todayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_todayActionPerformed
-    FrontDesk_Today today = new FrontDesk_Today();
+    ZFrontDesk_Today today = new ZFrontDesk_Today();
     today.setVisible(true);
 
     this.dispose();
     }//GEN-LAST:event_btn_todayActionPerformed
 
     private void btn_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_historyActionPerformed
-        FrontDesk_History history = new FrontDesk_History();
+        ZFrontDesk_History history = new ZFrontDesk_History();
         history.setVisible(true);
 
         this.dispose();        // TODO add your handling code here:
@@ -349,7 +349,7 @@ public class FrontDesk_Upcoming extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrontDesk_Upcoming().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ZFrontDesk_Upcoming().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

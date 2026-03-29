@@ -13,12 +13,12 @@ import javax.swing.JTable;
  *
  * @author Anne
  */
-public class Manager_Today extends javax.swing.JFrame {
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Manager_Today.class.getName());
+public class ZManager_Today extends javax.swing.JFrame {
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ZManager_Today.class.getName());
     /**
      * Creates new form Manager_Today
      */
-    public Manager_Today() {
+    public ZManager_Today() {
         initComponents();
         jPanel6.revalidate();
         jPanel6.repaint();
@@ -56,9 +56,7 @@ public class Manager_Today extends javax.swing.JFrame {
         totalLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(900, 580));
         setMinimumSize(new java.awt.Dimension(900, 580));
-        setPreferredSize(new java.awt.Dimension(900, 580));
         setResizable(false);
         setSize(new java.awt.Dimension(900, 580));
 
@@ -258,21 +256,21 @@ public class Manager_Today extends javax.swing.JFrame {
 
     private void Upcomming_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Upcomming_buttonActionPerformed
         // TODO add your handling code here:
-        Manager_Homepage upcomming = new Manager_Homepage();
+        ZManager_Homepage upcomming = new ZManager_Homepage();
         upcomming.setVisible(true);
         dispose();
     }//GEN-LAST:event_Upcomming_buttonActionPerformed
 
     private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
         // TODO add your handling code here:
-        Manager_History history= new Manager_History();
+        ZManager_History history= new ZManager_History();
         history.setVisible(true);
         dispose();
     }//GEN-LAST:event_historyButtonActionPerformed
 
     private void Today_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Today_ButtonActionPerformed
         // TODO add your handling code here:
-        Manager_Today today = new Manager_Today();
+        ZManager_Today today = new ZManager_Today();
         today.setVisible(true);
         dispose();
     }//GEN-LAST:event_Today_ButtonActionPerformed
@@ -303,7 +301,7 @@ public class Manager_Today extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Manager_Today().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ZManager_Today().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

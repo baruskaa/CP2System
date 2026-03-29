@@ -7,6 +7,7 @@ package gui;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
@@ -14,39 +15,30 @@ import javax.swing.table.TableRowSorter;
  *
  * @author kyshgel
  */
-public class FrontDesk_Today extends javax.swing.JFrame {
-
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrontDesk_Today.class.getName());
+public class ZFrontDesk_History extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ZFrontDesk_History.class.getName());
 
     /**
-     * Creates new form FrontDesk_Homepage
+     * Creates new form FrontDesk_History
      */
-    public FrontDesk_Today() {
+    public ZFrontDesk_History() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
         TableRowSorter sorter = new TableRowSorter(tbl_today.getModel());
         tbl_today.setRowSorter(sorter);
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(JLabel.CENTER);
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(SwingConstants.LEFT);
 
         tbl_today.getColumnModel().getColumn(0).setCellRenderer(center);
         tbl_today.getColumnModel().getColumn(1).setCellRenderer(center);
         tbl_today.getColumnModel().getColumn(2).setCellRenderer(center);
         tbl_today.getColumnModel().getColumn(3).setCellRenderer(center);
         tbl_today.getColumnModel().getColumn(4).setCellRenderer(center);
-        
-        int total = 0;
-
-        for (int i = 0; i < tbl_today.getRowCount(); i++) {
-            Object value; // column 0
-            value = tbl_today.getValueAt(i, 0);
-
-        if (value != null && !value.toString().trim().equals("")) {
-            total++;
-    }
-}
-
-        txt_total.setText(String.valueOf(total));
+        tbl_today.getColumnModel().getColumn(5).setCellRenderer(center);
     }
 
     /**
@@ -69,17 +61,14 @@ public class FrontDesk_Today extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        txt_total = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         search_today = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_today = new javax.swing.JTable();
         bg_today = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(55, 77, 94));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -103,6 +92,7 @@ public class FrontDesk_Today extends javax.swing.JFrame {
                 btn_todayMouseExited(evt);
             }
         });
+        btn_today.addActionListener(this::btn_todayActionPerformed);
         jPanel1.add(btn_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 60, -1));
 
         btn_upcoming.setBackground(new java.awt.Color(55, 77, 94));
@@ -140,7 +130,6 @@ public class FrontDesk_Today extends javax.swing.JFrame {
                 btn_historyMouseExited(evt);
             }
         });
-        btn_history.addActionListener(this::btn_historyActionPerformed);
         jPanel1.add(btn_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 70, 30));
 
         btn_logout.setBackground(new java.awt.Color(153, 0, 0));
@@ -151,13 +140,11 @@ public class FrontDesk_Today extends javax.swing.JFrame {
         btn_logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(btn_logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 521, 80, 20));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 580));
-
         jPanel2.setBackground(new java.awt.Color(55, 91, 115));
         jPanel2.setMaximumSize(new java.awt.Dimension(681, 115));
         jPanel2.setPreferredSize(new java.awt.Dimension(681, 115));
 
-        jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Copperplate Gothic Light", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("FRONT DESK DASHBOARD");
 
@@ -176,99 +163,89 @@ public class FrontDesk_Today extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(53, Short.MAX_VALUE)
+                .addContainerGap(57, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 740, -1));
-
         jPanel3.setForeground(new java.awt.Color(202, 199, 199));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(96, 90, 90));
-        jLabel4.setText("TODAY");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 170, 50));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel6.setText("TOTAL:");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 70, 40));
-
-        txt_total.setBackground(new java.awt.Color(237, 236, 234));
-        txt_total.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
-        txt_total.setForeground(new java.awt.Color(102, 102, 102));
-        txt_total.setBorder(null);
-        jPanel3.add(txt_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 430, -1, 20));
+        jLabel4.setText("history");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 250, 50));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
         jLabel5.setText("Search:");
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 40, 50, 40));
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 60, 70, 40));
+
+        jDateChooser1.setDateFormatString("MM-dd-yy");
+        jPanel3.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 190, -1));
 
         search_today.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 search_todayKeyReleased(evt);
             }
         });
-        jPanel3.add(search_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 170, -1));
+        jPanel3.add(search_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 70, 180, -1));
 
         jScrollPane1.setForeground(new java.awt.Color(55, 77, 94));
 
-        tbl_today.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_today.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         tbl_today.setForeground(new java.awt.Color(51, 51, 51));
         tbl_today.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
-                { new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
-                { new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Dinner"},
-                { new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
-                { new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Lunch"},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                { new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch", null},
+                { new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch", null},
+                { new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Dinner", null},
+                { new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner", null},
+                { new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Lunch", null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
+                "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME", "DATE"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -282,62 +259,92 @@ public class FrontDesk_Today extends javax.swing.JFrame {
         tbl_today.setOpaque(false);
         jScrollPane1.setViewportView(tbl_today);
 
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 700, 350));
 
         bg_today.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
         bg_today.setText("Today");
         jPanel3.add(bg_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 900, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 580, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(110, 110, 110)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_todayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_todayMouseEntered
-    btn_today.setForeground(new Color(255,200,120));
-    btn_today.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        // TODO add your handling code here:
+        btn_today.setForeground(new Color(255,200,120));
+        btn_today.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        // TODO add your handling code here:
     }//GEN-LAST:event_btn_todayMouseEntered
 
-    private void btn_upcomingMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_upcomingMouseEntered
-    btn_upcoming.setForeground(new Color(255,200,120));
-    btn_upcoming.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_upcomingMouseEntered
-
-    private void btn_historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_historyMouseEntered
-    btn_history.setForeground(new Color(255,200,120));
-    btn_history.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_historyMouseEntered
-
     private void btn_todayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_todayMouseExited
-    btn_today.setForeground(Color.WHITE);        // TODO add your handling code here:
+        btn_today.setForeground(Color.WHITE);        // TODO add your handling code here:
     }//GEN-LAST:event_btn_todayMouseExited
 
+    private void btn_todayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_todayActionPerformed
+        ZFrontDesk_Today today = new ZFrontDesk_Today();
+        today.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_btn_todayActionPerformed
+
+    private void btn_upcomingMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_upcomingMouseEntered
+        btn_upcoming.setForeground(new Color(255,200,120));
+        btn_upcoming.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_upcomingMouseEntered
+
     private void btn_upcomingMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_upcomingMouseExited
-    btn_upcoming.setForeground(Color.WHITE);        // TODO add your handling code here:
+        btn_upcoming.setForeground(Color.WHITE);        // TODO add your handling code here:
     }//GEN-LAST:event_btn_upcomingMouseExited
 
+    private void btn_upcomingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_upcomingActionPerformed
+    ZFrontDesk_Upcoming upcoming = new ZFrontDesk_Upcoming();
+        upcoming.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_btn_upcomingActionPerformed
+
+    private void btn_historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_historyMouseEntered
+        btn_history.setForeground(new Color(255,200,120));
+        btn_history.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_historyMouseEntered
+
     private void btn_historyMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_historyMouseExited
-    btn_history.setForeground(Color.WHITE);        // TODO add your handling code here:
+        btn_history.setForeground(Color.WHITE);        // TODO add your handling code here:
     }//GEN-LAST:event_btn_historyMouseExited
 
     private void search_todayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_todayKeyReleased
-    String text = search_today.getText();
-    TableRowSorter sorter = (TableRowSorter) tbl_today.getRowSorter();
-    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));      // TODO add your handling code here:
+        String text = search_today.getText();
+        TableRowSorter sorter = (TableRowSorter) tbl_today.getRowSorter();
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));      // TODO add your handling code here:
     }//GEN-LAST:event_search_todayKeyReleased
 
-    private void btn_upcomingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_upcomingActionPerformed
-    FrontDesk_Upcoming upcoming = new FrontDesk_Upcoming();
-    upcoming.setVisible(true);
-    this.dispose();
-    }//GEN-LAST:event_btn_upcomingActionPerformed
-
-    private void btn_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_historyActionPerformed
-    FrontDesk_History history = new FrontDesk_History();
-    history.setVisible(true);
-    this.dispose();    // TODO add your handling code here:
-    }//GEN-LAST:event_btn_historyActionPerformed
-/**
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -359,7 +366,7 @@ public class FrontDesk_Today extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrontDesk_Today().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ZFrontDesk_History().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -368,11 +375,11 @@ public class FrontDesk_Today extends javax.swing.JFrame {
     private javax.swing.JButton btn_logout;
     private javax.swing.JButton btn_today;
     private javax.swing.JButton btn_upcoming;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -380,7 +387,6 @@ public class FrontDesk_Today extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField search_today;
     private javax.swing.JTable tbl_today;
-    private javax.swing.JTextField txt_total;
     // End of variables declaration//GEN-END:variables
 }
 

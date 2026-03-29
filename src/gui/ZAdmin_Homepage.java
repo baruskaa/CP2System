@@ -8,14 +8,14 @@ package gui;
  *
  * @author Ska
  */
-public class Admin_Homepage extends javax.swing.JFrame {
+public class ZAdmin_Homepage extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Admin_Homepage.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ZAdmin_Homepage.class.getName());
 
     /**
      * Creates new form Customer_Login
      */
-    public Admin_Homepage() {
+    public ZAdmin_Homepage() {
         initComponents();
     }
 
@@ -264,7 +264,7 @@ public class Admin_Homepage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Admin_Homepage().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ZAdmin_Homepage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

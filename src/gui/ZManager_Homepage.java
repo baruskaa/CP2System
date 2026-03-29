@@ -1,15 +1,13 @@
 package gui;
 
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextField;
-import javax.swing.RowFilter;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -18,45 +16,20 @@ import javax.swing.table.TableRowSorter;
 
 /**
  *
- * @author Anne
+ * @author Licensed User
  */
-public class Manager_History extends javax.swing.JFrame {
-    private javax.swing.JTextField New_table;
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Manager_History.class.getName());
+public class ZManager_Homepage extends javax.swing.JFrame {
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ZManager_Homepage.class.getName());
 
     /**
-     * Creates new form Manager_History
+     * Creates new form Manager_Homepage
      */
-    public Manager_History() {
+    public ZManager_Homepage() {
         initComponents();
         populateDate_Box();
-        New_table = new JTextField();
-        jPanel6.add(New_table);  // Add it to your panel/layout
-
-        DefaultTableModel model = (DefaultTableModel) Table_ofHistory.getModel();
-        final TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        Table_ofHistory.setRowSorter(sorter);
-
-        New_table.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) { filterTable(); }
-            @Override
-            public void removeUpdate(DocumentEvent e) { filterTable(); }
-            @Override
-            public void changedUpdate(DocumentEvent e) { filterTable(); }
-
-            private void filterTable() {
-                String text = New_table.getText();
-                if (text.trim().length() == 0) {
-                    sorter.setRowFilter(null);
-                } else {
-                   sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-        }
+        
     }
-});
-
-    }
-private void populateDate_Box() {
+    private void populateDate_Box() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -68,6 +41,7 @@ private void populateDate_Box() {
 
         Date_box1.setModel(model); 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,8 +55,8 @@ private void populateDate_Box() {
         Back_Button = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
-        upcomingButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        historyButton = new javax.swing.JButton();
         Today_Button = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -90,22 +64,27 @@ private void populateDate_Box() {
         jLabel1 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        Table_ofHistory = new javax.swing.JTable();
+        Table_ofUpcoming = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
-        jTextField = new javax.swing.JTextField();
+        newTable = new javax.swing.JTextField();
+        Remove_button1 = new javax.swing.JButton();
+        Assign_Button1 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
         Date_box1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(900, 580));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMinimumSize(new java.awt.Dimension(900, 580));
-        setPreferredSize(new java.awt.Dimension(900, 580));
         setResizable(false);
         setSize(new java.awt.Dimension(900, 580));
+        setType(java.awt.Window.Type.UTILITY);
 
         jPanel1.setBackground(new java.awt.Color(57, 77, 94));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(158, 366));
         jPanel1.setMinimumSize(new java.awt.Dimension(158, 366));
+        jPanel1.setPreferredSize(new java.awt.Dimension(158, 366));
 
         Back_Button.setBackground(new java.awt.Color(65, 93, 120));
         Back_Button.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -116,11 +95,11 @@ private void populateDate_Box() {
         Back_Button.setContentAreaFilled(false);
         Back_Button.addActionListener(this::Back_ButtonActionPerformed);
 
-        upcomingButton.setText("Upcoming");
-        upcomingButton.addActionListener(this::upcomingButtonActionPerformed);
+        jButton1.setText("Upcoming");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        jButton2.setText("History");
-        jButton2.addActionListener(this::jButton2ActionPerformed);
+        historyButton.setText("History");
+        historyButton.addActionListener(this::historyButtonActionPerformed);
 
         Today_Button.setText("Today");
         Today_Button.addActionListener(this::Today_ButtonActionPerformed);
@@ -131,7 +110,7 @@ private void populateDate_Box() {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(43, 43, 43))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -139,10 +118,10 @@ private void populateDate_Box() {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Back_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(upcomingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Today_Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(historyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,10 +133,10 @@ private void populateDate_Box() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Today_Button)
                 .addGap(12, 12, 12)
-                .addComponent(upcomingButton)
+                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
+                .addComponent(historyButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Back_Button)
                 .addGap(38, 38, 38))
         );
@@ -165,6 +144,7 @@ private void populateDate_Box() {
         jPanel2.setBackground(new java.awt.Color(65, 93, 120));
         jPanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel2.setMaximumSize(new java.awt.Dimension(681, 115));
+        jPanel2.setMinimumSize(new java.awt.Dimension(0, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(681, 115));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -183,7 +163,7 @@ private void populateDate_Box() {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 304, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(28, 28, 28))
         );
@@ -204,42 +184,53 @@ private void populateDate_Box() {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        Table_ofHistory.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(102, 102, 102)));
-        Table_ofHistory.setModel(new javax.swing.table.DefaultTableModel(
+        Table_ofUpcoming.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(102, 102, 102)));
+        Table_ofUpcoming.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "an", "1", "Lunch", null},
-                {"2", "may", "2", "Dinner", null},
-                {"3", "arg", "3", "Lunch", null},
-                {"4", "asd", "4", "Dinner", null},
-                {"5", "asdw", "5", "Dinner", null},
-                {"6", "qwwe", "6", "Lunch", null},
-                {"7", "qwe", "7", "Lunch", null},
-                {"7", "2", "8", "Dinner", null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {"1", "an", "1", "Lunch", null, null},
+                {"2", "may", "2", "Dinner", null, null},
+                {"3", "arg", "3", "Lunch", null, null},
+                {"4", "asd", "4", "Dinner", null, null},
+                {"5", "asdw", "5", "Dinner", null, null},
+                {"6", "qwwe", "6", "Lunch", null, null},
+                {"7", "qwe", "7", "Lunch", null, null},
+                {"7", "2", "8", "Dinner", null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Table #", "Name", "Contact", "Time", "Date"
+                "Table #", "Name", "Contact", "Time", "Pax", "Date"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(Table_ofHistory);
+        ));
+        jScrollPane2.setViewportView(Table_ofUpcoming);
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("History");
+        jLabel5.setText("Upcoming");
         jLabel5.setOpaque(true);
 
-        jTextField.setText("                                        🔍");
-        jTextField.addActionListener(this::jTextFieldjTextField1ActionPerformed);
+        newTable.setText("New Table#");
+        newTable.addActionListener(this::New_tableActionPerformed);
+
+        Remove_button1.setBackground(new java.awt.Color(65, 93, 120));
+        Remove_button1.setText("Delete");
+        Remove_button1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Remove_button1.setContentAreaFilled(false);
+        Remove_button1.setFocusPainted(false);
+        Remove_button1.setFocusable(false);
+        Remove_button1.setRequestFocusEnabled(false);
+        Remove_button1.addActionListener(this::Remove_buttonActionPerformed);
+
+        Assign_Button1.setBackground(new java.awt.Color(65, 93, 120));
+        Assign_Button1.setText("Assign");
+        Assign_Button1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Assign_Button1.setContentAreaFilled(false);
+        Assign_Button1.setFocusPainted(false);
+        Assign_Button1.addActionListener(this::Assign_ButtonActionPerformed);
+
+        jTextField2.setText("                                        🔍");
+        jTextField2.addActionListener(this::jTextField1ActionPerformed);
 
         Date_box1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         Date_box1.addActionListener(this::Date_box1ActionPerformed);
@@ -248,16 +239,25 @@ private void populateDate_Box() {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(newTable, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Assign_Button1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(23, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(Date_box1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Remove_button1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
         jPanel6Layout.setVerticalGroup(
@@ -265,13 +265,18 @@ private void populateDate_Box() {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Date_box1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newTable, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Assign_Button1)
+                    .addComponent(Remove_button1))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -279,23 +284,30 @@ private void populateDate_Box() {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+   // This tells Java: "Take the table's model and treat it as a DefaultTableModel"
 
     private void Back_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Back_ButtonActionPerformed
         // TODO add your handling code here:
@@ -304,32 +316,64 @@ private void populateDate_Box() {
         dispose();
     }//GEN-LAST:event_Back_ButtonActionPerformed
 
-    private void upcomingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upcomingButtonActionPerformed
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-        Manager_Homepage upcomming = new Manager_Homepage();
-        upcomming.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_upcomingButtonActionPerformed
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void Assign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Assign_ButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) Table_ofUpcoming.getModel();
+        int selectedRow = Table_ofUpcoming.getSelectedRow();
 
-    private void Today_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Today_ButtonActionPerformed
-        // TODO add your handling code here:
-        Manager_Today today = new Manager_Today();
-        today.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_Today_ButtonActionPerformed
+        if (selectedRow != -1) {
+            String tableNum = newTable.getText();
 
-    private void jTextFieldjTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldjTextField1ActionPerformed
+            model.setValueAt(tableNum, selectedRow, 0);
+
+            newTable.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Select a guest first!");
+        }
+    }//GEN-LAST:event_Assign_ButtonActionPerformed
+
+    private void Remove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Remove_buttonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldjTextField1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) Table_ofUpcoming.getModel();
+        int selectedRow = Table_ofUpcoming.getSelectedRow();
+
+        if (selectedRow != -1) {
+            model.removeRow(selectedRow);
+        } else {
+            JOptionPane.showMessageDialog(this, "Select a reservation to remove.");
+        }
+    }//GEN-LAST:event_Remove_buttonActionPerformed
+
+    private void New_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_New_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_New_tableActionPerformed
 
     private void Date_box1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Date_box1ActionPerformed
         // TODO add your handling code here:
-
+        
     }//GEN-LAST:event_Date_box1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
+        // TODO add your handling code here:
+        ZManager_History history= new ZManager_History();
+        history.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_historyButtonActionPerformed
+
+    private void Today_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Today_ButtonActionPerformed
+        // TODO add your handling code here:
+        ZManager_Today today = new ZManager_Today();
+        today.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_Today_ButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -353,15 +397,18 @@ private void populateDate_Box() {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Manager_History().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ZManager_Homepage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Assign_Button1;
     private javax.swing.JButton Back_Button;
     private javax.swing.JComboBox<String> Date_box1;
-    private javax.swing.JTable Table_ofHistory;
+    private javax.swing.JButton Remove_button1;
+    private javax.swing.JTable Table_ofUpcoming;
     private javax.swing.JButton Today_Button;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton historyButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -372,7 +419,7 @@ private void populateDate_Box() {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField;
-    private javax.swing.JButton upcomingButton;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField newTable;
     // End of variables declaration//GEN-END:variables
 }
