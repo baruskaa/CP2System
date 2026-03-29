@@ -78,6 +78,7 @@ public class FrontDesk_Today extends javax.swing.JFrame {
         bg_today = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(55, 77, 94));
@@ -156,7 +157,7 @@ public class FrontDesk_Today extends javax.swing.JFrame {
         jPanel2.setMaximumSize(new java.awt.Dimension(681, 115));
         jPanel2.setPreferredSize(new java.awt.Dimension(681, 115));
 
-        jLabel2.setFont(new java.awt.Font("Copperplate Gothic Light", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("FRONT DESK DASHBOARD");
 
@@ -175,14 +176,14 @@ public class FrontDesk_Today extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(57, Short.MAX_VALUE)
+                .addContainerGap(53, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -194,7 +195,7 @@ public class FrontDesk_Today extends javax.swing.JFrame {
         jPanel3.setForeground(new java.awt.Color(202, 199, 199));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 36)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(96, 90, 90));
         jLabel4.setText("TODAY");
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 170, 50));
@@ -224,7 +225,7 @@ public class FrontDesk_Today extends javax.swing.JFrame {
 
         jScrollPane1.setForeground(new java.awt.Color(55, 77, 94));
 
-        tbl_today.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        tbl_today.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         tbl_today.setForeground(new java.awt.Color(51, 51, 51));
         tbl_today.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
