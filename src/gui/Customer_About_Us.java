@@ -19,10 +19,6 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_biglabel1 = new javax.swing.JLabel();
         Aboutus_navipanel = new javax.swing.JPanel();
         Aboutus_logo = new javax.swing.JLabel();
-        Aboutus_button4 = new javax.swing.JButton();
-        Aboutus_button3 = new javax.swing.JButton();
-        Aboutus_button2 = new javax.swing.JButton();
-        Aboutus_button5 = new javax.swing.JButton();
         Aboutus_Label1 = new javax.swing.JLabel();
         Aboutus_label2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -68,40 +64,6 @@ public class Customer_About_Us extends javax.swing.JFrame {
 
         Aboutus_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Houseof7Logo.png"))); // NOI18N
 
-        Aboutus_button4.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
-        Aboutus_button4.setForeground(new java.awt.Color(255, 255, 255));
-        Aboutus_button4.setText("Profile");
-        Aboutus_button4.setBorderPainted(false);
-        Aboutus_button4.setContentAreaFilled(false);
-        Aboutus_button4.addActionListener(this::Aboutus_button4ActionPerformed);
-
-        Aboutus_button3.setBackground(new java.awt.Color(211, 156, 52));
-        Aboutus_button3.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
-        Aboutus_button3.setForeground(new java.awt.Color(255, 255, 255));
-        Aboutus_button3.setText("Menu");
-        Aboutus_button3.setBorderPainted(false);
-        Aboutus_button3.setContentAreaFilled(false);
-        Aboutus_button3.setName("Brancheslist_button4"); // NOI18N
-        Aboutus_button3.addActionListener(this::Aboutus_button3ActionPerformed);
-
-        Aboutus_button2.setBackground(new java.awt.Color(211, 156, 52));
-        Aboutus_button2.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
-        Aboutus_button2.setForeground(new java.awt.Color(255, 255, 255));
-        Aboutus_button2.setText("Home");
-        Aboutus_button2.setActionCommand("BookingButton");
-        Aboutus_button2.setBorderPainted(false);
-        Aboutus_button2.setContentAreaFilled(false);
-        Aboutus_button2.setName("Brancheslist_button2"); // NOI18N
-        Aboutus_button2.addActionListener(this::Aboutus_button2ActionPerformed);
-
-        Aboutus_button5.setBackground(new java.awt.Color(211, 156, 52));
-        Aboutus_button5.setFont(new java.awt.Font("Segoe UI Emoji", 0, 12)); // NOI18N
-        Aboutus_button5.setForeground(new java.awt.Color(255, 255, 255));
-        Aboutus_button5.setText("Reservations");
-        Aboutus_button5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        Aboutus_button5.setName("Brancheslist_button3"); // NOI18N
-        Aboutus_button5.addActionListener(this::Aboutus_button5ActionPerformed);
-
         Aboutus_Label1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
         Aboutus_Label1.setForeground(new java.awt.Color(153, 153, 153));
         Aboutus_Label1.setText("© 2026 The House Of 7 Buffet.");
@@ -114,10 +76,6 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_navipanel.setLayout(Aboutus_navipanelLayout);
         Aboutus_navipanelLayout.setHorizontalGroup(
             Aboutus_navipanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Aboutus_navipanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(Aboutus_button5, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(Aboutus_navipanelLayout.createSequentialGroup()
                 .addGroup(Aboutus_navipanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Aboutus_navipanelLayout.createSequentialGroup()
@@ -127,11 +85,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
                                 .addComponent(Aboutus_label2))
                             .addGroup(Aboutus_navipanelLayout.createSequentialGroup()
                                 .addGap(19, 19, 19)
-                                .addGroup(Aboutus_navipanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Aboutus_logo)
-                                    .addComponent(Aboutus_button2)
-                                    .addComponent(Aboutus_button3)
-                                    .addComponent(Aboutus_button4))))
+                                .addComponent(Aboutus_logo)))
                         .addGap(0, 25, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Aboutus_navipanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -143,15 +97,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
             .addGroup(Aboutus_navipanelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(Aboutus_logo)
-                .addGap(82, 82, 82)
-                .addComponent(Aboutus_button2)
-                .addGap(28, 28, 28)
-                .addComponent(Aboutus_button3)
-                .addGap(32, 32, 32)
-                .addComponent(Aboutus_button4)
-                .addGap(62, 62, 62)
-                .addComponent(Aboutus_button5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 412, Short.MAX_VALUE)
                 .addComponent(Aboutus_Label1)
                 .addGap(0, 0, 0)
                 .addComponent(Aboutus_label2)
@@ -434,35 +380,6 @@ public class Customer_About_Us extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void Aboutus_button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button4ActionPerformed
-    Acct_Profile lk = new Acct_Profile();
-                   
-                    lk.setVisible(true);
-                    this.setVisible(false);
-                    //customer log in
-    }//GEN-LAST:event_Aboutus_button4ActionPerformed
-
-    private void Aboutus_button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button3ActionPerformed
-    Customer_MenuList lk = new Customer_MenuList();
-                    lk.setVisible(true);
-                    this.setVisible(false);
-                    // Menu
-    }//GEN-LAST:event_Aboutus_button3ActionPerformed
-
-    private void Aboutus_button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button2ActionPerformed
-    //draft lk = new draft();                 
-                    //lk.setVisible(true);
-                    //this.setVisible(false);
-                    // Home (draft.java) not working, i think may nasira nung namerged saakin yung master?
-    }//GEN-LAST:event_Aboutus_button2ActionPerformed
-
-    private void Aboutus_button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button5ActionPerformed
-    Booking_Window lk = new Booking_Window();                  
-                    lk.setVisible(true);
-                    this.setVisible(false);
-                    //reservations
-    }//GEN-LAST:event_Aboutus_button5ActionPerformed
-
   
     public static void main(String args[]) {
        
@@ -473,10 +390,6 @@ public class Customer_About_Us extends javax.swing.JFrame {
     private javax.swing.JLabel Aboutus_Label1;
     private javax.swing.JLabel Aboutus_biglabel1;
     private javax.swing.JLabel Aboutus_biglabel2;
-    private javax.swing.JButton Aboutus_button2;
-    private javax.swing.JButton Aboutus_button3;
-    private javax.swing.JButton Aboutus_button4;
-    private javax.swing.JButton Aboutus_button5;
     private javax.swing.JLabel Aboutus_label2;
     private javax.swing.JLabel Aboutus_labelpanel1;
     private javax.swing.JLabel Aboutus_logo;
