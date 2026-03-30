@@ -1,8 +1,27 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package gui;
+
+import javax.swing.SpinnerNumberModel;
+
+/**
+ *
+ * @author lotte
+ */
 public class Booking_Window extends javax.swing.JFrame {
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Booking_Window.class.getName());
+
+    /**
+     * Creates new form Booking_Window
+     */
     public Booking_Window() {
         initComponents();
+        
+        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, 50, 1);
+        tables_spr_booking.setModel(model);
     }
 
     /**
@@ -14,260 +33,77 @@ public class Booking_Window extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        no_guest_spnr = new javax.swing.JSpinner();
-        jLabel1 = new javax.swing.JLabel();
-        slct_branch = new javax.swing.JLabel();
-        cb_branch = new javax.swing.JComboBox<>();
-        txt_branch = new javax.swing.JTextField();
-        no_guest = new javax.swing.JLabel();
-        dt_rsrv = new javax.swing.JLabel();
-        month_rsv_spnr = new javax.swing.JSpinner();
-        date_rsv_spnr = new javax.swing.JSpinner();
-        year_rsv_spnr = new javax.swing.JSpinner();
-        Time_rsv = new javax.swing.JLabel();
-        cb_time_rsv = new javax.swing.JComboBox<>();
-        txt_time_rsv = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        txt_cstmr_name = new javax.swing.JTextField();
-        contact_num = new javax.swing.JLabel();
-        txt_contact_num = new javax.swing.JTextField();
-        user_email = new javax.swing.JLabel();
-        txt_email = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        txt_promo_code = new javax.swing.JTextField();
-        Btn_confirm_booking = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        Rsv_Fee = new javax.swing.JLabel();
-        txt_Rsv_Fee = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        paymeth_spnr = new javax.swing.JComboBox<>();
+        cb_branch_booking = new javax.swing.JComboBox<>();
+        cb_rsv_booking = new javax.swing.JComboBox<>();
+        dc_rsv_booking = new com.toedter.calendar.JDateChooser();
+        name_booking = new javax.swing.JTextField();
+        email_add_booking = new javax.swing.JTextField();
+        ph_no_booking = new javax.swing.JTextField();
+        tables_spr_booking = new javax.swing.JSpinner();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        rsv_fee_booking = new javax.swing.JTextPane();
+        promo_code_booking = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        booking_bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        slct_branch.setText("Select a Branch");
+        cb_branch_booking.setFont(new java.awt.Font("Century Gothic", 0, 8)); // NOI18N
+        cb_branch_booking.setMaximumRowCount(2);
+        cb_branch_booking.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SM NORTH EDSA", "SM MEGAMALL" }));
+        cb_branch_booking.addActionListener(this::cb_branch_bookingActionPerformed);
+        getContentPane().add(cb_branch_booking, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 100, 30));
 
-        cb_branch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "branch 1", "branch 2", "branch 3", "branch 4", "branch 5" }));
-        cb_branch.addItemListener(this::cb_branchItemStateChanged);
-        cb_branch.addActionListener(this::cb_branchActionPerformed);
+        cb_rsv_booking.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
+        cb_rsv_booking.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNCH", "DINNER" }));
+        cb_rsv_booking.addActionListener(this::cb_rsv_bookingActionPerformed);
+        getContentPane().add(cb_rsv_booking, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, 110, 30));
+        getContentPane().add(dc_rsv_booking, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 110, 30));
+        getContentPane().add(name_booking, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 230, 30));
+        getContentPane().add(email_add_booking, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 230, 30));
+        getContentPane().add(ph_no_booking, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 230, 30));
 
-        no_guest.setText("How many guest");
+        tables_spr_booking.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(tables_spr_booking, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 80, 30));
 
-        dt_rsrv.setText("Date of Reservation");
+        jScrollPane1.setViewportView(rsv_fee_booking);
 
-        month_rsv_spnr.setToolTipText("");
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 450, 90, 30));
+        getContentPane().add(promo_code_booking, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 450, 110, 30));
 
-        Time_rsv.setText("Time of Reservation");
+        jButton1.setBackground(new java.awt.Color(185, 153, 79));
+        jButton1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jButton1.setText("Proceed to Payment");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 500, 160, -1));
 
-        cb_time_rsv.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "lunch", "dinner" }));
-        cb_time_rsv.addItemListener(this::cb_time_rsvItemStateChanged);
-        cb_time_rsv.addActionListener(this::cb_time_rsvActionPerformed);
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setText("Personal Information");
-
-        jLabel3.setText("Name");
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setText("Booking");
-
-        txt_cstmr_name.addActionListener(this::txt_cstmr_nameActionPerformed);
-
-        contact_num.setText("Contact Number");
-
-        user_email.setText("Email");
-
-        jLabel7.setText("Promo Code");
-
-        Btn_confirm_booking.setText("Confirm");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setText("Payment Method");
-
-        Rsv_Fee.setText("Reservation Fee");
-
-        jLabel9.setText("Payment Method");
-
-        paymeth_spnr.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "card 1", "card 2", "gcash", "paymaya", "cash" }));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_cstmr_name, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(contact_num)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_contact_num, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(user_email)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(Rsv_Fee)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_Rsv_Fee, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(paymeth_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(txt_branch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(slct_branch)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cb_branch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(no_guest)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(no_guest_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(dt_rsrv)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(month_rsv_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(date_rsv_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel6)
-                                        .addGap(280, 280, 280)
-                                        .addComponent(jLabel1))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(year_rsv_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(Time_rsv)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txt_time_rsv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cb_time_rsv, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_promo_code, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Btn_confirm_booking, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(slct_branch)
-                    .addComponent(cb_branch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(no_guest)
-                    .addComponent(no_guest_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(month_rsv_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(date_rsv_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(year_rsv_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dt_rsrv)
-                    .addComponent(Time_rsv, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                    .addComponent(cb_time_rsv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel6))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_branch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_time_rsv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(txt_promo_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_cstmr_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(contact_num)
-                            .addComponent(txt_contact_num, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(user_email)
-                            .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(82, 82, 82)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Rsv_Fee)
-                            .addComponent(txt_Rsv_Fee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
-                            .addComponent(paymeth_spnr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
-                        .addComponent(Btn_confirm_booking)
-                        .addGap(40, 40, 40))))
-        );
+        booking_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/BOOKING1.png"))); // NOI18N
+        getContentPane().add(booking_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cb_branchItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_branchItemStateChanged
-        if(cb_branch.getSelectedItem()=="branch 1"){
-            txt_branch.setText("Branch 1");
+    private void cb_branch_bookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_branch_bookingActionPerformed
+    String selectedBranch = cb_branch_booking.getSelectedItem().toString();
+        if (selectedBranch.equals("SM NORTH EDSA")) {
+        System.out.println("SM NORTH EDSA");
         }
-        if(cb_branch.getSelectedItem()=="branch 2"){
-            txt_branch.setText("Branch 2");
-        }
-        if(cb_branch.getSelectedItem()=="branch 3"){
-            txt_branch.setText("Branch 3");
-        }
-        if(cb_branch.getSelectedItem()=="branch 4"){
-            txt_branch.setText("Branch 4");
-        }
-        if(cb_branch.getSelectedItem()=="branch 5"){
-            txt_branch.setText("Branch 5");
-        }
-    }//GEN-LAST:event_cb_branchItemStateChanged
+        if (selectedBranch.equals("SM MEGAMALL")) {
+        System.out.println("SM MEGAMALL"); 
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_cb_branch_bookingActionPerformed
 
-    private void cb_branchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_branchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cb_branchActionPerformed
+    private void cb_rsv_bookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_rsv_bookingActionPerformed
+        String selectedBranch = cb_rsv_booking.getSelectedItem().toString();
 
-    private void cb_time_rsvItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_time_rsvItemStateChanged
-        if(cb_time_rsv.getSelectedItem()=="lunch"){
-            txt_time_rsv.setText("Lunch");
-        }
-        if(cb_time_rsv.getSelectedItem()=="dinner"){
-            txt_time_rsv.setText("Dinner");
-        }
-    }//GEN-LAST:event_cb_time_rsvItemStateChanged
+    if (selectedBranch.equals("LUNCH")) {
+        System.out.println("LUNCH");
+    }
 
-    private void cb_time_rsvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_time_rsvActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cb_time_rsvActionPerformed
-
-    private void txt_cstmr_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cstmr_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_cstmr_nameActionPerformed
+    if (selectedBranch.equals("DINNER")) {
+        System.out.println("DINNER");
+    }// TODO add your handling code here:
+    }//GEN-LAST:event_cb_rsv_bookingActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,35 +131,17 @@ public class Booking_Window extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Btn_confirm_booking;
-    private javax.swing.JLabel Rsv_Fee;
-    private javax.swing.JLabel Time_rsv;
-    private javax.swing.JComboBox<String> cb_branch;
-    private javax.swing.JComboBox<String> cb_time_rsv;
-    private javax.swing.JLabel contact_num;
-    private javax.swing.JSpinner date_rsv_spnr;
-    private javax.swing.JLabel dt_rsrv;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JSpinner month_rsv_spnr;
-    private javax.swing.JLabel no_guest;
-    private javax.swing.JSpinner no_guest_spnr;
-    private javax.swing.JComboBox<String> paymeth_spnr;
-    private javax.swing.JLabel slct_branch;
-    private javax.swing.JTextField txt_Rsv_Fee;
-    private javax.swing.JTextField txt_branch;
-    private javax.swing.JTextField txt_contact_num;
-    private javax.swing.JTextField txt_cstmr_name;
-    private javax.swing.JTextField txt_email;
-    private javax.swing.JTextField txt_promo_code;
-    private javax.swing.JTextField txt_time_rsv;
-    private javax.swing.JLabel user_email;
-    private javax.swing.JSpinner year_rsv_spnr;
+    private javax.swing.JLabel booking_bg;
+    private javax.swing.JComboBox<String> cb_branch_booking;
+    private javax.swing.JComboBox<String> cb_rsv_booking;
+    private com.toedter.calendar.JDateChooser dc_rsv_booking;
+    private javax.swing.JTextField email_add_booking;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField name_booking;
+    private javax.swing.JTextField ph_no_booking;
+    private javax.swing.JTextField promo_code_booking;
+    private javax.swing.JTextPane rsv_fee_booking;
+    private javax.swing.JSpinner tables_spr_booking;
     // End of variables declaration//GEN-END:variables
 }
