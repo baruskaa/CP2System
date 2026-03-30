@@ -43,7 +43,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
         logo_homepage = new javax.swing.JLabel();
         btn_profile = new javax.swing.JButton();
         btn_menu = new javax.swing.JButton();
-        btn_dc = new javax.swing.JButton();
         btn_abt = new javax.swing.JButton();
         btn_rsv = new javax.swing.JButton();
         Aboutus_Label1 = new javax.swing.JLabel();
@@ -130,23 +129,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_menu.addActionListener(this::btn_menuActionPerformed);
         jPanel3.add(btn_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 130, 20));
 
-        btn_dc.setBackground(new java.awt.Color(57, 77, 94));
-        btn_dc.setForeground(new java.awt.Color(255, 255, 255));
-        btn_dc.setText("DINE CLUB");
-        btn_dc.setBorder(null);
-        btn_dc.setContentAreaFilled(false);
-        btn_dc.setFocusPainted(false);
-        btn_dc.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_dcMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_dcMouseExited(evt);
-            }
-        });
-        btn_dc.addActionListener(this::btn_dcActionPerformed);
-        jPanel3.add(btn_dc, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 90, 20));
-
         btn_abt.setBackground(new java.awt.Color(57, 77, 94));
         btn_abt.setForeground(new java.awt.Color(255, 255, 255));
         btn_abt.setText("   ABOUT US");
@@ -162,7 +144,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
             }
         });
         btn_abt.addActionListener(this::btn_abtActionPerformed);
-        jPanel3.add(btn_abt, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 100, 20));
+        jPanel3.add(btn_abt, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 100, 20));
 
         btn_rsv.setFont(new java.awt.Font("Courier New", 1, 12)); // NOI18N
         btn_rsv.setForeground(new java.awt.Color(55, 77, 94));
@@ -272,19 +254,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
     btn_rsv.setForeground(new java.awt.Color(55,77,94));
     }//GEN-LAST:event_btn_rsvMouseExited
 
-    private void btn_dcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dcActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_dcActionPerformed
-
-    private void btn_dcMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dcMouseExited
-        btn_dc.setForeground(Color.WHITE);        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_dcMouseExited
-
-    private void btn_dcMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dcMouseEntered
-        btn_dc.setForeground(new Color(255,200,120));
-        btn_dc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
-    }//GEN-LAST:event_btn_dcMouseEntered
-
     private void btn_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menuActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_menuActionPerformed
@@ -329,7 +298,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
     private javax.swing.JLabel bg_homepage;
     private javax.swing.JButton btn_abt;
     private javax.swing.JButton btn_bookNow;
-    private javax.swing.JButton btn_dc;
     private javax.swing.JButton btn_menu;
     private javax.swing.JButton btn_profile;
     private javax.swing.JButton btn_rsv;
