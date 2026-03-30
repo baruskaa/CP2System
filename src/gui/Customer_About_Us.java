@@ -449,37 +449,37 @@ public class Customer_About_Us extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void Aboutus_button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button4ActionPerformed
-Placeholder second = new Placeholder();
-                    //yung Placeholder ay placeholder lang, no shit me
-                    second.setVisible(true);
-                    this.setVisible(false);
-    }//GEN-LAST:event_Aboutus_button4ActionPerformed
-
-    private void Aboutus_button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button3ActionPerformed
-    Placeholder second = new Placeholder();
-                    second.setVisible(true);
-                    this.setVisible(false);
-    }//GEN-LAST:event_Aboutus_button3ActionPerformed
-
-    private void Aboutus_button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button2ActionPerformed
-    Placeholder second = new Placeholder();                 
-                    second.setVisible(true);
-                    this.setVisible(false);
-    }//GEN-LAST:event_Aboutus_button2ActionPerformed
+    private void Aboutus_button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button1ActionPerformed
+        Placeholder second = new Placeholder();
+        //yung Placeholder ay placeholder lang, no shit me
+        second.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_Aboutus_button1ActionPerformed
 
     private void Aboutus_button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button5ActionPerformed
-    Placeholder second = new Placeholder();                  
-                    second.setVisible(true);
-                    this.setVisible(false);
+        Placeholder second = new Placeholder();
+        second.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_Aboutus_button5ActionPerformed
 
-    private void Aboutus_button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button1ActionPerformed
-            Placeholder second = new Placeholder();
-                    //yung Placeholder ay placeholder lang, no shit me
-                    second.setVisible(true);
-                    this.setVisible(false);
-    }//GEN-LAST:event_Aboutus_button1ActionPerformed
+    private void Aboutus_button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button2ActionPerformed
+        Placeholder second = new Placeholder();
+        second.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_Aboutus_button2ActionPerformed
+
+    private void Aboutus_button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button3ActionPerformed
+        Placeholder second = new Placeholder();
+        second.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_Aboutus_button3ActionPerformed
+
+    private void Aboutus_button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button4ActionPerformed
+        Placeholder second = new Placeholder();
+        //yung Placeholder ay placeholder lang, no shit me
+        second.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_Aboutus_button4ActionPerformed
 
   
     public static void main(String args[]) {

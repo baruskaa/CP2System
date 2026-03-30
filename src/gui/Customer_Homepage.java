@@ -45,9 +45,9 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_menu = new javax.swing.JButton();
         btn_dc = new javax.swing.JButton();
         btn_abt = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         btn_rsv = new javax.swing.JButton();
+        Aboutus_Label1 = new javax.swing.JLabel();
+        Aboutus_label2 = new javax.swing.JLabel();
         bg_homepage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -164,16 +164,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_abt.addActionListener(this::btn_abtActionPerformed);
         jPanel3.add(btn_abt, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 100, 20));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("All Rights Reserved.");
-        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 130, 20));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("© 2026 The House of 7 Buffet.");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 180, 30));
-
         btn_rsv.setFont(new java.awt.Font("Courier New", 1, 12)); // NOI18N
         btn_rsv.setForeground(new java.awt.Color(55, 77, 94));
         btn_rsv.setText("RESERVATIONS");
@@ -187,6 +177,16 @@ public class Customer_Homepage extends javax.swing.JFrame {
             }
         });
         jPanel3.add(btn_rsv, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 284, 120, 20));
+
+        Aboutus_Label1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_Label1.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_Label1.setText("© 2026 The House Of 7 Buffet.");
+        jPanel3.add(Aboutus_Label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
+
+        Aboutus_label2.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_label2.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_label2.setText("All Rights Reserved.");
+        jPanel3.add(Aboutus_label2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 158, -1));
 
@@ -324,6 +324,8 @@ public class Customer_Homepage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Aboutus_Label1;
+    private javax.swing.JLabel Aboutus_label2;
     private javax.swing.JLabel bg_homepage;
     private javax.swing.JButton btn_abt;
     private javax.swing.JButton btn_bookNow;
@@ -334,8 +336,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_branch;
     private javax.swing.JComboBox<String> cb_time;
     private com.toedter.calendar.JDateChooser dc_date;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel logo_homepage;
