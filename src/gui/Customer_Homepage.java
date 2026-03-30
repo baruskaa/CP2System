@@ -231,28 +231,10 @@ public class Customer_Homepage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_timeActionPerformed
 
-    private void btn_menuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menuMouseEntered
-    btn_menu.setForeground(new Color(255,200,120));   
-    btn_menu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
-    }//GEN-LAST:event_btn_menuMouseEntered
-
-    private void btn_dcMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dcMouseEntered
-    btn_dc.setForeground(new Color(255,200,120));
-    btn_dc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
-    }//GEN-LAST:event_btn_dcMouseEntered
-
     private void btn_abtMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_abtMouseEntered
     btn_abt.setForeground(new Color(255,200,120)); 
     btn_abt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
     }//GEN-LAST:event_btn_abtMouseEntered
-
-    private void btn_menuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menuMouseExited
-    btn_menu.setForeground(Color.WHITE);        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_menuMouseExited
-
-    private void btn_dcMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dcMouseExited
-    btn_dc.setForeground(Color.WHITE);        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_dcMouseExited
 
     private void btn_abtMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_abtMouseExited
     btn_abt.setForeground(Color.WHITE);        // TODO add your handling code here:
@@ -275,14 +257,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_profile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_profileMouseEntered
 
-    private void btn_dcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dcActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_dcActionPerformed
-
-    private void btn_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_menuActionPerformed
-
     private void btn_bookNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bookNowActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_bookNowActionPerformed
@@ -297,6 +271,32 @@ public class Customer_Homepage extends javax.swing.JFrame {
     btn_rsv.setBackground(Color.WHITE);
     btn_rsv.setForeground(new java.awt.Color(55,77,94));
     }//GEN-LAST:event_btn_rsvMouseExited
+
+    private void btn_dcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_dcActionPerformed
+
+    private void btn_dcMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dcMouseExited
+        btn_dc.setForeground(Color.WHITE);        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_dcMouseExited
+
+    private void btn_dcMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dcMouseEntered
+        btn_dc.setForeground(new Color(255,200,120));
+        btn_dc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
+    }//GEN-LAST:event_btn_dcMouseEntered
+
+    private void btn_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_menuActionPerformed
+
+    private void btn_menuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menuMouseExited
+        btn_menu.setForeground(Color.WHITE);        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_menuMouseExited
+
+    private void btn_menuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menuMouseEntered
+        btn_menu.setForeground(new Color(255,200,120));
+        btn_menu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));// TODO add your handling code here:
+    }//GEN-LAST:event_btn_menuMouseEntered
 
     /**
      * @param args the command line arguments
