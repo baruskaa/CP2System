@@ -44,12 +44,12 @@ public class Customer_Homepage extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         Aboutus_Label2 = new javax.swing.JLabel();
         Aboutus_label3 = new javax.swing.JLabel();
-        btn_logout1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         btn_today5 = new javax.swing.JButton();
         btn_today6 = new javax.swing.JButton();
         btn_today7 = new javax.swing.JButton();
         btn_today8 = new javax.swing.JButton();
+        btn_logout2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(900, 580));
@@ -118,15 +118,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
         Aboutus_label3.setForeground(new java.awt.Color(153, 153, 153));
         Aboutus_label3.setText("All Rights Reserved.");
         jPanel4.add(Aboutus_label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
-
-        btn_logout1.setBackground(new java.awt.Color(185, 153, 79));
-        btn_logout1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        btn_logout1.setForeground(new java.awt.Color(57, 77, 94));
-        btn_logout1.setText("RESERVATIONS");
-        btn_logout1.setBorder(null);
-        btn_logout1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_logout1.addActionListener(this::btn_logout1ActionPerformed);
-        jPanel4.add(btn_logout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 120, 30));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/logo.png"))); // NOI18N
         jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
@@ -206,6 +197,15 @@ public class Customer_Homepage extends javax.swing.JFrame {
         });
         btn_today8.addActionListener(this::btn_today8ActionPerformed);
         jPanel4.add(btn_today8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 30));
+
+        btn_logout2.setBackground(new java.awt.Color(185, 153, 79));
+        btn_logout2.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_logout2.setForeground(new java.awt.Color(57, 77, 94));
+        btn_logout2.setText("MY RESERVATIONS");
+        btn_logout2.setBorder(null);
+        btn_logout2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_logout2.addActionListener(this::btn_logout2ActionPerformed);
+        jPanel4.add(btn_logout2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 120, 30));
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, -1));
 
@@ -292,10 +292,6 @@ public class Customer_Homepage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_today4ActionPerformed
 
-    private void btn_logout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logout1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_logout1ActionPerformed
-
     private void btn_today5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_today5MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_today5MouseEntered
@@ -344,6 +340,10 @@ public class Customer_Homepage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_today8ActionPerformed
 
+    private void btn_logout2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logout2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_logout2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -377,7 +377,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
     private javax.swing.JLabel bg_homepage;
     private javax.swing.JButton btn_bookNow;
     private javax.swing.JButton btn_logout;
-    private javax.swing.JButton btn_logout1;
+    private javax.swing.JButton btn_logout2;
     private javax.swing.JButton btn_today1;
     private javax.swing.JButton btn_today2;
     private javax.swing.JButton btn_today3;

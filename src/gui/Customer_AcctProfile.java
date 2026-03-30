@@ -162,13 +162,13 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
         System.exit(0);   // TODO add your handling code here:
     }//GEN-LAST:event_logout_accprof_btnActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void accprof_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accprof_btnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_accprof_btnActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,9 +196,12 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Aboutus_Label1;
+    private javax.swing.JLabel Aboutus_label2;
     private javax.swing.JCheckBox Female_checkbox_accprof;
     private javax.swing.JLabel aboutus_accprof_lbl;
     private javax.swing.JButton accprof_btn;
+    private javax.swing.JButton btn_today1;
     private javax.swing.JLabel copyright1_accprof_lbl;
     private javax.swing.JLabel copyright2_accprof_lbl;
     private javax.swing.JLabel dineclub_accprof_lbl;
@@ -212,6 +215,8 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton logout_accprof_btn;
     private javax.swing.JCheckBox male_checkbox_accprof;
