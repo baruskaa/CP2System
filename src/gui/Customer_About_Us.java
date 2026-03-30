@@ -25,7 +25,6 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_button5 = new javax.swing.JButton();
         Aboutus_Label1 = new javax.swing.JLabel();
         Aboutus_label2 = new javax.swing.JLabel();
-        Aboutus_button1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         customerbranches_text2 = new javax.swing.JLabel();
         customerbranches_text4 = new javax.swing.JLabel();
@@ -88,7 +87,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_button2.setBackground(new java.awt.Color(211, 156, 52));
         Aboutus_button2.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         Aboutus_button2.setForeground(new java.awt.Color(255, 255, 255));
-        Aboutus_button2.setText("Booking");
+        Aboutus_button2.setText("Home");
         Aboutus_button2.setActionCommand("BookingButton");
         Aboutus_button2.setBorderPainted(false);
         Aboutus_button2.setContentAreaFilled(false);
@@ -111,17 +110,6 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_label2.setForeground(new java.awt.Color(153, 153, 153));
         Aboutus_label2.setText("All Rights Reserved.");
 
-        Aboutus_button1.setBackground(new java.awt.Color(211, 156, 52));
-        Aboutus_button1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 18)); // NOI18N
-        Aboutus_button1.setForeground(new java.awt.Color(255, 255, 255));
-        Aboutus_button1.setText("Back");
-        Aboutus_button1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        Aboutus_button1.setBorderPainted(false);
-        Aboutus_button1.setContentAreaFilled(false);
-        Aboutus_button1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        Aboutus_button1.setName("Brancheslist_button1"); // NOI18N
-        Aboutus_button1.addActionListener(this::Aboutus_button1ActionPerformed);
-
         javax.swing.GroupLayout Aboutus_navipanelLayout = new javax.swing.GroupLayout(Aboutus_navipanel);
         Aboutus_navipanel.setLayout(Aboutus_navipanelLayout);
         Aboutus_navipanelLayout.setHorizontalGroup(
@@ -143,8 +131,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
                                     .addComponent(Aboutus_logo)
                                     .addComponent(Aboutus_button2)
                                     .addComponent(Aboutus_button3)
-                                    .addComponent(Aboutus_button4)
-                                    .addComponent(Aboutus_button1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(Aboutus_button4))))
                         .addGap(0, 25, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Aboutus_navipanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -156,9 +143,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
             .addGroup(Aboutus_navipanelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(Aboutus_logo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Aboutus_button1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(82, 82, 82)
                 .addComponent(Aboutus_button2)
                 .addGap(28, 28, 28)
                 .addComponent(Aboutus_button3)
@@ -450,36 +435,33 @@ public class Customer_About_Us extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void Aboutus_button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button4ActionPerformed
-Placeholder second = new Placeholder();
-                    //yung Placeholder ay placeholder lang, no shit me
-                    second.setVisible(true);
+    Acct_Profile lk = new Acct_Profile();
+                   
+                    lk.setVisible(true);
                     this.setVisible(false);
+                    //customer log in
     }//GEN-LAST:event_Aboutus_button4ActionPerformed
 
     private void Aboutus_button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button3ActionPerformed
-    Placeholder second = new Placeholder();
-                    second.setVisible(true);
+    Customer_MenuList lk = new Customer_MenuList();
+                    lk.setVisible(true);
                     this.setVisible(false);
+                    // Menu
     }//GEN-LAST:event_Aboutus_button3ActionPerformed
 
     private void Aboutus_button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button2ActionPerformed
-    Placeholder second = new Placeholder();                 
-                    second.setVisible(true);
-                    this.setVisible(false);
+    //draft lk = new draft();                 
+                    //lk.setVisible(true);
+                    //this.setVisible(false);
+                    // Home (draft.java) not working, i think may nasira nung namerged saakin yung master?
     }//GEN-LAST:event_Aboutus_button2ActionPerformed
 
     private void Aboutus_button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button5ActionPerformed
-    Placeholder second = new Placeholder();                  
-                    second.setVisible(true);
+    Booking_Window lk = new Booking_Window();                  
+                    lk.setVisible(true);
                     this.setVisible(false);
+                    //reservations
     }//GEN-LAST:event_Aboutus_button5ActionPerformed
-
-    private void Aboutus_button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Aboutus_button1ActionPerformed
-            Placeholder second = new Placeholder();
-                    //yung Placeholder ay placeholder lang, no shit me
-                    second.setVisible(true);
-                    this.setVisible(false);
-    }//GEN-LAST:event_Aboutus_button1ActionPerformed
 
   
     public static void main(String args[]) {
@@ -491,7 +473,6 @@ Placeholder second = new Placeholder();
     private javax.swing.JLabel Aboutus_Label1;
     private javax.swing.JLabel Aboutus_biglabel1;
     private javax.swing.JLabel Aboutus_biglabel2;
-    private javax.swing.JButton Aboutus_button1;
     private javax.swing.JButton Aboutus_button2;
     private javax.swing.JButton Aboutus_button3;
     private javax.swing.JButton Aboutus_button4;
