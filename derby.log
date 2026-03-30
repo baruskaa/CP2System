@@ -1,0 +1,31 @@
+Mon Mar 30 15:14:31 PST 2026 : Apache Derby Network Server - 10.17.1.0 - (1913217) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Mon Mar 30 15:15:25 PST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance a816c00e-019d-3d98-176b-000074839bab 
+on database directory C:\Users\Ska\Documents\GitHub\CP2System\accounts with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 
+Loaded from file:/C:/Users/Ska/Downloads/glassfish-8.0.0/glassfish8/javadb/lib/derby.jar
+java.vendor=Eclipse Adoptium
+java.runtime.version=25.0.2+10-LTS
+user.dir=C:\Users\Ska\Downloads\glassfish-8.0.0\glassfish8\javadb
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\Ska\Documents\GitHub\CP2System
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Mar 30 15:15:26 PST 2026:
+Shutting down instance a816c00e-019d-3d98-176b-000074839bab on database directory C:\Users\Ska\Documents\GitHub\CP2System\accounts with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 
+Mon Mar 30 15:15:26 PST 2026 Thread[#31,DRDAConnThread_3,5,main] (DATABASE = accounts), (DRDAID = {2}), Database 'accounts' shutdown.
+----------------------------------------------------------------
+Mon Mar 30 15:15:34 PST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance 97e00100-019d-3d98-176b-000074839bab 
+on database directory C:\Users\Ska\Documents\GitHub\CP2System\accounts with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 
+Loaded from file:/C:/Users/Ska/Downloads/glassfish-8.0.0/glassfish8/javadb/lib/derby.jar
+java.vendor=Eclipse Adoptium
+java.runtime.version=25.0.2+10-LTS
+user.dir=C:\Users\Ska\Downloads\glassfish-8.0.0\glassfish8\javadb
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\Ska\Documents\GitHub\CP2System
+Database Class Loader started - derby.database.classpath=''

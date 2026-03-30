@@ -92,6 +92,7 @@ public class Customer_Login extends javax.swing.JFrame {
         btn_login.setText("LOG-IN");
         btn_login.setMaximumSize(new java.awt.Dimension(293, 26));
         btn_login.setMinimumSize(new java.awt.Dimension(293, 26));
+        btn_login.addActionListener(this::btn_loginActionPerformed);
 
         jLabel7.setBackground(new java.awt.Color(47, 74, 91));
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
@@ -382,8 +383,14 @@ public class Customer_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_createLastNameActionPerformed
 
     private void btn_createSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createSignupActionPerformed
-        // TODO add your handling code here:
+        new Customer_Homepage().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_createSignupActionPerformed
+
+    private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
+        new Customer_Homepage().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_loginActionPerformed
     
     
     private void makeFlatButton(javax.swing.JButton btn) {

@@ -239,8 +239,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="211" max="32767" attributes="0"/>
+                  <Component id="jLabel2" min="-2" pref="401" max="-2" attributes="0"/>
+                  <EmptySpace pref="77" max="32767" attributes="0"/>
                   <Component id="lbl_username" min="-2" pref="216" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
               </Group>
@@ -572,11 +572,26 @@
                   <Color blue="5e" green="4d" red="37" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="3">
-                    <Column editable="false" title="USERNAME" type="java.lang.String">
-                      <Data value="Juan Dela Cruz"/>
-                      <Data value="Jane Santos"/>
+                  <Table columnCount="7" rowCount="3">
+                    <Column editable="true" title="USER_ID" type="java.lang.String">
+                      <Data value="2"/>
+                      <Data value="1"/>
+                      <Data value="0"/>
+                    </Column>
+                    <Column editable="false" title="F_NAME" type="java.lang.String">
+                      <Data value="Juan "/>
+                      <Data value="Jane "/>
                       <Data value="admin"/>
+                    </Column>
+                    <Column editable="true" title="L_NAME" type="java.lang.String">
+                      <Data value="Dela Cuz"/>
+                      <Data value="Santos"/>
+                      <Data value="admin"/>
+                    </Column>
+                    <Column editable="true" title="MOB_NUM" type="java.lang.Object">
+                      <Data value="09999999999"/>
+                      <Data value="033333333333"/>
+                      <Data value="00000000000"/>
                     </Column>
                     <Column editable="false" title="EMAIL" type="java.lang.String">
                       <Data value="juandcruz@gmail.com"/>
@@ -607,7 +622,22 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
