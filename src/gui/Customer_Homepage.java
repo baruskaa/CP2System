@@ -12,14 +12,14 @@ import javax.swing.ImageIcon;
  *
  * @author kyshgel
  */
-public class draft extends javax.swing.JFrame {
+public class Customer_Homepage extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(draft.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_Homepage.class.getName());
 
     /**
      * Creates new form draft
      */
-    public draft() {
+    public Customer_Homepage() {
         initComponents();
         
     }
@@ -34,10 +34,10 @@ public class draft extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        dc_date = new com.toedter.calendar.JDateChooser();
         cb_branch = new javax.swing.JComboBox<>();
         sp_guest = new javax.swing.JSpinner();
         cb_time = new javax.swing.JComboBox<>();
-        dc_date = new com.toedter.calendar.JDateChooser();
         btn_bookNow = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         logo_homepage = new javax.swing.JLabel();
@@ -45,9 +45,9 @@ public class draft extends javax.swing.JFrame {
         btn_menu = new javax.swing.JButton();
         btn_dc = new javax.swing.JButton();
         btn_abt = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         btn_rsv = new javax.swing.JButton();
+        Aboutus_Label1 = new javax.swing.JLabel();
+        Aboutus_label2 = new javax.swing.JLabel();
         bg_homepage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,23 +56,23 @@ public class draft extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        dc_date.setMaxSelectableDate(new java.util.Date(1798650075000L));
+        dc_date.setMinSelectableDate(new java.util.Date(1772298075000L));
+        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 410, 100, 30));
+
         cb_branch.setBackground(new java.awt.Color(57, 77, 94));
         cb_branch.setForeground(new java.awt.Color(255, 255, 255));
         cb_branch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SM North Edsa", "SM Megamall" }));
         jPanel1.add(cb_branch, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 410, 120, 30));
 
         sp_guest.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
-        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 70, 30));
+        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 410, 70, 30));
 
         cb_time.setBackground(new java.awt.Color(57, 77, 94));
         cb_time.setForeground(new java.awt.Color(255, 255, 255));
         cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lunch", "Dinner" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
         jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 410, 70, 30));
-
-        dc_date.setBackground(new java.awt.Color(57, 77, 94));
-        dc_date.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, 130, 30));
 
         btn_bookNow.setBackground(new java.awt.Color(153, 0, 0));
         btn_bookNow.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
@@ -93,7 +93,7 @@ public class draft extends javax.swing.JFrame {
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logo_homepage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logo_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/imresizer-inverted logo.png"))); // NOI18N
+        logo_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/imresizer-invertedlogo.png"))); // NOI18N
         jPanel3.add(logo_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 160, 110));
 
         btn_profile.setBackground(new java.awt.Color(57, 77, 94));
@@ -164,16 +164,6 @@ public class draft extends javax.swing.JFrame {
         btn_abt.addActionListener(this::btn_abtActionPerformed);
         jPanel3.add(btn_abt, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 100, 20));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("All Rights Reserved.");
-        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 130, 20));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("© 2026 The House of 7 Buffet.");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 180, 30));
-
         btn_rsv.setFont(new java.awt.Font("Courier New", 1, 12)); // NOI18N
         btn_rsv.setForeground(new java.awt.Color(55, 77, 94));
         btn_rsv.setText("RESERVATIONS");
@@ -187,6 +177,16 @@ public class draft extends javax.swing.JFrame {
             }
         });
         jPanel3.add(btn_rsv, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 284, 120, 20));
+
+        Aboutus_Label1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_Label1.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_Label1.setText("© 2026 The House Of 7 Buffet.");
+        jPanel3.add(Aboutus_Label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
+
+        Aboutus_label2.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_label2.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_label2.setText("All Rights Reserved.");
+        jPanel3.add(Aboutus_label2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 158, -1));
 
@@ -320,10 +320,12 @@ public class draft extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new draft().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_Homepage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Aboutus_Label1;
+    private javax.swing.JLabel Aboutus_label2;
     private javax.swing.JLabel bg_homepage;
     private javax.swing.JButton btn_abt;
     private javax.swing.JButton btn_bookNow;
@@ -334,8 +336,6 @@ public class draft extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_branch;
     private javax.swing.JComboBox<String> cb_time;
     private com.toedter.calendar.JDateChooser dc_date;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel logo_homepage;

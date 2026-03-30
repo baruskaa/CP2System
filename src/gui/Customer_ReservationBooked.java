@@ -8,14 +8,14 @@ package gui;
  *
  * @author lotte
  */
-public class Reward_Points extends javax.swing.JFrame {
+public class Customer_ReservationBooked extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Reward_Points.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_ReservationBooked.class.getName());
 
     /**
-     * Creates new form Reward_Points
+     * Creates new form Reservation_Booked
      */
-    public Reward_Points() {
+    public Customer_ReservationBooked() {
         initComponents();
     }
 
@@ -28,28 +28,46 @@ public class Reward_Points extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel5 = new javax.swing.JLabel();
+        Rsv_booked_header = new javax.swing.JLabel();
+        Rsv_Num = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setText("Reward Points");
+        Rsv_booked_header.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        Rsv_booked_header.setText("Congratulations! Reservation Booked");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel1.setText("Your Reservation Number is");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel5)
-                .addContainerGap(754, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(199, 199, 199)
+                        .addComponent(Rsv_booked_header))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(400, 400, 400)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(Rsv_Num, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(232, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel5)
-                .addContainerGap(538, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addComponent(Rsv_booked_header)
+                .addGap(18, 18, 18)
+                .addComponent(Rsv_Num, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addContainerGap(309, Short.MAX_VALUE))
         );
 
         pack();
@@ -77,10 +95,12 @@ public class Reward_Points extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Reward_Points().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_ReservationBooked().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField Rsv_Num;
+    private javax.swing.JLabel Rsv_booked_header;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

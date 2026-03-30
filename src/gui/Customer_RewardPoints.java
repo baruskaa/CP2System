@@ -1,22 +1,21 @@
-package gui;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+package gui;
 
 /**
  *
- * @author caloy
+ * @author lotte
  */
-public class FrontDesk_AcctProfile extends javax.swing.JFrame {
+public class Customer_RewardPoints extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrontDesk_AcctProfile.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_RewardPoints.class.getName());
 
     /**
-     * Creates new form FrontDesk_AcctProfile
+     * Creates new form Reward_Points
      */
-    public FrontDesk_AcctProfile() {
+    public Customer_RewardPoints() {
         initComponents();
     }
 
@@ -29,51 +28,32 @@ public class FrontDesk_AcctProfile extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-
-        jMenuItem1.setText("jMenuItem1");
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel2.setText("First Name, Last Name");
-
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Log-out");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setText("Reward Points");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(250, 250, 250)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(385, 385, 385)
-                        .addComponent(jButton1)))
-                .addContainerGap(292, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(jLabel5)
+                .addContainerGap(754, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(183, 183, 183)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(329, Short.MAX_VALUE))
+                .addGap(17, 17, 17)
+                .addComponent(jLabel5)
+                .addContainerGap(538, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -97,12 +77,10 @@ public class FrontDesk_AcctProfile extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrontDesk_AcctProfile().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_RewardPoints().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JLabel jLabel5;
     // End of variables declaration//GEN-END:variables
 }

@@ -8,14 +8,14 @@ package gui;
  *
  * @author lotte
  */
-public class Conformation_Method extends javax.swing.JFrame {
+public class Customer_BookingConfirmation extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Conformation_Method.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_BookingConfirmation.class.getName());
 
     /**
      * Creates new form Conformation_Method
      */
-    public Conformation_Method() {
+    public Customer_BookingConfirmation() {
         initComponents();
     }
 
@@ -229,7 +229,7 @@ public class Conformation_Method extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Conformation_Method().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_BookingConfirmation().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

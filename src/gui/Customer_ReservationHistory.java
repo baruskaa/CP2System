@@ -1,3 +1,5 @@
+package gui;
+
 
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
@@ -15,14 +17,14 @@ import javax.swing.table.TableRowSorter;
  *
  * @author ONIN
  */
-public class Reservation_History2 extends javax.swing.JFrame {
+public class Customer_ReservationHistory extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Reservation_History2.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_ReservationHistory.class.getName());
 
     /**
      * Creates new form Reservation_History2
      */
-    public Reservation_History2() {
+    public Customer_ReservationHistory() {
         initComponents();
     }
 
@@ -390,7 +392,7 @@ private JFrame frame;
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Reservation_History2().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_ReservationHistory().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
