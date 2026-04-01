@@ -27,7 +27,7 @@ public class Manager extends javax.swing.JFrame {
     
     public Manager() {
         initComponents();
-        updateTotalReservationsLabel();
+        updateTotalPaxLabel();
         this.setLocationRelativeTo(null);
 
         // TableRowSorter for sorting on column header clicks
@@ -39,9 +39,9 @@ public class Manager extends javax.swing.JFrame {
         sorter_history = new TableRowSorter<>(model_history);
         tbl_history.setRowSorter(sorter_history);
         
-        DefaultTableModel model_upcom = (DefaultTableModel) tbl_upcom.getModel();
+        DefaultTableModel model_upcom = (DefaultTableModel) tbl_future.getModel();
         sorter_upcom = new TableRowSorter<>(model_upcom);
-        tbl_upcom.setRowSorter(sorter_upcom);
+        tbl_future.setRowSorter(sorter_upcom);
         
         DefaultTableModel model_IHR = (DefaultTableModel) tbl_IHR.getModel();
         sorter_IHR = new TableRowSorter<>(model_IHR);
@@ -62,8 +62,8 @@ public class Manager extends javax.swing.JFrame {
         
         DefaultTableCellRenderer center_upcom = new DefaultTableCellRenderer();
         center_upcom.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_upcom.getColumnCount(); i++) {
-        tbl_upcom.getColumnModel().getColumn(i).setCellRenderer(center_upcom);  // FIXED: center_upcom
+        for (int i = 0; i < tbl_future.getColumnCount(); i++) {
+        tbl_future.getColumnModel().getColumn(i).setCellRenderer(center_upcom);  // FIXED: center_upcom
         }
         
         DefaultTableCellRenderer center_IHR = new DefaultTableCellRenderer();
@@ -197,20 +197,7 @@ public class Manager extends javax.swing.JFrame {
         if (time1.equals("Lunch")) return -1;
         if (time2.equals("Lunch")) return 1;
         return time1.compareTo(time2);
-    });
-
-        // Count total non-empty rows for TABLE NO.
-        int total_today = 0;
-        for (int i = 0; i < tbl_dinein.getRowCount(); i++) {
-            Object value = tbl_dinein.getValueAt(i, 0);
-            if (value != null && !value.toString().trim().equals("")) {
-                total_today++;
-            }
-        }
-        lbl_totalres.setText("Total Res: "+ String.valueOf(total_today));
-        
-        
-        
+    }); 
         // Search filter
         search_today.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
@@ -286,7 +273,7 @@ public class Manager extends javax.swing.JFrame {
         // Initial state: Show TODAY panel, hide HISTORY panel
         pnl_dine_in.setVisible(true);
         pnl_history.setVisible(false);
-        pnl_upcom.setVisible(false);
+        pnl_future.setVisible(false);
         pnl_IHR.setVisible(false);
 
         // Set TODAY button as active
@@ -331,10 +318,10 @@ public class Manager extends javax.swing.JFrame {
         tbl_history.getTableHeader().setForeground(new Color(55, 77, 94));  
         tbl_history.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
       
-        DefaultTableCellRenderer headerRenderer3 = (DefaultTableCellRenderer) tbl_upcom.getTableHeader().getDefaultRenderer();
+        DefaultTableCellRenderer headerRenderer3 = (DefaultTableCellRenderer) tbl_future.getTableHeader().getDefaultRenderer();
         headerRenderer3.setHorizontalAlignment(JLabel.CENTER); // center text
-        tbl_upcom.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_upcom.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+        tbl_future.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_future.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
         
         DefaultTableCellRenderer headerRenderer4 = (DefaultTableCellRenderer) tbl_IHR.getTableHeader().getDefaultRenderer();
         headerRenderer4.setHorizontalAlignment(JLabel.CENTER); // center text
@@ -343,13 +330,27 @@ public class Manager extends javax.swing.JFrame {
     
     }
     // Method to update the total reservations label
-    private void updateTotalReservationsLabel() {
-    // Get the total number of rows in the table
-        int totalReservations = tbl_dinein.getRowCount();
+        private void updateTotalPaxLabel() {
+        int totalPax = 0;
+        int rowCount = tbl_dinein.getRowCount();
 
-    // Set the label text to show the total count
-        lbl_totalres.setText("TOTAL: " + totalReservations);
+        for (int i = 0; i < rowCount; i++) {
+        // Assuming PAX is in the last column, index 5 (0-based)
+            Object paxValue = tbl_dinein.getValueAt(i, 5);
+            if (paxValue != null) {
+                try {
+                    int pax = Integer.parseInt(paxValue.toString());
+                    totalPax += pax;
+                } catch (NumberFormatException e) {
+                // Handle invalid number format if needed
+                }
+         }
+        }
+
+    // Set the label text to show the total PAX
+        lbl_totalres.setText("TOTAL RES: " + totalPax);
     }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -387,17 +388,14 @@ public class Manager extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_history = new javax.swing.JTable();
         bg_today1 = new javax.swing.JLabel();
-        pnl_upcom = new javax.swing.JPanel();
-        txt_newTable = new javax.swing.JTextField();
-        btn_assign = new javax.swing.JButton();
-        btn_del = new javax.swing.JButton();
+        pnl_future = new javax.swing.JPanel();
         date_upcom = new com.toedter.calendar.JDateChooser();
         jLabel11 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         search_upcom = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tbl_upcom = new javax.swing.JTable();
+        tbl_future = new javax.swing.JTable();
         bg_today2 = new javax.swing.JLabel();
         pnl_IHR = new javax.swing.JPanel();
         lbl_ihr = new javax.swing.JLabel();
@@ -551,7 +549,7 @@ public class Manager extends javax.swing.JFrame {
         lbl_totalres.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         lbl_totalres.setForeground(new java.awt.Color(102, 102, 102));
         lbl_totalres.setText("Total:");
-        pnl_dine_in.add(lbl_totalres, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 110, 40));
+        pnl_dine_in.add(lbl_totalres, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 160, 40));
 
         lbl_search.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         lbl_search.setForeground(new java.awt.Color(55, 77, 94));
@@ -695,53 +693,26 @@ public class Manager extends javax.swing.JFrame {
 
         getContentPane().add(pnl_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
-        pnl_upcom.setForeground(new java.awt.Color(202, 199, 199));
-        pnl_upcom.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        txt_newTable.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_newTable.setText("New Table No.");
-        txt_newTable.addActionListener(this::txt_newTableNew_tableActionPerformed);
-        pnl_upcom.add(txt_newTable, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, -1, 30));
-
-        btn_assign.setBackground(new java.awt.Color(65, 93, 120));
-        btn_assign.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        btn_assign.setForeground(new java.awt.Color(65, 93, 120));
-        btn_assign.setText("Assign");
-        btn_assign.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
-        btn_assign.setContentAreaFilled(false);
-        btn_assign.setFocusPainted(false);
-        btn_assign.addActionListener(this::btn_assignAssign_ButtonActionPerformed);
-        pnl_upcom.add(btn_assign, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, 60, 30));
-
-        btn_del.setBackground(new java.awt.Color(65, 93, 120));
-        btn_del.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        btn_del.setForeground(new java.awt.Color(65, 93, 120));
-        btn_del.setText("Delete");
-        btn_del.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
-        btn_del.setContentAreaFilled(false);
-        btn_del.setFocusPainted(false);
-        btn_del.setFocusable(false);
-        btn_del.setRequestFocusEnabled(false);
-        btn_del.addActionListener(this::btn_delRemove_buttonActionPerformed);
-        pnl_upcom.add(btn_del, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 420, 60, 30));
+        pnl_future.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_future.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         date_upcom.setDateFormatString("MM-dd-yy");
-        pnl_upcom.add(date_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 170, -1));
+        pnl_future.add(date_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 170, -1));
 
         jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(55, 77, 94));
         jLabel11.setText("Date:");
-        pnl_upcom.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 50, 20));
+        pnl_future.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 50, 20));
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel8.setText("UPCOMING");
-        pnl_upcom.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 310, 50));
+        jLabel8.setText("FUTURE");
+        pnl_future.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 310, 50));
 
         jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(55, 77, 94));
         jLabel12.setText("Search:");
-        pnl_upcom.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 60, 20));
+        pnl_future.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 60, 20));
 
         search_upcom.addActionListener(this::search_upcomActionPerformed);
         search_upcom.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -749,13 +720,13 @@ public class Manager extends javax.swing.JFrame {
                 search_upcomKeyReleased(evt);
             }
         });
-        pnl_upcom.add(search_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 20, 170, -1));
+        pnl_future.add(search_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 20, 170, -1));
 
         jScrollPane3.setForeground(new java.awt.Color(55, 77, 94));
 
-        tbl_upcom.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        tbl_upcom.setForeground(new java.awt.Color(55, 77, 94));
-        tbl_upcom.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_future.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_future.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_future.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"Juan Dela Cruz", null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
                 {"Maria Santos", null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
@@ -782,24 +753,24 @@ public class Manager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbl_upcom.setOpaque(false);
-        jScrollPane3.setViewportView(tbl_upcom);
-        if (tbl_upcom.getColumnModel().getColumnCount() > 0) {
-            tbl_upcom.getColumnModel().getColumn(0).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(1).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(2).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(3).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(4).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(5).setResizable(false);
+        tbl_future.setOpaque(false);
+        jScrollPane3.setViewportView(tbl_future);
+        if (tbl_future.getColumnModel().getColumnCount() > 0) {
+            tbl_future.getColumnModel().getColumn(0).setResizable(false);
+            tbl_future.getColumnModel().getColumn(1).setResizable(false);
+            tbl_future.getColumnModel().getColumn(2).setResizable(false);
+            tbl_future.getColumnModel().getColumn(3).setResizable(false);
+            tbl_future.getColumnModel().getColumn(4).setResizable(false);
+            tbl_future.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        pnl_upcom.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+        pnl_future.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
         bg_today2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
         bg_today2.setText("Today");
-        pnl_upcom.add(bg_today2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+        pnl_future.add(bg_today2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
-        getContentPane().add(pnl_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+        getContentPane().add(pnl_future, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
         pnl_IHR.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -903,7 +874,7 @@ public class Manager extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_todayMouseExited
 
     private void btn_upcomMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_upcomMouseExited
-    if (!pnl_upcom.isVisible()) {  // Only reset if not active tab
+    if (!pnl_future.isVisible()) {  // Only reset if not active tab
         btn_upcom.setForeground(Color.WHITE);
     }        // TODO add your handling code here:
     }//GEN-LAST:event_btn_upcomMouseExited
@@ -923,7 +894,7 @@ public class Manager extends javax.swing.JFrame {
     private void btn_upcomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_upcomActionPerformed
     // Show history panel, hide today
         
-        pnl_upcom.setVisible(true);
+        pnl_future.setVisible(true);
         pnl_history.setVisible(false);
         pnl_dine_in.setVisible(false);
 
@@ -931,19 +902,21 @@ public class Manager extends javax.swing.JFrame {
         btn_upcom.setForeground(new Color(255, 200, 120)); // Active
         btn_today.setForeground(Color.WHITE);
         btn_history.setForeground(Color.WHITE);
+        btn_IHR.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_upcomActionPerformed
 
     private void btn_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_historyActionPerformed
         // Show history panel, hide today
         pnl_history.setVisible(true);
         pnl_dine_in.setVisible(false);
-        pnl_upcom.setVisible(false);
+        pnl_future.setVisible(false);
         pnl_IHR.setVisible(false);
 
         // Update button states
         btn_history.setForeground(new Color(255, 200, 120)); // Active
         btn_today.setForeground(Color.WHITE);                // Inactive
         btn_upcom.setForeground(Color.WHITE);
+        btn_IHR.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_historyActionPerformed
 
     private void search_todayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_todayActionPerformed
@@ -952,13 +925,16 @@ public class Manager extends javax.swing.JFrame {
 
     private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
         // TODO add your handling code here:
+        Employee_Login loginWindow = new Employee_Login();
+        loginWindow.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btn_logoutActionPerformed
 
     private void btn_todayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_todayActionPerformed
         // Show today panel, hide history
         pnl_dine_in.setVisible(true);
         pnl_history.setVisible(false);
-        pnl_upcom.setVisible(false);
+        pnl_future.setVisible(false);
 
         // Update button states
         btn_today.setForeground(new Color(255, 200, 120));  // Active
@@ -983,45 +959,6 @@ public class Manager extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_search_upcomKeyReleased
 
-    private void txt_newTableNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_newTableNew_tableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_newTableNew_tableActionPerformed
-
-    private void btn_assignAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_assignAssign_ButtonActionPerformed
-          DefaultTableModel model = (DefaultTableModel) tbl_upcom.getModel();
-    int viewRow = tbl_upcom.getSelectedRow();
-
-    if (viewRow != -1) {
-        int modelRow = tbl_upcom.convertRowIndexToModel(viewRow);
-
-        String tableNum = txt_newTable.getText().trim();
-
-        // 🔥 PUT IT HERE
-        if (tableNum.isEmpty() || !tableNum.matches("\\d+")) {
-            JOptionPane.showMessageDialog(this, "Enter valid table number!");
-            return;
-        }
-
-        model.setValueAt(Integer.parseInt(tableNum), modelRow, 1);
-
-        txt_newTable.setText("");
-    } else {
-        JOptionPane.showMessageDialog(this, "Select a guest first!");
-    }
-    }//GEN-LAST:event_btn_assignAssign_ButtonActionPerformed
-
-    private void btn_delRemove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_delRemove_buttonActionPerformed
-            DefaultTableModel model = (DefaultTableModel) tbl_upcom.getModel();
-        int viewRow = tbl_upcom.getSelectedRow();
-
-        if (viewRow != -1) {
-            int modelRow = tbl_upcom.convertRowIndexToModel(viewRow); // 🔥 FIX
-            model.removeRow(modelRow);
-        } else {
-            JOptionPane.showMessageDialog(this, "Select a reservation to remove.");
-        }
-    }//GEN-LAST:event_btn_delRemove_buttonActionPerformed
-
     private void search_IHRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_IHRActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_search_IHRActionPerformed
@@ -1032,17 +969,24 @@ public class Manager extends javax.swing.JFrame {
 
     private void btn_IHRMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_IHRMouseEntered
         // TODO add your handling code here:
+    if (!btn_IHR.getForeground().equals(new Color(255, 200, 120))) {
+        btn_IHR.setForeground(new Color(255, 200, 120));
+    }
+    btn_IHR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_IHRMouseEntered
 
     private void btn_IHRMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_IHRMouseExited
         // TODO add your handling code here:
+    if (!pnl_IHR.isVisible()) {  // Only reset if not active tab
+        btn_IHR.setForeground(Color.WHITE);
+    }
     }//GEN-LAST:event_btn_IHRMouseExited
 
     private void btn_IHRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IHRActionPerformed
         // TODO add your handling code here:
         pnl_history.setVisible(false);
         pnl_dine_in.setVisible(false);
-        pnl_upcom.setVisible(false);
+        pnl_future.setVisible(false);
         pnl_IHR.setVisible(true);
 
         // Update button states
@@ -1122,8 +1066,6 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JLabel bg_today2;
     private javax.swing.JLabel bg_today3;
     private javax.swing.JButton btn_IHR;
-    private javax.swing.JButton btn_assign;
-    private javax.swing.JButton btn_del;
     private javax.swing.JButton btn_history;
     private javax.swing.JButton btn_logout;
     private javax.swing.JButton btn_today;
@@ -1150,19 +1092,18 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_username;
     private javax.swing.JPanel pnl_IHR;
     private javax.swing.JPanel pnl_dine_in;
+    private javax.swing.JPanel pnl_future;
     private javax.swing.JPanel pnl_header;
     private javax.swing.JPanel pnl_history;
     private javax.swing.JPanel pnl_nav;
-    private javax.swing.JPanel pnl_upcom;
     private javax.swing.JTextField search_IHR;
     private javax.swing.JTextField search_history;
     private javax.swing.JTextField search_today;
     private javax.swing.JTextField search_upcom;
     private javax.swing.JTable tbl_IHR;
     private javax.swing.JTable tbl_dinein;
+    private javax.swing.JTable tbl_future;
     private javax.swing.JTable tbl_history;
-    private javax.swing.JTable tbl_upcom;
-    private javax.swing.JTextField txt_newTable;
     // End of variables declaration//GEN-END:variables
 }
 
