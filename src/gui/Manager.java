@@ -22,16 +22,18 @@ public class Manager extends javax.swing.JFrame {
     private TableRowSorter<DefaultTableModel> sorter_today;
     private TableRowSorter<DefaultTableModel> sorter_history;
     private TableRowSorter<DefaultTableModel> sorter_upcom;
+    private TableRowSorter<DefaultTableModel> sorter_IHR;
     
     
     public Manager() {
         initComponents();
+        updateTotalReservationsLabel();
         this.setLocationRelativeTo(null);
 
         // TableRowSorter for sorting on column header clicks
-        DefaultTableModel model_today = (DefaultTableModel) tbl_today.getModel();
+        DefaultTableModel model_today = (DefaultTableModel) tbl_dinein.getModel();
         sorter_today = new TableRowSorter<>(model_today);
-        tbl_today.setRowSorter(sorter_today);
+        tbl_dinein.setRowSorter(sorter_today);
 
         DefaultTableModel model_history = (DefaultTableModel) tbl_history.getModel();
         sorter_history = new TableRowSorter<>(model_history);
@@ -40,12 +42,16 @@ public class Manager extends javax.swing.JFrame {
         DefaultTableModel model_upcom = (DefaultTableModel) tbl_upcom.getModel();
         sorter_upcom = new TableRowSorter<>(model_upcom);
         tbl_upcom.setRowSorter(sorter_upcom);
+        
+        DefaultTableModel model_IHR = (DefaultTableModel) tbl_IHR.getModel();
+        sorter_IHR = new TableRowSorter<>(model_IHR);
+        tbl_IHR.setRowSorter(sorter_IHR);
 
         // Center alignment for all columns
         DefaultTableCellRenderer center_today = new DefaultTableCellRenderer();
         center_today.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_today.getColumnCount(); i++) {
-            tbl_today.getColumnModel().getColumn(i).setCellRenderer(center_today);
+        for (int i = 0; i < tbl_dinein.getColumnCount(); i++) {
+            tbl_dinein.getColumnModel().getColumn(i).setCellRenderer(center_today);
         }
         
         DefaultTableCellRenderer center_history = new DefaultTableCellRenderer();
@@ -58,7 +64,13 @@ public class Manager extends javax.swing.JFrame {
         center_upcom.setHorizontalAlignment(JLabel.CENTER);
         for (int i = 0; i < tbl_upcom.getColumnCount(); i++) {
         tbl_upcom.getColumnModel().getColumn(i).setCellRenderer(center_upcom);  // FIXED: center_upcom
-    }
+        }
+        
+        DefaultTableCellRenderer center_IHR = new DefaultTableCellRenderer();
+        center_IHR.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < tbl_IHR.getColumnCount(); i++) {
+        tbl_IHR.getColumnModel().getColumn(i).setCellRenderer(center_IHR);  // FIXED: center_upcom
+        }
         
         // SAFE TABLE NO. COMPARATOR (TODAY col 0, HISTORY col 1, UPCOM col 1)
     sorter_today.setComparator(0, (n1, n2) -> {
@@ -91,6 +103,16 @@ public class Manager extends javax.swing.JFrame {
         }
     });
     
+    sorter_IHR.setComparator(1, (n1, n2) -> {
+        if (n1 == null) return 1;
+        if (n2 == null) return -1;
+        try {
+            return Integer.compare(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()));
+        } catch (NumberFormatException e) {
+            return n1.toString().compareTo(n2.toString());
+        }
+    });
+    
     // SAFE PAX COMPARATOR (TODAY col 3, HISTORY/UPCOM col 4)
     sorter_today.setComparator(3, (n1, n2) -> {
         if (n1 == null) return 1;
@@ -113,6 +135,16 @@ public class Manager extends javax.swing.JFrame {
     });
     
     sorter_upcom.setComparator(4, (n1, n2) -> {
+        if (n1 == null) return 1;
+        if (n2 == null) return -1;
+        try {
+            return Integer.compare(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()));
+        } catch (NumberFormatException e) {
+            return n1.toString().compareTo(n2.toString());
+        }
+    });
+    
+    sorter_IHR.setComparator(4, (n1, n2) -> {
         if (n1 == null) return 1;
         if (n2 == null) return -1;
         try {
@@ -155,16 +187,27 @@ public class Manager extends javax.swing.JFrame {
         if (time2.equals("Lunch")) return 1;
         return time1.compareTo(time2);
     });
+    
+    sorter_IHR.setComparator(5, (t1, t2) -> {
+        if (t1 == null) return 1;
+        if (t2 == null) return -1;
+        String time1 = t1.toString();
+        String time2 = t2.toString();
+        if (time1.equals(time2)) return 0;
+        if (time1.equals("Lunch")) return -1;
+        if (time2.equals("Lunch")) return 1;
+        return time1.compareTo(time2);
+    });
 
         // Count total non-empty rows for TABLE NO.
         int total_today = 0;
-        for (int i = 0; i < tbl_today.getRowCount(); i++) {
-            Object value = tbl_today.getValueAt(i, 0);
+        for (int i = 0; i < tbl_dinein.getRowCount(); i++) {
+            Object value = tbl_dinein.getValueAt(i, 0);
             if (value != null && !value.toString().trim().equals("")) {
                 total_today++;
             }
         }
-        lbl_total.setText(String.valueOf(total_today));
+        lbl_totalres.setText("Total Res: "+ String.valueOf(total_today));
         
         
         
@@ -222,11 +265,29 @@ public class Manager extends javax.swing.JFrame {
                 }
             }
         });
+        search_IHR.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+
+            private void filter() {
+                String text = search_IHR.getText().trim();
+                if (text.isEmpty()) {
+                    sorter_IHR.setRowFilter(null);
+                } else {
+                    sorter_IHR.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+        });
         
         // Initial state: Show TODAY panel, hide HISTORY panel
-        pnl_today.setVisible(true);
+        pnl_dine_in.setVisible(true);
         pnl_history.setVisible(false);
         pnl_upcom.setVisible(false);
+        pnl_IHR.setVisible(false);
 
         // Set TODAY button as active
         btn_today.setForeground(new Color(255, 200, 120)); // Highlight active
@@ -260,10 +321,10 @@ public class Manager extends javax.swing.JFrame {
         makeFlatButton(btn_logout);
         
         // Example: custom header background and centered text
-        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tbl_today.getTableHeader().getDefaultRenderer();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tbl_dinein.getTableHeader().getDefaultRenderer();
         headerRenderer.setHorizontalAlignment(JLabel.CENTER); // center text
-        tbl_today.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_today.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+        tbl_dinein.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_dinein.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
         
         DefaultTableCellRenderer headerRenderer2 = (DefaultTableCellRenderer) tbl_history.getTableHeader().getDefaultRenderer();
         headerRenderer2.setHorizontalAlignment(JLabel.CENTER); // center text
@@ -274,9 +335,22 @@ public class Manager extends javax.swing.JFrame {
         headerRenderer3.setHorizontalAlignment(JLabel.CENTER); // center text
         tbl_upcom.getTableHeader().setForeground(new Color(55, 77, 94));  
         tbl_upcom.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+        
+        DefaultTableCellRenderer headerRenderer4 = (DefaultTableCellRenderer) tbl_IHR.getTableHeader().getDefaultRenderer();
+        headerRenderer4.setHorizontalAlignment(JLabel.CENTER); // center text
+        tbl_IHR.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_IHR.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
     
     }
+    // Method to update the total reservations label
+    private void updateTotalReservationsLabel() {
+    // Get the total number of rows in the table
+        int totalReservations = tbl_dinein.getRowCount();
 
+    // Set the label text to show the total count
+        lbl_totalres.setText("TOTAL: " + totalReservations);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -292,17 +366,17 @@ public class Manager extends javax.swing.JFrame {
         btn_history = new javax.swing.JButton();
         btn_logout = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        btn_IHR = new javax.swing.JButton();
         pnl_header = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        lbl_BookingDash = new javax.swing.JLabel();
         lbl_username = new javax.swing.JLabel();
-        pnl_today = new javax.swing.JPanel();
-        lbl_total = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        pnl_dine_in = new javax.swing.JPanel();
+        lbl_Dinein = new javax.swing.JLabel();
+        lbl_totalres = new javax.swing.JLabel();
+        lbl_search = new javax.swing.JLabel();
         search_today = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_today = new javax.swing.JTable();
+        tbl_dinein = new javax.swing.JTable();
         bg_today = new javax.swing.JLabel();
         pnl_history = new javax.swing.JPanel();
         date_history = new com.toedter.calendar.JDateChooser();
@@ -325,6 +399,13 @@ public class Manager extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tbl_upcom = new javax.swing.JTable();
         bg_today2 = new javax.swing.JLabel();
+        pnl_IHR = new javax.swing.JPanel();
+        lbl_ihr = new javax.swing.JLabel();
+        lbl_searchihr = new javax.swing.JLabel();
+        search_IHR = new javax.swing.JTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbl_IHR = new javax.swing.JTable();
+        bg_today3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -336,7 +417,7 @@ public class Manager extends javax.swing.JFrame {
         btn_today.setBackground(new java.awt.Color(55, 77, 94));
         btn_today.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         btn_today.setForeground(new java.awt.Color(255, 255, 255));
-        btn_today.setText("TODAY");
+        btn_today.setText("DINE-IN");
         btn_today.setBorder(null);
         btn_today.setContentAreaFilled(false);
         btn_today.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -355,7 +436,7 @@ public class Manager extends javax.swing.JFrame {
         btn_upcom.setBackground(new java.awt.Color(55, 77, 94));
         btn_upcom.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         btn_upcom.setForeground(new java.awt.Color(255, 255, 255));
-        btn_upcom.setText("UPCOMING");
+        btn_upcom.setText("FUTURE");
         btn_upcom.setBorder(null);
         btn_upcom.setContentAreaFilled(false);
         btn_upcom.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -369,7 +450,7 @@ public class Manager extends javax.swing.JFrame {
             }
         });
         btn_upcom.addActionListener(this::btn_upcomActionPerformed);
-        pnl_nav.add(btn_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 90, 30));
+        pnl_nav.add(btn_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 90, 30));
 
         btn_history.setBackground(new java.awt.Color(55, 77, 94));
         btn_history.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
@@ -388,7 +469,7 @@ public class Manager extends javax.swing.JFrame {
             }
         });
         btn_history.addActionListener(this::btn_historyActionPerformed);
-        pnl_nav.add(btn_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 90, 30));
+        pnl_nav.add(btn_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 90, 30));
 
         btn_logout.setBackground(new java.awt.Color(153, 0, 0));
         btn_logout.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -402,15 +483,34 @@ public class Manager extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/logo.png"))); // NOI18N
         pnl_nav.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
 
+        btn_IHR.setBackground(new java.awt.Color(55, 77, 94));
+        btn_IHR.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        btn_IHR.setForeground(new java.awt.Color(255, 255, 255));
+        btn_IHR.setText("IHR");
+        btn_IHR.setBorder(null);
+        btn_IHR.setContentAreaFilled(false);
+        btn_IHR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_IHR.setFocusPainted(false);
+        btn_IHR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_IHRMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_IHRMouseExited(evt);
+            }
+        });
+        btn_IHR.addActionListener(this::btn_IHRActionPerformed);
+        pnl_nav.add(btn_IHR, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 90, 30));
+
         getContentPane().add(pnl_nav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 580));
 
         pnl_header.setBackground(new java.awt.Color(55, 91, 115));
         pnl_header.setMaximumSize(new java.awt.Dimension(681, 115));
         pnl_header.setPreferredSize(new java.awt.Dimension(681, 115));
 
-        jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("BOOKING DASHBOARD");
+        lbl_BookingDash.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        lbl_BookingDash.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_BookingDash.setText("BOOKING DASHBOARD");
 
         lbl_username.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         lbl_username.setForeground(new java.awt.Color(255, 255, 255));
@@ -423,7 +523,7 @@ public class Manager extends javax.swing.JFrame {
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jLabel2)
+                .addComponent(lbl_BookingDash)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
                 .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
@@ -433,35 +533,30 @@ public class Manager extends javax.swing.JFrame {
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addContainerGap(51, Short.MAX_VALUE)
                 .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(lbl_BookingDash)
                     .addComponent(lbl_username))
                 .addGap(33, 33, 33))
         );
 
         getContentPane().add(pnl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 740, -1));
 
-        pnl_today.setForeground(new java.awt.Color(202, 199, 199));
-        pnl_today.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnl_dine_in.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_dine_in.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lbl_total.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
-        lbl_total.setForeground(new java.awt.Color(102, 102, 102));
-        lbl_total.setText("30");
-        pnl_today.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 420, 70, 40));
+        lbl_Dinein.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        lbl_Dinein.setForeground(new java.awt.Color(55, 77, 94));
+        lbl_Dinein.setText("DINE-IN");
+        pnl_dine_in.add(lbl_Dinein, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 170, 50));
 
-        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel4.setText("TODAY");
-        pnl_today.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 170, 50));
+        lbl_totalres.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        lbl_totalres.setForeground(new java.awt.Color(102, 102, 102));
+        lbl_totalres.setText("Total:");
+        pnl_dine_in.add(lbl_totalres, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 110, 40));
 
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel6.setText("TOTAL:");
-        pnl_today.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 70, 40));
-
-        jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel5.setText("Search:");
-        pnl_today.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 60, 40));
+        lbl_search.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        lbl_search.setForeground(new java.awt.Color(55, 77, 94));
+        lbl_search.setText("Search:");
+        pnl_dine_in.add(lbl_search, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 60, 40));
 
         search_today.addActionListener(this::search_todayActionPerformed);
         search_today.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -469,29 +564,29 @@ public class Manager extends javax.swing.JFrame {
                 search_todayKeyReleased(evt);
             }
         });
-        pnl_today.add(search_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 170, -1));
+        pnl_dine_in.add(search_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 170, -1));
 
         jScrollPane1.setForeground(new java.awt.Color(55, 77, 94));
 
-        tbl_today.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        tbl_today.setForeground(new java.awt.Color(55, 77, 94));
-        tbl_today.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_dinein.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_dinein.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_dinein.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
-                { new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
-                { new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Dinner"},
-                { new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
-                { new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Lunch"}
+                {"Juan Dela Cruz", null, "09357873489", null, "Lunch",  new Integer(4)},
+                {"Maria Santos", null, "09174532356", null, "Lunch",  new Integer(3)},
+                {"Louise Lopez", null, "09876541453", null, "Dinner",  new Integer(2)},
+                {"Rhian Espinosa", null, "09258653421", null, "Dinner",  new Integer(6)},
+                {"Justine Dizon", null, "09987823421", null, "Lunch",  new Integer(7)}
             },
             new String [] {
-                "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
+                "CUSTOMER NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -502,23 +597,24 @@ public class Manager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbl_today.setOpaque(false);
-        jScrollPane1.setViewportView(tbl_today);
-        if (tbl_today.getColumnModel().getColumnCount() > 0) {
-            tbl_today.getColumnModel().getColumn(0).setResizable(false);
-            tbl_today.getColumnModel().getColumn(1).setResizable(false);
-            tbl_today.getColumnModel().getColumn(2).setResizable(false);
-            tbl_today.getColumnModel().getColumn(3).setResizable(false);
-            tbl_today.getColumnModel().getColumn(4).setResizable(false);
+        tbl_dinein.setOpaque(false);
+        jScrollPane1.setViewportView(tbl_dinein);
+        if (tbl_dinein.getColumnModel().getColumnCount() > 0) {
+            tbl_dinein.getColumnModel().getColumn(0).setResizable(false);
+            tbl_dinein.getColumnModel().getColumn(1).setResizable(false);
+            tbl_dinein.getColumnModel().getColumn(2).setResizable(false);
+            tbl_dinein.getColumnModel().getColumn(3).setResizable(false);
+            tbl_dinein.getColumnModel().getColumn(4).setResizable(false);
+            tbl_dinein.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        pnl_today.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+        pnl_dine_in.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
         bg_today.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
         bg_today.setText("Today");
-        pnl_today.add(bg_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+        pnl_dine_in.add(bg_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
-        getContentPane().add(pnl_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+        getContentPane().add(pnl_dine_in, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
         pnl_history.setForeground(new java.awt.Color(202, 199, 199));
         pnl_history.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -555,18 +651,18 @@ public class Manager extends javax.swing.JFrame {
         tbl_history.setForeground(new java.awt.Color(55, 77, 94));
         tbl_history.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"03-26-26",  new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
-                {"03-01-26",  new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
-                {"04-19-26",  new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Lunch"},
-                {"03-01-26",  new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
-                {"04-19-26",  new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Dinner"}
+                {"Juan Dela Cruz", null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
+                {"Maria Santos", null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
+                {"Louise Lopez", null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
+                {"Rhian Espinosa", null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
+                {"Justine Dizon", null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
             },
             new String [] {
-                "DATE", "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
+                "CUSTOMER NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -661,18 +757,18 @@ public class Manager extends javax.swing.JFrame {
         tbl_upcom.setForeground(new java.awt.Color(55, 77, 94));
         tbl_upcom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"03-26-26",  new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
-                {"03-01-26",  new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
-                {"04-19-26",  new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Lunch"},
-                {"03-01-26",  new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
-                {"04-19-26",  new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Dinner"}
+                {"Juan Dela Cruz", null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
+                {"Maria Santos", null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
+                {"Louise Lopez", null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
+                {"Rhian Espinosa", null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
+                {"Justine Dizon", null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
             },
             new String [] {
-                "DATE", "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
+                "CUSTOMER NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -705,6 +801,76 @@ public class Manager extends javax.swing.JFrame {
 
         getContentPane().add(pnl_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
+        pnl_IHR.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_ihr.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        lbl_ihr.setForeground(new java.awt.Color(55, 77, 94));
+        lbl_ihr.setText("In-House Reservation");
+        pnl_IHR.add(lbl_ihr, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 390, 50));
+
+        lbl_searchihr.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        lbl_searchihr.setForeground(new java.awt.Color(55, 77, 94));
+        lbl_searchihr.setText("Search:");
+        pnl_IHR.add(lbl_searchihr, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 50, 60, 20));
+
+        search_IHR.addActionListener(this::search_IHRActionPerformed);
+        search_IHR.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_IHRKeyReleased(evt);
+            }
+        });
+        pnl_IHR.add(search_IHR, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 170, -1));
+
+        jScrollPane4.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_IHR.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_IHR.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_IHR.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Juan Dela Cruz", null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
+                {"Maria Santos", null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
+                {"Louise Lopez", null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
+                {"Rhian Espinosa", null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
+                {"Justine Dizon", null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
+            },
+            new String [] {
+                "CUSTOMER NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_IHR.setOpaque(false);
+        jScrollPane4.setViewportView(tbl_IHR);
+        if (tbl_IHR.getColumnModel().getColumnCount() > 0) {
+            tbl_IHR.getColumnModel().getColumn(0).setResizable(false);
+            tbl_IHR.getColumnModel().getColumn(1).setResizable(false);
+            tbl_IHR.getColumnModel().getColumn(2).setResizable(false);
+            tbl_IHR.getColumnModel().getColumn(3).setResizable(false);
+            tbl_IHR.getColumnModel().getColumn(4).setResizable(false);
+            tbl_IHR.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        pnl_IHR.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+
+        bg_today3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
+        bg_today3.setText("Today");
+        pnl_IHR.add(bg_today3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, -1));
+
+        getContentPane().add(pnl_IHR, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -731,7 +897,7 @@ public class Manager extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_historyMouseEntered
 
     private void btn_todayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_todayMouseExited
-    if (!pnl_today.isVisible()) {  // Only reset if not active tab
+    if (!pnl_dine_in.isVisible()) {  // Only reset if not active tab
         btn_today.setForeground(Color.WHITE);
     }       // TODO add your handling code here:
     }//GEN-LAST:event_btn_todayMouseExited
@@ -750,7 +916,7 @@ public class Manager extends javax.swing.JFrame {
 
     private void search_todayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_todayKeyReleased
     String text = search_today.getText();
-    TableRowSorter sorter = (TableRowSorter) tbl_today.getRowSorter();
+    TableRowSorter sorter = (TableRowSorter) tbl_dinein.getRowSorter();
     sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));      // TODO add your handling code here:
     }//GEN-LAST:event_search_todayKeyReleased
 
@@ -759,7 +925,7 @@ public class Manager extends javax.swing.JFrame {
         
         pnl_upcom.setVisible(true);
         pnl_history.setVisible(false);
-        pnl_today.setVisible(false);
+        pnl_dine_in.setVisible(false);
 
         // Update button states
         btn_upcom.setForeground(new Color(255, 200, 120)); // Active
@@ -770,8 +936,9 @@ public class Manager extends javax.swing.JFrame {
     private void btn_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_historyActionPerformed
         // Show history panel, hide today
         pnl_history.setVisible(true);
-        pnl_today.setVisible(false);
+        pnl_dine_in.setVisible(false);
         pnl_upcom.setVisible(false);
+        pnl_IHR.setVisible(false);
 
         // Update button states
         btn_history.setForeground(new Color(255, 200, 120)); // Active
@@ -789,7 +956,7 @@ public class Manager extends javax.swing.JFrame {
 
     private void btn_todayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_todayActionPerformed
         // Show today panel, hide history
-        pnl_today.setVisible(true);
+        pnl_dine_in.setVisible(true);
         pnl_history.setVisible(false);
         pnl_upcom.setVisible(false);
 
@@ -797,6 +964,7 @@ public class Manager extends javax.swing.JFrame {
         btn_today.setForeground(new Color(255, 200, 120));  // Active
         btn_history.setForeground(Color.WHITE);           // Inactive
         btn_upcom.setForeground(Color.WHITE);
+        btn_IHR.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_todayActionPerformed
 
     private void search_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_historyActionPerformed
@@ -853,6 +1021,36 @@ public class Manager extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Select a reservation to remove.");
         }
     }//GEN-LAST:event_btn_delRemove_buttonActionPerformed
+
+    private void search_IHRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_IHRActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_IHRActionPerformed
+
+    private void search_IHRKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_IHRKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_IHRKeyReleased
+
+    private void btn_IHRMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_IHRMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_IHRMouseEntered
+
+    private void btn_IHRMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_IHRMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_IHRMouseExited
+
+    private void btn_IHRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IHRActionPerformed
+        // TODO add your handling code here:
+        pnl_history.setVisible(false);
+        pnl_dine_in.setVisible(false);
+        pnl_upcom.setVisible(false);
+        pnl_IHR.setVisible(true);
+
+        // Update button states
+        btn_IHR.setForeground(new Color(255, 200, 120)); // Active
+        btn_today.setForeground(Color.WHITE);                // Inactive
+        btn_upcom.setForeground(Color.WHITE);
+        btn_history.setForeground(Color.WHITE);
+    }//GEN-LAST:event_btn_IHRActionPerformed
 
      private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
@@ -922,6 +1120,8 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JLabel bg_today;
     private javax.swing.JLabel bg_today1;
     private javax.swing.JLabel bg_today2;
+    private javax.swing.JLabel bg_today3;
+    private javax.swing.JButton btn_IHR;
     private javax.swing.JButton btn_assign;
     private javax.swing.JButton btn_del;
     private javax.swing.JButton btn_history;
@@ -933,29 +1133,34 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel lbl_total;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lbl_BookingDash;
+    private javax.swing.JLabel lbl_Dinein;
+    private javax.swing.JLabel lbl_ihr;
+    private javax.swing.JLabel lbl_search;
+    private javax.swing.JLabel lbl_searchihr;
+    private javax.swing.JLabel lbl_totalres;
     private javax.swing.JLabel lbl_username;
+    private javax.swing.JPanel pnl_IHR;
+    private javax.swing.JPanel pnl_dine_in;
     private javax.swing.JPanel pnl_header;
     private javax.swing.JPanel pnl_history;
     private javax.swing.JPanel pnl_nav;
-    private javax.swing.JPanel pnl_today;
     private javax.swing.JPanel pnl_upcom;
+    private javax.swing.JTextField search_IHR;
     private javax.swing.JTextField search_history;
     private javax.swing.JTextField search_today;
     private javax.swing.JTextField search_upcom;
+    private javax.swing.JTable tbl_IHR;
+    private javax.swing.JTable tbl_dinein;
     private javax.swing.JTable tbl_history;
-    private javax.swing.JTable tbl_today;
     private javax.swing.JTable tbl_upcom;
     private javax.swing.JTextField txt_newTable;
     // End of variables declaration//GEN-END:variables
