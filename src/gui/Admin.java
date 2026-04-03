@@ -918,34 +918,34 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_upcomMouseEntered
 
     private void btn_accMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_accMouseEntered
-    if (!btn_acc.getForeground().equals(new Color(255, 200, 120))) {
-        btn_acc.setForeground(new Color(255, 200, 120));
-    }
-    btn_acc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        // TODO add your handling code here:
+        if (!btn_acc.getForeground().equals(new Color(255, 200, 120))) {
+            btn_acc.setForeground(new Color(255, 200, 120));
+        }
+        btn_acc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        
     }//GEN-LAST:event_btn_accMouseEntered
 
     private void btn_todayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_todayMouseExited
-    if (!pnl_today.isVisible()) {  // Only reset if not active tab
-        btn_today.setForeground(Color.WHITE);
-    }       // TODO add your handling code here:
+        if (!pnl_today.isVisible()) {  
+            btn_today.setForeground(Color.WHITE);
+        }       
     }//GEN-LAST:event_btn_todayMouseExited
 
     private void btn_upcomMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_upcomMouseExited
-    if (!pnl_upcom.isVisible()) {  // Only reset if not active tab
-        btn_upcom.setForeground(Color.WHITE);
-    }        // TODO add your handling code here:
+        if (!pnl_upcom.isVisible()) {  
+            btn_upcom.setForeground(Color.WHITE);
+        }        
     }//GEN-LAST:event_btn_upcomMouseExited
 
     private void btn_accMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_accMouseExited
-    if (!pnl_history.isVisible()) {  // Only reset if not active tab
-        btn_acc.setForeground(Color.WHITE);
-    }        // TODO add your handling code here:
+        if (!pnl_acc.isVisible()) {  
+            btn_acc.setForeground(Color.WHITE);
+        }       
     }//GEN-LAST:event_btn_accMouseExited
 
     private void search_todayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_todayKeyReleased
-    String text = search_today.getText();
-    TableRowSorter sorter = (TableRowSorter) tbl_today.getRowSorter();
-    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));      // TODO add your handling code here:
+        String text = search_today.getText();
+        TableRowSorter sorter = (TableRowSorter) tbl_today.getRowSorter();
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));     
     }//GEN-LAST:event_search_todayKeyReleased
 
     private void btn_upcomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_upcomActionPerformed
@@ -1028,16 +1028,20 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_delRemove_buttonActionPerformed
 
     private void btn_historyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_historyMouseEntered
-        // TODO add your handling code here:
+        if (!btn_history.getForeground().equals(new Color(255, 200, 120))) {
+            btn_history.setForeground(new Color(255, 200, 120));
+        }
     }//GEN-LAST:event_btn_historyMouseEntered
 
     private void btn_historyMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_historyMouseExited
-        // TODO add your handling code here:
+        if (!pnl_history.isVisible()) {
+            btn_history.setForeground(Color.WHITE);
+        }
     }//GEN-LAST:event_btn_historyMouseExited
 
     private void btn_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_historyActionPerformed
-         switchPanel(pnl_history);
-    setActiveButton(btn_history);
+        switchPanel(pnl_history);
+        setActiveButton(btn_history);
     }//GEN-LAST:event_btn_historyActionPerformed
 
     private void txt_empnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_empnameNew_tableActionPerformed
@@ -1091,6 +1095,8 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_emppassNew_tableActionPerformed
 
+    //////EDDIIITTTTTTTT
+    
     private void btn_accaddAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accaddAssign_ButtonActionPerformed
 
     DefaultTableModel model = (DefaultTableModel) tbl_acc.getModel();
@@ -1105,13 +1111,11 @@ public class Admin extends javax.swing.JFrame {
         role = "Front Desk";
     }
 
-    // validation
     if (name.isEmpty() || password.isEmpty() || role.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Fill all fields!");
         return;
     }
 
-    // prevent duplicate username
     for (int i = 0; i < model.getRowCount(); i++) {
         if (model.getValueAt(i, 0).toString().equalsIgnoreCase(name)) {
             JOptionPane.showMessageDialog(this, "Username already exists!");
@@ -1119,10 +1123,8 @@ public class Admin extends javax.swing.JFrame {
         }
     }
 
-    // auto email
-    String email = name.replaceAll(" ", "").toLowerCase() + "@email.com";
 
-    model.addRow(new Object[]{name, email, password, role});
+    model.addRow(new Object[]{name,password, role});
 
     clearAccFields();
     }//GEN-LAST:event_btn_accaddAssign_ButtonActionPerformed
@@ -1143,49 +1145,38 @@ public class Admin extends javax.swing.JFrame {
         
 }
      private void setActiveButton(javax.swing.JButton activeBtn) {
+        javax.swing.JButton[] buttons = {btn_today, btn_acc, btn_upcom, btn_history};
 
-    javax.swing.JButton[] buttons = {
-        btn_today, btn_acc, btn_upcom
-        // 🔥 add later: btn_acc
-    };
-
-    for (javax.swing.JButton btn : buttons) {
-        btn.setForeground(Color.WHITE);
+        for (javax.swing.JButton btn : buttons) {
+            btn.setForeground(Color.WHITE);
+        }
+        activeBtn.setForeground(new Color(255, 200, 120));
     }
-
-    activeBtn.setForeground(new Color(255, 200, 120));
-}
+     
      private void clearAccFields() {
-    txt_empname.setText("");
-    txt_emppass.setText("");
-    buttonGroup1.clearSelection();
-}
+        txt_empname.setText("");
+        txt_emppass.setText("");
+        buttonGroup1.clearSelection();
+    }
      
      private void switchPanel(javax.swing.JPanel targetPanel) {
-
-    // hide all panels
-    pnl_today.setVisible(false);
-    pnl_history.setVisible(false);
-    pnl_upcom.setVisible(false);
-    pnl_acc.setVisible(false);
-    // 🔥 future-proof (for accounts panel)
-    // pnl_acc.setVisible(false);
-
-    // show selected
-    targetPanel.setVisible(true);
-}
+        pnl_today.setVisible(false);
+        pnl_history.setVisible(false);
+        pnl_upcom.setVisible(false);
+        pnl_acc.setVisible(false);
+        targetPanel.setVisible(true);
+    }
      
     private void applyHistoryDateFilter() {
         java.util.Date selectedDate = date_history.getDate();
         if (selectedDate == null) {
-            sorter_history.setRowFilter(null);  // Show ALL records
+            sorter_history.setRowFilter(null);  
             return;
         }
 
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
         String dateStr = sdf.format(selectedDate);
 
-        // Filter column 0 (DATE) - case insensitive
         sorter_history.setRowFilter(RowFilter.regexFilter("(?i)" + dateStr, 0));
     }
     private void applyUpcomingDateFilter() {
