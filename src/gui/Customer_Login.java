@@ -581,10 +581,11 @@ public class Customer_Login extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                new Customer_Homepage().setVisible(true);
+                UserSession.loggedInEmail = txt_loginEmail.getText(); 
+                new Customer_Homepage().setVisible(true); 
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid Email or Password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid credentials.");
             }
             con.close();
         } catch (SQLException ex) {
