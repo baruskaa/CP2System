@@ -4,6 +4,8 @@
  */
 package gui;
 
+import javax.swing.*;
+import java.sql.*;
 /**
  *
  * @author lotte
@@ -11,12 +13,59 @@ package gui;
 public class Customer_BookingConfirmation extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_BookingConfirmation.class.getName());
-
-    /**
-     * Creates new form Conformation_Method
-     */
-    public Customer_BookingConfirmation() {
+    
+    private Customer_BookingPayment previousPaymentWindow;
+    private int bookingId;
+    private String mealType;
+    
+    
+    public Customer_BookingConfirmation(Customer_BookingPayment previousPaymentWindow, int bookingId, String mealType) {
+        this.previousPaymentWindow = previousPaymentWindow;
+        this.bookingId = bookingId;
+        this.mealType = mealType;
         initComponents();
+        loadBookingData();
+        setLocationRelativeTo(null);
+    }
+    
+    private void loadBookingData() {
+    try (Connection conn = Booking_DBConnection.getConnection()) {
+        if (conn == null) {
+            JOptionPane.showMessageDialog(this, "Database not connected.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // ─── Load Booking Info ───
+        String bookingQuery = "SELECT * FROM bookings WHERE booking_id=?";
+        try (PreparedStatement stmt = conn.prepareStatement(bookingQuery)) {
+            stmt.setInt(1, bookingId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    lbl_name.setText(rs.getString("first_name") + " " + rs.getString("last_name"));
+                    lbl_email.setText(rs.getString("email"));
+                    lbl_phonenum.setText(rs.getString("phone"));
+                    lbl_rsvdate.setText(rs.getDate("date").toString());
+                    lbl_rsvtime.setText(rs.getString("meal_type"));
+                    lbl_pax.setText(String.valueOf(rs.getInt("pax")));
+                }
+            }
+        }
+
+        // ─── Load Payment Info ───
+        Booking_DBConnection.BookingPaymentData payment = Booking_DBConnection.getPaymentByBookingId(bookingId);
+        if (payment != null) {
+            lbl_paymentmethod.setText(payment.paymentMethod != null ? payment.paymentMethod : "");
+            lbl_payername.setText(payment.payerName != null ? payment.payerName : "");
+            lbl_ewallet_num.setText(payment.ewalletNum != null ? payment.ewalletNum : "");
+            lbl_cardnum.setText(payment.cardNum != null ? payment.cardNum : "");
+            lbl_secnum.setText(payment.secNum != null ? payment.secNum : "");
+            lbl_cardexp.setText(payment.cardExp != null ? payment.cardExp : "");
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Failed to load booking information.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }
 
     /**
@@ -29,6 +78,19 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
     private void initComponents() {
 
         btn_confirm = new javax.swing.JButton();
+        lbl_name = new javax.swing.JLabel();
+        lbl_phonenum = new javax.swing.JLabel();
+        lbl_email = new javax.swing.JLabel();
+        lbl_rsvdate = new javax.swing.JLabel();
+        lbl_rsvtime = new javax.swing.JLabel();
+        lbl_pax = new javax.swing.JLabel();
+        lbl_paymentmethod = new javax.swing.JLabel();
+        lbl_payername = new javax.swing.JLabel();
+        lbl_ewallet_num = new javax.swing.JLabel();
+        lbl_cardnum = new javax.swing.JLabel();
+        lbl_secnum = new javax.swing.JLabel();
+        lbl_cardexp = new javax.swing.JLabel();
+        btn_backpayment = new javax.swing.JButton();
         confirmation_bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -40,7 +102,46 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         btn_confirm.setText("Confirm");
         btn_confirm.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btn_confirm.addActionListener(this::btn_confirmActionPerformed);
-        getContentPane().add(btn_confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 420, 100, 40));
+        getContentPane().add(btn_confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 430, 80, 30));
+
+        lbl_name.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 150, 20));
+
+        lbl_phonenum.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_phonenum, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 220, 130, 20));
+
+        lbl_email.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 216, 140, 20));
+
+        lbl_rsvdate.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_rsvdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 100, 20));
+
+        lbl_rsvtime.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_rsvtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 90, 20));
+
+        lbl_pax.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 280, 40, 20));
+
+        lbl_paymentmethod.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_paymentmethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 346, 100, 20));
+
+        lbl_payername.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_payername, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 346, 150, 20));
+
+        lbl_ewallet_num.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_ewallet_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 346, 130, 20));
+
+        lbl_cardnum.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_cardnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 120, 20));
+        getContentPane().add(lbl_secnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 390, 130, 20));
+
+        lbl_cardexp.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
+        getContentPane().add(lbl_cardexp, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 130, 20));
+
+        btn_backpayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-arrow.png"))); // NOI18N
+        btn_backpayment.setBorderPainted(false);
+        btn_backpayment.addActionListener(this::btn_backpaymentActionPerformed);
+        getContentPane().add(btn_backpayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, -1, -1));
 
         confirmation_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/CONFIRMATION.png"))); // NOI18N
         getContentPane().add(confirmation_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
@@ -49,39 +150,40 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this, 
-        "Your reservation is confirmed!", 
-        "Success", 
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Your reservation is confirmed!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        new Customer_Homepage().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_confirmActionPerformed
+
+    private void btn_backpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backpaymentActionPerformed
+        if (previousPaymentWindow != null) {
+            previousPaymentWindow.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btn_backpaymentActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Customer_BookingConfirmation().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Customer_BookingConfirmation(null, 1, "LUNCH").setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_backpayment;
     private javax.swing.JButton btn_confirm;
     private javax.swing.JLabel confirmation_bg;
+    private javax.swing.JLabel lbl_cardexp;
+    private javax.swing.JLabel lbl_cardnum;
+    private javax.swing.JLabel lbl_email;
+    private javax.swing.JLabel lbl_ewallet_num;
+    private javax.swing.JLabel lbl_name;
+    private javax.swing.JLabel lbl_pax;
+    private javax.swing.JLabel lbl_payername;
+    private javax.swing.JLabel lbl_paymentmethod;
+    private javax.swing.JLabel lbl_phonenum;
+    private javax.swing.JLabel lbl_rsvdate;
+    private javax.swing.JLabel lbl_rsvtime;
+    private javax.swing.JLabel lbl_secnum;
     // End of variables declaration//GEN-END:variables
 }
