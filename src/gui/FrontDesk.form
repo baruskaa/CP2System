@@ -53,7 +53,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="DINE-IN"/>
+            <Property name="text" type="java.lang.String" value="TODAY"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
@@ -85,7 +85,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="FUTURE"/>
+            <Property name="text" type="java.lang.String" value="UPCOMING"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
@@ -102,7 +102,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="30" y="200" width="90" height="30"/>
+              <AbsoluteConstraints x="30" y="180" width="90" height="30"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -134,7 +134,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="30" y="230" width="90" height="30"/>
+              <AbsoluteConstraints x="30" y="220" width="90" height="30"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -178,38 +178,6 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JButton" name="btn_IHR">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="5e" green="4d" red="37" type="rgb"/>
-            </Property>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="16" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="IHR"/>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
-            <Property name="contentAreaFilled" type="boolean" value="false"/>
-            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Hand Cursor"/>
-            </Property>
-            <Property name="focusPainted" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_IHRMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_IHRMouseExited"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_IHRActionPerformed"/>
-          </Events>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="30" y="170" width="90" height="30"/>
-            </Constraint>
-          </Constraints>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="pnl_header">
@@ -235,7 +203,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="lbl_BookingDash" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="211" max="32767" attributes="0"/>
                   <Component id="lbl_username" min="-2" pref="216" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
@@ -247,7 +215,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace pref="51" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_BookingDash" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_username" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
@@ -256,7 +224,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="lbl_BookingDash">
+        <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Century Gothic" size="24" style="1"/>
@@ -276,12 +244,12 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Rodriguez, Penelope"/>
+            <Property name="text" type="java.lang.String" value="Delos Santos, Rhianne Leigh Anne"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="pnl_dine_in">
+    <Container class="javax.swing.JPanel" name="pnl_today">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="c7" green="c7" red="ca" type="rgb"/>
@@ -297,7 +265,23 @@
         <Property name="useNullLayout" type="boolean" value="false"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="lbl_Dinein">
+        <Component class="javax.swing.JLabel" name="lbl_total">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Century Gothic" size="20" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="66" red="66" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="30"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="90" y="420" width="70" height="40"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Century Gothic" size="36" style="1"/>
@@ -305,7 +289,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="5e" green="4d" red="37" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="DINE-IN"/>
+            <Property name="text" type="java.lang.String" value="TODAY"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -313,7 +297,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_totalres">
+        <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Century Gothic" size="16" style="1"/>
@@ -321,15 +305,15 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="66" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Total:"/>
+            <Property name="text" type="java.lang.String" value="TOTAL:"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="420" width="160" height="40"/>
+              <AbsoluteConstraints x="30" y="420" width="70" height="40"/>
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_search">
+        <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Century Gothic" size="14" style="1"/>
@@ -373,7 +357,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tbl_dinein">
+            <Component class="javax.swing.JTable" name="tbl_today">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Century Gothic" size="14" style="1"/>
@@ -382,7 +366,14 @@
                   <Color blue="5e" green="4d" red="37" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="6" rowCount="5">
+                  <Table columnCount="5" rowCount="5">
+                    <Column editable="false" title="TABLE NO." type="java.lang.Integer">
+                      <Data value="1"/>
+                      <Data value="2"/>
+                      <Data value="3"/>
+                      <Data value="4"/>
+                      <Data value="5"/>
+                    </Column>
                     <Column editable="false" title="CUSTOMER NAME" type="java.lang.String">
                       <Data value="Juan Dela Cruz"/>
                       <Data value="Maria Santos"/>
@@ -390,21 +381,12 @@
                       <Data value="Rhian Espinosa"/>
                       <Data value="Justine Dizon"/>
                     </Column>
-                    <Column editable="false" title="EMAIL" type="java.lang.Object"/>
                     <Column editable="false" title="CONTACT" type="java.lang.String">
                       <Data value="09357873489"/>
                       <Data value="09174532356"/>
                       <Data value="09876541453"/>
                       <Data value="09258653421"/>
                       <Data value="09987823421"/>
-                    </Column>
-                    <Column editable="false" title="DATE" type="java.lang.Object"/>
-                    <Column editable="false" title="TIME" type="java.lang.Object">
-                      <Data value="Lunch"/>
-                      <Data value="Lunch"/>
-                      <Data value="Dinner"/>
-                      <Data value="Dinner"/>
-                      <Data value="Lunch"/>
                     </Column>
                     <Column editable="false" title="PAX" type="java.lang.Integer">
                       <Data value="4"/>
@@ -413,15 +395,17 @@
                       <Data value="6"/>
                       <Data value="7"/>
                     </Column>
+                    <Column editable="false" title="TIME" type="java.lang.Object">
+                      <Data value="Lunch"/>
+                      <Data value="Lunch"/>
+                      <Data value="Dinner"/>
+                      <Data value="Dinner"/>
+                      <Data value="Lunch"/>
+                    </Column>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
@@ -584,21 +568,6 @@
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="5">
-                    <Column editable="false" title="CUSTOMER NAME" type="java.lang.String">
-                      <Data value="Juan Dela Cruz"/>
-                      <Data value="Maria Santos"/>
-                      <Data value="Louise Lopez"/>
-                      <Data value="Rhian Espinosa"/>
-                      <Data value="Justine Dizon"/>
-                    </Column>
-                    <Column editable="false" title="EMAIL" type="java.lang.Object"/>
-                    <Column editable="false" title="CONTACT" type="java.lang.String">
-                      <Data value="09357873489"/>
-                      <Data value="09174532356"/>
-                      <Data value="09876541453"/>
-                      <Data value="09258653421"/>
-                      <Data value="09987823421"/>
-                    </Column>
                     <Column editable="false" title="DATE" type="java.lang.Object">
                       <Data value="03-26-26"/>
                       <Data value="03-01-26"/>
@@ -606,12 +575,26 @@
                       <Data value="03-01-26"/>
                       <Data value="04-19-26"/>
                     </Column>
-                    <Column editable="false" title="TIME" type="java.lang.Object">
-                      <Data value="Lunch"/>
-                      <Data value="Lunch"/>
-                      <Data value="Lunch"/>
-                      <Data value="Dinner"/>
-                      <Data value="Dinner"/>
+                    <Column editable="false" title="TABLE NO." type="java.lang.Integer">
+                      <Data value="1"/>
+                      <Data value="2"/>
+                      <Data value="3"/>
+                      <Data value="4"/>
+                      <Data value="5"/>
+                    </Column>
+                    <Column editable="false" title="CUSTOMER NAME" type="java.lang.String">
+                      <Data value="Juan Dela Cruz"/>
+                      <Data value="Maria Santos"/>
+                      <Data value="Louise Lopez"/>
+                      <Data value="Rhian Espinosa"/>
+                      <Data value="Justine Dizon"/>
+                    </Column>
+                    <Column editable="false" title="CONTACT" type="java.lang.String">
+                      <Data value="09357873489"/>
+                      <Data value="09174532356"/>
+                      <Data value="09876541453"/>
+                      <Data value="09258653421"/>
+                      <Data value="09987823421"/>
                     </Column>
                     <Column editable="false" title="PAX" type="java.lang.Integer">
                       <Data value="4"/>
@@ -619,6 +602,13 @@
                       <Data value="2"/>
                       <Data value="6"/>
                       <Data value="7"/>
+                    </Column>
+                    <Column editable="false" title="TIME" type="java.lang.Object">
+                      <Data value="Lunch"/>
+                      <Data value="Lunch"/>
+                      <Data value="Lunch"/>
+                      <Data value="Dinner"/>
+                      <Data value="Dinner"/>
                     </Column>
                   </Table>
                 </Property>
@@ -679,7 +669,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="pnl_future">
+    <Container class="javax.swing.JPanel" name="pnl_upcom">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="c7" green="c7" red="ca" type="rgb"/>
@@ -729,7 +719,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="5e" green="4d" red="37" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="FUTURE"/>
+            <Property name="text" type="java.lang.String" value="UPCOMING"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -781,7 +771,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tbl_future">
+            <Component class="javax.swing.JTable" name="tbl_upcom">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Century Gothic" size="14" style="1"/>
@@ -791,21 +781,6 @@
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="5">
-                    <Column editable="false" title="CUSTOMER NAME" type="java.lang.String">
-                      <Data value="Juan Dela Cruz"/>
-                      <Data value="Maria Santos"/>
-                      <Data value="Louise Lopez"/>
-                      <Data value="Rhian Espinosa"/>
-                      <Data value="Justine Dizon"/>
-                    </Column>
-                    <Column editable="false" title="EMAIL" type="java.lang.Object"/>
-                    <Column editable="false" title="CONTACT" type="java.lang.String">
-                      <Data value="09357873489"/>
-                      <Data value="09174532356"/>
-                      <Data value="09876541453"/>
-                      <Data value="09258653421"/>
-                      <Data value="09987823421"/>
-                    </Column>
                     <Column editable="false" title="DATE" type="java.lang.Object">
                       <Data value="03-26-26"/>
                       <Data value="03-01-26"/>
@@ -813,12 +788,26 @@
                       <Data value="03-01-26"/>
                       <Data value="04-19-26"/>
                     </Column>
-                    <Column editable="false" title="TIME" type="java.lang.Object">
-                      <Data value="Lunch"/>
-                      <Data value="Lunch"/>
-                      <Data value="Lunch"/>
-                      <Data value="Dinner"/>
-                      <Data value="Dinner"/>
+                    <Column editable="false" title="TABLE NO." type="java.lang.Integer">
+                      <Data value="1"/>
+                      <Data value="2"/>
+                      <Data value="3"/>
+                      <Data value="4"/>
+                      <Data value="5"/>
+                    </Column>
+                    <Column editable="false" title="CUSTOMER NAME" type="java.lang.String">
+                      <Data value="Juan Dela Cruz"/>
+                      <Data value="Maria Santos"/>
+                      <Data value="Louise Lopez"/>
+                      <Data value="Rhian Espinosa"/>
+                      <Data value="Justine Dizon"/>
+                    </Column>
+                    <Column editable="false" title="CONTACT" type="java.lang.String">
+                      <Data value="09357873489"/>
+                      <Data value="09174532356"/>
+                      <Data value="09876541453"/>
+                      <Data value="09258653421"/>
+                      <Data value="09987823421"/>
                     </Column>
                     <Column editable="false" title="PAX" type="java.lang.Integer">
                       <Data value="4"/>
@@ -826,6 +815,13 @@
                       <Data value="2"/>
                       <Data value="6"/>
                       <Data value="7"/>
+                    </Column>
+                    <Column editable="false" title="TIME" type="java.lang.Object">
+                      <Data value="Lunch"/>
+                      <Data value="Lunch"/>
+                      <Data value="Lunch"/>
+                      <Data value="Dinner"/>
+                      <Data value="Dinner"/>
                     </Column>
                   </Table>
                 </Property>
@@ -881,182 +877,6 @@
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="0" y="0" width="740" height="470"/>
-            </Constraint>
-          </Constraints>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPanel" name="pnl_IHR">
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="160" y="110" width="740" height="470"/>
-        </Constraint>
-      </Constraints>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="false"/>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JLabel" name="lbl_ihr">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="36" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="5e" green="4d" red="37" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="In-House Reservation"/>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="20" width="390" height="50"/>
-            </Constraint>
-          </Constraints>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_searchihr">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="14" style="1"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="5e" green="4d" red="37" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Search:"/>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="480" y="50" width="60" height="20"/>
-            </Constraint>
-          </Constraints>
-        </Component>
-        <Component class="javax.swing.JTextField" name="search_IHR">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="search_IHRActionPerformed"/>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="search_IHRKeyReleased"/>
-          </Events>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="550" y="50" width="170" height="-1"/>
-            </Constraint>
-          </Constraints>
-        </Component>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane4">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="5e" green="4d" red="37" type="rgb"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="80" width="700" height="330"/>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTable" name="tbl_IHR">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Century Gothic" size="14" style="1"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="5e" green="4d" red="37" type="rgb"/>
-                </Property>
-                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="6" rowCount="5">
-                    <Column editable="false" title="CUSTOMER NAME" type="java.lang.String">
-                      <Data value="Juan Dela Cruz"/>
-                      <Data value="Maria Santos"/>
-                      <Data value="Louise Lopez"/>
-                      <Data value="Rhian Espinosa"/>
-                      <Data value="Justine Dizon"/>
-                    </Column>
-                    <Column editable="false" title="EMAIL" type="java.lang.String"/>
-                    <Column editable="false" title="CONTACT" type="java.lang.String">
-                      <Data value="09357873489"/>
-                      <Data value="09174532356"/>
-                      <Data value="09876541453"/>
-                      <Data value="09258653421"/>
-                      <Data value="09987823421"/>
-                    </Column>
-                    <Column editable="false" title="DATE" type="java.lang.Object">
-                      <Data value="03-26-26"/>
-                      <Data value="03-01-26"/>
-                      <Data value="04-19-26"/>
-                      <Data value="03-01-26"/>
-                      <Data value="04-19-26"/>
-                    </Column>
-                    <Column editable="false" title="TIME" type="java.lang.Object">
-                      <Data value="Lunch"/>
-                      <Data value="Lunch"/>
-                      <Data value="Lunch"/>
-                      <Data value="Dinner"/>
-                      <Data value="Dinner"/>
-                    </Column>
-                    <Column editable="false" title="PAX" type="java.lang.Integer">
-                      <Data value="4"/>
-                      <Data value="3"/>
-                      <Data value="2"/>
-                      <Data value="6"/>
-                      <Data value="7"/>
-                    </Column>
-                  </Table>
-                </Property>
-                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                  <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                  </TableColumnModel>
-                </Property>
-                <Property name="opaque" type="boolean" value="false"/>
-                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                </Property>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Component class="javax.swing.JLabel" name="bg_today3">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/bgfd.jpg"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Today"/>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="0" width="740" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
