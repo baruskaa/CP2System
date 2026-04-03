@@ -11,29 +11,51 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-/**
- *
- * @author kyshgel
- */
+public class DBConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/your_database_name";
+    private static final String USER = "your_username";
+    private static final String PASSWORD = "your_password";
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}
+
 public class Manager extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Manager.class.getName());
     private TableRowSorter<DefaultTableModel> sorter_today;
+    private TableRowSorter<DefaultTableModel> sorter_today2;
     private TableRowSorter<DefaultTableModel> sorter_history;
     private TableRowSorter<DefaultTableModel> sorter_upcom;
     private TableRowSorter<DefaultTableModel> sorter_IHR;
-    
+    public void loadData() {
+        loadTableData("Customer", tbl_res,tbl_walkin);
+        loadTableData("Reservation", tbl_res);
+        loadTableData("DineIn", tbl_walkin);
+    }
     
     public Manager() {
         initComponents();
         updateTotalPaxLabel();
+        updateAvailableSeatsLabel();
+        updateTotalwalkinLabel();
+        loadData();
         this.setLocationRelativeTo(null);
 
         // TableRowSorter for sorting on column header clicks
-        DefaultTableModel model_today = (DefaultTableModel) tbl_dinein.getModel();
+        DefaultTableModel model_today = (DefaultTableModel) tbl_res.getModel();
         sorter_today = new TableRowSorter<>(model_today);
-        tbl_dinein.setRowSorter(sorter_today);
+        tbl_res.setRowSorter(sorter_today);
+        
+        DefaultTableModel model_today2 = (DefaultTableModel) tbl_walkin.getModel();
+        sorter_today2 = new TableRowSorter<>(model_today2);
+        tbl_walkin.setRowSorter(sorter_today2);
 
         DefaultTableModel model_history = (DefaultTableModel) tbl_history.getModel();
         sorter_history = new TableRowSorter<>(model_history);
@@ -50,8 +72,14 @@ public class Manager extends javax.swing.JFrame {
         // Center alignment for all columns
         DefaultTableCellRenderer center_today = new DefaultTableCellRenderer();
         center_today.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_dinein.getColumnCount(); i++) {
-            tbl_dinein.getColumnModel().getColumn(i).setCellRenderer(center_today);
+        for (int i = 0; i < tbl_res.getColumnCount(); i++) {
+            tbl_res.getColumnModel().getColumn(i).setCellRenderer(center_today);
+        }
+        
+        DefaultTableCellRenderer center_today2 = new DefaultTableCellRenderer();
+        center_today2.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < tbl_walkin.getColumnCount(); i++) {
+            tbl_walkin.getColumnModel().getColumn(i).setCellRenderer(center_today2);
         }
         
         DefaultTableCellRenderer center_history = new DefaultTableCellRenderer();
@@ -74,6 +102,16 @@ public class Manager extends javax.swing.JFrame {
         
         // SAFE TABLE NO. COMPARATOR (TODAY col 0, HISTORY col 1, UPCOM col 1)
     sorter_today.setComparator(0, (n1, n2) -> {
+        if (n1 == null) return 1;
+        if (n2 == null) return -1;
+        try {
+            return Integer.compare(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()));
+        } catch (NumberFormatException e) {
+            return n1.toString().compareTo(n2.toString());
+        }
+    });
+    
+    sorter_today2.setComparator(0, (n1, n2) -> {
         if (n1 == null) return 1;
         if (n2 == null) return -1;
         try {
@@ -124,6 +162,16 @@ public class Manager extends javax.swing.JFrame {
         }
     });
     
+    sorter_today2.setComparator(3, (n1, n2) -> {
+        if (n1 == null) return 1;
+        if (n2 == null) return -1;
+        try {
+            return Integer.compare(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()));
+        } catch (NumberFormatException e) {
+            return n1.toString().compareTo(n2.toString());
+        }
+    });
+    
     sorter_history.setComparator(4, (n1, n2) -> {
         if (n1 == null) return 1;
         if (n2 == null) return -1;
@@ -156,6 +204,17 @@ public class Manager extends javax.swing.JFrame {
     
     // TIME COMPARATOR (Lunch first) - TODAY col 4, HISTORY/UPCOM col 5
     sorter_today.setComparator(4, (t1, t2) -> {
+        if (t1 == null) return 1;
+        if (t2 == null) return -1;
+        String time1 = t1.toString();
+        String time2 = t2.toString();
+        if (time1.equals(time2)) return 0;
+        if (time1.equals("Lunch")) return -1;
+        if (time2.equals("Lunch")) return 1;
+        return time1.compareTo(time2);
+    });
+    
+    sorter_today2.setComparator(4, (t1, t2) -> {
         if (t1 == null) return 1;
         if (t2 == null) return -1;
         String time1 = t1.toString();
@@ -213,6 +272,24 @@ public class Manager extends javax.swing.JFrame {
                     sorter_today.setRowFilter(null);
                 } else {
                     sorter_today.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+        });
+        
+        search_today.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+
+            private void filter() {
+                String text = search_today.getText().trim();
+                if (text.isEmpty()) {
+                    sorter_today2.setRowFilter(null);
+                } else {
+                    sorter_today2.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                 }
             }
         });
@@ -308,10 +385,15 @@ public class Manager extends javax.swing.JFrame {
         makeFlatButton(btn_logout);
         
         // Example: custom header background and centered text
-        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tbl_dinein.getTableHeader().getDefaultRenderer();
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tbl_res.getTableHeader().getDefaultRenderer();
         headerRenderer.setHorizontalAlignment(JLabel.CENTER); // center text
-        tbl_dinein.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_dinein.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+        tbl_res.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_res.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 12));  
+        
+        DefaultTableCellRenderer headerRenderer5 = (DefaultTableCellRenderer) tbl_walkin.getTableHeader().getDefaultRenderer();
+        headerRenderer5.setHorizontalAlignment(JLabel.CENTER); // center text
+        tbl_walkin.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_walkin.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 12));
         
         DefaultTableCellRenderer headerRenderer2 = (DefaultTableCellRenderer) tbl_history.getTableHeader().getDefaultRenderer();
         headerRenderer2.setHorizontalAlignment(JLabel.CENTER); // center text
@@ -332,11 +414,11 @@ public class Manager extends javax.swing.JFrame {
     // Method to update the total reservations label
         private void updateTotalPaxLabel() {
         int totalPax = 0;
-        int rowCount = tbl_dinein.getRowCount();
+        int rowCount = tbl_res.getRowCount();
 
         for (int i = 0; i < rowCount; i++) {
-        // Assuming PAX is in the last column, index 5 (0-based)
-            Object paxValue = tbl_dinein.getValueAt(i, 5);
+        
+            Object paxValue = tbl_res.getValueAt(i, 7);
             if (paxValue != null) {
                 try {
                     int pax = Integer.parseInt(paxValue.toString());
@@ -350,8 +432,70 @@ public class Manager extends javax.swing.JFrame {
     // Set the label text to show the total PAX
         lbl_totalres.setText("TOTAL RES: " + totalPax);
     }
+        
+                private void updateTotalwalkinLabel() {
+        int totalwalkin = 0;
+        int rowCount = tbl_walkin.getRowCount();
 
-    
+        for (int i = 0; i < rowCount; i++) {
+        
+            Object paxValue = tbl_walkin.getValueAt(i, 6);
+            if (paxValue != null) {
+                try {
+                    int pax = Integer.parseInt(paxValue.toString());
+                    totalwalkin += pax;
+                } catch (NumberFormatException e) {
+                // Handle invalid number format if needed
+                }
+         }
+        }
+
+    // Set the label text to show the total PAX
+        lbl_totalwalkin.setText("TOTAL WALK-IN: " + totalwalkin);
+    }
+        
+        private final int MAX_SEATS = 100; // Maximum seats available
+
+private void updateAvailableSeatsLabel() {
+    int totalPax = 0;
+    int rowCount = tbl_res.getRowCount();
+
+    for (int i = 0; i < rowCount; i++) {
+        
+        Object paxValue = tbl_res.getValueAt(i, 7);
+        if (paxValue != null) {
+            try {
+                int pax = Integer.parseInt(paxValue.toString());
+                totalPax += pax;
+            } catch (NumberFormatException e) {
+                // Handle invalid number format if needed
+            }
+        }
+    }
+    int totalwalkin = 0;
+        int rowcunt = tbl_walkin.getRowCount();
+
+        for (int i = 0; i < rowcunt; i++) {
+        
+            Object paxValue = tbl_walkin.getValueAt(i, 7);
+            if (paxValue != null) {
+                try {
+                    int pax = Integer.parseInt(paxValue.toString());
+                    totalwalkin += pax;
+                } catch (NumberFormatException e) {
+                // Handle invalid number format if needed
+                }
+         }
+        }
+
+    int availableSeats = MAX_SEATS - (totalPax+totalwalkin);
+    if (availableSeats < 0) {
+        availableSeats = 0; // Prevent negative available seats
+    }
+
+    // Set the label text to show the total available seats
+    lbl_totalavail.setText("AVAILABLE SEATS: " + availableSeats);
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -374,10 +518,16 @@ public class Manager extends javax.swing.JFrame {
         pnl_dine_in = new javax.swing.JPanel();
         lbl_Dinein = new javax.swing.JLabel();
         lbl_totalres = new javax.swing.JLabel();
+        lbl_walkin = new javax.swing.JLabel();
+        lbl_reservation = new javax.swing.JLabel();
         lbl_search = new javax.swing.JLabel();
-        search_today = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_dinein = new javax.swing.JTable();
+        tbl_res = new javax.swing.JTable();
+        lbl_totalwalkin = new javax.swing.JLabel();
+        lbl_totalavail = new javax.swing.JLabel();
+        search_today = new javax.swing.JTextField();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tbl_walkin = new javax.swing.JTable();
         bg_today = new javax.swing.JLabel();
         pnl_history = new javax.swing.JPanel();
         date_history = new com.toedter.calendar.JDateChooser();
@@ -544,47 +694,49 @@ public class Manager extends javax.swing.JFrame {
         lbl_Dinein.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         lbl_Dinein.setForeground(new java.awt.Color(55, 77, 94));
         lbl_Dinein.setText("DINE-IN");
-        pnl_dine_in.add(lbl_Dinein, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 170, 50));
+        pnl_dine_in.add(lbl_Dinein, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 170, 50));
 
         lbl_totalres.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         lbl_totalres.setForeground(new java.awt.Color(102, 102, 102));
         lbl_totalres.setText("Total:");
-        pnl_dine_in.add(lbl_totalres, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 160, 40));
+        pnl_dine_in.add(lbl_totalres, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 160, 40));
+
+        lbl_walkin.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        lbl_walkin.setForeground(new java.awt.Color(102, 102, 102));
+        lbl_walkin.setText("Walk-In");
+        pnl_dine_in.add(lbl_walkin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 110, 20));
+
+        lbl_reservation.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        lbl_reservation.setForeground(new java.awt.Color(102, 102, 102));
+        lbl_reservation.setText("Reservations");
+        pnl_dine_in.add(lbl_reservation, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 110, 20));
 
         lbl_search.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         lbl_search.setForeground(new java.awt.Color(55, 77, 94));
         lbl_search.setText("Search:");
-        pnl_dine_in.add(lbl_search, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 60, 40));
-
-        search_today.addActionListener(this::search_todayActionPerformed);
-        search_today.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                search_todayKeyReleased(evt);
-            }
-        });
-        pnl_dine_in.add(search_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 170, -1));
+        pnl_dine_in.add(lbl_search, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 60, 40));
 
         jScrollPane1.setForeground(new java.awt.Color(55, 77, 94));
 
-        tbl_dinein.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        tbl_dinein.setForeground(new java.awt.Color(55, 77, 94));
-        tbl_dinein.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_res.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_res.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_res.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Juan Dela Cruz", null, "09357873489", null, "Lunch",  new Integer(4)},
-                {"Maria Santos", null, "09174532356", null, "Lunch",  new Integer(3)},
-                {"Louise Lopez", null, "09876541453", null, "Dinner",  new Integer(2)},
-                {"Rhian Espinosa", null, "09258653421", null, "Dinner",  new Integer(6)},
-                {"Justine Dizon", null, "09987823421", null, "Lunch",  new Integer(7)}
+                {null, "Juan Dela Cruz", null, "09357873489", null, "Lunch",  new Integer(4), "10"},
+                {null, "Maria Santos", null, "09174532356", null, "Lunch",  new Integer(3), "5"},
+                {null, "Louise Lopez", null, "09876541453", null, "Dinner",  new Integer(2), "2"},
+                {null, "Rhian Espinosa", null, "09258653421", null, "Dinner",  new Integer(6), "7"},
+                {null, "Justine Dizon", null, "09987823421", null, "Lunch",  new Integer(7), "25"}
             },
             new String [] {
-                "CUSTOMER NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
+                "VIP ID", "FIRST NAME", "LASTNAME", "CONTACT", "GENDER", "DATE", "TIME", "PAX"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -595,18 +747,85 @@ public class Manager extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbl_dinein.setOpaque(false);
-        jScrollPane1.setViewportView(tbl_dinein);
-        if (tbl_dinein.getColumnModel().getColumnCount() > 0) {
-            tbl_dinein.getColumnModel().getColumn(0).setResizable(false);
-            tbl_dinein.getColumnModel().getColumn(1).setResizable(false);
-            tbl_dinein.getColumnModel().getColumn(2).setResizable(false);
-            tbl_dinein.getColumnModel().getColumn(3).setResizable(false);
-            tbl_dinein.getColumnModel().getColumn(4).setResizable(false);
-            tbl_dinein.getColumnModel().getColumn(5).setResizable(false);
+        tbl_res.setOpaque(false);
+        jScrollPane1.setViewportView(tbl_res);
+        if (tbl_res.getColumnModel().getColumnCount() > 0) {
+            tbl_res.getColumnModel().getColumn(0).setResizable(false);
+            tbl_res.getColumnModel().getColumn(1).setResizable(false);
+            tbl_res.getColumnModel().getColumn(1).setHeaderValue("VIP ID ");
+            tbl_res.getColumnModel().getColumn(2).setResizable(false);
+            tbl_res.getColumnModel().getColumn(3).setResizable(false);
+            tbl_res.getColumnModel().getColumn(4).setResizable(false);
+            tbl_res.getColumnModel().getColumn(5).setResizable(false);
+            tbl_res.getColumnModel().getColumn(6).setResizable(false);
+            tbl_res.getColumnModel().getColumn(7).setResizable(false);
         }
 
-        pnl_dine_in.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+        pnl_dine_in.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 720, 160));
+
+        lbl_totalwalkin.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        lbl_totalwalkin.setForeground(new java.awt.Color(102, 102, 102));
+        lbl_totalwalkin.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbl_totalwalkin.setText("Total:");
+        pnl_dine_in.add(lbl_totalwalkin, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 430, 160, 40));
+
+        lbl_totalavail.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        lbl_totalavail.setForeground(new java.awt.Color(102, 102, 102));
+        lbl_totalavail.setText("Total:");
+        pnl_dine_in.add(lbl_totalavail, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 430, 180, 40));
+
+        search_today.addActionListener(this::search_todayActionPerformed);
+        search_today.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_todayKeyReleased(evt);
+            }
+        });
+        pnl_dine_in.add(search_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 170, -1));
+
+        jScrollPane5.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_walkin.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_walkin.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_walkin.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, "09357873489", null, "Lunch",  new Integer(4), null, "10"},
+                {null, "09174532356", null, "Lunch",  new Integer(3), null, "5"},
+                {null, "09876541453", null, "Dinner",  new Integer(2), null, "1"},
+                {null, "09258653421", null, "Dinner",  new Integer(6), null, "5"},
+                {null, "09987823421", null, "Lunch",  new Integer(7), null, "8"}
+            },
+            new String [] {
+                "FIRST NAME", "LAST NAME", "CONTACT", "GENDER", "DATE", "TIME", "PAX"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_walkin.setOpaque(false);
+        jScrollPane5.setViewportView(tbl_walkin);
+        if (tbl_walkin.getColumnModel().getColumnCount() > 0) {
+            tbl_walkin.getColumnModel().getColumn(0).setResizable(false);
+            tbl_walkin.getColumnModel().getColumn(1).setResizable(false);
+            tbl_walkin.getColumnModel().getColumn(2).setResizable(false);
+            tbl_walkin.getColumnModel().getColumn(3).setResizable(false);
+            tbl_walkin.getColumnModel().getColumn(4).setResizable(false);
+            tbl_walkin.getColumnModel().getColumn(5).setResizable(false);
+            tbl_walkin.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        pnl_dine_in.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 720, 170));
 
         bg_today.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
         bg_today.setText("Today");
@@ -649,21 +868,21 @@ public class Manager extends javax.swing.JFrame {
         tbl_history.setForeground(new java.awt.Color(55, 77, 94));
         tbl_history.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Juan Dela Cruz", null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
-                {"Maria Santos", null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
-                {"Louise Lopez", null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
-                {"Rhian Espinosa", null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
-                {"Justine Dizon", null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
+                {"Juan Dela Cruz", null, null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
+                {"Maria Santos", null, null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
+                {"Louise Lopez", null, null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
+                {"Rhian Espinosa", null, null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
+                {"Justine Dizon", null, null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
             },
             new String [] {
-                "CUSTOMER NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
+                "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -683,6 +902,7 @@ public class Manager extends javax.swing.JFrame {
             tbl_history.getColumnModel().getColumn(3).setResizable(false);
             tbl_history.getColumnModel().getColumn(4).setResizable(false);
             tbl_history.getColumnModel().getColumn(5).setResizable(false);
+            tbl_history.getColumnModel().getColumn(6).setResizable(false);
         }
 
         pnl_history.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
@@ -728,21 +948,21 @@ public class Manager extends javax.swing.JFrame {
         tbl_future.setForeground(new java.awt.Color(55, 77, 94));
         tbl_future.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Juan Dela Cruz", null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
-                {"Maria Santos", null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
-                {"Louise Lopez", null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
-                {"Rhian Espinosa", null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
-                {"Justine Dizon", null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
+                {"Juan Dela Cruz", null, null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
+                {"Maria Santos", null, null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
+                {"Louise Lopez", null, null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
+                {"Rhian Espinosa", null, null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
+                {"Justine Dizon", null, null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
             },
             new String [] {
-                "CUSTOMER NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
+                "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -762,6 +982,7 @@ public class Manager extends javax.swing.JFrame {
             tbl_future.getColumnModel().getColumn(3).setResizable(false);
             tbl_future.getColumnModel().getColumn(4).setResizable(false);
             tbl_future.getColumnModel().getColumn(5).setResizable(false);
+            tbl_future.getColumnModel().getColumn(6).setResizable(false);
         }
 
         pnl_future.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
@@ -798,21 +1019,21 @@ public class Manager extends javax.swing.JFrame {
         tbl_IHR.setForeground(new java.awt.Color(55, 77, 94));
         tbl_IHR.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Juan Dela Cruz", null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
-                {"Maria Santos", null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
-                {"Louise Lopez", null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
-                {"Rhian Espinosa", null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
-                {"Justine Dizon", null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
+                {"Juan Dela Cruz", null, null, "09357873489", "03-26-26", "Lunch",  new Integer(4)},
+                {"Maria Santos", null, null, "09174532356", "03-01-26", "Lunch",  new Integer(3)},
+                {"Louise Lopez", null, null, "09876541453", "04-19-26", "Lunch",  new Integer(2)},
+                {"Rhian Espinosa", null, null, "09258653421", "03-01-26", "Dinner",  new Integer(6)},
+                {"Justine Dizon", null, null, "09987823421", "04-19-26", "Dinner",  new Integer(7)}
             },
             new String [] {
-                "CUSTOMER NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
+                "FIRST NAME", "LAST NAME", "EMAIL", "CONTACT", "DATE", "TIME", "PAX"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -832,6 +1053,7 @@ public class Manager extends javax.swing.JFrame {
             tbl_IHR.getColumnModel().getColumn(3).setResizable(false);
             tbl_IHR.getColumnModel().getColumn(4).setResizable(false);
             tbl_IHR.getColumnModel().getColumn(5).setResizable(false);
+            tbl_IHR.getColumnModel().getColumn(6).setResizable(false);
         }
 
         pnl_IHR.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
@@ -887,7 +1109,7 @@ public class Manager extends javax.swing.JFrame {
 
     private void search_todayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_todayKeyReleased
     String text = search_today.getText();
-    TableRowSorter sorter = (TableRowSorter) tbl_dinein.getRowSorter();
+    TableRowSorter sorter = (TableRowSorter) tbl_res.getRowSorter();
     sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));      // TODO add your handling code here:
     }//GEN-LAST:event_search_todayKeyReleased
 
@@ -1059,6 +1281,41 @@ public class Manager extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Manager().setVisible(true));
     }
+    // we need name for the table from database po 
+    private void loadTableData(String tableName, JTable table) {
+        try (Connection conn = DBConnection.getConnection()) {
+            String query = "SELECT * FROM " + tableName;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Get metadata to build table model dynamically
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Create table model and set column names
+            DefaultTableModel model = new DefaultTableModel();
+            for (int i = 1; i <= columnCount; i++) {
+                model.addColumn(metaData.getColumnName(i));
+            }
+
+            // Add rows to model
+            while (rs.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData[i - 1] = rs.getObject(i);
+                }
+                model.addRow(rowData);
+            }
+
+            // Set model to the JTable
+            table.setModel(model);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions properly in production code
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bg_today;
@@ -1083,13 +1340,18 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lbl_BookingDash;
     private javax.swing.JLabel lbl_Dinein;
     private javax.swing.JLabel lbl_ihr;
+    private javax.swing.JLabel lbl_reservation;
     private javax.swing.JLabel lbl_search;
     private javax.swing.JLabel lbl_searchihr;
+    private javax.swing.JLabel lbl_totalavail;
     private javax.swing.JLabel lbl_totalres;
+    private javax.swing.JLabel lbl_totalwalkin;
     private javax.swing.JLabel lbl_username;
+    private javax.swing.JLabel lbl_walkin;
     private javax.swing.JPanel pnl_IHR;
     private javax.swing.JPanel pnl_dine_in;
     private javax.swing.JPanel pnl_future;
@@ -1101,9 +1363,10 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JTextField search_today;
     private javax.swing.JTextField search_upcom;
     private javax.swing.JTable tbl_IHR;
-    private javax.swing.JTable tbl_dinein;
     private javax.swing.JTable tbl_future;
     private javax.swing.JTable tbl_history;
+    private javax.swing.JTable tbl_res;
+    private javax.swing.JTable tbl_walkin;
     // End of variables declaration//GEN-END:variables
 }
 
