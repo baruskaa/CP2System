@@ -370,18 +370,11 @@ public class Customer_Homepage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Aboutus_Label1;
     private javax.swing.JLabel Aboutus_Label2;
-    private javax.swing.JLabel Aboutus_label2;
     private javax.swing.JLabel Aboutus_label3;
     private javax.swing.JLabel bg_homepage;
     private javax.swing.JButton btn_bookNow;
-    private javax.swing.JButton btn_logout;
     private javax.swing.JButton btn_logout2;
-    private javax.swing.JButton btn_today1;
-    private javax.swing.JButton btn_today2;
-    private javax.swing.JButton btn_today3;
-    private javax.swing.JButton btn_today4;
     private javax.swing.JButton btn_today5;
     private javax.swing.JButton btn_today6;
     private javax.swing.JButton btn_today7;
@@ -389,10 +382,8 @@ public class Customer_Homepage extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cb_branch;
     private javax.swing.JComboBox<String> cb_time;
     private com.toedter.calendar.JDateChooser dc_date;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JSpinner sp_guest;
     // End of variables declaration//GEN-END:variables

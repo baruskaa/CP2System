@@ -4,7 +4,9 @@
  */
 package gui;
 
+import javax.swing.*;
 import javax.swing.SpinnerNumberModel;
+import java.util.Date;
 
 /**
  *
@@ -15,14 +17,48 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_BookingWindow.class.getName());
 
     /**
-     * Creates new form Booking_Window
+
      */
     public Customer_BookingWindow() {
         initComponents();
         setLocationRelativeTo(null);
         
+        
         SpinnerNumberModel model = new SpinnerNumberModel(1, 1, 50, 1);
         spn_pax.setModel(model);
+        
+        cb_time.addActionListener(evt -> updateSeatAvailability());
+        dp_date.getDateEditor().addPropertyChangeListener(evt -> {
+            if ("date".equals(evt.getPropertyName())) updateSeatAvailability();
+        });
+        spn_pax.addChangeListener(evt -> updateSeatAvailability());
+    }
+    
+    private void updateSeatAvailability() {
+        try {
+        String mealType = cb_time.getSelectedItem().toString();
+        Date utilDate = dp_date.getDate();
+        int pax = (Integer) spn_pax.getValue();
+
+        if (utilDate == null) {
+            btn_topay.setEnabled(false);
+            return;
+        }
+
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        int totalBooked = Booking_DBConnection.getTotalBooked(mealType, sqlDate);
+
+        if (totalBooked + pax > 100) {
+            btn_topay.setEnabled(false);
+            JOptionPane.showMessageDialog(this, "Not enough seats available!");
+        } else {
+            btn_topay.setEnabled(true);
+        }
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        btn_topay.setEnabled(true); // fail-safe
+    }
     }
 
     /**
@@ -34,63 +70,54 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cb_branch = new javax.swing.JComboBox<>();
         cb_time = new javax.swing.JComboBox<>();
         dp_date = new com.toedter.calendar.JDateChooser();
-        txt_name = new javax.swing.JTextField();
+        txt_LName = new javax.swing.JTextField();
         txt_email = new javax.swing.JTextField();
         txt_num = new javax.swing.JTextField();
         spn_pax = new javax.swing.JSpinner();
-        txt_promo = new javax.swing.JTextField();
         btn_topay = new javax.swing.JButton();
+        txt_FName = new javax.swing.JTextField();
+        btn_backhomepage = new javax.swing.JButton();
         booking_bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        cb_branch.setFont(new java.awt.Font("Century Gothic", 0, 8)); // NOI18N
-        cb_branch.setMaximumRowCount(2);
-        cb_branch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SM NORTH EDSA", "SM MEGAMALL" }));
-        cb_branch.addActionListener(this::cb_branchActionPerformed);
-        getContentPane().add(cb_branch, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 100, 30));
-
         cb_time.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
         cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNCH", "DINNER" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
-        getContentPane().add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, 110, 30));
+        getContentPane().add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 340, 110, 30));
 
         dp_date.setDateFormatString("MM-dd-yy");
-        getContentPane().add(dp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, 110, 30));
-        getContentPane().add(txt_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 230, 30));
-        getContentPane().add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 230, 30));
-        getContentPane().add(txt_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 230, 30));
+        getContentPane().add(dp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 110, 30));
+        getContentPane().add(txt_LName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 150, 30));
+        getContentPane().add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 230, 30));
+        getContentPane().add(txt_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 230, 30));
 
         spn_pax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         getContentPane().add(spn_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 80, 30));
-        getContentPane().add(txt_promo, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 450, 110, 30));
 
         btn_topay.setBackground(new java.awt.Color(185, 153, 79));
         btn_topay.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         btn_topay.setText("Proceed to Payment");
         btn_topay.addActionListener(this::btn_topayActionPerformed);
-        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 500, 160, -1));
+        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 490, 170, 30));
 
-        booking_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/BOOKING1.png"))); // NOI18N
+        txt_FName.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 160, 30));
+
+        btn_backhomepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-arrow.png"))); // NOI18N
+        btn_backhomepage.setBorderPainted(false);
+        btn_backhomepage.addActionListener(this::btn_backhomepageActionPerformed);
+        getContentPane().add(btn_backhomepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, 20));
+
+        booking_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/BOOKING.png"))); // NOI18N
         getContentPane().add(booking_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cb_branchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_branchActionPerformed
-    String selectedBranch = cb_branch.getSelectedItem().toString();
-        if (selectedBranch.equals("SM NORTH EDSA")) {
-        System.out.println("SM NORTH EDSA");
-        }
-        if (selectedBranch.equals("SM MEGAMALL")) {
-        System.out.println("SM MEGAMALL"); 
-        }// TODO add your handling code here:
-    }//GEN-LAST:event_cb_branchActionPerformed
 
     private void cb_timeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_timeActionPerformed
         String selectedBranch = cb_time.getSelectedItem().toString();
@@ -105,45 +132,138 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_cb_timeActionPerformed
 
     private void btn_topayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_topayActionPerformed
-        new Customer_BookingPayment().setVisible(true);
-        this.dispose();
+        try {
+        String firstName = txt_FName.getText().trim();
+        String lastName = txt_LName.getText().trim();
+        String email = txt_email.getText().trim();
+        String phone = txt_num.getText().trim();
+        int pax = (Integer) spn_pax.getValue();
+        String mealType = cb_time.getSelectedItem().toString();
+        Date utilDate = dp_date.getDate();
+
+        // ✅ Validation
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || utilDate == null) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields!");
+            return;
+        }
+
+        if (!Booking_DBConnection.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address!");
+            return;
+        }
+
+        if (!Booking_DBConnection.isValidPhone(phone)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid phone number!");
+            return;
+        }
+
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+        if (Booking_DBConnection.isDuplicateBooking(email, phone, mealType, sqlDate)) {
+            JOptionPane.showMessageDialog(this, "You have already booked for this date and time!");
+            return;
+        }
+
+        int totalBooked = Booking_DBConnection.getTotalBooked(mealType, sqlDate);
+        if (totalBooked + pax > 100) {
+            JOptionPane.showMessageDialog(this, "Not enough seats available!");
+            return;
+        }
+
+        int bookingId = Booking_DBConnection.getNextBookingId(mealType);
+
+        boolean saved = Booking_DBConnection.saveBooking(bookingId, firstName, lastName, email, phone, sqlDate, mealType, pax);
+        if (!saved) {
+            JOptionPane.showMessageDialog(this, "Booking could not be saved. Please try again.");
+            return;
+        }
+
+        // ✅ Open Payment Window safely
+        Customer_BookingPayment paymentWindow = new Customer_BookingPayment(this, bookingId, mealType, pax);
+        paymentWindow.setVisible(true);
+        this.setVisible(false); // hide this window
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        ex.printStackTrace();
+    }
     }//GEN-LAST:event_btn_topayActionPerformed
+
+    private void btn_backhomepageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backhomepageActionPerformed
+        try {
+        String firstName = txt_FName.getText().trim();
+        String lastName = txt_LName.getText().trim();
+        String email = txt_email.getText().trim();
+        String phone = txt_num.getText().trim();
+        int pax = (Integer) spn_pax.getValue();
+        String mealType = cb_time.getSelectedItem().toString();
+        Date utilDate = dp_date.getDate();
+
+        // ✅ Validation
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || utilDate == null) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields!");
+            return;
+        }
+
+        if (!Booking_DBConnection.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address!");
+            return;
+        }
+
+        if (!Booking_DBConnection.isValidPhone(phone)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid phone number!");
+            return;
+        }
+
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+        if (Booking_DBConnection.isDuplicateBooking(email, phone, mealType, sqlDate)) {
+            JOptionPane.showMessageDialog(this, "You have already booked for this date and time!");
+            return;
+        }
+
+        int totalBooked = Booking_DBConnection.getTotalBooked(mealType, sqlDate);
+        if (totalBooked + pax > 100) {
+            JOptionPane.showMessageDialog(this, "Not enough seats available!");
+            return;
+        }
+
+        int bookingId = Booking_DBConnection.getNextBookingId(mealType);
+
+        boolean saved = Booking_DBConnection.saveBooking(bookingId, firstName, lastName, email, phone, sqlDate, mealType, pax);
+        if (!saved) {
+            JOptionPane.showMessageDialog(this, "Booking could not be saved. Please try again.");
+            return;
+        }
+
+        // ✅ Open Payment Window safely
+        Customer_BookingPayment paymentWindow = new Customer_BookingPayment(this, bookingId, mealType, pax);
+        paymentWindow.setVisible(true);
+        this.setVisible(false); // hide this window
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        ex.printStackTrace();
+    }
+    }//GEN-LAST:event_btn_backhomepageActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Customer_BookingWindow().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel booking_bg;
+    private javax.swing.JButton btn_backhomepage;
     private javax.swing.JButton btn_topay;
-    private javax.swing.JComboBox<String> cb_branch;
     private javax.swing.JComboBox<String> cb_time;
     private com.toedter.calendar.JDateChooser dp_date;
     private javax.swing.JSpinner spn_pax;
+    private javax.swing.JTextField txt_FName;
+    private javax.swing.JTextField txt_LName;
     private javax.swing.JTextField txt_email;
-    private javax.swing.JTextField txt_name;
     private javax.swing.JTextField txt_num;
-    private javax.swing.JTextField txt_promo;
     // End of variables declaration//GEN-END:variables
 }

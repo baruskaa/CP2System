@@ -55,16 +55,18 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
         jLabel2.setText("ABOUT US");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
 
+        copyright1_accprof_lbl.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         copyright1_accprof_lbl.setForeground(new java.awt.Color(255, 255, 255));
         copyright1_accprof_lbl.setText("© The House of 7 Buffet.");
         getContentPane().add(copyright1_accprof_lbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, -1, -1));
 
+        copyright2_accprof_lbl.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         copyright2_accprof_lbl.setForeground(new java.awt.Color(255, 255, 255));
         copyright2_accprof_lbl.setText("All Rights Reserved.");
         getContentPane().add(copyright2_accprof_lbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, -1, -1));
 
         accprof_btn.setBackground(new java.awt.Color(204, 204, 204));
-        accprof_btn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        accprof_btn.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         accprof_btn.setForeground(new java.awt.Color(255, 255, 255));
         accprof_btn.setText("RESERVATIONS");
         accprof_btn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -72,16 +74,17 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
         getContentPane().add(accprof_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 130, -1));
 
         logout_accprof_btn.setBackground(new java.awt.Color(255, 0, 0));
-        logout_accprof_btn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        logout_accprof_btn.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         logout_accprof_btn.setForeground(new java.awt.Color(255, 255, 255));
         logout_accprof_btn.setText("LOG OUT");
         logout_accprof_btn.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         logout_accprof_btn.addActionListener(this::logout_accprof_btnActionPerformed);
         getContentPane().add(logout_accprof_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 500, -1, 20));
 
-        greet_user_accprof_label.setFont(new java.awt.Font("Berlin Sans FB", 0, 48)); // NOI18N
+        greet_user_accprof_label.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
+        greet_user_accprof_label.setForeground(new java.awt.Color(47, 74, 91));
         greet_user_accprof_label.setText("Hello User!");
-        getContentPane().add(greet_user_accprof_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 240, -1));
+        getContentPane().add(greet_user_accprof_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 290, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/avatar accprof.png"))); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 180, 130, 120));
@@ -151,7 +154,7 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
 
         aboutus_accprof_lbl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         aboutus_accprof_lbl.setForeground(new java.awt.Color(255, 255, 255));
-        aboutus_accprof_lbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/PROFILE.png"))); // NOI18N
+        aboutus_accprof_lbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/ACC PROF.png"))); // NOI18N
         aboutus_accprof_lbl.setIconTextGap(0);
         getContentPane().add(aboutus_accprof_lbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
 
@@ -196,12 +199,9 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Aboutus_Label1;
-    private javax.swing.JLabel Aboutus_label2;
     private javax.swing.JCheckBox Female_checkbox_accprof;
     private javax.swing.JLabel aboutus_accprof_lbl;
     private javax.swing.JButton accprof_btn;
-    private javax.swing.JButton btn_today1;
     private javax.swing.JLabel copyright1_accprof_lbl;
     private javax.swing.JLabel copyright2_accprof_lbl;
     private javax.swing.JLabel dineclub_accprof_lbl;
@@ -215,8 +215,6 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton logout_accprof_btn;
     private javax.swing.JCheckBox male_checkbox_accprof;
