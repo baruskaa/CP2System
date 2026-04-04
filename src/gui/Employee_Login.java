@@ -4,6 +4,12 @@
  */
 package gui;
 import javax.swing.Timer;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 //hello
 /**
  *
@@ -36,10 +42,12 @@ public class Employee_Login extends javax.swing.JFrame {
         btn_back = new javax.swing.JLabel();
         lbl_welcomebck = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txt_emploginEmail = new javax.swing.JTextField();
+        txt_emploginUsername = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txt_emploginPass = new javax.swing.JPasswordField();
         btn_emploginLogin = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
+        chk_loginShowPass = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -66,14 +74,14 @@ public class Employee_Login extends javax.swing.JFrame {
         jLabel4.setBackground(new java.awt.Color(47, 74, 91));
         jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(47, 74, 91));
-        jLabel4.setText("E-mail:");
+        jLabel4.setText("Username:");
         jLabel4.setToolTipText("");
 
-        txt_emploginEmail.setBackground(new java.awt.Color(229, 229, 229));
-        txt_emploginEmail.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        txt_emploginEmail.setForeground(new java.awt.Color(51, 51, 51));
-        txt_emploginEmail.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        txt_emploginEmail.addActionListener(this::txt_emploginEmailActionPerformed);
+        txt_emploginUsername.setBackground(new java.awt.Color(229, 229, 229));
+        txt_emploginUsername.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        txt_emploginUsername.setForeground(new java.awt.Color(47, 74, 91));
+        txt_emploginUsername.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        txt_emploginUsername.addActionListener(this::txt_emploginUsernameActionPerformed);
 
         jLabel5.setBackground(new java.awt.Color(47, 74, 91));
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -82,7 +90,8 @@ public class Employee_Login extends javax.swing.JFrame {
         jLabel5.setToolTipText("");
 
         txt_emploginPass.setBackground(new java.awt.Color(229, 229, 229));
-        txt_emploginPass.setForeground(new java.awt.Color(51, 51, 51));
+        txt_emploginPass.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_emploginPass.setForeground(new java.awt.Color(47, 74, 91));
         txt_emploginPass.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 10, 5, 10));
 
         btn_emploginLogin.setBackground(new java.awt.Color(47, 74, 91));
@@ -92,6 +101,16 @@ public class Employee_Login extends javax.swing.JFrame {
         btn_emploginLogin.setBorder(null);
         btn_emploginLogin.setMaximumSize(new java.awt.Dimension(293, 26));
         btn_emploginLogin.setMinimumSize(new java.awt.Dimension(293, 26));
+        btn_emploginLogin.addActionListener(this::btn_emploginLoginActionPerformed);
+
+        jLabel19.setBackground(new java.awt.Color(47, 74, 91));
+        jLabel19.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(47, 74, 91));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel19.setText("Show Password");
+        jLabel19.setToolTipText("");
+
+        chk_loginShowPass.addActionListener(this::chk_loginShowPassActionPerformed);
 
         javax.swing.GroupLayout imagePanelemplogin2Layout = new javax.swing.GroupLayout(imagePanelemplogin2);
         imagePanelemplogin2.setLayout(imagePanelemplogin2Layout);
@@ -111,7 +130,11 @@ public class Employee_Login extends javax.swing.JFrame {
                                         .addComponent(txt_emploginPass)
                                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txt_emploginEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(txt_emploginUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
+                                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(chk_loginShowPass)))))))
                     .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
                         .addGap(253, 253, 253)
                         .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -124,17 +147,21 @@ public class Employee_Login extends javax.swing.JFrame {
                 .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_welcomebck)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_emploginEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(txt_emploginUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_emploginPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(txt_emploginPass, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chk_loginShowPass)
+                    .addComponent(jLabel19))
+                .addGap(8, 8, 8)
                 .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -155,14 +182,88 @@ public class Employee_Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txt_emploginEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emploginEmailActionPerformed
+    private void txt_emploginUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emploginUsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_emploginEmailActionPerformed
+    }//GEN-LAST:event_txt_emploginUsernameActionPerformed
 
     private void btn_backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_backMouseClicked
          new Customer_Login().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_backMouseClicked
+
+    private void btn_emploginLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_emploginLoginActionPerformed
+       String username = txt_emploginUsername.getText().trim();
+        String password = new String(txt_emploginPass.getPassword());
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter both Username and Password.");
+            return;
+        }
+        
+        if (username.equals("admin") && password.equals("admin")) {
+            new Admin().setVisible(true); 
+            this.dispose();               
+            return;                       
+        }
+
+        String url = "jdbc:derby://localhost:1527/DBHOUSE";
+        String dbUser = "dbhouse";
+        String dbPass = "dbhouse";
+
+        try (Connection con = DriverManager.getConnection(url, dbUser, dbPass)) {
+            String sql = "SELECT * FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME = ? AND PASS = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, username);
+            pst.setString(2, password);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                String accType = rs.getString("ACC_TYPE"); 
+                String fullName = rs.getString("F_NAME") + " " + rs.getString("L_NAME");
+
+                JOptionPane.showMessageDialog(this, "Welcome, " + fullName + ", " + accType + ".");
+
+                switch (accType.toLowerCase()) {
+                    case "admin":
+                        new Admin().setVisible(true);
+                        break;
+
+                    case "gen. manager": 
+                        new GenManager().setVisible(true); 
+                        break;
+
+                    case "manager":
+                        new Manager().setVisible(true);
+                        break;
+
+                    case "front desk":
+                        new FrontDesk().setVisible(true); 
+                        break;
+
+                    default:
+                        JOptionPane.showMessageDialog(this, "Access Denied: Role not recognized.");
+                        return;
+                }
+
+                this.dispose(); 
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid Username or Password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btn_emploginLoginActionPerformed
+
+    private void chk_loginShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_loginShowPassActionPerformed
+        if (chk_loginShowPass.isSelected()) {
+            txt_emploginPass.setEchoChar((char)0);
+        } else {
+            txt_emploginPass.setEchoChar('*');
+        }
+    }//GEN-LAST:event_chk_loginShowPassActionPerformed
     
    
     /**
@@ -214,11 +315,13 @@ public class Employee_Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btn_back;
     private javax.swing.JButton btn_emploginLogin;
+    private javax.swing.JCheckBox chk_loginShowPass;
     private gui.ImagePanelemplogin imagePanelemplogin2;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lbl_welcomebck;
-    private javax.swing.JTextField txt_emploginEmail;
     private javax.swing.JPasswordField txt_emploginPass;
+    private javax.swing.JTextField txt_emploginUsername;
     // End of variables declaration//GEN-END:variables
 }

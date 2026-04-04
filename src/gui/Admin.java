@@ -11,6 +11,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
 import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -35,6 +40,10 @@ public class Admin extends javax.swing.JFrame {
         buttonGroup1.add(rb_fdesk);
         
         makeFlatButton(btn_navLogout);
+        
+        
+        loadEmployeeTable();
+        loadMemberTable();
         
         //TABLE SORTERS
 
@@ -310,27 +319,48 @@ public class Admin extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int viewRow = tbl_emp.getSelectedRow();
                 if (viewRow != -1) {
-                   
                     int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
 
-                    txt_empusername.setText(tbl_emp.getModel().getValueAt(modelRow, 0).toString());
-                    txt_empfname.setText(tbl_emp.getModel().getValueAt(modelRow, 1).toString());
-                    txt_emplname.setText(tbl_emp.getModel().getValueAt(modelRow, 2).toString());
-                    txt_emppass.setText(tbl_emp.getModel().getValueAt(modelRow, 3).toString());
+                    txt_empusername.setText(tbl_emp.getModel().getValueAt(modelRow, 1).toString());
+                    txt_empfname.setText(tbl_emp.getModel().getValueAt(modelRow, 2).toString());
+                    txt_emplname.setText(tbl_emp.getModel().getValueAt(modelRow, 3).toString());
+                    txt_emppass.setText(tbl_emp.getModel().getValueAt(modelRow, 4).toString());
 
-                    String role = tbl_emp.getModel().getValueAt(modelRow, 4).toString();
-                    if (role.equalsIgnoreCase("Gen. Manager")) {
-                        rb_genmanager.setSelected(true);
-                    } else if (role.equalsIgnoreCase("Manager")) {
-                        rb_manager.setSelected(true);
-                    } else if (role.equalsIgnoreCase("Front Desk")) {
-                        rb_fdesk.setSelected(true);
-                    } else {
-                        buttonGroup1.clearSelection();
-                    }
+                    String role = tbl_emp.getModel().getValueAt(modelRow, 5).toString();
+                    if (role.equalsIgnoreCase("Gen. Manager")) rb_genmanager.setSelected(true);
+                    else if (role.equalsIgnoreCase("Manager")) rb_manager.setSelected(true);
+                    else if (role.equalsIgnoreCase("Front Desk")) rb_fdesk.setSelected(true);
+                    else buttonGroup1.clearSelection();
                 }
             }
         });
+        
+        tbl_memb.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int viewRow = tbl_memb.getSelectedRow();
+                if (viewRow != -1) {
+                  
+                    int modelRow = tbl_memb.convertRowIndexToModel(viewRow);
+
+                    Object vipId = tbl_memb.getModel().getValueAt(modelRow, 0);
+                    Object dateReg = tbl_memb.getModel().getValueAt(modelRow, 1);
+                    Object fName = tbl_memb.getModel().getValueAt(modelRow, 2);
+                    Object lName = tbl_memb.getModel().getValueAt(modelRow, 3);
+                    Object cpNum = tbl_memb.getModel().getValueAt(modelRow, 6);
+                    Object email = tbl_memb.getModel().getValueAt(modelRow, 7);
+                    Object pass = tbl_memb.getModel().getValueAt(modelRow, 8);
+
+                    txt_membVipId.setText(vipId != null ? vipId.toString() : "");
+                    txt_membDatereg.setText(dateReg != null ? dateReg.toString() : "");
+                    txt_membFname.setText(fName != null ? fName.toString() : "");
+                    txt_membLname.setText(lName != null ? lName.toString() : "");
+                    txt_membCpnum.setText(cpNum != null ? cpNum.toString() : "");
+                    txt_membEmail.setText(email != null ? email.toString() : "");
+                    txt_membPass.setText(pass != null ? pass.toString() : "");
+                }
+            }
+        });
+        
         
         DefaultTableCellRenderer headerRenderertoday = (DefaultTableCellRenderer) tbl_today.getTableHeader().getDefaultRenderer();
         headerRenderertoday.setHorizontalAlignment(JLabel.CENTER); 
@@ -357,6 +387,7 @@ public class Admin extends javax.swing.JFrame {
         tbl_memb.getTableHeader().setForeground(new Color(55, 77, 94));  
         tbl_memb.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
     
+        
     }
 
     /**
@@ -383,6 +414,20 @@ public class Admin extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         search_memb = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        txt_membLname = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        txt_membFname = new javax.swing.JTextField();
+        txt_membVipId = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        txt_membPass = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        txt_membDatereg = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
+        txt_membEmail = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        txt_membCpnum = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tbl_memb = new javax.swing.JTable();
         bg_today4 = new javax.swing.JLabel();
@@ -591,6 +636,8 @@ public class Admin extends javax.swing.JFrame {
         jLabel24.setText("MEMBERS");
         pnl_memb.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 310, 50));
 
+        search_memb.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        search_memb.setForeground(new java.awt.Color(55, 77, 94));
         search_memb.addActionListener(this::search_membActionPerformed);
         search_memb.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -598,6 +645,90 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         pnl_memb.add(search_memb, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 170, -1));
+
+        jLabel21.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel21.setText("VIP ID:");
+        pnl_memb.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 50, 30));
+
+        txt_membLname.setEditable(false);
+        txt_membLname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membLname.setFocusable(false);
+        txt_membLname.addActionListener(this::txt_membLnameNew_tableActionPerformed);
+        pnl_memb.add(txt_membLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 140, 30));
+
+        jLabel25.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel25.setText("Last Name:");
+        pnl_memb.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(223, 410, 70, 30));
+
+        txt_membFname.setEditable(false);
+        txt_membFname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membFname.setFocusable(false);
+        txt_membFname.addActionListener(this::txt_membFnameNew_tableActionPerformed);
+        pnl_memb.add(txt_membFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 140, 30));
+
+        txt_membVipId.setEditable(false);
+        txt_membVipId.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membVipId.setFocusable(false);
+        txt_membVipId.addActionListener(this::txt_membVipIdNew_tableActionPerformed);
+        pnl_memb.add(txt_membVipId, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 380, 120, 30));
+
+        jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel29.setText("First Name:");
+        pnl_memb.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(223, 380, 70, 30));
+
+        txt_membPass.setEditable(false);
+        txt_membPass.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membPass.setFocusable(false);
+        txt_membPass.addActionListener(this::txt_membPassNew_tableActionPerformed);
+        pnl_memb.add(txt_membPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 410, 140, 30));
+
+        jLabel26.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel26.setText("Pass:");
+        pnl_memb.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, 50, 30));
+
+        txt_membDatereg.setEditable(false);
+        txt_membDatereg.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membDatereg.setFocusable(false);
+        txt_membDatereg.addActionListener(this::txt_membDateregNew_tableActionPerformed);
+        pnl_memb.add(txt_membDatereg, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 140, 30));
+
+        jLabel30.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel30.setText("Date Reg:  ");
+        pnl_memb.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 350, 70, 30));
+
+        txt_membEmail.setEditable(false);
+        txt_membEmail.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membEmail.setFocusable(false);
+        txt_membEmail.addActionListener(this::txt_membEmailNew_tableActionPerformed);
+        pnl_memb.add(txt_membEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 380, 140, 30));
+
+        jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel27.setText("Email:");
+        pnl_memb.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 380, 50, 30));
+
+        txt_membCpnum.setEditable(false);
+        txt_membCpnum.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membCpnum.setFocusable(false);
+        txt_membCpnum.addActionListener(this::txt_membCpnumNew_tableActionPerformed);
+        pnl_memb.add(txt_membCpnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, 140, 30));
+
+        jLabel28.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel28.setText("CP Num:");
+        pnl_memb.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, 60, 30));
 
         jScrollPane5.setForeground(new java.awt.Color(55, 77, 94));
 
@@ -632,6 +763,7 @@ public class Admin extends javax.swing.JFrame {
         jScrollPane5.setViewportView(tbl_memb);
         if (tbl_memb.getColumnModel().getColumnCount() > 0) {
             tbl_memb.getColumnModel().getColumn(0).setResizable(false);
+            tbl_memb.getColumnModel().getColumn(0).setHeaderValue("VIP_ID");
             tbl_memb.getColumnModel().getColumn(1).setResizable(false);
             tbl_memb.getColumnModel().getColumn(2).setResizable(false);
             tbl_memb.getColumnModel().getColumn(3).setResizable(false);
@@ -640,9 +772,10 @@ public class Admin extends javax.swing.JFrame {
             tbl_memb.getColumnModel().getColumn(6).setResizable(false);
             tbl_memb.getColumnModel().getColumn(7).setResizable(false);
             tbl_memb.getColumnModel().getColumn(8).setResizable(false);
+            tbl_memb.getColumnModel().getColumn(8).setHeaderValue("PASS");
         }
 
-        pnl_memb.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+        pnl_memb.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 250));
 
         bg_today4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
         bg_today4.setText("Today");
@@ -759,19 +892,19 @@ public class Admin extends javax.swing.JFrame {
         tbl_emp.setForeground(new java.awt.Color(55, 77, 94));
         tbl_emp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"juandcruz@gmail.com", "Juan ", "Dela Cuz", "jdc26", "Customer"},
-                {"jane.santos@houseofseven.com", "Jane ", "Santos", "janesantos0", "Front Desk"},
-                {"admin@email.com", "admin", "admin", "000000", "ADMIN"}
+                {null, "juandcruz@gmail.com", "Juan ", "Dela Cuz", "jdc26", "Customer"},
+                {null, "jane.santos@houseofseven.com", "Jane ", "Santos", "janesantos0", "Front Desk"},
+                {null, "admin@email.com", "admin", "admin", "000000", "ADMIN"}
             },
             new String [] {
-                "USERNAME", "F_NAME", "L_NAME", "PASS", "ACC_TYPE"
+                "EMP_ID", "USERNAME", "F_NAME", "L_NAME", "PASS", "ACC_TYPE"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, true
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -790,7 +923,7 @@ public class Admin extends javax.swing.JFrame {
             tbl_emp.getColumnModel().getColumn(2).setResizable(false);
             tbl_emp.getColumnModel().getColumn(3).setResizable(false);
             tbl_emp.getColumnModel().getColumn(4).setResizable(false);
-            tbl_emp.getColumnModel().getColumn(4).setHeaderValue("ACC_TYPE");
+            tbl_emp.getColumnModel().getColumn(5).setResizable(false);
         }
 
         pnl_emp.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 530, 330));
@@ -1131,41 +1264,65 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_empusernameNew_tableActionPerformed
 
     private void btn_acceditAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceditAssign_ButtonActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
-        int viewRow = tbl_emp.getSelectedRow();
-
+      int viewRow = tbl_emp.getSelectedRow();
         if (viewRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select an account first.");
             return;
         }
 
         int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
-        
-        String role = "";
-        if (rb_genmanager.isSelected()) role = "Gen. Manager";
-        else if (rb_manager.isSelected()) role = "Manager";
-        else if (rb_fdesk.isSelected()) role = "Front Desk";
+        String targetEmpId = tbl_emp.getModel().getValueAt(modelRow, 0).toString();
 
-        model.setValueAt(txt_empusername.getText(), modelRow, 0);
-        model.setValueAt(txt_empfname.getText(), modelRow, 1);
-        model.setValueAt(txt_emplname.getText(), modelRow, 2);
-        model.setValueAt(txt_emppass.getText(), modelRow, 3);
-        model.setValueAt(role, modelRow, 4);
+        String role = rb_genmanager.isSelected() ? "Gen. Manager" : rb_manager.isSelected() ? "Manager" : "Front Desk";
 
-        JOptionPane.showMessageDialog(this, "Account updated!");
-        clearAccFields();
+        String sql = "UPDATE DBHOUSE.EMPACCOUNTS SET USERNAME=?, F_NAME=?, L_NAME=?, PASS=?, ACC_TYPE=? WHERE EMP_ID=?";
+
+        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, txt_empusername.getText().trim());
+            pst.setString(2, txt_empfname.getText().trim());
+            pst.setString(3, txt_emplname.getText().trim());
+            pst.setString(4, txt_emppass.getText().trim());
+            pst.setString(5, role);
+            pst.setString(6, targetEmpId);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Account updated successfully!");
+
+            clearAccFields();
+            loadEmployeeTable();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btn_acceditAssign_ButtonActionPerformed
 
     private void btn_accdelRemove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accdelRemove_buttonActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
-    int row = tbl_emp.getSelectedRow();
+       int viewRow = tbl_emp.getSelectedRow();
+        if (viewRow == -1) return;
 
-    if (row == -1) {
-        JOptionPane.showMessageDialog(this, "Select account.");
-        return;
-    }
+        int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
+        String targetEmpId = tbl_emp.getModel().getValueAt(modelRow, 0).toString(); 
+        String username = tbl_emp.getModel().getValueAt(modelRow, 1).toString(); 
 
-    model.removeRow(row);
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete user: " + username + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
+             
+                 PreparedStatement pst = con.prepareStatement("DELETE FROM DBHOUSE.EMPACCOUNTS WHERE EMP_ID=?")) {
+
+                pst.setString(1, targetEmpId);
+                pst.executeUpdate();
+
+                clearAccFields();
+                loadEmployeeTable();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_btn_accdelRemove_buttonActionPerformed
 
     private void search_empaccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_empaccActionPerformed
@@ -1188,37 +1345,50 @@ public class Admin extends javax.swing.JFrame {
     
     private void btn_accaddAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accaddAssign_ButtonActionPerformed
 
-        DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
-
-        String user = txt_empusername.getText().trim();
+       String user = txt_empusername.getText().trim();
         String fname = txt_empfname.getText().trim();
         String lname = txt_emplname.getText().trim();
         String password = txt_emppass.getText().trim();
 
         String role = "";
-        
-        if (rb_genmanager.isSelected()) {
-            role = "Gen. Manager";
-        } else if (rb_manager.isSelected()) {
-            role = "Manager";
-        } else if (rb_fdesk.isSelected()) {
-            role = "Front Desk";
-        }
+        if (rb_genmanager.isSelected()) role = "Gen. Manager";
+        else if (rb_manager.isSelected()) role = "Manager";
+        else if (rb_fdesk.isSelected()) role = "Front Desk";
 
         if (user.isEmpty() || fname.isEmpty() || lname.isEmpty() || password.isEmpty() || role.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields and select a role.");
             return;
         }
 
-        for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getValueAt(i, 0).toString().equalsIgnoreCase(user)) {
-                JOptionPane.showMessageDialog(this, "Username already exists.");
-                return;
+        String url = "jdbc:derby://localhost:1527/DBHOUSE";
+       
+        String sql = "INSERT INTO DBHOUSE.EMPACCOUNTS (EMP_ID, USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = DriverManager.getConnection(url, "dbhouse", "dbhouse");
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            String newEmpId = getNextEmpId();
+
+            pst.setString(1, newEmpId);
+            pst.setString(2, user);
+            pst.setString(3, fname);
+            pst.setString(4, lname);
+            pst.setString(5, password);
+            pst.setString(6, role);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Employee Account Created!\nID: " + newEmpId);
+
+            clearAccFields();
+            loadEmployeeTable(); 
+
+        } catch (SQLException ex) {
+            if (ex.getSQLState() != null && ex.getSQLState().equals("23505")) {
+                JOptionPane.showMessageDialog(this, "Username '" + user + "' already exists!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage());
             }
         }
-
-        model.addRow(new Object[]{user, fname, lname, password, role});
-        clearAccFields();
     }//GEN-LAST:event_btn_accaddAssign_ButtonActionPerformed
 
     private void rb_genmanagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_genmanagerActionPerformed
@@ -1317,6 +1487,34 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rb_managerActionPerformed
 
+    private void txt_membVipIdNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membVipIdNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membVipIdNew_tableActionPerformed
+
+    private void txt_membFnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membFnameNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membFnameNew_tableActionPerformed
+
+    private void txt_membLnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membLnameNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membLnameNew_tableActionPerformed
+
+    private void txt_membPassNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membPassNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membPassNew_tableActionPerformed
+
+    private void txt_membEmailNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membEmailNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membEmailNew_tableActionPerformed
+
+    private void txt_membCpnumNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membCpnumNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membCpnumNew_tableActionPerformed
+
+    private void txt_membDateregNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membDateregNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membDateregNew_tableActionPerformed
+
      private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
         btn.setBorder(null);
@@ -1368,19 +1566,95 @@ public class Admin extends javax.swing.JFrame {
         sorter_history.setRowFilter(RowFilter.regexFilter("(?i)" + dateStr, 0));
     }
     private void applyUpcomingDateFilter() {
-    java.util.Date selectedDate = date_upcom.getDate();
+        java.util.Date selectedDate = date_upcom.getDate();
 
-    if (selectedDate == null) {
-        sorter_upcom.setRowFilter(null);
-        return;
+        if (selectedDate == null) {
+            sorter_upcom.setRowFilter(null);
+            return;
+        }
+
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
+        String dateStr = sdf.format(selectedDate);
+
+        sorter_upcom.setRowFilter(RowFilter.regexFilter("(?i)" + dateStr, 0));
     }
-
-    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
-    String dateStr = sdf.format(selectedDate);
-
-    sorter_upcom.setRowFilter(RowFilter.regexFilter("(?i)" + dateStr, 0));
-}
     
+   private void loadEmployeeTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
+        model.setRowCount(0); 
+
+        String url = "jdbc:derby://localhost:1527/DBHOUSE";
+        // Fetch 6 columns
+        String sql = "SELECT EMP_ID, USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE FROM DBHOUSE.EMPACCOUNTS";
+
+        try (Connection con = DriverManager.getConnection(url, "dbhouse", "dbhouse");
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("EMP_ID"),   
+                    rs.getString("USERNAME"), 
+                    rs.getString("F_NAME"),   
+                    rs.getString("L_NAME"),   
+                    rs.getString("PASS"),     
+                    rs.getString("ACC_TYPE")  
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading employees: " + e.getMessage());
+        }
+    }
+   
+     private String getNextEmpId() {
+        int nextNumber = 1000; 
+        String sql = "SELECT MAX(CAST(SUBSTR(EMP_ID, 4) AS INT)) FROM DBHOUSE.EMPACCOUNTS";
+
+        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            if (rs.next()) {
+                int maxId = rs.getInt(1);
+                if (maxId > 0) {
+                    nextNumber = maxId + 1;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("ID Error: " + e.getMessage());
+        }
+        return "EMP" + nextNumber; 
+    }
+     
+     private void loadMemberTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_memb.getModel();
+        model.setRowCount(0); 
+
+        String url = "jdbc:derby://localhost:1527/DBHOUSE";
+
+        String sql = "SELECT VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS FROM DBHOUSE.VIPACCOUNTS";
+
+        try (Connection con = DriverManager.getConnection(url, "dbhouse", "dbhouse");
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("VIP_ID"),
+                    rs.getDate("DATE_REG"), 
+                    rs.getString("F_NAME"),
+                    rs.getString("L_NAME"),
+                    rs.getString("GENDER"),
+                    rs.getDate("BDAY"),
+                    rs.getString("CP_NUM"),
+                    rs.getString("EMAIL"),
+                    rs.getString("PASS")
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading members: " + e.getMessage());
+        }
+    }
      
     /**
  * 
@@ -1437,8 +1711,15 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1475,6 +1756,13 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txt_emplname;
     private javax.swing.JTextField txt_emppass;
     private javax.swing.JTextField txt_empusername;
+    private javax.swing.JTextField txt_membCpnum;
+    private javax.swing.JTextField txt_membDatereg;
+    private javax.swing.JTextField txt_membEmail;
+    private javax.swing.JTextField txt_membFname;
+    private javax.swing.JTextField txt_membLname;
+    private javax.swing.JTextField txt_membPass;
+    private javax.swing.JTextField txt_membVipId;
     // End of variables declaration//GEN-END:variables
 }
 

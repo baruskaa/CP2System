@@ -327,7 +327,6 @@ public class Customer_Login extends javax.swing.JFrame {
         chk_createShowPass.setFont(new java.awt.Font("Century Gothic", 1, 10)); // NOI18N
         chk_createShowPass.setForeground(new java.awt.Color(47, 74, 91));
         chk_createShowPass.setBorder(null);
-        chk_createShowPass.setPreferredSize(new java.awt.Dimension(17, 17));
         chk_createShowPass.addActionListener(this::chk_createShowPassActionPerformed);
 
         jLabel18.setBackground(new java.awt.Color(47, 74, 91));
@@ -371,7 +370,7 @@ public class Customer_Login extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chk_createShowPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(chk_createShowPass))
                     .addComponent(txt_createPass1))
                 .addGap(99, 99, 99))
         );
