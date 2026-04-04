@@ -479,9 +479,9 @@ public class Customer_Login extends javax.swing.JFrame {
         java.util.Date bdayInput = dc_createBday.getDate();
         
         String email = txt_createEmail.getText();
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/VIPAccounts", "adminhouse", "adminhouse")) {
+        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse")) {
 
-            String checkSql = "SELECT EMAIL FROM ADMINHOUSE.VIPACCINFO WHERE EMAIL = ?";
+            String checkSql = "SELECT EMAIL FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ?";
             PreparedStatement checkPst = con.prepareStatement(checkSql);
             checkPst.setString(1, email);
 
@@ -502,9 +502,9 @@ public class Customer_Login extends javax.swing.JFrame {
         
         String phone = txt_createNumber.getText().trim();
        
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/VIPAccounts", "adminhouse", "adminhouse")) {
+        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse")) {
 
-            String checkSql = "SELECT CP_NUM FROM ADMINHOUSE.VIPACCINFO WHERE CP_NUM = ?";
+            String checkSql = "SELECT CP_NUM FROM DBHOUSE.VIPACCOUNTS WHERE CP_NUM = ?";
             PreparedStatement checkPst = con.prepareStatement(checkSql);
             checkPst.setString(1, phone);
 
@@ -528,35 +528,36 @@ public class Customer_Login extends javax.swing.JFrame {
             return;
         }
         
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/VIPAccounts", "adminhouse", "adminhouse")) {
+        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse")) {
 
-            int newId = getNextVipId();
+           
+            String newVipId = getNextVipId(); 
 
             java.sql.Date dateReg = new java.sql.Date(System.currentTimeMillis());
 
-            // 5. Prepare SQL (9 Columns)
-            String sql = "INSERT INTO ADMINHOUSE.VIPACCINFO (VIPID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS) "
+            String sql = "INSERT INTO DBHOUSE.VIPACCOUNTS (VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS) "
                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement pst = con.prepareStatement(sql);
 
-            pst.setInt(1, newId); 
-            pst.setDate(2, dateReg); 
+           
+            pst.setString(1, newVipId);  
+            pst.setDate(2, dateReg);  
             pst.setString(3, fName);
             pst.setString(4, lName);
             pst.setString(5, gender);
-            pst.setDate(6, new java.sql.Date(bdayInput.getTime())); 
+            pst.setDate(6, new java.sql.Date(bdayInput.getTime()));  
             pst.setString(7, phone);
             pst.setString(8, email);
             pst.setString(9, pass);
 
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Registration Successful!\nID: " + newId + "\nDate: " + dateReg);
+            JOptionPane.showMessageDialog(this, "Registration Successful!\nYour VIP ID is: " + newVipId);
 
             slideToLogin();
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_btn_createSignupActionPerformed
 
@@ -570,10 +571,10 @@ public class Customer_Login extends javax.swing.JFrame {
         }
 
         try {
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/VIPAccounts", "adminhouse", "adminhouse");
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
 
             
-            String stmt = "SELECT * FROM ADMINHOUSE.VIPACCINFO WHERE EMAIL = ? AND PASS = ?";
+            String stmt = "SELECT * FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ? AND PASS = ?";
             PreparedStatement pst = con.prepareStatement(stmt);
             pst.setString(1, email);
             pst.setString(2, password);
@@ -689,24 +690,26 @@ public class Customer_Login extends javax.swing.JFrame {
         dc_createBday.setEnabled(false);
     }
     
-    private int getNextVipId() {
-        int nextId = 10001; 
-        String sql = "SELECT MAX(VIPID) FROM ADMINHOUSE.VIPACCINFO";
+    private String getNextVipId() {
+        int nextNumber = 1001; 
+        
+        String sql = "SELECT MAX(CAST(SUBSTR(VIP_ID, 4) AS INT)) FROM DBHOUSE.VIPACCOUNTS";
 
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/VIPAccounts", "adminhouse", "adminhouse");
+        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
              PreparedStatement pst = con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
 
             if (rs.next()) {
                 int maxId = rs.getInt(1);
                 if (maxId > 0) {
-                    nextId = maxId + 1;
+                    nextNumber = maxId + 1;
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error calculating next ID: " + e.getMessage());
+            
+            System.out.println("ID Generation Note: " + e.getMessage());
         }
-        return nextId;
+        return "VIP" + nextNumber; 
     }
     /**
      * @param args the command line arguments

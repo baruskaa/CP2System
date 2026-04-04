@@ -16,9 +16,9 @@ import javax.swing.JOptionPane;
  *
  * @author kyshgel
  */
-public class Admin extends javax.swing.JFrame {
+public class GenManager extends javax.swing.JFrame {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Admin.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GenManager.class.getName());
     private TableRowSorter<DefaultTableModel> sorter_today;
     private TableRowSorter<DefaultTableModel> sorter_history;
     private TableRowSorter<DefaultTableModel> sorter_upcom;
@@ -26,11 +26,10 @@ public class Admin extends javax.swing.JFrame {
     private TableRowSorter<DefaultTableModel> sorter_memb;
     
     
-    public Admin() {
+    public GenManager() {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        buttonGroup1.add(rb_genmanager);
         buttonGroup1.add(rb_manager);
         buttonGroup1.add(rb_fdesk);
         
@@ -319,9 +318,7 @@ public class Admin extends javax.swing.JFrame {
                     txt_emppass.setText(tbl_emp.getModel().getValueAt(modelRow, 3).toString());
 
                     String role = tbl_emp.getModel().getValueAt(modelRow, 4).toString();
-                    if (role.equalsIgnoreCase("Gen. Manager")) {
-                        rb_genmanager.setSelected(true);
-                    } else if (role.equalsIgnoreCase("Manager")) {
+                    if (role.equalsIgnoreCase("Manager")) {
                         rb_manager.setSelected(true);
                     } else if (role.equalsIgnoreCase("Front Desk")) {
                         rb_fdesk.setSelected(true);
@@ -379,6 +376,7 @@ public class Admin extends javax.swing.JFrame {
         btn_navLogout = new javax.swing.JButton();
         pnl_header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        lbl_username = new javax.swing.JLabel();
         pnl_memb = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
@@ -387,10 +385,10 @@ public class Admin extends javax.swing.JFrame {
         tbl_memb = new javax.swing.JTable();
         bg_today4 = new javax.swing.JLabel();
         pnl_emp = new javax.swing.JPanel();
-        rb_genmanager = new javax.swing.JRadioButton();
-        rb_fdesk = new javax.swing.JRadioButton();
         rb_manager = new javax.swing.JRadioButton();
+        rb_fdesk = new javax.swing.JRadioButton();
         jLabel15 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         txt_empusername = new javax.swing.JTextField();
         txt_emppass = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
@@ -557,7 +555,12 @@ public class Admin extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("ADMIN DASHBOARD");
+        jLabel2.setText("BOOKING DASHBOARD");
+
+        lbl_username.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        lbl_username.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_username.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lbl_username.setText("General Manager");
 
         javax.swing.GroupLayout pnl_headerLayout = new javax.swing.GroupLayout(pnl_header);
         pnl_header.setLayout(pnl_headerLayout);
@@ -566,13 +569,17 @@ public class Admin extends javax.swing.JFrame {
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(314, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
         pnl_headerLayout.setVerticalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addContainerGap(51, Short.MAX_VALUE)
-                .addComponent(jLabel2)
+                .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(lbl_username))
                 .addGap(33, 33, 33))
         );
 
@@ -653,42 +660,42 @@ public class Admin extends javax.swing.JFrame {
         pnl_emp.setForeground(new java.awt.Color(202, 199, 199));
         pnl_emp.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        rb_genmanager.setForeground(new java.awt.Color(55, 77, 94));
-        rb_genmanager.setText("Gen. Manager");
-        rb_genmanager.addActionListener(this::rb_genmanagerActionPerformed);
-        pnl_emp.add(rb_genmanager, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 350, -1, -1));
-
-        rb_fdesk.setForeground(new java.awt.Color(55, 77, 94));
-        rb_fdesk.setText("Front Desk");
-        pnl_emp.add(rb_fdesk, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 330, -1, -1));
-
         rb_manager.setForeground(new java.awt.Color(55, 77, 94));
         rb_manager.setText("Manager");
         rb_manager.addActionListener(this::rb_managerActionPerformed);
-        pnl_emp.add(rb_manager, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 330, -1, -1));
+        pnl_emp.add(rb_manager, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 350, -1, -1));
+
+        rb_fdesk.setForeground(new java.awt.Color(55, 77, 94));
+        rb_fdesk.setText("Front Desk");
+        pnl_emp.add(rb_fdesk, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 350, -1, -1));
 
         jLabel15.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(55, 77, 94));
         jLabel15.setText("Search:");
         pnl_emp.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 60, 20));
 
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel1.setText("MANAGE ACCOUNTS");
+        pnl_emp.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 80, 150, 20));
+
         txt_empusername.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_empusername.addActionListener(this::txt_empusernameNew_tableActionPerformed);
-        pnl_emp.add(txt_empusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 110, 160, 30));
+        pnl_emp.add(txt_empusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, 160, 30));
 
         txt_emppass.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_emppass.addActionListener(this::txt_emppassNew_tableActionPerformed);
-        pnl_emp.add(txt_emppass, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 290, 160, 30));
+        pnl_emp.add(txt_emppass, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 310, 160, 30));
 
         jLabel16.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(55, 77, 94));
         jLabel16.setText("Username:");
-        pnl_emp.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, -1, -1));
+        pnl_emp.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 110, -1, -1));
 
         jLabel13.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(55, 77, 94));
         jLabel13.setText("Password:");
-        pnl_emp.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 270, -1, -1));
+        pnl_emp.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 290, -1, -1));
 
         btn_accadd.setBackground(new java.awt.Color(65, 93, 120));
         btn_accadd.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -712,12 +719,12 @@ public class Admin extends javax.swing.JFrame {
 
         txt_emplname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_emplname.addActionListener(this::txt_emplnameNew_tableActionPerformed);
-        pnl_emp.add(txt_emplname, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 230, 160, 30));
+        pnl_emp.add(txt_emplname, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 250, 160, 30));
 
         jLabel18.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(55, 77, 94));
         jLabel18.setText("Last Name:");
-        pnl_emp.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 210, -1, -1));
+        pnl_emp.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 230, -1, -1));
 
         btn_accdel.setBackground(new java.awt.Color(65, 93, 120));
         btn_accdel.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -738,12 +745,12 @@ public class Admin extends javax.swing.JFrame {
 
         txt_empfname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_empfname.addActionListener(this::txt_empfnameNew_tableActionPerformed);
-        pnl_emp.add(txt_empfname, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 170, 160, 30));
+        pnl_emp.add(txt_empfname, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 190, 160, 30));
 
         jLabel17.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(55, 77, 94));
         jLabel17.setText("First Name:");
-        pnl_emp.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 150, -1, -1));
+        pnl_emp.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 170, -1, -1));
 
         search_empacc.addActionListener(this::search_empaccActionPerformed);
         search_empacc.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1140,11 +1147,7 @@ public class Admin extends javax.swing.JFrame {
         }
 
         int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
-        
-        String role = "";
-        if (rb_genmanager.isSelected()) role = "Gen. Manager";
-        else if (rb_manager.isSelected()) role = "Manager";
-        else if (rb_fdesk.isSelected()) role = "Front Desk";
+        String role = rb_manager.isSelected() ? "Manager" : "Front Desk";
 
         model.setValueAt(txt_empusername.getText(), modelRow, 0);
         model.setValueAt(txt_empfname.getText(), modelRow, 1);
@@ -1196,10 +1199,8 @@ public class Admin extends javax.swing.JFrame {
         String password = txt_emppass.getText().trim();
 
         String role = "";
-        
-        if (rb_genmanager.isSelected()) {
-            role = "Gen. Manager";
-        } else if (rb_manager.isSelected()) {
+
+        if (rb_manager.isSelected()) {
             role = "Manager";
         } else if (rb_fdesk.isSelected()) {
             role = "Front Desk";
@@ -1221,9 +1222,9 @@ public class Admin extends javax.swing.JFrame {
         clearAccFields();
     }//GEN-LAST:event_btn_accaddAssign_ButtonActionPerformed
 
-    private void rb_genmanagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_genmanagerActionPerformed
+    private void rb_managerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_managerActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rb_genmanagerActionPerformed
+    }//GEN-LAST:event_rb_managerActionPerformed
 
     private void btn_empMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_empMouseEntered
         if (!btn_emp.getForeground().equals(new Color(255, 200, 120))) {
@@ -1313,10 +1314,6 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_emp1ActionPerformed
 */
-    private void rb_managerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_managerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rb_managerActionPerformed
-
      private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
         btn.setBorder(null);
@@ -1405,7 +1402,7 @@ public class Admin extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Admin().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new GenManager().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1426,6 +1423,7 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private com.toedter.calendar.JDateChooser date_history;
     private com.toedter.calendar.JDateChooser date_upcom;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1451,6 +1449,7 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lbl_total;
+    private javax.swing.JLabel lbl_username;
     private javax.swing.JPanel pnl_emp;
     private javax.swing.JPanel pnl_header;
     private javax.swing.JPanel pnl_history;
@@ -1459,7 +1458,6 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_today;
     private javax.swing.JPanel pnl_upcom;
     private javax.swing.JRadioButton rb_fdesk;
-    private javax.swing.JRadioButton rb_genmanager;
     private javax.swing.JRadioButton rb_manager;
     private javax.swing.JTextField search_empacc;
     private javax.swing.JTextField search_history;

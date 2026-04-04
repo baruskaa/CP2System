@@ -514,13 +514,10 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
         String newCPNum = txt_profCPNum.getText().trim();
         String newPass = new String(txt_profPass.getPassword());
 
-        // 2. SQL Update Query
-        // We use the OLD email (from UserSession) to find the record, 
-        // and set the NEW email into the column.
-        String sql = "UPDATE ADMINHOUSE.VIPACCINFO SET F_NAME=?, L_NAME=?, EMAIL=?, CP_NUM=?, PASS=? WHERE EMAIL=?";
+        String str = "UPDATE DBHOUSE.VIPACCOUNTS SET F_NAME=?, L_NAME=?, EMAIL=?, CP_NUM=?, PASS=? WHERE EMAIL=?";
 
-        try (java.sql.Connection con = java.sql.DriverManager.getConnection("jdbc:derby://localhost:1527/VIPAccounts", "adminhouse", "adminhouse");
-             java.sql.PreparedStatement pst = con.prepareStatement(sql)) {
+        try (java.sql.Connection con = java.sql.DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
+             java.sql.PreparedStatement pst = con.prepareStatement(str)) {
 
             pst.setString(1, newFName);
             pst.setString(2, newLName);
@@ -532,19 +529,14 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
             int rowsAffected = pst.executeUpdate();
 
             if (rowsAffected > 0) {
-                // --- CRITICAL STEP ---
-                // Update the Global Session with the new email 
-                // so the next time the app searches, it uses the correct key.
                 UserSession.loggedInEmail = newEmail; 
 
                 javax.swing.JOptionPane.showMessageDialog(this, "Profile updated successfully!");
 
-                // Optional: Refresh the greeting label if it uses the name
-                // greet_user_accprof_label1.setText("Hello, " + newFName + "!");
             }
 
         } catch (java.sql.SQLException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Update Error: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "DB Error: " + e.getMessage());
             e.printStackTrace();
         }
     }//GEN-LAST:event_btn_profSaveActionPerformed
@@ -577,9 +569,9 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navProfActionPerformed
 
     private void loadUserProfile() {
-        String sql = "SELECT * FROM ADMINHOUSE.VIPACCINFO WHERE EMAIL = ?";
+        String sql = "SELECT * FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ?";
 
-        try (java.sql.Connection con = java.sql.DriverManager.getConnection("jdbc:derby://localhost:1527/VIPAccounts", "adminhouse", "adminhouse");
+        try (java.sql.Connection con = java.sql.DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
              java.sql.PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, UserSession.loggedInEmail); 
@@ -594,7 +586,6 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
                 txt_profBday.setText(rs.getString("BDAY"));
                 txt_profPass.setText(rs.getString("PASS"));
 
-                // Set your editable/uneditable preferences here
                 txt_profGender.setEditable(false);
                 txt_profBday.setEditable(false);
             }
