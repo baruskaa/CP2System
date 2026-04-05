@@ -15,36 +15,29 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_BookingPayment.class.getName());
     
-    private Customer_BookingWindow previousBookingWindow;
-    private int bookingId;
-    private String mealType;
+    private JFrame previousWindow;
+    private String fName, lName, email, phone, mealType;
+    private java.util.Date bookingDate;
     private int pax;
     
-    private Customer_BookingWindow previousWindow;
-    /**
-     * Creates new form Payment_Window_Method
-    */
     private void updatePaymentFields() {
-    boolean isCard = rb_payCard.isSelected();
-    boolean isEwallet = rb_payGcash.isSelected() || rb_payPayMaya.isSelected();
+        boolean isCard = rb_payCard.isSelected();
+        boolean isEwallet = rb_payGcash.isSelected() || rb_payPayMaya.isSelected();
 
-    // Enable/disable card fields
-    cardnum_txt_payment.setEnabled(isCard);
-    secnum_txt_payment.setEnabled(isCard);
-    cardexp_txt_payment.setEnabled(isCard);
+        cardnum_txt_payment.setEnabled(isCard);
+        secnum_txt_payment.setEnabled(isCard);
+        cardexp_txt_payment.setEnabled(isCard);
 
-    // Enable/disable ewallet field
-    ewalletnum_txt_payment.setEnabled(isEwallet);
+        ewalletnum_txt_payment.setEnabled(isEwallet);
 
-    // Clear fields when disabled
-    if (!isCard) {
-        cardnum_txt_payment.setText("");
-        secnum_txt_payment.setText("");
-        cardexp_txt_payment.setText("");
-    }
-    if (!isEwallet) {
-        ewalletnum_txt_payment.setText("");
-    }
+        if (!isCard) {
+            cardnum_txt_payment.setText("");
+            secnum_txt_payment.setText("");
+            cardexp_txt_payment.setText("");
+        }
+        if (!isEwallet) {
+            ewalletnum_txt_payment.setText("");
+        }
     }
     
     public Customer_BookingPayment() {
@@ -55,21 +48,27 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
     }
     
 
-    public Customer_BookingPayment(Customer_BookingWindow previousWindow,
-                               int bookingId, String mealType, int pax) {
-    this.previousWindow = previousWindow;
-    this.bookingId = bookingId;
-    this.mealType = mealType;
-    this.pax = pax;
+    public Customer_BookingPayment(JFrame previousWindow, String firstName, String lastName, 
+                                   String email, String phone, java.util.Date bookingDate, 
+                                   String mealType, int pax) {
+        
+        this.previousWindow = previousWindow;
+        this.fName = firstName;
+        this.lName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.bookingDate = bookingDate;
+        this.mealType = mealType;
+        this.pax = pax;
 
-    initComponents();
-    setLocationRelativeTo(null);
+        initComponents();
+        setLocationRelativeTo(null);
 
-    buttonGroup1.add(rb_payCard);
-    buttonGroup1.add(rb_payGcash);
-    buttonGroup1.add(rb_payPayMaya);
+        buttonGroup1.add(rb_payCard);
+        buttonGroup1.add(rb_payGcash);
+        buttonGroup1.add(rb_payPayMaya);
 
-    updatePaymentFields();
+        updatePaymentFields();
     }
     
     @SuppressWarnings("unchecked")
@@ -117,10 +116,10 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         cardexp_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         getContentPane().add(cardexp_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 170, 30));
 
-        btn_toconfirm.setBackground(new java.awt.Color(185, 153, 79));
+        btn_toconfirm.setBackground(new java.awt.Color(57, 77, 94));
         btn_toconfirm.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         btn_toconfirm.setText("Confirm Reservation");
-        btn_toconfirm.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btn_toconfirm.setBorder(null);
         btn_toconfirm.addActionListener(this::btn_toconfirmActionPerformed);
         getContentPane().add(btn_toconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 490, 150, 30));
 
@@ -160,28 +159,18 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
             return;
         }
 
-        boolean saved = Booking_DBConnection.savePayment(
-            bookingId,
-            paymentMethod,
-            payerName,
-            ewalletNum.isEmpty() ? null : ewalletNum,
-            cardNum.isEmpty() ? null : cardNum,
-            secNum.isEmpty() ? null : secNum,
-            cardExp.isEmpty() ? null : cardExp
+        Customer_BookingConfirmation confirmationWindow = new Customer_BookingConfirmation(
+            this, fName, lName, email, phone, bookingDate, mealType, pax, 
+            paymentMethod, payerName, ewalletNum, cardNum, secNum, cardExp
         );
-
-        if (!saved) {
-            JOptionPane.showMessageDialog(this, "Payment could not be saved. Please try again.");
-            return;
-        }
-
-        new Customer_BookingConfirmation(this, bookingId, mealType).setVisible(true);
+        
+        confirmationWindow.setVisible(true);
         this.dispose();
 
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         ex.printStackTrace();
-        } 
+        }
     }//GEN-LAST:event_btn_toconfirmActionPerformed
 
     private void secnum_txt_paymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secnum_txt_paymentActionPerformed

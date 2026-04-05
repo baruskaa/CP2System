@@ -77,15 +77,13 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
                                       <Component id="jLabel19" min="-2" pref="108" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="chk_loginShowPass" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="txt_loginPass" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="btn_login" alignment="1" min="-2" pref="275" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
@@ -93,11 +91,15 @@
                                   </Group>
                                   <Component id="jLabel4" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
                                   <Component id="jLabel5" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
-                                  <Component id="txt_loginEmail" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="btn_login" alignment="0" pref="282" max="32767" attributes="0"/>
+                                      <Component id="txt_loginEmail" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txt_loginPass" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="471" max="32767" attributes="0"/>
+                      <EmptySpace pref="465" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -110,21 +112,21 @@
                       <Component id="txt_loginEmail" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="txt_loginPass" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="chk_loginShowPass" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel19" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chk_loginShowPass" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btn_login" min="-2" pref="32" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btn_loginSignup" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
                       <Component id="btn_emplogin1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -304,7 +306,7 @@
         <Container class="gui.ImagePanelcreate" name="imagePanelcreate">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="0" width="-1" height="-1"/>
+              <AbsoluteConstraints x="0" y="580" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
 
@@ -321,7 +323,6 @@
                               <EmptySpace min="-2" pref="172" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="txt_createFirstName" alignment="0" max="32767" attributes="0"/>
                               <Component id="txt_createNumber" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -334,6 +335,7 @@
                                       <Component id="dc_createBday" min="-2" pref="155" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <Component id="txt_createFirstName" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
@@ -342,14 +344,14 @@
                           <Component id="jLabel14" min="-2" pref="108" max="-2" attributes="0"/>
                           <Component id="jLabel11" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
                           <Component id="btn_createSignup" alignment="1" min="-2" pref="177" max="-2" attributes="0"/>
-                          <Component id="txt_createEmail" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txt_createLastName" alignment="0" pref="320" max="32767" attributes="0"/>
+                          <Component id="txt_createEmail" alignment="0" pref="320" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel18" min="-2" pref="108" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="chk_createShowPass" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="txt_createPass1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txt_createLastName" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
                   </Group>

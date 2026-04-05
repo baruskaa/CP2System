@@ -104,12 +104,13 @@ public class Employee_Login extends javax.swing.JFrame {
         btn_emploginLogin.addActionListener(this::btn_emploginLoginActionPerformed);
 
         jLabel19.setBackground(new java.awt.Color(47, 74, 91));
-        jLabel19.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(47, 74, 91));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Show Password");
         jLabel19.setToolTipText("");
 
+        chk_loginShowPass.setBackground(new java.awt.Color(153, 153, 153));
         chk_loginShowPass.addActionListener(this::chk_loginShowPassActionPerformed);
 
         javax.swing.GroupLayout imagePanelemplogin2Layout = new javax.swing.GroupLayout(imagePanelemplogin2);
@@ -124,20 +125,21 @@ public class Employee_Login extends javax.swing.JFrame {
                             .addComponent(lbl_welcomebck)
                             .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
                                 .addGap(17, 17, 17)
-                                .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txt_emploginPass)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txt_emploginUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
-                                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(chk_loginShowPass)))))))
+                                .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txt_emploginPass)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_emploginUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
+                                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(chk_loginShowPass))))))
                     .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
                         .addGap(253, 253, 253)
-                        .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
+                        .addGap(390, 390, 390)
+                        .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(294, Short.MAX_VALUE))
         );
         imagePanelemplogin2Layout.setVerticalGroup(
@@ -159,9 +161,9 @@ public class Employee_Login extends javax.swing.JFrame {
                 .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chk_loginShowPass)
                     .addComponent(jLabel19))
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -200,60 +202,63 @@ public class Employee_Login extends javax.swing.JFrame {
             return;
         }
         
+        // ADMIN ACC
         if (username.equals("admin") && password.equals("admin")) {
             new Admin().setVisible(true); 
             this.dispose();               
             return;                       
         }
 
-        String url = "jdbc:derby://localhost:1527/DBHOUSE";
-        String dbUser = "dbhouse";
-        String dbPass = "dbhouse";
+        Connect db = new Connect();
+        db.DoConnect();
 
-        try (Connection con = DriverManager.getConnection(url, dbUser, dbPass)) {
-            String sql = "SELECT * FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME = ? AND PASS = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, username);
-            pst.setString(2, password);
+        if (db.con != null) {
+            
+            try (Connection con = db.con;
+                 PreparedStatement pst = con.prepareStatement("SELECT * FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME = ? AND PASS = ?")) {
+                 
+                pst.setString(1, username);
+                pst.setString(2, password);
 
-            ResultSet rs = pst.executeQuery();
+                try (ResultSet rs = pst.executeQuery()) {
+                    if (rs.next()) {
+                        String accType = rs.getString("ACC_TYPE"); 
+                        String fullName = rs.getString("F_NAME") + " " + rs.getString("L_NAME");
 
-            if (rs.next()) {
-                String accType = rs.getString("ACC_TYPE"); 
-                String fullName = rs.getString("F_NAME") + " " + rs.getString("L_NAME");
+                        JOptionPane.showMessageDialog(this, "Welcome, " + fullName + ", " + accType + ".", "Login Successful", JOptionPane.PLAIN_MESSAGE);
 
-                JOptionPane.showMessageDialog(this, "Welcome, " + fullName + ", " + accType + ".");
+                        switch (accType.toLowerCase()) {
+                            case "admin":
+                                new Admin().setVisible(true);
+                                break;
 
-                switch (accType.toLowerCase()) {
-                    case "admin":
-                        new Admin().setVisible(true);
-                        break;
+                            case "gen. manager": 
+                                new GenManager().setVisible(true); 
+                                break;
 
-                    case "gen. manager": 
-                        new GenManager().setVisible(true); 
-                        break;
+                            case "manager":
+                                new Manager().setVisible(true);
+                                break;
 
-                    case "manager":
-                        new Manager().setVisible(true);
-                        break;
+                            case "front desk":
+                                new FrontDesk().setVisible(true); 
+                                break;
 
-                    case "front desk":
-                        new FrontDesk().setVisible(true); 
-                        break;
+                            default:
+                                JOptionPane.showMessageDialog(this, "Access Denied");
+                                return;
+                        }
 
-                    default:
-                        JOptionPane.showMessageDialog(this, "Access Denied: Role not recognized.");
-                        return;
+                        this.dispose(); 
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Invalid Username or Password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
-                this.dispose(); 
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid Username or Password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
             }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_btn_emploginLoginActionPerformed
 

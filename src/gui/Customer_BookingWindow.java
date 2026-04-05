@@ -7,6 +7,10 @@ package gui;
 import javax.swing.*;
 import javax.swing.SpinnerNumberModel;
 import java.util.Date;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -16,49 +20,70 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_BookingWindow.class.getName());
 
-    /**
-
-     */
-    public Customer_BookingWindow() {
+    public Customer_BookingWindow(java.util.Date passedDate, int passedPax, String passedTime) {
         initComponents();
         setLocationRelativeTo(null);
         
+        dp_date.setDate(passedDate);
         
-        SpinnerNumberModel model = new SpinnerNumberModel(1, 1, 50, 1);
+        SpinnerNumberModel model = new SpinnerNumberModel(passedPax, 1, 50, 1);
         spn_pax.setModel(model);
         
+        cb_time.setSelectedItem(passedTime.toUpperCase());
+
         cb_time.addActionListener(evt -> updateSeatAvailability());
         dp_date.getDateEditor().addPropertyChangeListener(evt -> {
             if ("date".equals(evt.getPropertyName())) updateSeatAvailability();
         });
         spn_pax.addChangeListener(evt -> updateSeatAvailability());
+
+        loadUserData();
+        updateSeatAvailability();
     }
     
     private void updateSeatAvailability() {
-        try {
-        String mealType = cb_time.getSelectedItem().toString();
         Date utilDate = dp_date.getDate();
-        int pax = (Integer) spn_pax.getValue();
 
         if (utilDate == null) {
             btn_topay.setEnabled(false);
-            return;
-        }
-
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        int totalBooked = Booking_DBConnection.getTotalBooked(mealType, sqlDate);
-
-        if (totalBooked + pax > 100) {
-            btn_topay.setEnabled(false);
-            JOptionPane.showMessageDialog(this, "Not enough seats available!");
         } else {
             btn_topay.setEnabled(true);
         }
-
-    } catch (Exception ex) {
-        ex.printStackTrace();
-        btn_topay.setEnabled(true); // fail-safe
     }
+    
+    private void loadUserData() {
+        if (UserSession.loggedInEmail != null && !UserSession.loggedInEmail.isEmpty()) {
+            
+            txt_email.setText(UserSession.loggedInEmail);
+            
+            txt_email.setEditable(false);
+            txt_FName.setEditable(false);
+            txt_LName.setEditable(false);
+            txt_num.setEditable(false);
+
+            Connect db = new Connect();
+            db.DoConnect();
+
+            if (db.con != null) {
+                String query = "SELECT F_NAME, L_NAME, CP_NUM FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ?";
+                
+                try (Connection con = db.con;
+                     PreparedStatement pst = con.prepareStatement(query)) {
+                     
+                    pst.setString(1, UserSession.loggedInEmail);
+                    
+                    try (ResultSet rs = pst.executeQuery()) {
+                        if (rs.next()) {
+                            txt_FName.setText(rs.getString("F_NAME"));
+                            txt_LName.setText(rs.getString("L_NAME"));
+                            txt_num.setText(rs.getString("CP_NUM"));
+                        }
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Failed to load user account details: " + ex.getMessage());
+                }
+            }
+        }
     }
 
     /**
@@ -97,9 +122,10 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         spn_pax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         getContentPane().add(spn_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 80, 30));
 
-        btn_topay.setBackground(new java.awt.Color(185, 153, 79));
+        btn_topay.setBackground(new java.awt.Color(57, 77, 94));
         btn_topay.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         btn_topay.setText("Proceed to Payment");
+        btn_topay.setBorder(null);
         btn_topay.addActionListener(this::btn_topayActionPerformed);
         getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 490, 170, 30));
 
@@ -131,125 +157,53 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
 
     private void btn_topayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_topayActionPerformed
         try {
-        String firstName = txt_FName.getText().trim();
-        String lastName = txt_LName.getText().trim();
-        String email = txt_email.getText().trim();
-        String phone = txt_num.getText().trim();
-        int pax = (Integer) spn_pax.getValue();
-        String mealType = cb_time.getSelectedItem().toString();
-        Date utilDate = dp_date.getDate();
+            String firstName = txt_FName.getText().trim();
+            String lastName = txt_LName.getText().trim();
+            String email = txt_email.getText().trim();
+            String phone = txt_num.getText().trim();
+            int pax = (Integer) spn_pax.getValue();
+            String mealType = cb_time.getSelectedItem().toString();
+            Date utilDate = dp_date.getDate();
 
-        // ✅ Validation
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || utilDate == null) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields!");
-            return;
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || utilDate == null) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields!");
+                return;
+            }
+
+            if (!Booking_DBConnection.isValidEmail(email)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid email address!");
+                return;
+            }
+
+            if (!Booking_DBConnection.isValidPhone(phone)) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number!");
+                return;
+            }
+
+            Customer_BookingPayment paymentWindow = new Customer_BookingPayment(this, firstName, lastName, email, phone, utilDate, mealType, pax);
+            paymentWindow.setVisible(true);
+            this.setVisible(false); // hide this window
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            ex.printStackTrace();
         }
-
-        if (!Booking_DBConnection.isValidEmail(email)) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid email address!");
-            return;
-        }
-
-        if (!Booking_DBConnection.isValidPhone(phone)) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid phone number!");
-            return;
-        }
-
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
-        if (Booking_DBConnection.isDuplicateBooking(email, phone, mealType, sqlDate)) {
-            JOptionPane.showMessageDialog(this, "You have already booked for this date and time!");
-            return;
-        }
-
-        int totalBooked = Booking_DBConnection.getTotalBooked(mealType, sqlDate);
-        if (totalBooked + pax > 100) {
-            JOptionPane.showMessageDialog(this, "Not enough seats available!");
-            return;
-        }
-
-        int bookingId = Booking_DBConnection.getNextBookingId(mealType);
-
-        boolean saved = Booking_DBConnection.saveBooking(bookingId, firstName, lastName, email, phone, sqlDate, mealType, pax);
-        if (!saved) {
-            JOptionPane.showMessageDialog(this, "Booking could not be saved. Please try again.");
-            return;
-        }
-
-        // ✅ Open Payment Window safely
-        Customer_BookingPayment paymentWindow = new Customer_BookingPayment(this, bookingId, mealType, pax);
-        paymentWindow.setVisible(true);
-        this.setVisible(false); // hide this window
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-        ex.printStackTrace();
-    }
     }//GEN-LAST:event_btn_topayActionPerformed
 
     private void btn_backhomepageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backhomepageActionPerformed
-        try {
-        String firstName = txt_FName.getText().trim();
-        String lastName = txt_LName.getText().trim();
-        String email = txt_email.getText().trim();
-        String phone = txt_num.getText().trim();
-        int pax = (Integer) spn_pax.getValue();
-        String mealType = cb_time.getSelectedItem().toString();
-        Date utilDate = dp_date.getDate();
+        
+        int choice = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel your reservation?", "Cancel Reservation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-        // ✅ Validation
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || utilDate == null) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields!");
-            return;
-        }
-
-        if (!Booking_DBConnection.isValidEmail(email)) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid email address!");
-            return;
-        }
-
-        if (!Booking_DBConnection.isValidPhone(phone)) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid phone number!");
-            return;
-        }
-
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
-        if (Booking_DBConnection.isDuplicateBooking(email, phone, mealType, sqlDate)) {
-            JOptionPane.showMessageDialog(this, "You have already booked for this date and time!");
-            return;
-        }
-
-        int totalBooked = Booking_DBConnection.getTotalBooked(mealType, sqlDate);
-        if (totalBooked + pax > 100) {
-            JOptionPane.showMessageDialog(this, "Not enough seats available!");
-            return;
-        }
-
-        int bookingId = Booking_DBConnection.getNextBookingId(mealType);
-
-        boolean saved = Booking_DBConnection.saveBooking(bookingId, firstName, lastName, email, phone, sqlDate, mealType, pax);
-        if (!saved) {
-            JOptionPane.showMessageDialog(this, "Booking could not be saved. Please try again.");
-            return;
-        }
-
-        // ✅ Open Payment Window safely
-        Customer_BookingPayment paymentWindow = new Customer_BookingPayment(this, bookingId, mealType, pax);
-        paymentWindow.setVisible(true);
-        this.setVisible(false); // hide this window
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-        ex.printStackTrace();
-    }
+        if (choice == JOptionPane.YES_OPTION) {
+            new Customer_Homepage().setVisible(true);
+            this.dispose(); 
+        } 
     }//GEN-LAST:event_btn_backhomepageActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new Customer_BookingWindow().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

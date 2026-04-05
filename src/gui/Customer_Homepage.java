@@ -5,6 +5,10 @@
 package gui;
 
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -20,6 +24,10 @@ public class Customer_Homepage extends javax.swing.JFrame {
     public Customer_Homepage() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        makeFlatButton(btn_bookNow);
+        makeFlatButton(btn_navReservations);
+        makeFlatButton(btn_navLogout);
         
     }
 
@@ -56,22 +64,22 @@ public class Customer_Homepage extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        dc_date.setDateFormatString("MM-dd-yy\n");
-        dc_date.setMaxSelectableDate(new java.util.Date(1798650075000L));
-        dc_date.setMinSelectableDate(new java.util.Date(1772298075000L));
-        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 410, 100, 30));
+        dc_date.setBackground(new java.awt.Color(255, 255, 255));
+        dc_date.setDateFormatString("MM-dd-yy");
+        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 410, 140, 30));
 
-        sp_guest.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
-        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 410, 70, 30));
+        sp_guest.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        sp_guest.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 90, 30));
 
-        cb_time.setBackground(new java.awt.Color(57, 77, 94));
+        cb_time.setBackground(new java.awt.Color(255, 255, 255));
         cb_time.setForeground(new java.awt.Color(255, 255, 255));
         cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lunch", "Dinner" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
-        jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 410, 70, 30));
+        jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 410, 100, 30));
 
         btn_bookNow.setBackground(new java.awt.Color(153, 0, 0));
-        btn_bookNow.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
+        btn_bookNow.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         btn_bookNow.setForeground(new java.awt.Color(255, 255, 255));
         btn_bookNow.setText("Book Now");
         btn_bookNow.setBorder(null);
@@ -80,9 +88,9 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_bookNow.setFocusable(false);
         btn_bookNow.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_bookNow.addActionListener(this::btn_bookNowActionPerformed);
-        jPanel1.add(btn_bookNow, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 400, 90, 30));
+        jPanel1.add(btn_bookNow, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 400, 100, 30));
 
-        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bg10.png"))); // NOI18N
+        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgRevised.png"))); // NOI18N
         bg_homepage.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         bg_homepage.setMaximumSize(new java.awt.Dimension(760, 580));
         bg_homepage.setMinimumSize(new java.awt.Dimension(760, 580));
@@ -192,7 +200,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_navDine.addActionListener(this::btn_navDineActionPerformed);
         pnl_nav.add(btn_navDine, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 120, 30));
 
-        btn_navReservations.setBackground(new java.awt.Color(185, 153, 79));
+        btn_navReservations.setBackground(new java.awt.Color(199, 159, 95));
         btn_navReservations.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         btn_navReservations.setForeground(new java.awt.Color(55, 91, 115));
         btn_navReservations.setText("MY RESERVATIONS");
@@ -258,7 +266,17 @@ public class Customer_Homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_cb_timeActionPerformed
 
     private void btn_bookNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bookNowActionPerformed
-        new Customer_BookingWindow().setVisible(true);
+      
+        java.util.Date selectedDate = dc_date.getDate();
+        int pax = (Integer) sp_guest.getValue();
+        String mealTime = cb_time.getSelectedItem().toString();
+
+        if (selectedDate == null) {
+            JOptionPane.showMessageDialog(this, "Please select a date first.");
+            return;
+        }
+
+        new Customer_BookingWindow(selectedDate, pax, mealTime).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_bookNowActionPerformed
 
@@ -396,6 +414,14 @@ public class Customer_Homepage extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_navProfActionPerformed
 
+    private void makeFlatButton(javax.swing.JButton btn) {
+        btn.setFocusPainted(false);
+        btn.setBorder(null);
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }
+    
     /**
      * @param args the command line arguments
      */

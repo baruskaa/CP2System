@@ -6,6 +6,7 @@ package gui;
 
 import javax.swing.*;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author lotte
@@ -14,59 +15,59 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_BookingConfirmation.class.getName());
     
-    private Customer_BookingPayment previousPaymentWindow;
-    private int bookingId;
-    private String mealType;
+    private JFrame previousPaymentWindow;
+    private String fName, lName, email, phone, mealType, paymentMethod, payerName, ewalletNum, cardNum, secNum, cardExp;
+    private java.util.Date bookingDate;
+    private int pax;
     
     
-    public Customer_BookingConfirmation(Customer_BookingPayment previousPaymentWindow, int bookingId, String mealType) {
+    public Customer_BookingConfirmation(JFrame previousPaymentWindow, String fName, String lName, String email, 
+                                        String phone, java.util.Date bookingDate, String mealType, int pax, 
+                                        String paymentMethod, String payerName, String ewalletNum, 
+                                        String cardNum, String secNum, String cardExp) {
+        
         this.previousPaymentWindow = previousPaymentWindow;
-        this.bookingId = bookingId;
+        this.fName = fName;
+        this.lName = lName;
+        this.email = email;
+        this.phone = phone;
+        this.bookingDate = bookingDate;
         this.mealType = mealType;
+        this.pax = pax;
+        this.paymentMethod = paymentMethod;
+        this.payerName = payerName;
+        this.ewalletNum = ewalletNum;
+        this.cardNum = cardNum;
+        this.secNum = secNum;
+        this.cardExp = cardExp;
+        
         initComponents();
-        loadBookingData();
         setLocationRelativeTo(null);
+        
+        displayBookingData();
     }
     
-    private void loadBookingData() {
-    try (Connection conn = Booking_DBConnection.getConnection()) {
-        if (conn == null) {
-            JOptionPane.showMessageDialog(this, "Database not connected.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+    private void displayBookingData() {
+        lbl_name.setText(fName + " " + lName);
+        lbl_email.setText(email);
+        lbl_phonenum.setText(phone);
+        
+        if (bookingDate != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+            lbl_rsvdate.setText(sdf.format(bookingDate));
         }
-
-        // ─── Load Booking Info ───
-        String bookingQuery = "SELECT * FROM bookings WHERE booking_id=?";
-        try (PreparedStatement stmt = conn.prepareStatement(bookingQuery)) {
-            stmt.setInt(1, bookingId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    lbl_name.setText(rs.getString("first_name") + " " + rs.getString("last_name"));
-                    lbl_email.setText(rs.getString("email"));
-                    lbl_phonenum.setText(rs.getString("phone"));
-                    lbl_rsvdate.setText(rs.getDate("date").toString());
-                    lbl_rsvtime.setText(rs.getString("meal_type"));
-                    lbl_pax.setText(String.valueOf(rs.getInt("pax")));
-                }
-            }
-        }
-
-        // ─── Load Payment Info ───
-        Booking_DBConnection.BookingPaymentData payment = Booking_DBConnection.getPaymentByBookingId(bookingId);
-        if (payment != null) {
-            lbl_paymentmethod.setText(payment.paymentMethod != null ? payment.paymentMethod : "");
-            lbl_payername.setText(payment.payerName != null ? payment.payerName : "");
-            lbl_ewallet_num.setText(payment.ewalletNum != null ? payment.ewalletNum : "");
-            lbl_cardnum.setText(payment.cardNum != null ? payment.cardNum : "");
-            lbl_secnum.setText(payment.secNum != null ? payment.secNum : "");
-            lbl_cardexp.setText(payment.cardExp != null ? payment.cardExp : "");
-        }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Failed to load booking information.", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        lbl_rsvtime.setText(mealType);
+        lbl_pax.setText(String.valueOf(pax));
+        
+        lbl_paymentmethod.setText(paymentMethod != null ? paymentMethod : "");
+        lbl_payername.setText(payerName != null ? payerName : "");
+        lbl_ewallet_num.setText(ewalletNum != null ? ewalletNum : "");
+        lbl_cardnum.setText(cardNum != null ? cardNum : "");
+        lbl_secnum.setText(secNum != null ? secNum : "");
+        lbl_cardexp.setText(cardExp != null ? cardExp : "");
     }
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -105,28 +106,28 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         getContentPane().add(btn_confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 430, 80, 30));
 
         lbl_name.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 150, 20));
+        getContentPane().add(lbl_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 140, 20));
 
         lbl_phonenum.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_phonenum, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 220, 130, 20));
+        getContentPane().add(lbl_phonenum, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 220, 130, 20));
 
         lbl_email.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 216, 140, 20));
+        getContentPane().add(lbl_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 216, 110, 20));
 
         lbl_rsvdate.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
         getContentPane().add(lbl_rsvdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 100, 20));
 
         lbl_rsvtime.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_rsvtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 90, 20));
+        getContentPane().add(lbl_rsvtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 280, 90, 20));
 
         lbl_pax.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 280, 40, 20));
+        getContentPane().add(lbl_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 280, 40, 20));
 
         lbl_paymentmethod.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
         getContentPane().add(lbl_paymentmethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 346, 100, 20));
 
         lbl_payername.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_payername, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 346, 150, 20));
+        getContentPane().add(lbl_payername, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 346, 100, 20));
 
         lbl_ewallet_num.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
         getContentPane().add(lbl_ewallet_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 346, 130, 20));
@@ -138,6 +139,7 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         lbl_cardexp.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
         getContentPane().add(lbl_cardexp, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 130, 20));
 
+        btn_backpayment.setBackground(new java.awt.Color(255, 255, 255));
         btn_backpayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-arrow.png"))); // NOI18N
         btn_backpayment.setBorderPainted(false);
         btn_backpayment.addActionListener(this::btn_backpaymentActionPerformed);
@@ -150,9 +152,55 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmActionPerformed
-        JOptionPane.showMessageDialog(this, "Your reservation is confirmed!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        new Customer_Homepage().setVisible(true);
-        this.dispose();
+        Connect db = new Connect();
+        db.DoConnect();
+
+        if (db.con != null) {
+            try (Connection con = db.con) {
+                
+                String vipId = null;
+                String getVipSql = "SELECT VIP_ID FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ?";
+                try (PreparedStatement pstVip = con.prepareStatement(getVipSql)) {
+                    pstVip.setString(1, UserSession.loggedInEmail);
+                    try (ResultSet rsVip = pstVip.executeQuery()) {
+                        if (rsVip.next()) {
+                            vipId = rsVip.getString("VIP_ID");
+                        }
+                    }
+                }
+                
+                if (vipId == null) {
+                    JOptionPane.showMessageDialog(this, "Error: Could not verify user account. Please log in again.");
+                    return;
+                }
+
+                String newOrId = getNextORId(con);
+
+                String insertSql = "INSERT INTO DBHOUSE.ONLINERESERVATIONS (OR_ID, VIP_ID, D_DATE, D_TIME, PAX, REMARKS) VALUES (?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement pstInsert = con.prepareStatement(insertSql)) {
+                    pstInsert.setString(1, newOrId);
+                    pstInsert.setString(2, vipId);
+                    pstInsert.setDate(3, new java.sql.Date(bookingDate.getTime())); 
+                    pstInsert.setString(4, mealType); 
+                    pstInsert.setInt(5, pax);
+                    pstInsert.setString(6, "Going"); 
+
+                    int rowsAffected = pstInsert.executeUpdate();
+                    
+                    if (rowsAffected > 0) {
+                        JOptionPane.showMessageDialog(this, "Your reservation is confirmed! Reference ID: " + newOrId, "Success", JOptionPane.INFORMATION_MESSAGE);
+                        new Customer_Homepage().setVisible(true);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to save reservation. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_btn_confirmActionPerformed
 
     private void btn_backpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backpaymentActionPerformed
@@ -162,11 +210,32 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_backpaymentActionPerformed
 
+    private String getNextORId(Connection con) {
+        int nextNumber = 1; 
+
+        String query = "SELECT MAX(CAST(SUBSTR(OR_ID, 3) AS INT)) FROM DBHOUSE.ONLINERESERVATIONS";
+        
+        try (PreparedStatement pst = con.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+
+            if (rs.next()) {
+                int maxId = rs.getInt(1);
+                if (maxId > 0) {
+                    nextNumber = maxId + 1;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("ID Generation Note (First record likely): " + e.getMessage());
+        }
+        
+        return String.format("OR%04d", nextNumber); 
+    }
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new Customer_BookingConfirmation(null, 1, "LUNCH").setVisible(true));
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

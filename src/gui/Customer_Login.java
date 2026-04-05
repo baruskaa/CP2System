@@ -162,22 +162,23 @@ public class Customer_Login extends javax.swing.JFrame {
                         .addComponent(btn_emplogin1))
                     .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
                         .addGap(150, 150, 150)
-                        .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
-                                .addGap(146, 146, 146)
+                                .addGap(152, 152, 152)
                                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(chk_loginShowPass))
-                            .addComponent(txt_loginPass)
-                            .addComponent(btn_login, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btn_loginSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_loginEmail))))
-                .addContainerGap(471, Short.MAX_VALUE))
+                            .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(btn_login, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 282, Short.MAX_VALUE)
+                                .addComponent(txt_loginEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txt_loginPass, javax.swing.GroupLayout.Alignment.LEADING)))))
+                .addContainerGap(465, Short.MAX_VALUE))
         );
         imagePanelwelcome1Layout.setVerticalGroup(
             imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,19 +189,21 @@ public class Customer_Login extends javax.swing.JFrame {
                 .addComponent(txt_loginEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_loginPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chk_loginShowPass)
-                    .addComponent(jLabel19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addGap(3, 3, 3))
+                    .addComponent(chk_loginShowPass))
+                .addGap(18, 18, 18)
                 .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(btn_loginSignup))
-                .addGap(125, 125, 125)
+                .addGap(99, 99, 99)
                 .addComponent(btn_emplogin1)
                 .addContainerGap())
         );
@@ -349,7 +352,6 @@ public class Customer_Login extends javax.swing.JFrame {
                         .addComponent(jLabel15)
                         .addGap(172, 172, 172))
                     .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txt_createFirstName, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txt_createNumber, javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, imagePanelcreateLayout.createSequentialGroup()
                             .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,20 +360,21 @@ public class Customer_Login extends javax.swing.JFrame {
                             .addGap(33, 33, 33)
                             .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_createFirstName, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addGap(41, 41, 41)
                 .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_createSignup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_createEmail)
-                    .addComponent(txt_createLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                    .addComponent(txt_createEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chk_createShowPass))
-                    .addComponent(txt_createPass1))
+                    .addComponent(txt_createPass1)
+                    .addComponent(txt_createLastName))
                 .addGap(99, 99, 99))
         );
         imagePanelcreateLayout.setVerticalGroup(
@@ -421,7 +424,7 @@ public class Customer_Login extends javax.swing.JFrame {
         );
 
         imagePanel1.add(imagePanelcreate);
-        imagePanelcreate.setBounds(0, 0, 900, 580);
+        imagePanelcreate.setBounds(0, 580, 900, 580);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -476,87 +479,70 @@ public class Customer_Login extends javax.swing.JFrame {
         String gender = cb_createGender.getSelectedItem().toString();
         String pass = new String(txt_createPass1.getPassword());
         java.util.Date bdayInput = dc_createBday.getDate();
-        
         String email = txt_createEmail.getText();
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse")) {
-
-            String checkSql = "SELECT EMAIL FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ?";
-            PreparedStatement checkPst = con.prepareStatement(checkSql);
-            checkPst.setString(1, email);
-
-            ResultSet rs = checkPst.executeQuery();
-
-            if (rs.next()) {
-                
-                JOptionPane.showMessageDialog(this, 
-                    "The email " + email + " is already registered to another account.", 
-                    "Duplicate Email", 
-                    JOptionPane.ERROR_MESSAGE);
-                return; 
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Check Error: " + ex.getMessage());
-        }
-        
         String phone = txt_createNumber.getText().trim();
-       
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse")) {
-
-            String checkSql = "SELECT CP_NUM FROM DBHOUSE.VIPACCOUNTS WHERE CP_NUM = ?";
-            PreparedStatement checkPst = con.prepareStatement(checkSql);
-            checkPst.setString(1, phone);
-
-            ResultSet rs = checkPst.executeQuery();
-
-            if (rs.next()) {
-                
-                JOptionPane.showMessageDialog(this, 
-                    "The mobile number " + phone + " is already registered to another account.", 
-                    "Duplicate Number", 
-                    JOptionPane.ERROR_MESSAGE);
-                return; 
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Check Error: " + ex.getMessage());
-        }
 
         if (fName.isEmpty() || email.isEmpty() || pass.isEmpty() || bdayInput == null) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.");
             return;
         }
-        
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse")) {
+        Connect db = new Connect();
+        db.DoConnect();
 
-           
-            String newVipId = getNextVipId(); 
+        if (db.con != null) {
+            try (Connection con = db.con) { 
 
-            java.sql.Date dateReg = new java.sql.Date(System.currentTimeMillis());
+                String checkEmailSql = "SELECT EMAIL FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ?";
+                try (PreparedStatement checkEmailPst = con.prepareStatement(checkEmailSql)) {
+                    checkEmailPst.setString(1, email);
+                    try (ResultSet rs = checkEmailPst.executeQuery()) {
+                        if (rs.next()) {
+                            JOptionPane.showMessageDialog(this, 
+                                "The email " + email + " is already registered to another account.", 
+                                "Duplicate Email", JOptionPane.ERROR_MESSAGE);
+                            return; 
+                        }
+                    }
+                }
 
-            String sql = "INSERT INTO DBHOUSE.VIPACCOUNTS (VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS) "
-                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                String checkPhoneSql = "SELECT CP_NUM FROM DBHOUSE.VIPACCOUNTS WHERE CP_NUM = ?";
+                try (PreparedStatement checkPhonePst = con.prepareStatement(checkPhoneSql)) {
+                    checkPhonePst.setString(1, phone);
+                    try (ResultSet rs = checkPhonePst.executeQuery()) {
+                        if (rs.next()) {
+                            JOptionPane.showMessageDialog(this, 
+                                "The mobile number " + phone + " is already registered to another account.", 
+                                "Duplicate Number", JOptionPane.ERROR_MESSAGE);
+                            return; 
+                        }
+                    }
+                }
+                String newVipId = getNextVipId(); 
+                java.sql.Date dateReg = new java.sql.Date(System.currentTimeMillis());
 
-            PreparedStatement pst = con.prepareStatement(sql);
+                String insertSql = "INSERT INTO DBHOUSE.VIPACCOUNTS (VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS) "
+                           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-           
-            pst.setString(1, newVipId);  
-            pst.setDate(2, dateReg);  
-            pst.setString(3, fName);
-            pst.setString(4, lName);
-            pst.setString(5, gender);
-            pst.setDate(6, new java.sql.Date(bdayInput.getTime()));  
-            pst.setString(7, phone);
-            pst.setString(8, email);
-            pst.setString(9, pass);
+                try (PreparedStatement pst = con.prepareStatement(insertSql)) {
+                    pst.setString(1, newVipId);  
+                    pst.setDate(2, dateReg);  
+                    pst.setString(3, fName);
+                    pst.setString(4, lName);
+                    pst.setString(5, gender);
+                    pst.setDate(6, new java.sql.Date(bdayInput.getTime()));  
+                    pst.setString(7, phone);
+                    pst.setString(8, email);
+                    pst.setString(9, pass);
 
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Registration Successful!\nYour VIP ID is: " + newVipId);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(this, "Registration Successful. Please Log in.", "Registration Successful", JOptionPane.PLAIN_MESSAGE);
 
-            slideToLogin();
+                    slideToLogin();
+                }
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+            }
         }
     }//GEN-LAST:event_btn_createSignupActionPerformed
 
@@ -569,27 +555,28 @@ public class Customer_Login extends javax.swing.JFrame {
             return;
         }
 
-        try {
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
+        Connect db = new Connect();
+        db.DoConnect();
 
-            
-            String stmt = "SELECT * FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ? AND PASS = ?";
-            PreparedStatement pst = con.prepareStatement(stmt);
-            pst.setString(1, email);
-            pst.setString(2, password);
+        if (db.con != null) {
+            try (Connection con = db.con;
+                 PreparedStatement pst = con.prepareStatement("SELECT * FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ? AND PASS = ?")) {
 
-            ResultSet rs = pst.executeQuery();
+                pst.setString(1, email);
+                pst.setString(2, password);
 
-            if (rs.next()) {
-                UserSession.loggedInEmail = txt_loginEmail.getText(); 
-                new Customer_Homepage().setVisible(true); 
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid credentials.");
+                try (ResultSet rs = pst.executeQuery()) {
+                    if (rs.next()) {
+                        UserSession.loggedInEmail = txt_loginEmail.getText(); 
+                        new Customer_Homepage().setVisible(true); 
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Invalid credentials.");
+                    }
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
             }
-            con.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_btn_loginActionPerformed
 
@@ -690,23 +677,25 @@ public class Customer_Login extends javax.swing.JFrame {
     }
     
     private String getNextVipId() {
-        int nextNumber = 1001; 
-        
-        String sql = "SELECT MAX(CAST(SUBSTR(VIP_ID, 4) AS INT)) FROM DBHOUSE.VIPACCOUNTS";
+        int nextNumber = 1000; 
 
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
+        Connect db = new Connect();
+        db.DoConnect();
 
-            if (rs.next()) {
-                int maxId = rs.getInt(1);
-                if (maxId > 0) {
-                    nextNumber = maxId + 1;
+        if (db.con != null) {
+            try (Connection con = db.con;
+                 PreparedStatement pst = con.prepareStatement("SELECT MAX(CAST(SUBSTR(VIP_ID, 4) AS INT)) FROM DBHOUSE.VIPACCOUNTS");
+                 ResultSet rs = pst.executeQuery()) {
+
+                if (rs.next()) {
+                    int maxId = rs.getInt(1);
+                    if (maxId > 0) {
+                        nextNumber = maxId + 1;
+                    }
                 }
+            } catch (SQLException e) {
+                System.out.println("ID Generation Note: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            
-            System.out.println("ID Generation Note: " + e.getMessage());
         }
         return "VIP" + nextNumber; 
     }
@@ -714,6 +703,15 @@ public class Customer_Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+        try {
+            org.apache.derby.drda.NetworkServerControl server = 
+                new org.apache.derby.drda.NetworkServerControl(java.net.InetAddress.getByName("localhost"), 1527);
+            server.start(null);
+            System.out.println("Derby Database Server started automatically!");
+        } catch (Exception e) {
+            System.out.println("Server might already be running, or failed to start: " + e.getMessage());
+        }
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

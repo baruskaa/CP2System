@@ -11,11 +11,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
 import javax.swing.JOptionPane;
+import javax.swing.JFileChooser;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.io.*;
 
 /**
  *
@@ -40,10 +42,12 @@ public class Admin extends javax.swing.JFrame {
         buttonGroup1.add(rb_fdesk);
         
         makeFlatButton(btn_navLogout);
+        makeFlatButton(btn_histGenerate);
         
-        
+        date_historyTo.setMaxSelectableDate(new java.util.Date());
         loadEmployeeTable();
         loadMemberTable();
+        loadHistoryTable();
         
         //TABLE SORTERS
 
@@ -98,6 +102,35 @@ public class Admin extends javax.swing.JFrame {
         for (int i = 0; i < tbl_memb.getColumnCount(); i++) {
             tbl_memb.getColumnModel().getColumn(i).setCellRenderer(center_memb);
         }
+        
+         //TABLE HEADER CELL RENDERER
+        
+        DefaultTableCellRenderer headerRenderertoday = (DefaultTableCellRenderer) tbl_today.getTableHeader().getDefaultRenderer();
+        headerRenderertoday.setHorizontalAlignment(JLabel.CENTER); 
+        tbl_today.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_today.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+        
+        DefaultTableCellRenderer headerRendererhistory = (DefaultTableCellRenderer) tbl_history.getTableHeader().getDefaultRenderer();
+        headerRendererhistory.setHorizontalAlignment(JLabel.CENTER); 
+        tbl_history.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_history.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+      
+        DefaultTableCellRenderer headerRendererupcom = (DefaultTableCellRenderer) tbl_upcom.getTableHeader().getDefaultRenderer();
+        headerRendererupcom.setHorizontalAlignment(JLabel.CENTER);
+        tbl_upcom.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_upcom.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+        
+        DefaultTableCellRenderer headerRendereremp = (DefaultTableCellRenderer) tbl_emp.getTableHeader().getDefaultRenderer();
+        headerRendereremp.setHorizontalAlignment(JLabel.CENTER);
+        tbl_emp.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_emp.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+        
+        DefaultTableCellRenderer headerRenderermemb = (DefaultTableCellRenderer) tbl_memb.getTableHeader().getDefaultRenderer();
+        headerRenderermemb.setHorizontalAlignment(JLabel.CENTER);
+        tbl_memb.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_memb.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+    
+        
         
         //COMPARATORS
 
@@ -289,15 +322,17 @@ public class Admin extends javax.swing.JFrame {
         pnl_upcom.setVisible(false);
         pnl_emp.setVisible(false);
         pnl_memb.setVisible(false);
-        btn_today.setForeground(new Color(255, 200, 120)); 
+        btn_fdesk.setForeground(new Color(255, 200, 120)); 
         
-        date_history.addPropertyChangeListener("date", evt -> applyHistoryDateFilter());
+        // REPLACE your current date_historyFrom listener with these two:
+        date_historyFrom.addPropertyChangeListener("date", evt -> filterHistoryByDateRange());
+        date_historyTo.addPropertyChangeListener("date", evt -> filterHistoryByDateRange());
 
         
-        date_history.getDateEditor().getUiComponent().addFocusListener(new java.awt.event.FocusAdapter() {
+        date_historyFrom.getDateEditor().getUiComponent().addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusLost(java.awt.event.FocusEvent evt) {
-                if (date_history.getDate() == null) {
+                if (date_historyFrom.getDate() == null) {
                     sorter_history.setRowFilter(null);
                 }
             }
@@ -315,18 +350,20 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         
+        //MOUSE LISTENERS
+        
         tbl_emp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int viewRow = tbl_emp.getSelectedRow();
                 if (viewRow != -1) {
                     int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
 
-                    txt_empusername.setText(tbl_emp.getModel().getValueAt(modelRow, 1).toString());
-                    txt_empfname.setText(tbl_emp.getModel().getValueAt(modelRow, 2).toString());
-                    txt_emplname.setText(tbl_emp.getModel().getValueAt(modelRow, 3).toString());
-                    txt_emppass.setText(tbl_emp.getModel().getValueAt(modelRow, 4).toString());
+                    txt_empusername.setText(tbl_emp.getModel().getValueAt(modelRow, 0).toString());
+                    txt_empfname.setText(tbl_emp.getModel().getValueAt(modelRow, 1).toString());
+                    txt_emplname.setText(tbl_emp.getModel().getValueAt(modelRow, 2).toString());
+                    txt_emppass.setText(tbl_emp.getModel().getValueAt(modelRow, 3).toString());
 
-                    String role = tbl_emp.getModel().getValueAt(modelRow, 5).toString();
+                    String role = tbl_emp.getModel().getValueAt(modelRow, 4).toString();
                     if (role.equalsIgnoreCase("Gen. Manager")) rb_genmanager.setSelected(true);
                     else if (role.equalsIgnoreCase("Manager")) rb_manager.setSelected(true);
                     else if (role.equalsIgnoreCase("Front Desk")) rb_fdesk.setSelected(true);
@@ -339,7 +376,6 @@ public class Admin extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int viewRow = tbl_memb.getSelectedRow();
                 if (viewRow != -1) {
-                  
                     int modelRow = tbl_memb.convertRowIndexToModel(viewRow);
 
                     Object vipId = tbl_memb.getModel().getValueAt(modelRow, 0);
@@ -361,33 +397,6 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         
-        
-        DefaultTableCellRenderer headerRenderertoday = (DefaultTableCellRenderer) tbl_today.getTableHeader().getDefaultRenderer();
-        headerRenderertoday.setHorizontalAlignment(JLabel.CENTER); 
-        tbl_today.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_today.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRendererhistory = (DefaultTableCellRenderer) tbl_history.getTableHeader().getDefaultRenderer();
-        headerRendererhistory.setHorizontalAlignment(JLabel.CENTER); 
-        tbl_history.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_history.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-      
-        DefaultTableCellRenderer headerRendererupcom = (DefaultTableCellRenderer) tbl_upcom.getTableHeader().getDefaultRenderer();
-        headerRendererupcom.setHorizontalAlignment(JLabel.CENTER);
-        tbl_upcom.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_upcom.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRendereremp = (DefaultTableCellRenderer) tbl_emp.getTableHeader().getDefaultRenderer();
-        headerRendereremp.setHorizontalAlignment(JLabel.CENTER);
-        tbl_emp.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_emp.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRenderermemb = (DefaultTableCellRenderer) tbl_memb.getTableHeader().getDefaultRenderer();
-        headerRenderermemb.setHorizontalAlignment(JLabel.CENTER);
-        tbl_memb.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_memb.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-    
-        
     }
 
     /**
@@ -401,7 +410,7 @@ public class Admin extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         pnl_nav = new javax.swing.JPanel();
-        btn_today = new javax.swing.JButton();
+        btn_fdesk = new javax.swing.JButton();
         btn_upcom = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         btn_history = new javax.swing.JButton();
@@ -410,6 +419,18 @@ public class Admin extends javax.swing.JFrame {
         btn_navLogout = new javax.swing.JButton();
         pnl_header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        pnl_history = new javax.swing.JPanel();
+        date_historyFrom = new com.toedter.calendar.JDateChooser();
+        date_historyTo = new com.toedter.calendar.JDateChooser();
+        jLabel20 = new javax.swing.JLabel();
+        btn_histGenerate = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        search_history = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_history = new javax.swing.JTable();
+        bg_today1 = new javax.swing.JLabel();
         pnl_memb = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
@@ -461,15 +482,6 @@ public class Admin extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_today = new javax.swing.JTable();
         bg_today = new javax.swing.JLabel();
-        pnl_history = new javax.swing.JPanel();
-        date_history = new com.toedter.calendar.JDateChooser();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        search_history = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbl_history = new javax.swing.JTable();
-        bg_today1 = new javax.swing.JLabel();
         pnl_upcom = new javax.swing.JPanel();
         date_upcom = new com.toedter.calendar.JDateChooser();
         jLabel11 = new javax.swing.JLabel();
@@ -487,24 +499,24 @@ public class Admin extends javax.swing.JFrame {
         pnl_nav.setBackground(new java.awt.Color(55, 77, 94));
         pnl_nav.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btn_today.setBackground(new java.awt.Color(55, 77, 94));
-        btn_today.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
-        btn_today.setForeground(new java.awt.Color(255, 255, 255));
-        btn_today.setText("TODAY");
-        btn_today.setBorder(null);
-        btn_today.setContentAreaFilled(false);
-        btn_today.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_today.setFocusPainted(false);
-        btn_today.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_fdesk.setBackground(new java.awt.Color(55, 77, 94));
+        btn_fdesk.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        btn_fdesk.setForeground(new java.awt.Color(255, 255, 255));
+        btn_fdesk.setText("FRONT DESK");
+        btn_fdesk.setBorder(null);
+        btn_fdesk.setContentAreaFilled(false);
+        btn_fdesk.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_fdesk.setFocusPainted(false);
+        btn_fdesk.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_todayMouseEntered(evt);
+                btn_fdeskMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_todayMouseExited(evt);
+                btn_fdeskMouseExited(evt);
             }
         });
-        btn_today.addActionListener(this::btn_todayActionPerformed);
-        pnl_nav.add(btn_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 90, 30));
+        btn_fdesk.addActionListener(this::btn_fdeskActionPerformed);
+        pnl_nav.add(btn_fdesk, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 120, 30));
 
         btn_upcom.setBackground(new java.awt.Color(55, 77, 94));
         btn_upcom.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
@@ -622,6 +634,105 @@ public class Admin extends javax.swing.JFrame {
         );
 
         getContentPane().add(pnl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 740, -1));
+
+        pnl_history.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_history.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        date_historyFrom.setDateFormatString("MM-dd-yy");
+        pnl_history.add(date_historyFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 130, -1));
+
+        date_historyTo.setDateFormatString("MM-dd-yy");
+        pnl_history.add(date_historyTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 50, 130, -1));
+
+        jLabel20.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setText("to");
+        pnl_history.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, 30, 20));
+
+        btn_histGenerate.setBackground(new java.awt.Color(55, 77, 94));
+        btn_histGenerate.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_histGenerate.setForeground(new java.awt.Color(255, 255, 255));
+        btn_histGenerate.setText("GENERATE REPORT");
+        btn_histGenerate.setBorder(null);
+        btn_histGenerate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_histGenerate.addActionListener(this::btn_histGenerateActionPerformed);
+        pnl_history.add(btn_histGenerate, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 420, 140, 30));
+
+        jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel10.setText("From");
+        pnl_history.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 50, 40, 20));
+
+        jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel7.setText("HISTORY");
+        pnl_history.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 170, 50));
+
+        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel9.setText("Search:");
+        pnl_history.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 60, 20));
+
+        search_history.addActionListener(this::search_historyActionPerformed);
+        search_history.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_historyKeyReleased(evt);
+            }
+        });
+        pnl_history.add(search_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 20, 170, -1));
+
+        jScrollPane2.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_history.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_history.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_history.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null},
+                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null},
+                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null},
+                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null},
+                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null}
+            },
+            new String [] {
+                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_history.setOpaque(false);
+        jScrollPane2.setViewportView(tbl_history);
+        if (tbl_history.getColumnModel().getColumnCount() > 0) {
+            tbl_history.getColumnModel().getColumn(0).setResizable(false);
+            tbl_history.getColumnModel().getColumn(1).setResizable(false);
+            tbl_history.getColumnModel().getColumn(2).setResizable(false);
+            tbl_history.getColumnModel().getColumn(3).setResizable(false);
+            tbl_history.getColumnModel().getColumn(4).setResizable(false);
+            tbl_history.getColumnModel().getColumn(5).setResizable(false);
+            tbl_history.getColumnModel().getColumn(6).setResizable(false);
+            tbl_history.getColumnModel().getColumn(7).setResizable(false);
+        }
+
+        pnl_history.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+
+        bg_today1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
+        bg_today1.setText("Today");
+        pnl_history.add(bg_today1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+
+        getContentPane().add(pnl_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
         pnl_memb.setForeground(new java.awt.Color(202, 199, 199));
         pnl_memb.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1014,85 +1125,6 @@ public class Admin extends javax.swing.JFrame {
 
         getContentPane().add(pnl_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
-        pnl_history.setForeground(new java.awt.Color(202, 199, 199));
-        pnl_history.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        date_history.setDateFormatString("MM-dd-yy");
-        pnl_history.add(date_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 170, -1));
-
-        jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel10.setText("Date:");
-        pnl_history.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 50, 20));
-
-        jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel7.setText("HISTORY");
-        pnl_history.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 170, 50));
-
-        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel9.setText("Search:");
-        pnl_history.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 60, 20));
-
-        search_history.addActionListener(this::search_historyActionPerformed);
-        search_history.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                search_historyKeyReleased(evt);
-            }
-        });
-        pnl_history.add(search_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 20, 170, -1));
-
-        jScrollPane2.setForeground(new java.awt.Color(55, 77, 94));
-
-        tbl_history.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        tbl_history.setForeground(new java.awt.Color(55, 77, 94));
-        tbl_history.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"03-26-26",  new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
-                {"03-01-26",  new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
-                {"04-19-26",  new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Lunch"},
-                {"03-01-26",  new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
-                {"04-19-26",  new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Dinner"}
-            },
-            new String [] {
-                "DATE", "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbl_history.setOpaque(false);
-        jScrollPane2.setViewportView(tbl_history);
-        if (tbl_history.getColumnModel().getColumnCount() > 0) {
-            tbl_history.getColumnModel().getColumn(0).setResizable(false);
-            tbl_history.getColumnModel().getColumn(1).setResizable(false);
-            tbl_history.getColumnModel().getColumn(2).setResizable(false);
-            tbl_history.getColumnModel().getColumn(3).setResizable(false);
-            tbl_history.getColumnModel().getColumn(4).setResizable(false);
-            tbl_history.getColumnModel().getColumn(5).setResizable(false);
-        }
-
-        pnl_history.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
-
-        bg_today1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
-        bg_today1.setText("Today");
-        pnl_history.add(bg_today1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
-
-        getContentPane().add(pnl_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
-
         pnl_upcom.setForeground(new java.awt.Color(202, 199, 199));
         pnl_upcom.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -1179,12 +1211,12 @@ public class Admin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_todayMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_todayMouseEntered
-    if (!btn_today.getForeground().equals(new Color(255, 200, 120))) {
-        btn_today.setForeground(new Color(255, 200, 120));
+    private void btn_fdeskMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_fdeskMouseEntered
+    if (!btn_fdesk.getForeground().equals(new Color(255, 200, 120))) {
+        btn_fdesk.setForeground(new Color(255, 200, 120));
     }
-    btn_today.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));       // TODO add your handling code here:
-    }//GEN-LAST:event_btn_todayMouseEntered
+    btn_fdesk.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));       // TODO add your handling code here:
+    }//GEN-LAST:event_btn_fdeskMouseEntered
 
     private void btn_upcomMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_upcomMouseEntered
         if (!btn_upcom.getForeground().equals(new Color(255, 200, 120))) {
@@ -1194,11 +1226,11 @@ public class Admin extends javax.swing.JFrame {
          // TODO add your handling code here:
     }//GEN-LAST:event_btn_upcomMouseEntered
 
-    private void btn_todayMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_todayMouseExited
+    private void btn_fdeskMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_fdeskMouseExited
         if (!pnl_today.isVisible()) {  
-            btn_today.setForeground(Color.WHITE);
+            btn_fdesk.setForeground(Color.WHITE);
         }       
-    }//GEN-LAST:event_btn_todayMouseExited
+    }//GEN-LAST:event_btn_fdeskMouseExited
 
     private void btn_upcomMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_upcomMouseExited
         if (!pnl_upcom.isVisible()) {  
@@ -1221,10 +1253,10 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_search_todayActionPerformed
 
-    private void btn_todayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_todayActionPerformed
+    private void btn_fdeskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_fdeskActionPerformed
         switchPanel(pnl_today);
-        setActiveButton(btn_today);
-    }//GEN-LAST:event_btn_todayActionPerformed
+        setActiveButton(btn_fdesk);
+    }//GEN-LAST:event_btn_fdeskActionPerformed
 
     private void search_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_historyActionPerformed
         // TODO add your handling code here:
@@ -1264,34 +1296,35 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_empusernameNew_tableActionPerformed
 
     private void btn_acceditAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceditAssign_ButtonActionPerformed
-      int viewRow = tbl_emp.getSelectedRow();
+       
+        int viewRow = tbl_emp.getSelectedRow();
         if (viewRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select an account first.");
             return;
         }
 
         int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
-        String targetEmpId = tbl_emp.getModel().getValueAt(modelRow, 0).toString();
+        String originalUser = tbl_emp.getModel().getValueAt(modelRow, 0).toString(); 
 
         String role = rb_genmanager.isSelected() ? "Gen. Manager" : rb_manager.isSelected() ? "Manager" : "Front Desk";
 
-        String sql = "UPDATE DBHOUSE.EMPACCOUNTS SET USERNAME=?, F_NAME=?, L_NAME=?, PASS=?, ACC_TYPE=? WHERE EMP_ID=?";
+        Connect db = new Connect();
+        db.DoConnect();
 
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
-             PreparedStatement pst = con.prepareStatement(sql)) {
-
+        try (PreparedStatement pst = db.con.prepareStatement("UPDATE DBHOUSE.EMPACCOUNTS SET USERNAME=?, F_NAME=?, L_NAME=?, PASS=?, ACC_TYPE=? WHERE USERNAME=?")) {
             pst.setString(1, txt_empusername.getText().trim());
             pst.setString(2, txt_empfname.getText().trim());
             pst.setString(3, txt_emplname.getText().trim());
             pst.setString(4, txt_emppass.getText().trim());
             pst.setString(5, role);
-            pst.setString(6, targetEmpId);
+            pst.setString(6, originalUser);
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(this, "Account updated successfully!");
 
             clearAccFields();
-            loadEmployeeTable();
+            loadEmployeeTable(); 
+            db.con.close();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
@@ -1299,25 +1332,29 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_acceditAssign_ButtonActionPerformed
 
     private void btn_accdelRemove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accdelRemove_buttonActionPerformed
-       int viewRow = tbl_emp.getSelectedRow();
-        if (viewRow == -1) return;
+        
+        int viewRow = tbl_emp.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select an account to delete.");
+            return;
+        }
 
         int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
-        String targetEmpId = tbl_emp.getModel().getValueAt(modelRow, 0).toString(); 
-        String username = tbl_emp.getModel().getValueAt(modelRow, 1).toString(); 
+        String userToDelete = tbl_emp.getModel().getValueAt(modelRow, 0).toString(); 
 
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete user: " + username + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "Delete user: " + userToDelete + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
-             
-                 PreparedStatement pst = con.prepareStatement("DELETE FROM DBHOUSE.EMPACCOUNTS WHERE EMP_ID=?")) {
+            Connect db = new Connect();
+            db.DoConnect();
 
-                pst.setString(1, targetEmpId);
+            try (PreparedStatement pst = db.con.prepareStatement("DELETE FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME=?")) {
+                pst.setString(1, userToDelete);
                 pst.executeUpdate();
 
                 clearAccFields();
                 loadEmployeeTable();
+                db.con.close();
 
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
@@ -1345,7 +1382,7 @@ public class Admin extends javax.swing.JFrame {
     
     private void btn_accaddAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accaddAssign_ButtonActionPerformed
 
-       String user = txt_empusername.getText().trim();
+        String user = txt_empusername.getText().trim();
         String fname = txt_empfname.getText().trim();
         String lname = txt_emplname.getText().trim();
         String password = txt_emppass.getText().trim();
@@ -1356,19 +1393,16 @@ public class Admin extends javax.swing.JFrame {
         else if (rb_fdesk.isSelected()) role = "Front Desk";
 
         if (user.isEmpty() || fname.isEmpty() || lname.isEmpty() || password.isEmpty() || role.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields and select a role.");
+            JOptionPane.showMessageDialog(this, "Please fill all fields.");
             return;
         }
 
-        String url = "jdbc:derby://localhost:1527/DBHOUSE";
-       
-        String sql = "INSERT INTO DBHOUSE.EMPACCOUNTS (EMP_ID, USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE) VALUES (?, ?, ?, ?, ?, ?)";
+        Connect db = new Connect();
+        db.DoConnect();
 
-        try (Connection con = DriverManager.getConnection(url, "dbhouse", "dbhouse");
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (PreparedStatement pst = db.con.prepareStatement("INSERT INTO DBHOUSE.EMPACCOUNTS (EMP_ID, USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE) VALUES (?, ?, ?, ?, ?, ?)")) {
 
             String newEmpId = getNextEmpId();
-
             pst.setString(1, newEmpId);
             pst.setString(2, user);
             pst.setString(3, fname);
@@ -1377,16 +1411,17 @@ public class Admin extends javax.swing.JFrame {
             pst.setString(6, role);
 
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Employee Account Created!\nID: " + newEmpId);
+            JOptionPane.showMessageDialog(this, "Employee Created! ID: " + newEmpId);
 
             clearAccFields();
-            loadEmployeeTable(); 
+            loadEmployeeTable();
+            db.con.close();
 
         } catch (SQLException ex) {
             if (ex.getSQLState() != null && ex.getSQLState().equals("23505")) {
                 JOptionPane.showMessageDialog(this, "Username '" + user + "' already exists!");
             } else {
-                JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage());
+                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
             }
         }
     }//GEN-LAST:event_btn_accaddAssign_ButtonActionPerformed
@@ -1515,19 +1550,68 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_membDateregNew_tableActionPerformed
 
+    private void btn_histGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_histGenerateActionPerformed
+        
+        if (tbl_history.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No data available to generate a report.", "Empty Table", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Report as Excel (CSV)");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("CSV (Comma delimited) (*.csv)", "csv"));
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            String filePath = fileToSave.getAbsolutePath();
+
+            if (!filePath.toLowerCase().endsWith(".csv")) {
+                filePath += ".csv";
+            }
+
+            try (FileWriter fw = new FileWriter(filePath);
+                 BufferedWriter bw = new BufferedWriter(fw)) {
+
+                // Write Headers
+                for (int i = 0; i < tbl_history.getColumnCount(); i++) {
+                    bw.write("\"" + tbl_history.getColumnName(i) + "\"");
+                    if (i < tbl_history.getColumnCount() - 1) bw.write(",");
+                }
+                bw.newLine();
+
+                for (int i = 0; i < tbl_history.getRowCount(); i++) {
+                    for (int j = 0; j < tbl_history.getColumnCount(); j++) {
+                        Object val = tbl_history.getValueAt(i, j);
+                        String valStr = (val == null) ? "" : val.toString();
+
+                        bw.write("\"" + valStr + "\""); 
+                        if (j < tbl_history.getColumnCount() - 1) bw.write(",");
+                    }
+                    bw.newLine();
+                }
+
+                JOptionPane.showMessageDialog(this, "Report successfully generated!\nLocation: " + filePath, "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btn_histGenerateActionPerformed
+
      private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
         btn.setBorder(null);
         btn.setContentAreaFilled(false);
         btn.setOpaque(true);
-        btn.setBackground(new java.awt.Color(153, 0, 0));
-        btn.setForeground(java.awt.Color.WHITE);
         btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         
         
 }
      private void setActiveButton(javax.swing.JButton activeBtn) {
-        javax.swing.JButton[] buttons = {btn_today, btn_emp,btn_members, btn_upcom, btn_history};
+        javax.swing.JButton[] buttons = {btn_fdesk, btn_emp,btn_members, btn_upcom, btn_history};
 
         for (javax.swing.JButton btn : buttons) {
             btn.setForeground(Color.WHITE);
@@ -1554,7 +1638,7 @@ public class Admin extends javax.swing.JFrame {
     }
      
     private void applyHistoryDateFilter() {
-        java.util.Date selectedDate = date_history.getDate();
+        java.util.Date selectedDate = date_historyFrom.getDate();
         if (selectedDate == null) {
             sorter_history.setRowFilter(null);  
             return;
@@ -1579,21 +1663,31 @@ public class Admin extends javax.swing.JFrame {
         sorter_upcom.setRowFilter(RowFilter.regexFilter("(?i)" + dateStr, 0));
     }
     
-   private void loadEmployeeTable() {
+     private String getNextEmpId() {
+        int nextNumber = 1001; 
+        Connect db = new Connect();
+        db.DoConnect();
+
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT MAX(CAST(SUBSTR(EMP_ID, 4) AS INT)) FROM DBHOUSE.EMPACCOUNTS");
+             ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                int maxId = rs.getInt(1);
+                if (maxId > 0) nextNumber = maxId + 1;
+            }
+        } catch (SQLException e) { System.out.println("ID Error: " + e.getMessage()); }
+        return "EMP" + nextNumber; 
+    }
+     
+    private void loadEmployeeTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
         model.setRowCount(0); 
 
-        String url = "jdbc:derby://localhost:1527/DBHOUSE";
-        // Fetch 6 columns
-        String sql = "SELECT EMP_ID, USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE FROM DBHOUSE.EMPACCOUNTS";
-
-        try (Connection con = DriverManager.getConnection(url, "dbhouse", "dbhouse");
-             PreparedStatement pst = con.prepareStatement(sql);
+        Connect db = new Connect();
+        db.DoConnect();
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE FROM DBHOUSE.EMPACCOUNTS");
              ResultSet rs = pst.executeQuery()) {
-
             while (rs.next()) {
                 model.addRow(new Object[]{
-                    rs.getString("EMP_ID"),   
                     rs.getString("USERNAME"), 
                     rs.getString("F_NAME"),   
                     rs.getString("L_NAME"),   
@@ -1601,61 +1695,111 @@ public class Admin extends javax.swing.JFrame {
                     rs.getString("ACC_TYPE")  
                 });
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error loading employees: " + e.getMessage());
-        }
-    }
-   
-     private String getNextEmpId() {
-        int nextNumber = 1000; 
-        String sql = "SELECT MAX(CAST(SUBSTR(EMP_ID, 4) AS INT)) FROM DBHOUSE.EMPACCOUNTS";
-
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/DBHOUSE", "dbhouse", "dbhouse");
-             PreparedStatement pst = con.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-
-            if (rs.next()) {
-                int maxId = rs.getInt(1);
-                if (maxId > 0) {
-                    nextNumber = maxId + 1;
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("ID Error: " + e.getMessage());
-        }
-        return "EMP" + nextNumber; 
+            db.con.close();
+        } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Error loading employees: " + e.getMessage()); }
     }
      
-     private void loadMemberTable() {
+    private void loadMemberTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_memb.getModel();
         model.setRowCount(0); 
 
-        String url = "jdbc:derby://localhost:1527/DBHOUSE";
-
-        String sql = "SELECT VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS FROM DBHOUSE.VIPACCOUNTS";
-
-        try (Connection con = DriverManager.getConnection(url, "dbhouse", "dbhouse");
-             PreparedStatement pst = con.prepareStatement(sql);
+        Connect db = new Connect();
+        db.DoConnect();
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS FROM DBHOUSE.VIPACCOUNTS");
              ResultSet rs = pst.executeQuery()) {
-
             while (rs.next()) {
                 model.addRow(new Object[]{
-                    rs.getString("VIP_ID"),
+                    rs.getString("VIP_ID"), 
                     rs.getDate("DATE_REG"), 
-                    rs.getString("F_NAME"),
-                    rs.getString("L_NAME"),
-                    rs.getString("GENDER"),
-                    rs.getDate("BDAY"),
-                    rs.getString("CP_NUM"),
-                    rs.getString("EMAIL"),
+                    rs.getString("F_NAME"), 
+                    rs.getString("L_NAME"), 
+                    rs.getString("GENDER"), 
+                    rs.getDate("BDAY"), 
+                    rs.getString("CP_NUM"), 
+                    rs.getString("EMAIL"), 
                     rs.getString("PASS")
                 });
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error loading members: " + e.getMessage());
+            db.con.close();
+        } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Error loading members: " + e.getMessage()); }
+    }
+    
+    private void loadHistoryTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_history.getModel();
+        model.setRowCount(0); 
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        if (db.con != null) {
+            String query = 
+                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
+                "FROM DBHOUSE.INHOUSERESERVATIONS " +
+                "UNION ALL " +
+                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
+                "FROM DBHOUSE.WALKINDINE " +
+                "UNION ALL " +
+                "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS " +
+                "FROM DBHOUSE.ONLINERESERVATIONS o " +
+                "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
+                "ORDER BY D_DATE DESC"; // Order by most recent date first
+
+            try (PreparedStatement pst = db.con.prepareStatement(query);
+                 ResultSet rs = pst.executeQuery()) {
+
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
+
+                while (rs.next()) {
+                    java.sql.Date sqlDate = rs.getDate("D_DATE");
+                    String dateStr = (sqlDate != null) ? sdf.format(sqlDate) : "";
+
+                    model.addRow(new Object[]{
+                        rs.getString("ID"),
+                        dateStr,
+                        rs.getString("F_NAME"),
+                        rs.getString("L_NAME"),
+                        rs.getString("CP_NUM"),
+                        rs.getString("D_TIME"),
+                        rs.getInt("PAX"),
+                        rs.getString("REMARKS")
+                    });
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error loading history: " + e.getMessage());
+            } finally {
+                try { db.con.close(); } catch (SQLException ex) {}
+            }
         }
     }
      
+    private void filterHistoryByDateRange() {
+        java.util.Date fromDate = date_historyFrom.getDate();
+        java.util.Date toDate = date_historyTo.getDate();
+
+        if (fromDate == null || toDate == null) {
+            sorter_history.setRowFilter(null);
+            return;
+        }
+
+        fromDate.setHours(0); fromDate.setMinutes(0); fromDate.setSeconds(0);
+        toDate.setHours(23); toDate.setMinutes(59); toDate.setSeconds(59);
+
+        RowFilter<DefaultTableModel, Object> rangeFilter = new RowFilter<DefaultTableModel, Object>() {
+            @Override
+            public boolean include(Entry<? extends DefaultTableModel, ? extends Object> entry) {
+                String dateStr = entry.getStringValue(1); 
+                try {
+                    java.util.Date rowDate = new java.text.SimpleDateFormat("MM-dd-yy").parse(dateStr);
+                   
+                    return !rowDate.before(fromDate) && !rowDate.after(toDate);
+                } catch (Exception e) {
+                    return false; 
+                }
+            }
+        };
+
+        sorter_history.setRowFilter(rangeFilter);
+    }
     /**
  * 
      * @param args the command line arguments
@@ -1692,13 +1836,15 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JButton btn_accdel;
     private javax.swing.JButton btn_accedit;
     private javax.swing.JButton btn_emp;
+    private javax.swing.JButton btn_fdesk;
+    private javax.swing.JButton btn_histGenerate;
     private javax.swing.JButton btn_history;
     private javax.swing.JButton btn_members;
     private javax.swing.JButton btn_navLogout;
-    private javax.swing.JButton btn_today;
     private javax.swing.JButton btn_upcom;
     private javax.swing.ButtonGroup buttonGroup1;
-    private com.toedter.calendar.JDateChooser date_history;
+    private com.toedter.calendar.JDateChooser date_historyFrom;
+    private com.toedter.calendar.JDateChooser date_historyTo;
     private com.toedter.calendar.JDateChooser date_upcom;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1711,6 +1857,7 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;

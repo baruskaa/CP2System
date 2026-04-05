@@ -56,18 +56,15 @@
                               <Component id="lbl_welcomebck" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="btn_emploginLogin" min="-2" pref="108" max="-2" attributes="0"/>
-                                      <Group type="103" alignment="1" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="txt_emploginPass" alignment="1" max="32767" attributes="0"/>
-                                          <Component id="jLabel4" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
-                                          <Component id="jLabel5" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
-                                          <Component id="txt_emploginUsername" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="jLabel19" min="-2" pref="108" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="chk_loginShowPass" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="txt_emploginPass" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="jLabel4" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
+                                      <Component id="jLabel5" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
+                                      <Component id="txt_emploginUsername" alignment="0" min="-2" pref="275" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="jLabel19" min="-2" pref="108" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="chk_loginShowPass" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -76,6 +73,10 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="253" max="-2" attributes="0"/>
                           <Component id="btn_back" min="-2" pref="40" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="390" max="-2" attributes="0"/>
+                          <Component id="btn_emploginLogin" min="-2" pref="108" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="294" max="32767" attributes="0"/>
@@ -102,9 +103,9 @@
                       <Component id="chk_loginShowPass" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel19" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btn_emploginLogin" min="-2" pref="36" max="-2" attributes="0"/>
-                  <EmptySpace pref="157" max="32767" attributes="0"/>
+                  <EmptySpace pref="153" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -245,7 +246,7 @@
               <Color blue="5b" green="4a" red="2f" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="12" style="0"/>
+              <Font name="Century Gothic" size="12" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="5b" green="4a" red="2f" type="rgb"/>
@@ -256,6 +257,11 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chk_loginShowPass">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="99" red="99" type="rgb"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chk_loginShowPassActionPerformed"/>
           </Events>
