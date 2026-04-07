@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package gui;
+package img;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class ImagePanelemplogin extends JPanel{
+public class ImagePanelcreate extends JPanel{
   private Image bg;
 
-    public ImagePanelemplogin() {
-        bg = new ImageIcon(getClass().getResource("/gui/employeelogin.png")).getImage();
+    public ImagePanelcreate() {
+        bg = new ImageIcon(getClass().getResource("/img/create.png")).getImage();
         setOpaque(false);
     }
 

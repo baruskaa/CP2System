@@ -2,19 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package gui;
+package img;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class ImagePanelwelcome extends JPanel {
+public class ImagePanelemplogin extends JPanel{
+  private Image bg;
 
-    private Image bg;
-
-    public ImagePanelwelcome() {
-        bg = new ImageIcon(getClass().getResource("/gui/welcome.png")).getImage();
+    public ImagePanelemplogin() {
+        bg = new ImageIcon(getClass().getResource("/img/employeelogin.png")).getImage();
         setOpaque(false);
     }
 
@@ -24,5 +23,5 @@ protected void paintComponent(Graphics g) {
 
     // draw image AFTER background
     g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
-}
+}  
 }

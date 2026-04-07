@@ -126,12 +126,15 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         rb_payPayMaya.addActionListener(this::rb_payPayMayaActionPerformed);
         getContentPane().add(rb_payPayMaya, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, -1, -1));
 
-        btn_backbooking.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-arrow.png"))); // NOI18N
+        btn_backbooking.setBackground(new java.awt.Color(255, 255, 255));
+        btn_backbooking.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        btn_backbooking.setForeground(new java.awt.Color(23, 57, 86));
+        btn_backbooking.setText("<");
         btn_backbooking.setBorderPainted(false);
         btn_backbooking.addActionListener(this::btn_backbookingActionPerformed);
         getContentPane().add(btn_backbooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, -1));
 
-        payment_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/PAYMENT.png"))); // NOI18N
+        payment_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/PAYMENT.png"))); // NOI18N
         getContentPane().add(payment_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
 
         pack();

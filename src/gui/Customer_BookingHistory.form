@@ -275,9 +275,8 @@
         <Component class="javax.swing.JLabel" name="bg_today1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/bgfd.jpg"/>
+              <Image iconType="3" name="/img/bgfd.jpg"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Today"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -287,7 +286,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="pnl_nav">
+    <Container class="javax.swing.JPanel" name="pnl_nav2">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="5e" green="4d" red="39" type="rgb"/>
@@ -312,7 +311,7 @@
         <Property name="useNullLayout" type="boolean" value="false"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="Aboutus_Label3">
+        <Component class="javax.swing.JLabel" name="Aboutus_Label5">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI Emoji" size="10" style="0"/>
@@ -328,7 +327,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="Aboutus_label4">
+        <Component class="javax.swing.JLabel" name="Aboutus_label6">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI Emoji" size="10" style="0"/>
@@ -344,10 +343,10 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel5">
+        <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/logo.png"/>
+              <Image iconType="3" name="/img/logo.png"/>
             </Property>
           </Properties>
           <Constraints>

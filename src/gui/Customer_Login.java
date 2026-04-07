@@ -22,6 +22,19 @@ public class Customer_Login extends javax.swing.JFrame {
     
     public Customer_Login() {
         initComponents();
+        
+        this.setResizable(true);
+        
+        // 2. Set the exact preferred size for the content pane (usable canvas)
+        getContentPane().setPreferredSize(new java.awt.Dimension(900, 580));
+        
+        // 3. Let Java calculate the NEW window size.
+        pack();
+        
+        // 4. Now that the size is correct, lock it.
+        this.setResizable(false);
+        
+        getContentPane().setComponentZOrder(imagePanelwelcome1, 0);
         setLocationRelativeTo(null);
         
         makeFlatButton(btn_login);
@@ -38,8 +51,8 @@ public class Customer_Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imagePanel1 = new gui.ImagePanel();
-        imagePanelwelcome1 = new gui.ImagePanelwelcome();
+        imagePanelwelcome1 = new img.ImagePanelwelcome();
+        btn_emplogin1 = new javax.swing.JLabel();
         chk_loginShowPass = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         txt_loginEmail = new javax.swing.JTextField();
@@ -47,10 +60,9 @@ public class Customer_Login extends javax.swing.JFrame {
         btn_login = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         btn_loginSignup = new javax.swing.JLabel();
-        btn_emplogin1 = new javax.swing.JLabel();
         txt_loginPass = new javax.swing.JPasswordField();
         jLabel19 = new javax.swing.JLabel();
-        imagePanelcreate = new gui.ImagePanelcreate();
+        imagePanelcreate = new img.ImagePanelcreate();
         jLabel10 = new javax.swing.JLabel();
         txt_createFirstName = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -76,9 +88,18 @@ public class Customer_Login extends javax.swing.JFrame {
         setLocation(new java.awt.Point(0, 0));
         setResizable(false);
         setSize(new java.awt.Dimension(900, 580));
+        getContentPane().setLayout(null);
 
-        imagePanel1.setMinimumSize(new java.awt.Dimension(900, 580));
-        imagePanel1.setLayout(null);
+        btn_emplogin1.setFont(new java.awt.Font("Century Gothic", 3, 12)); // NOI18N
+        btn_emplogin1.setForeground(new java.awt.Color(153, 153, 153));
+        btn_emplogin1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_emplogin1.setText("Employee Log-in");
+        btn_emplogin1.setToolTipText("");
+        btn_emplogin1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_emplogin1MouseClicked(evt);
+            }
+        });
 
         chk_loginShowPass.addActionListener(this::chk_loginShowPassActionPerformed);
 
@@ -127,17 +148,6 @@ public class Customer_Login extends javax.swing.JFrame {
             }
         });
 
-        btn_emplogin1.setFont(new java.awt.Font("Century Gothic", 3, 12)); // NOI18N
-        btn_emplogin1.setForeground(new java.awt.Color(153, 153, 153));
-        btn_emplogin1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btn_emplogin1.setText("Employee Log-in");
-        btn_emplogin1.setToolTipText("");
-        btn_emplogin1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_emplogin1MouseClicked(evt);
-            }
-        });
-
         txt_loginPass.setBackground(new java.awt.Color(229, 229, 229));
         txt_loginPass.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         txt_loginPass.setForeground(new java.awt.Color(47, 74, 91));
@@ -158,57 +168,55 @@ public class Customer_Login extends javax.swing.JFrame {
             .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
                 .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btn_emplogin1))
-                    .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(157, 157, 157)
+                        .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txt_loginPass, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel5)
+                                .addComponent(txt_loginEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
-                                .addGap(152, 152, 152)
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel19)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(chk_loginShowPass))
-                            .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_loginSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btn_login, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 282, Short.MAX_VALUE)
-                                .addComponent(txt_loginEmail, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txt_loginPass, javax.swing.GroupLayout.Alignment.LEADING)))))
-                .addContainerGap(465, Short.MAX_VALUE))
+                            .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(btn_emplogin1))
+                    .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
+                        .addGap(145, 145, 145)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_loginSignup)))
+                .addContainerGap(477, Short.MAX_VALUE))
         );
         imagePanelwelcome1Layout.setVerticalGroup(
             imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelwelcome1Layout.createSequentialGroup()
-                .addContainerGap(235, Short.MAX_VALUE)
+                .addContainerGap(238, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_loginEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_loginPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(imagePanelwelcome1Layout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addGap(3, 3, 3))
-                    .addComponent(chk_loginShowPass))
-                .addGap(18, 18, 18)
-                .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                    .addComponent(chk_loginShowPass)
+                    .addComponent(jLabel19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
                 .addGroup(imagePanelwelcome1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(btn_loginSignup))
-                .addGap(99, 99, 99)
+                .addGap(92, 92, 92)
                 .addComponent(btn_emplogin1)
-                .addContainerGap())
+                .addGap(14, 14, 14))
         );
 
-        imagePanel1.add(imagePanelwelcome1);
+        getContentPane().add(imagePanelwelcome1);
         imagePanelwelcome1.setBounds(0, 0, 900, 580);
 
         jLabel10.setBackground(new java.awt.Color(47, 74, 91));
@@ -344,134 +352,125 @@ public class Customer_Login extends javax.swing.JFrame {
         imagePanelcreateLayout.setHorizontalGroup(
             imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imagePanelcreateLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
+                .addGap(151, 151, 151)
                 .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_lcreateLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(172, 172, 172))
-                    .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txt_createNumber, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, imagePanelcreateLayout.createSequentialGroup()
-                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(cb_createGender, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(33, 33, 33)
-                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(txt_createFirstName, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addGap(41, 41, 41)
-                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_createSignup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_createEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(imagePanelcreateLayout.createSequentialGroup()
+                        .addGap(163, 163, 163)
+                        .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chk_createShowPass))
-                    .addComponent(txt_createPass1)
-                    .addComponent(txt_createLastName))
-                .addGap(99, 99, 99))
+                    .addGroup(imagePanelcreateLayout.createSequentialGroup()
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_createFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13))
+                        .addGap(56, 56, 56)
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel15)
+                            .addComponent(txt_createNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, imagePanelcreateLayout.createSequentialGroup()
+                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel16)
+                                .addComponent(cb_createGender, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel17))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel11)
+                                .addComponent(txt_createPass1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(imagePanelcreateLayout.createSequentialGroup()
+                            .addComponent(btn_lcreateLogin)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_createSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(imagePanelcreateLayout.createSequentialGroup()
+                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel14)
+                                .addComponent(txt_createLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(imagePanelcreateLayout.createSequentialGroup()
+                                    .addGap(56, 56, 56)
+                                    .addComponent(jLabel10)
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                                    .addComponent(txt_createEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(151, Short.MAX_VALUE))
         );
         imagePanelcreateLayout.setVerticalGroup(
             imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
                 .addContainerGap(226, Short.MAX_VALUE)
-                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_createFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_createLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(imagePanelcreateLayout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_createEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(imagePanelcreateLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_createNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19)
                 .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel17))
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel15))
+                .addGap(3, 3, 3)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_createFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_createNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(dc_createBday, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txt_createPass1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_createGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
-                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(imagePanelcreateLayout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(chk_createShowPass, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE))
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_createLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_createEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_createSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_lcreateLogin))
-                .addGap(81, 81, 81))
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel11))
+                .addGap(2, 2, 2)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_createPass1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cb_createGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel18)
+                    .addComponent(chk_createShowPass))
+                .addGap(25, 25, 25)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_lcreateLogin)
+                    .addComponent(btn_createSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(82, 82, 82))
         );
 
-        imagePanel1.add(imagePanelcreate);
-        imagePanelcreate.setBounds(0, 580, 900, 580);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(imagePanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 580, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(imagePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE))
-        );
+        getContentPane().add(imagePanelcreate);
+        imagePanelcreate.setBounds(-5, -1, 910, 580);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_emplogin1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_emplogin1MouseClicked
-        new Employee_Login().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btn_emplogin1MouseClicked
+    private void chk_createShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_createShowPassActionPerformed
+        if (chk_createShowPass.isSelected()) {
+            txt_createPass1.setEchoChar((char)0);
+        } else {
+            txt_createPass1.setEchoChar('*');
+        }
+    }//GEN-LAST:event_chk_createShowPassActionPerformed
 
-    private void btn_loginSignupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_loginSignupMouseClicked
-        slideToCreate();
-    }//GEN-LAST:event_btn_loginSignupMouseClicked
-
-    private void txt_loginEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_loginEmailActionPerformed
+    private void txt_createPass1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createPass1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_loginEmailActionPerformed
+    }//GEN-LAST:event_txt_createPass1ActionPerformed
 
-    private void txt_createFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createFirstNameActionPerformed
+    private void cb_createGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_createGenderActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_createFirstNameActionPerformed
+    }//GEN-LAST:event_cb_createGenderActionPerformed
 
-    private void btn_lcreateLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_lcreateLoginMouseClicked
-        slideToLogin();
-    }//GEN-LAST:event_btn_lcreateLoginMouseClicked
+    private void txt_createLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createLastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_createLastNameActionPerformed
 
     private void txt_createEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_createEmailActionPerformed
 
-    private void txt_createLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createLastNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_createLastNameActionPerformed
+    private void btn_lcreateLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_lcreateLoginMouseClicked
+        slideToLogin();
+    }//GEN-LAST:event_btn_lcreateLoginMouseClicked
 
     private void btn_createSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createSignupActionPerformed
         String fName = txt_createFirstName.getText();
@@ -490,17 +489,17 @@ public class Customer_Login extends javax.swing.JFrame {
         db.DoConnect();
 
         if (db.con != null) {
-            try (Connection con = db.con) { 
+            try (Connection con = db.con) {
 
                 String checkEmailSql = "SELECT EMAIL FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ?";
                 try (PreparedStatement checkEmailPst = con.prepareStatement(checkEmailSql)) {
                     checkEmailPst.setString(1, email);
                     try (ResultSet rs = checkEmailPst.executeQuery()) {
                         if (rs.next()) {
-                            JOptionPane.showMessageDialog(this, 
-                                "The email " + email + " is already registered to another account.", 
+                            JOptionPane.showMessageDialog(this,
+                                "The email " + email + " is already registered to another account.",
                                 "Duplicate Email", JOptionPane.ERROR_MESSAGE);
-                            return; 
+                            return;
                         }
                     }
                 }
@@ -510,26 +509,26 @@ public class Customer_Login extends javax.swing.JFrame {
                     checkPhonePst.setString(1, phone);
                     try (ResultSet rs = checkPhonePst.executeQuery()) {
                         if (rs.next()) {
-                            JOptionPane.showMessageDialog(this, 
-                                "The mobile number " + phone + " is already registered to another account.", 
+                            JOptionPane.showMessageDialog(this,
+                                "The mobile number " + phone + " is already registered to another account.",
                                 "Duplicate Number", JOptionPane.ERROR_MESSAGE);
-                            return; 
+                            return;
                         }
                     }
                 }
-                String newVipId = getNextVipId(); 
+                String newVipId = getNextVipId();
                 java.sql.Date dateReg = new java.sql.Date(System.currentTimeMillis());
 
                 String insertSql = "INSERT INTO DBHOUSE.VIPACCOUNTS (VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS) "
-                           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                 try (PreparedStatement pst = con.prepareStatement(insertSql)) {
-                    pst.setString(1, newVipId);  
-                    pst.setDate(2, dateReg);  
+                    pst.setString(1, newVipId);
+                    pst.setDate(2, dateReg);
                     pst.setString(3, fName);
                     pst.setString(4, lName);
                     pst.setString(5, gender);
-                    pst.setDate(6, new java.sql.Date(bdayInput.getTime()));  
+                    pst.setDate(6, new java.sql.Date(bdayInput.getTime()));
                     pst.setString(7, phone);
                     pst.setString(8, email);
                     pst.setString(9, pass);
@@ -546,6 +545,23 @@ public class Customer_Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_createSignupActionPerformed
 
+    private void txt_createFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createFirstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_createFirstNameActionPerformed
+
+    private void txt_loginPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_loginPassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_loginPassActionPerformed
+
+    private void btn_emplogin1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_emplogin1MouseClicked
+        new Employee_Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_emplogin1MouseClicked
+
+    private void btn_loginSignupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_loginSignupMouseClicked
+        slideToCreate();
+    }//GEN-LAST:event_btn_loginSignupMouseClicked
+
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
         String email = txt_loginEmail.getText();
         String password = new String(txt_loginPass.getPassword());
@@ -560,15 +576,15 @@ public class Customer_Login extends javax.swing.JFrame {
 
         if (db.con != null) {
             try (Connection con = db.con;
-                 PreparedStatement pst = con.prepareStatement("SELECT * FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ? AND PASS = ?")) {
+                PreparedStatement pst = con.prepareStatement("SELECT * FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ? AND PASS = ?")) {
 
                 pst.setString(1, email);
                 pst.setString(2, password);
 
                 try (ResultSet rs = pst.executeQuery()) {
                     if (rs.next()) {
-                        UserSession.loggedInEmail = txt_loginEmail.getText(); 
-                        new Customer_Homepage().setVisible(true); 
+                        UserSession.loggedInEmail = txt_loginEmail.getText();
+                        new Customer_Homepage().setVisible(true);
                         this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "Invalid credentials.");
@@ -580,21 +596,9 @@ public class Customer_Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_loginActionPerformed
 
-    private void txt_createPass1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createPass1ActionPerformed
+    private void txt_loginEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_loginEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_createPass1ActionPerformed
-
-    private void cb_createGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_createGenderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cb_createGenderActionPerformed
-
-    private void chk_createShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_createShowPassActionPerformed
-        if (chk_createShowPass.isSelected()) {
-            txt_createPass1.setEchoChar((char)0);
-        } else {
-            txt_createPass1.setEchoChar('*');
-        }
-    }//GEN-LAST:event_chk_createShowPassActionPerformed
+    }//GEN-LAST:event_txt_loginEmailActionPerformed
 
     private void chk_loginShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_loginShowPassActionPerformed
         if (chk_loginShowPass.isSelected()) {
@@ -603,10 +607,6 @@ public class Customer_Login extends javax.swing.JFrame {
             txt_loginPass.setEchoChar('*');
         }
     }//GEN-LAST:event_chk_loginShowPassActionPerformed
-
-    private void txt_loginPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_loginPassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_loginPassActionPerformed
     
     //BUTTON DESIGNER
     private void makeFlatButton(javax.swing.JButton btn) {
@@ -614,29 +614,25 @@ public class Customer_Login extends javax.swing.JFrame {
         btn.setBorder(null);
         btn.setContentAreaFilled(false);
         btn.setOpaque(true);
-        btn.setBackground(new java.awt.Color(47, 74, 91));
-        btn.setForeground(java.awt.Color.WHITE);
         btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
     
     private void slideToCreate() {
         //CREATE PANEL TO FRONT
-        imagePanel1.setComponentZOrder(imagePanelcreate, 0); 
+        getContentPane().setComponentZOrder(imagePanelcreate, 0); 
 
-        //ANIMATION
+        // ANIMATION
         Timer timer = new Timer(10, null);
 
         timer.addActionListener(new java.awt.event.ActionListener() {
-            double y = 580;
+            double y = 580; 
 
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                y += (0 - y) * 0.1; 
-
+                y += (0 - y) * 0.1;
                 imagePanelcreate.setLocation(0, (int)y);
+                getContentPane().repaint();
 
-                imagePanel1.repaint();
-
-                if (Math.abs(y) < 1) {
+                if (Math.abs(y) < 1) { 
                     imagePanelcreate.setLocation(0, 0);
                     timer.stop();
                 }
@@ -651,7 +647,7 @@ public class Customer_Login extends javax.swing.JFrame {
     }
     
     private void slideToLogin() {
-        //ANIMATION
+        // ANIMATION
         Timer timer = new Timer(10, null);
 
         timer.addActionListener(new java.awt.event.ActionListener() {
@@ -661,12 +657,13 @@ public class Customer_Login extends javax.swing.JFrame {
                 y += (580 - y) * 0.1; 
 
                 imagePanelcreate.setLocation(0, (int)y);
+                getContentPane().repaint();
 
-                imagePanel1.repaint();
-
-                if (Math.abs(580 - y) < 1) {
+                if (Math.abs(580 - y) < 1) { 
                     imagePanelcreate.setLocation(0, 580);
                     timer.stop();
+                   
+                    getContentPane().setComponentZOrder(imagePanelwelcome1, 0);
                 }
             }
         });
@@ -743,9 +740,8 @@ public class Customer_Login extends javax.swing.JFrame {
     private javax.swing.JCheckBox chk_createShowPass;
     private javax.swing.JCheckBox chk_loginShowPass;
     private com.toedter.calendar.JDateChooser dc_createBday;
-    private gui.ImagePanel imagePanel1;
-    private gui.ImagePanelcreate imagePanelcreate;
-    private gui.ImagePanelwelcome imagePanelwelcome1;
+    private img.ImagePanelcreate imagePanelcreate;
+    private img.ImagePanelwelcome imagePanelwelcome1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;

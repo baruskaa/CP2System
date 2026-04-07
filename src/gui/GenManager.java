@@ -478,7 +478,7 @@ public class GenManager extends javax.swing.JFrame {
         btn_upcom.addActionListener(this::btn_upcomActionPerformed);
         pnl_nav.add(btn_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 90, 30));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/logo.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
         pnl_nav.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
 
         btn_history.setBackground(new java.awt.Color(55, 77, 94));

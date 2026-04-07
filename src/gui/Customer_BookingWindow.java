@@ -132,12 +132,15 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         txt_FName.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 160, 30));
 
-        btn_backhomepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-arrow.png"))); // NOI18N
+        btn_backhomepage.setBackground(new java.awt.Color(255, 255, 255));
+        btn_backhomepage.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        btn_backhomepage.setForeground(new java.awt.Color(23, 57, 86));
+        btn_backhomepage.setText("<");
         btn_backhomepage.setBorderPainted(false);
         btn_backhomepage.addActionListener(this::btn_backhomepageActionPerformed);
         getContentPane().add(btn_backhomepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, 20));
 
-        booking_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/BOOKING.png"))); // NOI18N
+        booking_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BOOKING.png"))); // NOI18N
         getContentPane().add(booking_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
 
         pack();

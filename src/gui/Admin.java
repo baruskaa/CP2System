@@ -11,12 +11,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
 import javax.swing.JOptionPane;
-import javax.swing.JFileChooser;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+import java.util.HashMap;
 import java.io.*;
 
 /**
@@ -537,7 +538,7 @@ public class Admin extends javax.swing.JFrame {
         btn_upcom.addActionListener(this::btn_upcomActionPerformed);
         pnl_nav.add(btn_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 90, 30));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/logo.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
         pnl_nav.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
 
         btn_history.setBackground(new java.awt.Color(55, 77, 94));
@@ -728,7 +729,7 @@ public class Admin extends javax.swing.JFrame {
 
         pnl_history.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
-        bg_today1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
+        bg_today1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
         bg_today1.setText("Today");
         pnl_history.add(bg_today1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
@@ -888,7 +889,7 @@ public class Admin extends javax.swing.JFrame {
 
         pnl_memb.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 250));
 
-        bg_today4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
+        bg_today4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
         bg_today4.setText("Today");
         pnl_memb.add(bg_today4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
@@ -1039,7 +1040,7 @@ public class Admin extends javax.swing.JFrame {
 
         pnl_emp.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 530, 330));
 
-        bg_today3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
+        bg_today3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
         bg_today3.setText("Today");
         pnl_emp.add(bg_today3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
@@ -1119,7 +1120,7 @@ public class Admin extends javax.swing.JFrame {
 
         pnl_today.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
-        bg_today.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
+        bg_today.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
         bg_today.setText("Today");
         pnl_today.add(bg_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
@@ -1202,7 +1203,7 @@ public class Admin extends javax.swing.JFrame {
 
         pnl_upcom.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
-        bg_today2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
+        bg_today2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
         bg_today2.setText("Today");
         pnl_upcom.add(bg_today2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
@@ -1551,53 +1552,55 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_membDateregNew_tableActionPerformed
 
     private void btn_histGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_histGenerateActionPerformed
-        
-        if (tbl_history.getRowCount() == 0) {
+     if (tbl_history.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "No data available to generate a report.", "Empty Table", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save Report as Excel (CSV)");
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("CSV (Comma delimited) (*.csv)", "csv"));
+        try {
+            // 1. Extract the filtered data from the JTable
+            DefaultTableModel filteredData = new DefaultTableModel(
+                new String[]{"ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"}, 0
+            );
 
-        int userSelection = fileChooser.showSaveDialog(this);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
-            String filePath = fileToSave.getAbsolutePath();
-
-            if (!filePath.toLowerCase().endsWith(".csv")) {
-                filePath += ".csv";
+            for (int i = 0; i < tbl_history.getRowCount(); i++) {
+                Object[] row = new Object[tbl_history.getColumnCount()];
+                for (int j = 0; j < tbl_history.getColumnCount(); j++) {
+                    row[j] = tbl_history.getValueAt(i, j); 
+                }
+                filteredData.addRow(row);
             }
 
-            try (FileWriter fw = new FileWriter(filePath);
-                 BufferedWriter bw = new BufferedWriter(fw)) {
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(filteredData);
+            
+            // --- UPDATED CODE: POINT TO THE .jasper FILE INSTEAD ---
+            String reportPath = "src/reports/ReportHistory.jasper"; 
+            
+            // Use JRLoader to load the pre-compiled file (Skips the XML compiling crash!)
+            JasperReport jr = (JasperReport) net.sf.jasperreports.engine.util.JRLoader.loadObjectFromFile(reportPath);
+            // -------------------------------------------------------
 
-                // Write Headers
-                for (int i = 0; i < tbl_history.getColumnCount(); i++) {
-                    bw.write("\"" + tbl_history.getColumnName(i) + "\"");
-                    if (i < tbl_history.getColumnCount() - 1) bw.write(",");
-                }
-                bw.newLine();
+            // --- GRAB DATES AND ADD TO PARAMETERS ---
+            java.util.Date fromDate = date_historyFrom.getDate();
+            java.util.Date toDate = date_historyTo.getDate();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMMM dd, yyyy");
 
-                for (int i = 0; i < tbl_history.getRowCount(); i++) {
-                    for (int j = 0; j < tbl_history.getColumnCount(); j++) {
-                        Object val = tbl_history.getValueAt(i, j);
-                        String valStr = (val == null) ? "" : val.toString();
+            // If a date isn't selected, provide a default fallback string
+            String fromStr = (fromDate != null) ? sdf.format(fromDate) : "Beginning";
+            String toStr = (toDate != null) ? sdf.format(toDate) : "Present";
 
-                        bw.write("\"" + valStr + "\""); 
-                        if (j < tbl_history.getColumnCount() - 1) bw.write(",");
-                    }
-                    bw.newLine();
-                }
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("fromDateParam", fromStr);
+            parameters.put("toDateParam", toStr);
+            // ---------------------------------------------------
 
-                JOptionPane.showMessageDialog(this, "Report successfully generated!\nLocation: " + filePath, "Success", JOptionPane.INFORMATION_MESSAGE);
+            // Pass the parameters map into the fillReport method
+            JasperPrint jp = JasperFillManager.fillReport(jr, parameters, dataSource);
+            JasperViewer.viewReport(jp, false);
 
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, "Error generating report: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error generating Jasper Report: " + e.getMessage(), "Report Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }//GEN-LAST:event_btn_histGenerateActionPerformed
 

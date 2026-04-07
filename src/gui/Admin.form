@@ -113,7 +113,7 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/logo.png"/>
+              <Image iconType="3" name="/img/logo.png"/>
             </Property>
           </Properties>
           <Constraints>
@@ -562,7 +562,7 @@
         <Component class="javax.swing.JLabel" name="bg_today1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/bgfd.jpg"/>
+              <Image iconType="3" name="/img/bgfd.jpg"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Today"/>
           </Properties>
@@ -993,7 +993,7 @@
         <Component class="javax.swing.JLabel" name="bg_today4">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/bgfd.jpg"/>
+              <Image iconType="3" name="/img/bgfd.jpg"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Today"/>
           </Properties>
@@ -1428,7 +1428,7 @@
         <Component class="javax.swing.JLabel" name="bg_today3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/bgfd.jpg"/>
+              <Image iconType="3" name="/img/bgfd.jpg"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Today"/>
           </Properties>
@@ -1635,7 +1635,7 @@
         <Component class="javax.swing.JLabel" name="bg_today">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/bgfd.jpg"/>
+              <Image iconType="3" name="/img/bgfd.jpg"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Today"/>
           </Properties>
@@ -1848,7 +1848,7 @@
         <Component class="javax.swing.JLabel" name="bg_today2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/bgfd.jpg"/>
+              <Image iconType="3" name="/img/bgfd.jpg"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Today"/>
           </Properties>

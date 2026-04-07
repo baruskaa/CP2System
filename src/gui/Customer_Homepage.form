@@ -132,7 +132,7 @@
         <Component class="javax.swing.JLabel" name="bg_homepage">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/gui/bgRevised.png"/>
+              <Image iconType="3" name="/img/bgRevised.png"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
@@ -159,7 +159,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Container class="javax.swing.JPanel" name="pnl_nav">
+        <Container class="javax.swing.JPanel" name="pnl_nav1">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="5e" green="4d" red="39" type="rgb"/>
@@ -184,7 +184,7 @@
             <Property name="useNullLayout" type="boolean" value="false"/>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="Aboutus_Label3">
+            <Component class="javax.swing.JLabel" name="Aboutus_Label4">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI Emoji" size="10" style="0"/>
@@ -200,7 +200,7 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JLabel" name="Aboutus_label4">
+            <Component class="javax.swing.JLabel" name="Aboutus_label5">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI Emoji" size="10" style="0"/>
@@ -216,10 +216,10 @@
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel5">
+            <Component class="javax.swing.JLabel" name="jLabel7">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/gui/logo.png"/>
+                  <Image iconType="3" name="/img/logo.png"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -359,7 +359,7 @@
             <Component class="javax.swing.JButton" name="btn_navReservations">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="5f" green="9f" red="c7" type="rgb"/>
+                  <Color blue="4f" green="99" red="b9" type="rgb"/>
                 </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Century Gothic" size="12" style="1"/>

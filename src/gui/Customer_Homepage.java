@@ -46,10 +46,10 @@ public class Customer_Homepage extends javax.swing.JFrame {
         cb_time = new javax.swing.JComboBox<>();
         btn_bookNow = new javax.swing.JButton();
         bg_homepage = new javax.swing.JLabel();
-        pnl_nav = new javax.swing.JPanel();
-        Aboutus_Label3 = new javax.swing.JLabel();
-        Aboutus_label4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        pnl_nav1 = new javax.swing.JPanel();
+        Aboutus_Label4 = new javax.swing.JLabel();
+        Aboutus_label5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         btn_navAbout = new javax.swing.JButton();
         btn_navHome = new javax.swing.JButton();
         btn_navMenu = new javax.swing.JButton();
@@ -90,7 +90,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_bookNow.addActionListener(this::btn_bookNowActionPerformed);
         jPanel1.add(btn_bookNow, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 400, 100, 30));
 
-        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgRevised.png"))); // NOI18N
+        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgRevised.png"))); // NOI18N
         bg_homepage.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         bg_homepage.setMaximumSize(new java.awt.Dimension(760, 580));
         bg_homepage.setMinimumSize(new java.awt.Dimension(760, 580));
@@ -105,24 +105,24 @@ public class Customer_Homepage extends javax.swing.JFrame {
         });
         jPanel1.add(bg_homepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 740, 580));
 
-        pnl_nav.setBackground(new java.awt.Color(57, 77, 94));
-        pnl_nav.setMaximumSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setMinimumSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setPreferredSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnl_nav1.setBackground(new java.awt.Color(57, 77, 94));
+        pnl_nav1.setMaximumSize(new java.awt.Dimension(158, 580));
+        pnl_nav1.setMinimumSize(new java.awt.Dimension(158, 580));
+        pnl_nav1.setPreferredSize(new java.awt.Dimension(158, 580));
+        pnl_nav1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Aboutus_Label3.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
-        Aboutus_Label3.setForeground(new java.awt.Color(153, 153, 153));
-        Aboutus_Label3.setText("© 2026 The House Of 7 Buffet.");
-        pnl_nav.add(Aboutus_Label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
+        Aboutus_Label4.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_Label4.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_Label4.setText("© 2026 The House Of 7 Buffet.");
+        pnl_nav1.add(Aboutus_Label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
 
-        Aboutus_label4.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
-        Aboutus_label4.setForeground(new java.awt.Color(153, 153, 153));
-        Aboutus_label4.setText("All Rights Reserved.");
-        pnl_nav.add(Aboutus_label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
+        Aboutus_label5.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_label5.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_label5.setText("All Rights Reserved.");
+        pnl_nav1.add(Aboutus_label5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/logo.png"))); // NOI18N
-        pnl_nav.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
+        pnl_nav1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
 
         btn_navAbout.setBackground(new java.awt.Color(55, 77, 94));
         btn_navAbout.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -141,7 +141,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
             }
         });
         btn_navAbout.addActionListener(this::btn_navAboutActionPerformed);
-        pnl_nav.add(btn_navAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 120, 30));
+        pnl_nav1.add(btn_navAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 120, 30));
 
         btn_navHome.setBackground(new java.awt.Color(55, 77, 94));
         btn_navHome.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -160,7 +160,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
             }
         });
         btn_navHome.addActionListener(this::btn_navHomeActionPerformed);
-        pnl_nav.add(btn_navHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 120, 30));
+        pnl_nav1.add(btn_navHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 120, 30));
 
         btn_navMenu.setBackground(new java.awt.Color(55, 77, 94));
         btn_navMenu.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -179,7 +179,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
             }
         });
         btn_navMenu.addActionListener(this::btn_navMenuActionPerformed);
-        pnl_nav.add(btn_navMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 30));
+        pnl_nav1.add(btn_navMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 30));
 
         btn_navDine.setBackground(new java.awt.Color(55, 77, 94));
         btn_navDine.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -198,16 +198,16 @@ public class Customer_Homepage extends javax.swing.JFrame {
             }
         });
         btn_navDine.addActionListener(this::btn_navDineActionPerformed);
-        pnl_nav.add(btn_navDine, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 120, 30));
+        pnl_nav1.add(btn_navDine, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 120, 30));
 
-        btn_navReservations.setBackground(new java.awt.Color(199, 159, 95));
+        btn_navReservations.setBackground(new java.awt.Color(185, 153, 79));
         btn_navReservations.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         btn_navReservations.setForeground(new java.awt.Color(55, 91, 115));
         btn_navReservations.setText("MY RESERVATIONS");
         btn_navReservations.setBorder(null);
         btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_navReservations.addActionListener(this::btn_navReservationsActionPerformed);
-        pnl_nav.add(btn_navReservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
+        pnl_nav1.add(btn_navReservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
 
         btn_navLogout.setBackground(new java.awt.Color(153, 0, 0));
         btn_navLogout.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -216,7 +216,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_navLogout.setBorder(null);
         btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_navLogout.addActionListener(this::btn_navLogoutActionPerformed);
-        pnl_nav.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
+        pnl_nav1.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
 
         btn_navProf.setBackground(new java.awt.Color(55, 77, 94));
         btn_navProf.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -235,9 +235,9 @@ public class Customer_Homepage extends javax.swing.JFrame {
             }
         });
         btn_navProf.addActionListener(this::btn_navProfActionPerformed);
-        pnl_nav.add(btn_navProf, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 120, 30));
+        pnl_nav1.add(btn_navProf, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 120, 30));
 
-        jPanel1.add(pnl_nav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, -1));
+        jPanel1.add(pnl_nav1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -448,8 +448,8 @@ public class Customer_Homepage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Aboutus_Label3;
-    private javax.swing.JLabel Aboutus_label4;
+    private javax.swing.JLabel Aboutus_Label4;
+    private javax.swing.JLabel Aboutus_label5;
     private javax.swing.JLabel bg_homepage;
     private javax.swing.JButton btn_bookNow;
     private javax.swing.JButton btn_navAbout;
@@ -461,9 +461,9 @@ public class Customer_Homepage extends javax.swing.JFrame {
     private javax.swing.JButton btn_navReservations;
     private javax.swing.JComboBox<String> cb_time;
     private com.toedter.calendar.JDateChooser dc_date;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel pnl_nav;
+    private javax.swing.JPanel pnl_nav1;
     private javax.swing.JSpinner sp_guest;
     // End of variables declaration//GEN-END:variables
 }

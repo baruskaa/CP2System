@@ -1,0 +1,122 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="ReportHistory" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7a5c9b49-9dc5-422a-ac69-e92cf61ef530">
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50.0" bold="false"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18.0" bold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14.0" bold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle mode="Opaque" backcolor="#F0EFEF">
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<parameter name="fromDateParam" class="java.lang.String"/>
+	<parameter name="toDateParam" class="java.lang.String"/>
+	<query language="sql"><![CDATA[]]></query>
+	<field name="ID" class="java.lang.String"/>
+	<field name="DATE" class="java.lang.String"/>
+	<field name="F_NAME" class="java.lang.String"/>
+	<field name="L_NAME" class="java.lang.String"/>
+	<field name="CP_NUM" class="java.lang.String"/>
+	<field name="TIME" class="java.lang.String"/>
+	<field name="PAX" class="java.lang.Integer"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<title height="99" splitType="Stretch">
+		<element kind="rectangle" uuid="349bc214-ee21-4c39-b1ae-5d5836b16f13" x="0" y="0" width="802" height="99" backcolor="#374D5E"/>
+		<element kind="staticText" uuid="85cb302f-01f4-4925-85b9-3424eb0ea400" x="440" y="20" width="344" height="30" forecolor="rgba(255, 255, 255, 0.49019608)" fontName="Century Gothic" fontSize="20.0" bold="true" hTextAlign="Right" vTextAlign="Top">
+			<text><![CDATA[THE HOUSE OF 7]]></text>
+		</element>
+		<element kind="staticText" uuid="c8edcb4c-f0d0-404c-b02a-8e88f0a2e134" x="20" y="16" width="440" height="60" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="30.0" bold="true" hTextAlign="Left" vTextAlign="Top">
+			<text><![CDATA[BOOKING HISTORY REPORT]]></text>
+		</element>
+		<element kind="textField" uuid="b8f9ebaa-b2a7-405a-aac5-e56d7927f4b8" x="20" y="56" width="150" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="20.0" bold="true" hTextAlign="Left">
+			<expression><![CDATA[$P{fromDateParam}]]></expression>
+		</element>
+		<element kind="staticText" uuid="16870be1-0f94-4fac-9873-6e86675818a9" x="170" y="55" width="20" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="20.0" bold="true" hTextAlign="Center" vTextAlign="Top">
+			<text><![CDATA[-]]></text>
+		</element>
+		<element kind="textField" uuid="a0c55155-2106-40c7-b89f-ebddc63656a6" x="190" y="55" width="190" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="20.0" bold="true" hTextAlign="Left" vTextAlign="Top">
+			<expression><![CDATA[$P{toDateParam}]]></expression>
+		</element>
+	</title>
+	<columnHeader height="36" splitType="Stretch">
+		<element kind="rectangle" uuid="878873b2-737b-4795-80cd-bbfb215df891" x="0" y="0" width="802" height="35">
+			<pen lineWidth="0.5" lineStyle="Solid" lineColor="#374D5E"/>
+		</element>
+		<element kind="staticText" uuid="f64a72e0-72f3-4898-9667-cf6fab72f0c5" x="0" y="0" width="80" height="24" forecolor="#374D5E" fontName="Century Gothic" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[ID]]></text>
+		</element>
+		<element kind="staticText" uuid="93556934-3127-4855-b127-f8e1345bb44e" x="80" y="0" width="90" height="24" forecolor="#374D5E" fontName="Century Gothic" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[DATE]]></text>
+		</element>
+		<element kind="staticText" uuid="4e0737d1-de4d-46b9-9e4c-46b7f39bb41f" x="170" y="0" width="150" height="24" forecolor="#374D5E" fontName="Century Gothic" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[FIRST NAME]]></text>
+		</element>
+		<element kind="staticText" uuid="2c104f3d-879b-4bf8-a64c-8ebb566f9648" x="320" y="0" width="140" height="24" forecolor="#374D5E" fontName="Century Gothic" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[LAST NAME]]></text>
+		</element>
+		<element kind="staticText" uuid="e4ec1b84-6dfb-4ddb-9365-e79f1a34425f" x="460" y="0" width="110" height="24" forecolor="#374D5E" fontName="Century Gothic" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[CP NUMBER]]></text>
+		</element>
+		<element kind="staticText" uuid="994d52fc-b02f-4a05-a933-7b5578a7692e" x="650" y="0" width="60" height="24" forecolor="#374D5E" fontName="Century Gothic" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[PAX]]></text>
+		</element>
+		<element kind="staticText" uuid="a18fd0aa-0453-4daf-b353-d5c8b7da56a1" x="570" y="0" width="80" height="24" forecolor="#374D5E" fontName="Century Gothic" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[TIME]]></text>
+		</element>
+		<element kind="staticText" uuid="638e4330-7d92-4b7a-8a08-9aa438f8b3c9" x="710" y="0" width="92" height="24" forecolor="#374D5E" fontName="Century Gothic" fontSize="13.0" bold="true" hTextAlign="Center" vTextAlign="Bottom">
+			<text><![CDATA[REMARKS]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<element kind="rectangle" uuid="b1e9c8c7-c466-43ba-bf2f-7d502cef1700" x="0" y="0" width="802" height="30">
+				<pen lineWidth="0.5" lineStyle="Solid" lineColor="#374D5E"/>
+			</element>
+			<element kind="textField" uuid="10428b9e-f6b4-47c9-82fe-79427176e925" x="0" y="0" width="80" height="30" fontName="Century Gothic" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{ID}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e58520f7-7b08-4193-8d13-617469da6380"/>
+			</element>
+			<element kind="textField" uuid="f5fb3fc5-bc81-4a42-9a33-dd90d8401a1d" x="80" y="0" width="90" height="30" fontName="Century Gothic" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{DATE}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e478d845-e374-48f5-b5be-0e14c57f5450"/>
+			</element>
+			<element kind="textField" uuid="9b206ffc-b3b2-48ed-8faa-64dada4f1bce" x="170" y="0" width="150" height="30" fontName="Century Gothic" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{F_NAME}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb288e23-9e43-4a2e-89e7-656fb5350508"/>
+			</element>
+			<element kind="textField" uuid="9c248d1a-bec9-47fc-9cf9-206780b4899e" x="320" y="0" width="140" height="30" fontName="Century Gothic" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{L_NAME}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="121fb92e-dba3-4ed9-b028-0943534db6bd"/>
+			</element>
+			<element kind="textField" uuid="a0e43570-bd06-403f-8679-6d512df897c7" x="460" y="0" width="110" height="30" fontName="Century Gothic" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{CP_NUM}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7f5ecc44-c204-44b8-8d5e-6f0c2f4f9ad7"/>
+			</element>
+			<element kind="textField" uuid="34c18c2a-d2de-4d08-a150-e64e566984bf" x="570" y="0" width="80" height="30" fontName="Century Gothic" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{TIME}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4ad20705-3a52-4fae-a9b0-a393b9680e26"/>
+			</element>
+			<element kind="textField" uuid="f83b3463-37c6-4b89-b164-4214dadc748f" x="710" y="0" width="92" height="30" fontName="Century Gothic" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{REMARKS}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="15da6f2c-a20f-4cfb-96d2-b04c00d4419c"/>
+			</element>
+			<element kind="textField" uuid="1319955a-f3d2-4ac9-9b77-f9a43c0e3c25" x="650" y="0" width="60" height="30" fontName="Century Gothic" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{PAX}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="460ca74d-4d09-4e33-9f50-cd12c7669c2c"/>
+			</element>
+		</band>
+	</detail>
+	<pageFooter height="25" splitType="Stretch">
+		<element kind="frame" uuid="ffb10ec8-0371-4545-8eaa-96d62ad3cec0" mode="Opaque" x="10" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#374D5E">
+			<element kind="textField" uuid="b5521ea6-5f36-4864-856f-58d0bcd011f2" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="10.0" evaluationTime="Report" bold="false" vTextAlign="Middle" style="Column header">
+				<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+			</element>
+			<element kind="textField" uuid="e625ea3c-1741-4cfe-81cf-fbbdd00162c8" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="10.0" bold="false" hTextAlign="Right" vTextAlign="Middle" style="Column header">
+				<expression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></expression>
+			</element>
+			<element kind="textField" uuid="0c9f7e91-d3f5-47f9-82b7-0b2b3a43a5d6" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="10.0" pattern="EEEEE dd MMMMM yyyy" bold="false" vTextAlign="Middle" style="Column header">
+				<expression><![CDATA[new java.util.Date()]]></expression>
+			</element>
+		</element>
+	</pageFooter>
+</jasperReport>

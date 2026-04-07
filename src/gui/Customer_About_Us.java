@@ -9,6 +9,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
     
     public Customer_About_Us() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
         @SuppressWarnings("unchecked")
@@ -368,7 +369,7 @@ public class Customer_About_Us extends javax.swing.JFrame {
         Aboutus_label5.setText("All Rights Reserved.");
         pnl_nav1.add(Aboutus_label5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/logo.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
         pnl_nav1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
 
         btn_navAbout1.setBackground(new java.awt.Color(55, 77, 94));
@@ -664,10 +665,8 @@ public class Customer_About_Us extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Aboutus_Label3;
     private javax.swing.JLabel Aboutus_Label4;
     private javax.swing.JLabel Aboutus_biglabel2;
-    private javax.swing.JLabel Aboutus_label4;
     private javax.swing.JLabel Aboutus_label5;
     private javax.swing.JLabel Aboutus_text10;
     private javax.swing.JLabel Aboutus_text11;
@@ -684,19 +683,12 @@ public class Customer_About_Us extends javax.swing.JFrame {
     private javax.swing.JLabel Aboutus_text7;
     private javax.swing.JLabel Aboutus_text8;
     private javax.swing.JLabel Aboutus_text9;
-    private javax.swing.JButton btn_navAbout;
     private javax.swing.JButton btn_navAbout1;
-    private javax.swing.JButton btn_navDine;
     private javax.swing.JButton btn_navDine1;
-    private javax.swing.JButton btn_navHome;
     private javax.swing.JButton btn_navHome1;
-    private javax.swing.JButton btn_navLogout;
     private javax.swing.JButton btn_navLogout1;
-    private javax.swing.JButton btn_navMenu;
     private javax.swing.JButton btn_navMenu1;
-    private javax.swing.JButton btn_navProf;
     private javax.swing.JButton btn_navProf1;
-    private javax.swing.JButton btn_navReservations;
     private javax.swing.JButton btn_navReservations1;
     private javax.swing.JLabel customerbranches_text1;
     private javax.swing.JLabel customerbranches_text2;
@@ -709,13 +701,11 @@ public class Customer_About_Us extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel pnl_header;
-    private javax.swing.JPanel pnl_nav;
     private javax.swing.JPanel pnl_nav1;
     // End of variables declaration//GEN-END:variables
 }

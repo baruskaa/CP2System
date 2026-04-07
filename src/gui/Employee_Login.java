@@ -38,7 +38,7 @@ public class Employee_Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imagePanelemplogin2 = new gui.ImagePanelemplogin();
+        imagePanelemplogin1 = new img.ImagePanelemplogin();
         btn_back = new javax.swing.JLabel();
         lbl_welcomebck = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -113,39 +113,38 @@ public class Employee_Login extends javax.swing.JFrame {
         chk_loginShowPass.setBackground(new java.awt.Color(153, 153, 153));
         chk_loginShowPass.addActionListener(this::chk_loginShowPassActionPerformed);
 
-        javax.swing.GroupLayout imagePanelemplogin2Layout = new javax.swing.GroupLayout(imagePanelemplogin2);
-        imagePanelemplogin2.setLayout(imagePanelemplogin2Layout);
-        imagePanelemplogin2Layout.setHorizontalGroup(
-            imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
-                .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
-                        .addGap(295, 295, 295)
-                        .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout imagePanelemplogin1Layout = new javax.swing.GroupLayout(imagePanelemplogin1);
+        imagePanelemplogin1.setLayout(imagePanelemplogin1Layout);
+        imagePanelemplogin1Layout.setHorizontalGroup(
+            imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
+                .addGap(253, 253, 253)
+                .addGroup(imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addGroup(imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_welcomebck)
-                            .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
+                            .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
                                 .addGap(17, 17, 17)
-                                .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txt_emploginPass)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txt_emploginUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
+                                    .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
                                         .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(chk_loginShowPass))))))
-                    .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
-                        .addGap(253, 253, 253)
-                        .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
-                        .addGap(390, 390, 390)
-                        .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(294, Short.MAX_VALUE))
         );
-        imagePanelemplogin2Layout.setVerticalGroup(
-            imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imagePanelemplogin2Layout.createSequentialGroup()
-                .addGap(115, 115, 115)
+        imagePanelemplogin1Layout.setVerticalGroup(
+            imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
+                .addGap(120, 120, 120)
                 .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_welcomebck)
@@ -158,27 +157,23 @@ public class Employee_Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_emploginPass, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(imagePanelemplogin2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chk_loginShowPass)
                     .addComponent(jLabel19))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(imagePanelemplogin2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(imagePanelemplogin1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(imagePanelemplogin2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(imagePanelemplogin1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -321,7 +316,7 @@ public class Employee_Login extends javax.swing.JFrame {
     private javax.swing.JLabel btn_back;
     private javax.swing.JButton btn_emploginLogin;
     private javax.swing.JCheckBox chk_loginShowPass;
-    private gui.ImagePanelemplogin imagePanelemplogin2;
+    private img.ImagePanelemplogin imagePanelemplogin1;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

@@ -140,12 +140,14 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         getContentPane().add(lbl_cardexp, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 130, 20));
 
         btn_backpayment.setBackground(new java.awt.Color(255, 255, 255));
-        btn_backpayment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-arrow.png"))); // NOI18N
+        btn_backpayment.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        btn_backpayment.setForeground(new java.awt.Color(23, 57, 86));
+        btn_backpayment.setText("<");
         btn_backpayment.setBorderPainted(false);
         btn_backpayment.addActionListener(this::btn_backpaymentActionPerformed);
         getContentPane().add(btn_backpayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, -1, -1));
 
-        confirmation_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/CONFIRMATION.png"))); // NOI18N
+        confirmation_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/CONFIRMATION.png"))); // NOI18N
         getContentPane().add(confirmation_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
 
         pack();

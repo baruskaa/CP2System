@@ -50,10 +50,10 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_history = new javax.swing.JTable();
         bg_today1 = new javax.swing.JLabel();
-        pnl_nav = new javax.swing.JPanel();
-        Aboutus_Label3 = new javax.swing.JLabel();
-        Aboutus_label4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        pnl_nav2 = new javax.swing.JPanel();
+        Aboutus_Label5 = new javax.swing.JLabel();
+        Aboutus_label6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         btn_navAbout = new javax.swing.JButton();
         btn_navHome = new javax.swing.JButton();
         btn_navMenu = new javax.swing.JButton();
@@ -167,30 +167,29 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
 
         pnl_history6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
-        bg_today1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/bgfd.jpg"))); // NOI18N
-        bg_today1.setText("Today");
+        bg_today1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
         pnl_history6.add(bg_today1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
         getContentPane().add(pnl_history6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
-        pnl_nav.setBackground(new java.awt.Color(57, 77, 94));
-        pnl_nav.setMaximumSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setMinimumSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setPreferredSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnl_nav2.setBackground(new java.awt.Color(57, 77, 94));
+        pnl_nav2.setMaximumSize(new java.awt.Dimension(158, 580));
+        pnl_nav2.setMinimumSize(new java.awt.Dimension(158, 580));
+        pnl_nav2.setPreferredSize(new java.awt.Dimension(158, 580));
+        pnl_nav2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Aboutus_Label3.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
-        Aboutus_Label3.setForeground(new java.awt.Color(153, 153, 153));
-        Aboutus_Label3.setText("© 2026 The House Of 7 Buffet.");
-        pnl_nav.add(Aboutus_Label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
+        Aboutus_Label5.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_Label5.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_Label5.setText("© 2026 The House Of 7 Buffet.");
+        pnl_nav2.add(Aboutus_Label5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
 
-        Aboutus_label4.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
-        Aboutus_label4.setForeground(new java.awt.Color(153, 153, 153));
-        Aboutus_label4.setText("All Rights Reserved.");
-        pnl_nav.add(Aboutus_label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
+        Aboutus_label6.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_label6.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_label6.setText("All Rights Reserved.");
+        pnl_nav2.add(Aboutus_label6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/logo.png"))); // NOI18N
-        pnl_nav.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
+        pnl_nav2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
 
         btn_navAbout.setBackground(new java.awt.Color(55, 77, 94));
         btn_navAbout.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -209,7 +208,7 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
             }
         });
         btn_navAbout.addActionListener(this::btn_navAboutActionPerformed);
-        pnl_nav.add(btn_navAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 120, 30));
+        pnl_nav2.add(btn_navAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 120, 30));
 
         btn_navHome.setBackground(new java.awt.Color(55, 77, 94));
         btn_navHome.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -228,7 +227,7 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
             }
         });
         btn_navHome.addActionListener(this::btn_navHomeActionPerformed);
-        pnl_nav.add(btn_navHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 120, 30));
+        pnl_nav2.add(btn_navHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 120, 30));
 
         btn_navMenu.setBackground(new java.awt.Color(55, 77, 94));
         btn_navMenu.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -247,7 +246,7 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
             }
         });
         btn_navMenu.addActionListener(this::btn_navMenuActionPerformed);
-        pnl_nav.add(btn_navMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 30));
+        pnl_nav2.add(btn_navMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 30));
 
         btn_navDine.setBackground(new java.awt.Color(55, 77, 94));
         btn_navDine.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -266,7 +265,7 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
             }
         });
         btn_navDine.addActionListener(this::btn_navDineActionPerformed);
-        pnl_nav.add(btn_navDine, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 120, 30));
+        pnl_nav2.add(btn_navDine, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 120, 30));
 
         btn_navReservations.setBackground(new java.awt.Color(185, 153, 79));
         btn_navReservations.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -275,7 +274,7 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         btn_navReservations.setBorder(null);
         btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_navReservations.addActionListener(this::btn_navReservationsActionPerformed);
-        pnl_nav.add(btn_navReservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
+        pnl_nav2.add(btn_navReservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
 
         btn_navLogout.setBackground(new java.awt.Color(153, 0, 0));
         btn_navLogout.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -284,7 +283,7 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         btn_navLogout.setBorder(null);
         btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_navLogout.addActionListener(this::btn_navLogoutActionPerformed);
-        pnl_nav.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
+        pnl_nav2.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
 
         btn_navProf.setBackground(new java.awt.Color(55, 77, 94));
         btn_navProf.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -303,9 +302,9 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
             }
         });
         btn_navProf.addActionListener(this::btn_navProfActionPerformed);
-        pnl_nav.add(btn_navProf, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 120, 30));
+        pnl_nav2.add(btn_navProf, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 120, 30));
 
-        getContentPane().add(pnl_nav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, -1));
+        getContentPane().add(pnl_nav2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -318,6 +317,88 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
     private void search_history6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_history6KeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_search_history6KeyReleased
+
+    private void btn_navAbout1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAbout1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navAbout1MouseEntered
+
+    private void btn_navAbout1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAbout1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navAbout1MouseExited
+
+    private void btn_navAbout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navAbout1ActionPerformed
+        new Customer_About_Us().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_navAbout1ActionPerformed
+
+    private void btn_navHome1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navHome1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navHome1MouseEntered
+
+    private void btn_navHome1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navHome1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navHome1MouseExited
+
+    private void btn_navHome1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navHome1ActionPerformed
+        new Customer_Homepage().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_navHome1ActionPerformed
+
+    private void btn_navMenu1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navMenu1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navMenu1MouseEntered
+
+    private void btn_navMenu1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navMenu1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navMenu1MouseExited
+
+    private void btn_navMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navMenu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navMenu1ActionPerformed
+
+    private void btn_navDine1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navDine1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navDine1MouseEntered
+
+    private void btn_navDine1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navDine1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navDine1MouseExited
+
+    private void btn_navDine1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navDine1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navDine1ActionPerformed
+
+    private void btn_navReservations1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navReservations1ActionPerformed
+        new Customer_BookingHistory().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_navReservations1ActionPerformed
+
+    private void btn_navLogout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navLogout1ActionPerformed
+
+        int choice = JOptionPane.showConfirmDialog(null, "Log out of your account?", "Confirm Log Out", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            UserSession.loggedInEmail = null;
+            new Customer_Login().setVisible(true);
+            this.dispose();
+
+        } else if (choice == JOptionPane.NO_OPTION) {
+            return;
+        }
+    }//GEN-LAST:event_btn_navLogout1ActionPerformed
+
+    private void btn_navProf1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navProf1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navProf1MouseEntered
+
+    private void btn_navProf1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navProf1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_navProf1MouseExited
+
+    private void btn_navProf1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navProf1ActionPerformed
+        new Customer_AcctProfile().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_navProf1ActionPerformed
 
     private void btn_navAboutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAboutMouseEntered
         // TODO add your handling code here:
@@ -427,8 +508,8 @@ private JFrame frame;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Aboutus_Label3;
-    private javax.swing.JLabel Aboutus_label4;
+    private javax.swing.JLabel Aboutus_Label5;
+    private javax.swing.JLabel Aboutus_label6;
     private javax.swing.JLabel bg_today1;
     private javax.swing.JButton btn_navAbout;
     private javax.swing.JButton btn_navDine;
@@ -443,12 +524,12 @@ private JFrame frame;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbl_username;
     private javax.swing.JPanel pnl_header;
     private javax.swing.JPanel pnl_history6;
-    private javax.swing.JPanel pnl_nav;
+    private javax.swing.JPanel pnl_nav2;
     private javax.swing.JTextField search_history6;
     private javax.swing.JTable tbl_history;
     // End of variables declaration//GEN-END:variables
