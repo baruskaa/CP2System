@@ -88,30 +88,30 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         cb_time.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
         cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNCH", "DINNER" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
-        getContentPane().add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 340, 110, 30));
+        getContentPane().add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 420, 110, 30));
 
         dp_date.setDateFormatString("MM-dd-yy");
-        getContentPane().add(dp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 110, 30));
-        getContentPane().add(txt_LName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 150, 30));
-        getContentPane().add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 230, 30));
-        getContentPane().add(txt_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 230, 30));
+        getContentPane().add(dp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 420, 110, 30));
+        getContentPane().add(txt_LName, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 150, 30));
+        getContentPane().add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 230, 30));
+        getContentPane().add(txt_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 360, 230, 30));
 
         spn_pax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(spn_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 80, 30));
+        getContentPane().add(spn_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 420, 80, 30));
 
         btn_topay.setBackground(new java.awt.Color(185, 153, 79));
         btn_topay.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         btn_topay.setText("Proceed to Payment");
         btn_topay.addActionListener(this::btn_topayActionPerformed);
-        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 490, 170, 30));
+        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 470, 170, 30));
 
         txt_FName.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 160, 30));
+        getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 250, 160, 30));
 
         btn_backhomepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-arrow.png"))); // NOI18N
         btn_backhomepage.setBorderPainted(false);
         btn_backhomepage.addActionListener(this::btn_backhomepageActionPerformed);
-        getContentPane().add(btn_backhomepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, 20));
+        getContentPane().add(btn_backhomepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, -1, 20));
 
         booking_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/backgrounds/BOOKING.png"))); // NOI18N
         getContentPane().add(booking_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
