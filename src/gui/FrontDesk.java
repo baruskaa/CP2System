@@ -265,29 +265,20 @@ public class FrontDesk extends javax.swing.JFrame {
         });
 
         // TIME COMPARATOR 
-        sorter_reserve.setComparator(4, (t1, t2) -> {
+        java.util.Comparator<Object> timeComparator = (t1, t2) -> {
+            if (t1 == null && t2 == null) return 0;
             if (t1 == null) return 1;
             if (t2 == null) return -1;
-            String time1 = t1.toString();
-            String time2 = t2.toString();
-            if (time1.equals(time2)) return 0;
-            if (time1.equals("Lunch")) return -1;
-            if (time2.equals("Lunch")) return 1;
-            return time1.compareTo(time2);
-        });
-
-        sorter_walkin.setComparator(0, (n1, n2) -> {
-            if (n1 == null) return 1;
-            if (n2 == null) return -1;
-            try {
-                return Integer.compare(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()));
-            } catch (NumberFormatException e) {
-                return n1.toString().compareTo(n2.toString());
-            }
-        });
+            String time1 = t1.toString().trim();
+            String time2 = t2.toString().trim();
+            if (time1.equalsIgnoreCase(time2)) return 0;
+            if (time1.equalsIgnoreCase("Lunch")) return -1;
+            if (time2.equalsIgnoreCase("Lunch")) return 1;
+            return time1.compareToIgnoreCase(time2);
+        };
 
         // PAX COMPARATOR 
-        sorter_walkin.setComparator(3, (n1, n2) -> {
+        java.util.Comparator<Object> paxComparator = (n1, n2) -> {
             if (n1 == null) return 1;
             if (n2 == null) return -1;
             try {
@@ -295,19 +286,30 @@ public class FrontDesk extends javax.swing.JFrame {
             } catch (NumberFormatException e) {
                 return n1.toString().compareTo(n2.toString());
             }
-        });
+        };
+        
+        sorter_reserve.setComparator(5, timeComparator); 
+        sorter_reserve.setComparator(6, paxComparator);  
 
-        // TIME COMPARATOR 
-        sorter_walkin.setComparator(4, (t1, t2) -> {
-            if (t1 == null) return 1;
-            if (t2 == null) return -1;
-            String time1 = t1.toString();
-            String time2 = t2.toString();
-            if (time1.equals(time2)) return 0;
-            if (time1.equals("Lunch")) return -1;
-            if (time2.equals("Lunch")) return 1;
-            return time1.compareTo(time2);
-        });
+        sorter_walkin.setComparator(4, timeComparator);  
+        sorter_walkin.setComparator(5, paxComparator);   
+        
+        sorter_inhouse.setComparator(4, timeComparator); 
+        sorter_inhouse.setComparator(5, paxComparator);  
+
+
+        java.util.List<javax.swing.RowSorter.SortKey> reserveSortKeys = new java.util.ArrayList<>();
+        reserveSortKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); 
+        reserveSortKeys.add(new javax.swing.RowSorter.SortKey(0, javax.swing.SortOrder.ASCENDING)); 
+        sorter_reserve.setSortKeys(reserveSortKeys);
+        sorter_reserve.sort();
+
+        java.util.List<javax.swing.RowSorter.SortKey> walkinSortKeys = new java.util.ArrayList<>();
+        walkinSortKeys.add(new javax.swing.RowSorter.SortKey(4, javax.swing.SortOrder.ASCENDING)); 
+        walkinSortKeys.add(new javax.swing.RowSorter.SortKey(0, javax.swing.SortOrder.ASCENDING)); 
+        sorter_walkin.setSortKeys(walkinSortKeys);
+        sorter_walkin.sort();
+        
         
         // SEARCHES
         search_walkin.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -1778,7 +1780,7 @@ public class FrontDesk extends javax.swing.JFrame {
         Connect db = new Connect();
         db.DoConnect();
         
-        String sql = "SELECT IR_ID, D_DATE, F_NAME, L_NAME, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE DATE_BOOKED = CURRENT_DATE";
+        String sql = "SELECT IR_ID, D_DATE, F_NAME, L_NAME, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE >= CURRENT_DATE";
         
         try (PreparedStatement pst = db.con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
@@ -1792,7 +1794,9 @@ public class FrontDesk extends javax.swing.JFrame {
                     rs.getInt("PAX")
                 });
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+        }
     }
     private void addInhouse() {
         if (dc_inhouse.getDate() == null || txt_IHfname.getText().trim().isEmpty() || 
