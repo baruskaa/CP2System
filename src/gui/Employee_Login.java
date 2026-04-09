@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package gui;
+import gui.FrontDesk;
 import javax.swing.Timer;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +25,12 @@ public class Employee_Login extends javax.swing.JFrame {
      */
     public Employee_Login() {
         initComponents();
+        
+        this.setResizable(true);
+        getContentPane().setPreferredSize(new java.awt.Dimension(900, 580));
+        pack();
+        this.setResizable(false);
+        
         setLocationRelativeTo(null);
         
         makeFlatButton(btn_emploginLogin);
@@ -38,7 +45,6 @@ public class Employee_Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imagePanelemplogin1 = new img.ImagePanelemplogin();
         btn_back = new javax.swing.JLabel();
         lbl_welcomebck = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -48,10 +54,12 @@ public class Employee_Login extends javax.swing.JFrame {
         btn_emploginLogin = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         chk_loginShowPass = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setSize(new java.awt.Dimension(900, 580));
+        getContentPane().setLayout(null);
 
         btn_back.setBackground(new java.awt.Color(204, 204, 204));
         btn_back.setFont(new java.awt.Font("Cooper Black", 1, 24)); // NOI18N
@@ -64,35 +72,47 @@ public class Employee_Login extends javax.swing.JFrame {
                 btn_backMouseClicked(evt);
             }
         });
+        getContentPane().add(btn_back);
+        btn_back.setBounds(260, 120, 40, 36);
 
         lbl_welcomebck.setBackground(new java.awt.Color(47, 74, 91));
         lbl_welcomebck.setFont(new java.awt.Font("Century Gothic", 1, 40)); // NOI18N
         lbl_welcomebck.setForeground(new java.awt.Color(47, 74, 91));
         lbl_welcomebck.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_welcomebck.setText("Employee Login");
+        getContentPane().add(lbl_welcomebck);
+        lbl_welcomebck.setBounds(290, 160, 309, 50);
 
         jLabel4.setBackground(new java.awt.Color(47, 74, 91));
         jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(47, 74, 91));
         jLabel4.setText("Username:");
         jLabel4.setToolTipText("");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(310, 220, 108, 19);
 
         txt_emploginUsername.setBackground(new java.awt.Color(229, 229, 229));
         txt_emploginUsername.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         txt_emploginUsername.setForeground(new java.awt.Color(47, 74, 91));
         txt_emploginUsername.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
         txt_emploginUsername.addActionListener(this::txt_emploginUsernameActionPerformed);
+        getContentPane().add(txt_emploginUsername);
+        txt_emploginUsername.setBounds(310, 250, 275, 41);
 
         jLabel5.setBackground(new java.awt.Color(47, 74, 91));
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(47, 74, 91));
         jLabel5.setText("Password:");
         jLabel5.setToolTipText("");
+        getContentPane().add(jLabel5);
+        jLabel5.setBounds(310, 290, 108, 19);
 
         txt_emploginPass.setBackground(new java.awt.Color(229, 229, 229));
         txt_emploginPass.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_emploginPass.setForeground(new java.awt.Color(47, 74, 91));
         txt_emploginPass.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 10, 5, 10));
+        getContentPane().add(txt_emploginPass);
+        txt_emploginPass.setBounds(310, 320, 275, 40);
 
         btn_emploginLogin.setBackground(new java.awt.Color(47, 74, 91));
         btn_emploginLogin.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -102,6 +122,8 @@ public class Employee_Login extends javax.swing.JFrame {
         btn_emploginLogin.setMaximumSize(new java.awt.Dimension(293, 26));
         btn_emploginLogin.setMinimumSize(new java.awt.Dimension(293, 26));
         btn_emploginLogin.addActionListener(this::btn_emploginLoginActionPerformed);
+        getContentPane().add(btn_emploginLogin);
+        btn_emploginLogin.setBounds(390, 400, 108, 36);
 
         jLabel19.setBackground(new java.awt.Color(47, 74, 91));
         jLabel19.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -109,142 +131,87 @@ public class Employee_Login extends javax.swing.JFrame {
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Show Password");
         jLabel19.setToolTipText("");
+        getContentPane().add(jLabel19);
+        jLabel19.setBounds(460, 370, 108, 16);
 
         chk_loginShowPass.setBackground(new java.awt.Color(153, 153, 153));
         chk_loginShowPass.addActionListener(this::chk_loginShowPassActionPerformed);
+        getContentPane().add(chk_loginShowPass);
+        chk_loginShowPass.setBounds(570, 370, 19, 19);
 
-        javax.swing.GroupLayout imagePanelemplogin1Layout = new javax.swing.GroupLayout(imagePanelemplogin1);
-        imagePanelemplogin1.setLayout(imagePanelemplogin1Layout);
-        imagePanelemplogin1Layout.setHorizontalGroup(
-            imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
-                .addGap(253, 253, 253)
-                .addGroup(imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_welcomebck)
-                            .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addGroup(imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txt_emploginPass)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txt_emploginUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
-                                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(chk_loginShowPass))))))
-                    .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(294, Short.MAX_VALUE))
-        );
-        imagePanelemplogin1Layout.setVerticalGroup(
-            imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imagePanelemplogin1Layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_welcomebck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_emploginUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_emploginPass, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(imagePanelemplogin1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chk_loginShowPass)
-                    .addComponent(jLabel19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_emploginLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(146, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imagePanelemplogin1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(imagePanelemplogin1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/employeelogin.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(0, 0, 900, 580);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txt_emploginUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emploginUsernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_emploginUsernameActionPerformed
-
-    private void btn_backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_backMouseClicked
-         new Customer_Login().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btn_backMouseClicked
+    private void chk_loginShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_loginShowPassActionPerformed
+        if (chk_loginShowPass.isSelected()) {
+            txt_emploginPass.setEchoChar((char)0);
+        } else {
+            txt_emploginPass.setEchoChar('*');
+        }
+    }//GEN-LAST:event_chk_loginShowPassActionPerformed
 
     private void btn_emploginLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_emploginLoginActionPerformed
-       String username = txt_emploginUsername.getText().trim();
+        String username = txt_emploginUsername.getText().trim();
         String password = new String(txt_emploginPass.getPassword());
 
         if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter both Username and Password.");
             return;
         }
-        
+
         // ADMIN ACC
         if (username.equals("admin") && password.equals("admin")) {
-            new Admin().setVisible(true); 
-            this.dispose();               
-            return;                       
+            new Admin().setVisible(true);
+            this.dispose();
+            return;
         }
 
         Connect db = new Connect();
         db.DoConnect();
 
         if (db.con != null) {
-            
+
             try (Connection con = db.con;
-                 PreparedStatement pst = con.prepareStatement("SELECT * FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME = ? AND PASS = ?")) {
-                 
+                PreparedStatement pst = con.prepareStatement("SELECT * FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME = ? AND PASS = ?")) {
+
                 pst.setString(1, username);
                 pst.setString(2, password);
 
                 try (ResultSet rs = pst.executeQuery()) {
                     if (rs.next()) {
-                        String accType = rs.getString("ACC_TYPE"); 
+                        String accType = rs.getString("ACC_TYPE");
                         String fullName = rs.getString("F_NAME") + " " + rs.getString("L_NAME");
 
                         JOptionPane.showMessageDialog(this, "Welcome, " + fullName + ", " + accType + ".", "Login Successful", JOptionPane.PLAIN_MESSAGE);
 
-                        switch (accType.toLowerCase()) {
+                       switch (accType.toLowerCase()) {
                             case "admin":
-                                new Admin().setVisible(true);
-                                break;
+                            new Admin().setVisible(true);
+                            break;
 
-                            case "gen. manager": 
-                                new GenManager().setVisible(true); 
-                                break;
+                            case "gen. manager":
+                            new GenManager().setVisible(true);
+                            break;
 
                             case "manager":
-                                new Manager().setVisible(true);
-                                break;
+                            new Manager().setVisible(true);
+                            break;
 
                             case "front desk":
-                                new FrontDesk().setVisible(true); 
-                                break;
+                            new FrontDesk(fullName).setVisible(true); 
+                            break;
 
                             default:
-                                JOptionPane.showMessageDialog(this, "Access Denied");
-                                return;
+                            JOptionPane.showMessageDialog(this, "Access Denied");
+                            return;
                         }
 
-                        this.dispose(); 
+                        this.dispose();
 
                     } else {
                         JOptionPane.showMessageDialog(this, "Invalid Username or Password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
@@ -257,13 +224,14 @@ public class Employee_Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_emploginLoginActionPerformed
 
-    private void chk_loginShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_loginShowPassActionPerformed
-        if (chk_loginShowPass.isSelected()) {
-            txt_emploginPass.setEchoChar((char)0);
-        } else {
-            txt_emploginPass.setEchoChar('*');
-        }
-    }//GEN-LAST:event_chk_loginShowPassActionPerformed
+    private void txt_emploginUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emploginUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_emploginUsernameActionPerformed
+
+    private void btn_backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_backMouseClicked
+        new Customer_Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_backMouseClicked
     
    
     /**
@@ -316,8 +284,8 @@ public class Employee_Login extends javax.swing.JFrame {
     private javax.swing.JLabel btn_back;
     private javax.swing.JButton btn_emploginLogin;
     private javax.swing.JCheckBox chk_loginShowPass;
-    private img.ImagePanelemplogin imagePanelemplogin1;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lbl_welcomebck;

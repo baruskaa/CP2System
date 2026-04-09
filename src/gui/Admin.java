@@ -18,7 +18,6 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import java.util.HashMap;
-import java.io.*;
 
 /**
  *
@@ -50,6 +49,13 @@ public class Admin extends javax.swing.JFrame {
         loadMemberTable();
         loadHistoryTable();
         
+        pnl_today.setVisible(true);
+        pnl_history.setVisible(false);
+        pnl_upcom.setVisible(false);
+        pnl_emp.setVisible(false);
+        pnl_memb.setVisible(false);
+        btn_fdesk.setForeground(new Color(255, 200, 120));
+
         //TABLE SORTERS
 
         DefaultTableModel model_today = (DefaultTableModel) tbl_today.getModel();
@@ -57,8 +63,32 @@ public class Admin extends javax.swing.JFrame {
         tbl_today.setRowSorter(sorter_today);
 
         DefaultTableModel model_history = (DefaultTableModel) tbl_history.getModel();
-        sorter_history = new TableRowSorter<>(model_history);
+        
+        sorter_history = new TableRowSorter<DefaultTableModel>(model_history) {
+            @Override
+            public void toggleSortOrder(int column) {
+                super.toggleSortOrder(column); // Let standard click happen first
+                
+                java.util.List<? extends javax.swing.RowSorter.SortKey> currentKeys = getSortKeys();
+                
+                // If the DATE column (index 1) is currently the primary sort
+                if (!currentKeys.isEmpty() && currentKeys.get(0).getColumn() == 1) {
+                    java.util.List<javax.swing.RowSorter.SortKey> newKeys = new java.util.ArrayList<>();
+                    
+                    newKeys.add(currentKeys.get(0)); // 1. Keep the Date sort
+                    newKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); // 2. Force Time sort as tie-breaker
+                    
+                    setSortKeys(newKeys);
+                }
+            }
+        };
         tbl_history.setRowSorter(sorter_history);
+        
+        // Sync the UI sort arrows with the pre-sorted database data
+        java.util.List<javax.swing.RowSorter.SortKey> startupKeys = new java.util.ArrayList<>();
+        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.ASCENDING)); // Date
+        startupKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); // Time
+        sorter_history.setSortKeys(startupKeys);
         
         DefaultTableModel model_upcom = (DefaultTableModel) tbl_upcom.getModel();
         sorter_upcom = new TableRowSorter<>(model_upcom);
@@ -132,11 +162,25 @@ public class Admin extends javax.swing.JFrame {
         tbl_memb.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
     
         
-        
         //COMPARATORS
+        
+        // DATE COMPARATOR 
+        sorter_history.setComparator(1, (d1, d2) -> {
+            if (d1 == null && d2 == null) return 0;
+            if (d1 == null) return 1;
+            if (d2 == null) return -1;
+            try {
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
+                java.util.Date date1 = sdf.parse(d1.toString());
+                java.util.Date date2 = sdf.parse(d2.toString());
+                return date1.compareTo(date2);
+            } catch (Exception e) {
+                return d1.toString().compareTo(d2.toString());
+            }
+        });
 
         // PAX COMPARATOR 
-        sorter_today.setComparator(3, (n1, n2) -> {
+       sorter_today.setComparator(3, (n1, n2) -> {
             if (n1 == null) return 1;
             if (n2 == null) return -1;
             try {
@@ -146,7 +190,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        sorter_history.setComparator(4, (n1, n2) -> {
+        sorter_history.setComparator(6, (n1, n2) -> {
             if (n1 == null) return 1;
             if (n2 == null) return -1;
             try {
@@ -168,37 +212,56 @@ public class Admin extends javax.swing.JFrame {
 
         // TIME COMPARATOR (Lunch first) 
         sorter_today.setComparator(4, (t1, t2) -> {
+            if (t1 == null && t2 == null) return 0;
             if (t1 == null) return 1;
             if (t2 == null) return -1;
-            String time1 = t1.toString();
-            String time2 = t2.toString();
-            if (time1.equals(time2)) return 0;
-            if (time1.equals("Lunch")) return -1;
-            if (time2.equals("Lunch")) return 1;
-            return time1.compareTo(time2);
+            // Trim spaces and ignore casing
+            String time1 = t1.toString().trim();
+            String time2 = t2.toString().trim();
+            
+            if (time1.equalsIgnoreCase(time2)) return 0;
+            if (time1.equalsIgnoreCase("Lunch")) return -1;
+            if (time2.equalsIgnoreCase("Lunch")) return 1;
+            
+            return time1.compareToIgnoreCase(time2);
         });
 
         sorter_history.setComparator(5, (t1, t2) -> {  
+            if (t1 == null && t2 == null) return 0;
             if (t1 == null) return 1;
             if (t2 == null) return -1;
-            String time1 = t1.toString();
-            String time2 = t2.toString();
-            if (time1.equals(time2)) return 0;
-            if (time1.equals("Lunch")) return -1;
-            if (time2.equals("Lunch")) return 1;
-            return time1.compareTo(time2);
+            
+            String time1 = t1.toString().trim();
+            String time2 = t2.toString().trim();
+            
+            if (time1.equalsIgnoreCase(time2)) return 0;
+            if (time1.equalsIgnoreCase("Lunch")) return -1;
+            if (time2.equalsIgnoreCase("Lunch")) return 1;
+            
+            return time1.compareToIgnoreCase(time2);
         });
 
-        sorter_upcom.setComparator(5, (t1, t2) -> {
+       sorter_upcom.setComparator(5, (t1, t2) -> {
+            if (t1 == null && t2 == null) return 0;
             if (t1 == null) return 1;
             if (t2 == null) return -1;
-            String time1 = t1.toString();
-            String time2 = t2.toString();
-            if (time1.equals(time2)) return 0;
-            if (time1.equals("Lunch")) return -1;
-            if (time2.equals("Lunch")) return 1;
-            return time1.compareTo(time2);
+            
+            String time1 = t1.toString().trim();
+            String time2 = t2.toString().trim();
+            
+            if (time1.equalsIgnoreCase(time2)) return 0;
+            if (time1.equalsIgnoreCase("Lunch")) return -1;
+            if (time2.equalsIgnoreCase("Lunch")) return 1;
+            
+            return time1.compareToIgnoreCase(time2);
         });
+        
+        // PRECENDENCE SORTING
+        java.util.List<javax.swing.RowSorter.SortKey> historySortKeys = new java.util.ArrayList<>();
+        historySortKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.ASCENDING)); 
+        sorter_history.setSortKeys(historySortKeys);
+        sorter_history.sort();
+            
 
             int total_today = 0;
             for (int i = 0; i < tbl_today.getRowCount(); i++) {
@@ -208,8 +271,8 @@ public class Admin extends javax.swing.JFrame {
                 }
             }
             lbl_total.setText(String.valueOf(total_today));
-            
-            
+        
+        
         // VIP_ID 
         sorter_memb.setComparator(0, (id1, id2) -> {
             if (id1 == null) return 1;
@@ -222,8 +285,6 @@ public class Admin extends javax.swing.JFrame {
                 return id1.toString().compareTo(id2.toString());
             }
         });
-        
-        
         
         // SEARCHES
         search_today.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -317,19 +378,10 @@ public class Admin extends javax.swing.JFrame {
         });
         
         
+        //DATES
         
-        pnl_today.setVisible(true);
-        pnl_history.setVisible(false);
-        pnl_upcom.setVisible(false);
-        pnl_emp.setVisible(false);
-        pnl_memb.setVisible(false);
-        btn_fdesk.setForeground(new Color(255, 200, 120)); 
-        
-        // REPLACE your current date_historyFrom listener with these two:
         date_historyFrom.addPropertyChangeListener("date", evt -> filterHistoryByDateRange());
         date_historyTo.addPropertyChangeListener("date", evt -> filterHistoryByDateRange());
-
-        
         date_historyFrom.getDateEditor().getUiComponent().addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -339,9 +391,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         
-         date_upcom.addPropertyChangeListener("date", evt -> applyUpcomingDateFilter());
-
-        
+        date_upcom.addPropertyChangeListener("date", evt -> applyUpcomingDateFilter());
         date_upcom.getDateEditor().getUiComponent().addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -374,32 +424,35 @@ public class Admin extends javax.swing.JFrame {
         });
         
         tbl_memb.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int viewRow = tbl_memb.getSelectedRow();
                 if (viewRow != -1) {
                     int modelRow = tbl_memb.convertRowIndexToModel(viewRow);
 
-                    Object vipId = tbl_memb.getModel().getValueAt(modelRow, 0);
+                    Object vipId   = tbl_memb.getModel().getValueAt(modelRow, 0);
                     Object dateReg = tbl_memb.getModel().getValueAt(modelRow, 1);
-                    Object fName = tbl_memb.getModel().getValueAt(modelRow, 2);
-                    Object lName = tbl_memb.getModel().getValueAt(modelRow, 3);
-                    Object cpNum = tbl_memb.getModel().getValueAt(modelRow, 6);
-                    Object email = tbl_memb.getModel().getValueAt(modelRow, 7);
-                    Object pass = tbl_memb.getModel().getValueAt(modelRow, 8);
+                    Object fName   = tbl_memb.getModel().getValueAt(modelRow, 2);
+                    Object lName   = tbl_memb.getModel().getValueAt(modelRow, 3);
+                    Object gender  = tbl_memb.getModel().getValueAt(modelRow, 4); 
+                    Object bday    = tbl_memb.getModel().getValueAt(modelRow, 5); 
+                    Object cpNum   = tbl_memb.getModel().getValueAt(modelRow, 6);
+                    Object email   = tbl_memb.getModel().getValueAt(modelRow, 7);
+                    Object pass    = tbl_memb.getModel().getValueAt(modelRow, 8);
 
                     txt_membVipId.setText(vipId != null ? vipId.toString() : "");
                     txt_membDatereg.setText(dateReg != null ? dateReg.toString() : "");
                     txt_membFname.setText(fName != null ? fName.toString() : "");
                     txt_membLname.setText(lName != null ? lName.toString() : "");
+                    txt_membVipgender.setText(gender != null ? gender.toString() : "");
+                    txt_membVipbday.setText(bday != null ? bday.toString() : "");
                     txt_membCpnum.setText(cpNum != null ? cpNum.toString() : "");
                     txt_membEmail.setText(email != null ? email.toString() : "");
                     txt_membPass.setText(pass != null ? pass.toString() : "");
                 }
             }
         });
-        
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -420,6 +473,24 @@ public class Admin extends javax.swing.JFrame {
         btn_navLogout = new javax.swing.JButton();
         pnl_header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        pnl_upcom = new javax.swing.JPanel();
+        date_upcom = new com.toedter.calendar.JDateChooser();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        search_upcom = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_upcom = new javax.swing.JTable();
+        bg_today2 = new javax.swing.JLabel();
+        pnl_today = new javax.swing.JPanel();
+        lbl_total = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        search_today = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_today = new javax.swing.JTable();
+        bg_today = new javax.swing.JLabel();
         pnl_history = new javax.swing.JPanel();
         date_historyFrom = new com.toedter.calendar.JDateChooser();
         date_historyTo = new com.toedter.calendar.JDateChooser();
@@ -446,10 +517,16 @@ public class Admin extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         txt_membDatereg = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
+        txt_membVipgender = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        txt_membVipbday = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
         txt_membEmail = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         txt_membCpnum = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
+        btn_membedit = new javax.swing.JButton();
+        btn_membdel = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         tbl_memb = new javax.swing.JTable();
         bg_today4 = new javax.swing.JLabel();
@@ -474,24 +551,6 @@ public class Admin extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         tbl_emp = new javax.swing.JTable();
         bg_today3 = new javax.swing.JLabel();
-        pnl_today = new javax.swing.JPanel();
-        lbl_total = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        search_today = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_today = new javax.swing.JTable();
-        bg_today = new javax.swing.JLabel();
-        pnl_upcom = new javax.swing.JPanel();
-        date_upcom = new com.toedter.calendar.JDateChooser();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        search_upcom = new javax.swing.JTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tbl_upcom = new javax.swing.JTable();
-        bg_today2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -636,6 +695,169 @@ public class Admin extends javax.swing.JFrame {
 
         getContentPane().add(pnl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 740, -1));
 
+        pnl_upcom.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_upcom.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        date_upcom.setDateFormatString("MM-dd-yy");
+        pnl_upcom.add(date_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 170, -1));
+
+        jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel11.setText("Date:");
+        pnl_upcom.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 50, 20));
+
+        jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel8.setText("UPCOMING");
+        pnl_upcom.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 310, 50));
+
+        jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel12.setText("Search:");
+        pnl_upcom.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 60, 20));
+
+        search_upcom.addActionListener(this::search_upcomActionPerformed);
+        search_upcom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_upcomKeyReleased(evt);
+            }
+        });
+        pnl_upcom.add(search_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 20, 170, -1));
+
+        jScrollPane3.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_upcom.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_upcom.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_upcom.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"03-26-26",  new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
+                {"03-01-26",  new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
+                {"04-19-26",  new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Lunch"},
+                {"03-01-26",  new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
+                {"04-19-26",  new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Dinner"}
+            },
+            new String [] {
+                "DATE", "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_upcom.setOpaque(false);
+        jScrollPane3.setViewportView(tbl_upcom);
+        if (tbl_upcom.getColumnModel().getColumnCount() > 0) {
+            tbl_upcom.getColumnModel().getColumn(0).setResizable(false);
+            tbl_upcom.getColumnModel().getColumn(0).setHeaderValue("DATE");
+            tbl_upcom.getColumnModel().getColumn(1).setResizable(false);
+            tbl_upcom.getColumnModel().getColumn(1).setHeaderValue("TABLE NO.");
+            tbl_upcom.getColumnModel().getColumn(2).setResizable(false);
+            tbl_upcom.getColumnModel().getColumn(3).setResizable(false);
+            tbl_upcom.getColumnModel().getColumn(4).setResizable(false);
+            tbl_upcom.getColumnModel().getColumn(4).setHeaderValue("PAX");
+            tbl_upcom.getColumnModel().getColumn(5).setResizable(false);
+            tbl_upcom.getColumnModel().getColumn(5).setHeaderValue("TIME");
+        }
+
+        pnl_upcom.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+
+        bg_today2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
+        bg_today2.setText("Today");
+        pnl_upcom.add(bg_today2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+
+        getContentPane().add(pnl_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+
+        pnl_today.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_today.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_total.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
+        lbl_total.setForeground(new java.awt.Color(102, 102, 102));
+        lbl_total.setText("30");
+        pnl_today.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 420, 70, 40));
+
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel4.setText("TODAY");
+        pnl_today.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 170, 50));
+
+        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel6.setText("TOTAL:");
+        pnl_today.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 70, 40));
+
+        jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel5.setText("Search:");
+        pnl_today.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 60, 40));
+
+        search_today.addActionListener(this::search_todayActionPerformed);
+        search_today.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_todayKeyReleased(evt);
+            }
+        });
+        pnl_today.add(search_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 170, -1));
+
+        jScrollPane1.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_today.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_today.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_today.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                { new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
+                { new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
+                { new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Dinner"},
+                { new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
+                { new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Lunch"}
+            },
+            new String [] {
+                "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_today.setOpaque(false);
+        jScrollPane1.setViewportView(tbl_today);
+        if (tbl_today.getColumnModel().getColumnCount() > 0) {
+            tbl_today.getColumnModel().getColumn(0).setResizable(false);
+            tbl_today.getColumnModel().getColumn(1).setResizable(false);
+            tbl_today.getColumnModel().getColumn(2).setResizable(false);
+            tbl_today.getColumnModel().getColumn(3).setResizable(false);
+            tbl_today.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        pnl_today.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+
+        bg_today.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
+        bg_today.setText("Today");
+        pnl_today.add(bg_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+
+        getContentPane().add(pnl_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+
         pnl_history.setForeground(new java.awt.Color(202, 199, 199));
         pnl_history.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -761,86 +983,118 @@ public class Admin extends javax.swing.JFrame {
         jLabel21.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(55, 77, 94));
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel21.setText("VIP ID:");
-        pnl_memb.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 50, 30));
+        jLabel21.setText("VIP ID:  ");
+        pnl_memb.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 50, 30));
 
-        txt_membLname.setEditable(false);
         txt_membLname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_membLname.setFocusable(false);
         txt_membLname.addActionListener(this::txt_membLnameNew_tableActionPerformed);
-        pnl_memb.add(txt_membLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 140, 30));
+        pnl_memb.add(txt_membLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 380, 140, 30));
 
         jLabel25.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(55, 77, 94));
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Last Name:");
-        pnl_memb.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(223, 410, 70, 30));
+        pnl_memb.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 380, 70, 30));
 
-        txt_membFname.setEditable(false);
         txt_membFname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_membFname.setFocusable(false);
         txt_membFname.addActionListener(this::txt_membFnameNew_tableActionPerformed);
-        pnl_memb.add(txt_membFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 140, 30));
+        pnl_memb.add(txt_membFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 140, 30));
 
         txt_membVipId.setEditable(false);
         txt_membVipId.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membVipId.setFocusable(false);
         txt_membVipId.addActionListener(this::txt_membVipIdNew_tableActionPerformed);
-        pnl_memb.add(txt_membVipId, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 380, 120, 30));
+        pnl_memb.add(txt_membVipId, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 350, 90, 30));
 
         jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(55, 77, 94));
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel29.setText("First Name:");
-        pnl_memb.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(223, 380, 70, 30));
+        pnl_memb.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 350, 70, 30));
 
-        txt_membPass.setEditable(false);
         txt_membPass.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_membPass.setFocusable(false);
         txt_membPass.addActionListener(this::txt_membPassNew_tableActionPerformed);
-        pnl_memb.add(txt_membPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 410, 140, 30));
+        pnl_memb.add(txt_membPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 410, 140, 30));
 
         jLabel26.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(55, 77, 94));
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel26.setText("Pass:");
-        pnl_memb.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, 50, 30));
+        jLabel26.setText("Password:");
+        pnl_memb.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 60, 30));
 
         txt_membDatereg.setEditable(false);
         txt_membDatereg.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membDatereg.setFocusable(false);
         txt_membDatereg.addActionListener(this::txt_membDateregNew_tableActionPerformed);
-        pnl_memb.add(txt_membDatereg, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 140, 30));
+        pnl_memb.add(txt_membDatereg, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 380, 90, 30));
 
         jLabel30.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(55, 77, 94));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel30.setText("Date Reg:  ");
-        pnl_memb.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 350, 70, 30));
+        pnl_memb.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, 70, 30));
 
-        txt_membEmail.setEditable(false);
+        txt_membVipgender.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membVipgender.addActionListener(this::txt_membVipgenderNew_tableActionPerformed);
+        pnl_memb.add(txt_membVipgender, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 90, 30));
+
+        jLabel22.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel22.setText("Gender:  ");
+        pnl_memb.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 60, 30));
+
+        txt_membVipbday.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membVipbday.addActionListener(this::txt_membVipbdayNew_tableActionPerformed);
+        pnl_memb.add(txt_membVipbday, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, 140, 30));
+
+        jLabel23.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel23.setText("Birthday:");
+        pnl_memb.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 410, 50, 30));
+
         txt_membEmail.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_membEmail.setFocusable(false);
         txt_membEmail.addActionListener(this::txt_membEmailNew_tableActionPerformed);
-        pnl_memb.add(txt_membEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 380, 140, 30));
+        pnl_memb.add(txt_membEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 380, 140, 30));
 
         jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(55, 77, 94));
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel27.setText("Email:");
-        pnl_memb.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 380, 50, 30));
+        pnl_memb.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 380, 50, 30));
 
-        txt_membCpnum.setEditable(false);
         txt_membCpnum.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_membCpnum.setFocusable(false);
         txt_membCpnum.addActionListener(this::txt_membCpnumNew_tableActionPerformed);
-        pnl_memb.add(txt_membCpnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, 140, 30));
+        pnl_memb.add(txt_membCpnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, 140, 30));
 
         jLabel28.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(55, 77, 94));
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel28.setText("CP Num:");
-        pnl_memb.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, 60, 30));
+        pnl_memb.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, 60, 30));
+
+        btn_membedit.setBackground(new java.awt.Color(65, 93, 120));
+        btn_membedit.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_membedit.setForeground(new java.awt.Color(65, 93, 120));
+        btn_membedit.setText("Edit");
+        btn_membedit.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_membedit.setContentAreaFilled(false);
+        btn_membedit.setFocusPainted(false);
+        btn_membedit.addActionListener(this::btn_membeditAssign_ButtonActionPerformed);
+        pnl_memb.add(btn_membedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 350, 90, 30));
+
+        btn_membdel.setBackground(new java.awt.Color(65, 93, 120));
+        btn_membdel.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_membdel.setForeground(new java.awt.Color(65, 93, 120));
+        btn_membdel.setText("Delete");
+        btn_membdel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_membdel.setContentAreaFilled(false);
+        btn_membdel.setFocusPainted(false);
+        btn_membdel.setFocusable(false);
+        btn_membdel.setRequestFocusEnabled(false);
+        btn_membdel.addActionListener(this::btn_membdelRemove_buttonActionPerformed);
+        pnl_memb.add(btn_membdel, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 380, 90, 30));
 
         jScrollPane5.setForeground(new java.awt.Color(55, 77, 94));
 
@@ -1045,169 +1299,6 @@ public class Admin extends javax.swing.JFrame {
         pnl_emp.add(bg_today3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
 
         getContentPane().add(pnl_emp, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
-
-        pnl_today.setForeground(new java.awt.Color(202, 199, 199));
-        pnl_today.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lbl_total.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
-        lbl_total.setForeground(new java.awt.Color(102, 102, 102));
-        lbl_total.setText("30");
-        pnl_today.add(lbl_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 420, 70, 40));
-
-        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel4.setText("TODAY");
-        pnl_today.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 170, 50));
-
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel6.setText("TOTAL:");
-        pnl_today.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 70, 40));
-
-        jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel5.setText("Search:");
-        pnl_today.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 60, 40));
-
-        search_today.addActionListener(this::search_todayActionPerformed);
-        search_today.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                search_todayKeyReleased(evt);
-            }
-        });
-        pnl_today.add(search_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 170, -1));
-
-        jScrollPane1.setForeground(new java.awt.Color(55, 77, 94));
-
-        tbl_today.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        tbl_today.setForeground(new java.awt.Color(55, 77, 94));
-        tbl_today.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                { new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
-                { new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
-                { new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Dinner"},
-                { new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
-                { new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Lunch"}
-            },
-            new String [] {
-                "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbl_today.setOpaque(false);
-        jScrollPane1.setViewportView(tbl_today);
-        if (tbl_today.getColumnModel().getColumnCount() > 0) {
-            tbl_today.getColumnModel().getColumn(0).setResizable(false);
-            tbl_today.getColumnModel().getColumn(1).setResizable(false);
-            tbl_today.getColumnModel().getColumn(2).setResizable(false);
-            tbl_today.getColumnModel().getColumn(3).setResizable(false);
-            tbl_today.getColumnModel().getColumn(4).setResizable(false);
-        }
-
-        pnl_today.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
-
-        bg_today.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
-        bg_today.setText("Today");
-        pnl_today.add(bg_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
-
-        getContentPane().add(pnl_today, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
-
-        pnl_upcom.setForeground(new java.awt.Color(202, 199, 199));
-        pnl_upcom.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        date_upcom.setDateFormatString("MM-dd-yy");
-        pnl_upcom.add(date_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 170, -1));
-
-        jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel11.setText("Date:");
-        pnl_upcom.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 50, 20));
-
-        jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel8.setText("UPCOMING");
-        pnl_upcom.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 310, 50));
-
-        jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel12.setText("Search:");
-        pnl_upcom.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 60, 20));
-
-        search_upcom.addActionListener(this::search_upcomActionPerformed);
-        search_upcom.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                search_upcomKeyReleased(evt);
-            }
-        });
-        pnl_upcom.add(search_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 20, 170, -1));
-
-        jScrollPane3.setForeground(new java.awt.Color(55, 77, 94));
-
-        tbl_upcom.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        tbl_upcom.setForeground(new java.awt.Color(55, 77, 94));
-        tbl_upcom.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"03-26-26",  new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch"},
-                {"03-01-26",  new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch"},
-                {"04-19-26",  new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Lunch"},
-                {"03-01-26",  new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner"},
-                {"04-19-26",  new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Dinner"}
-            },
-            new String [] {
-                "DATE", "TABLE NO.", "CUSTOMER NAME", "CONTACT", "PAX", "TIME"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbl_upcom.setOpaque(false);
-        jScrollPane3.setViewportView(tbl_upcom);
-        if (tbl_upcom.getColumnModel().getColumnCount() > 0) {
-            tbl_upcom.getColumnModel().getColumn(0).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(0).setHeaderValue("DATE");
-            tbl_upcom.getColumnModel().getColumn(1).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(1).setHeaderValue("TABLE NO.");
-            tbl_upcom.getColumnModel().getColumn(2).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(3).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(4).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(4).setHeaderValue("PAX");
-            tbl_upcom.getColumnModel().getColumn(5).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(5).setHeaderValue("TIME");
-        }
-
-        pnl_upcom.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
-
-        bg_today2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
-        bg_today2.setText("Today");
-        pnl_upcom.add(bg_today2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
-
-        getContentPane().add(pnl_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1558,7 +1649,6 @@ public class Admin extends javax.swing.JFrame {
         }
 
         try {
-            // 1. Extract the filtered data from the JTable
             DefaultTableModel filteredData = new DefaultTableModel(
                 new String[]{"ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"}, 0
             );
@@ -1573,28 +1663,20 @@ public class Admin extends javax.swing.JFrame {
 
             JRTableModelDataSource dataSource = new JRTableModelDataSource(filteredData);
             
-            // --- UPDATED CODE: POINT TO THE .jasper FILE INSTEAD ---
             String reportPath = "src/reports/ReportHistory.jasper"; 
             
-            // Use JRLoader to load the pre-compiled file (Skips the XML compiling crash!)
             JasperReport jr = (JasperReport) net.sf.jasperreports.engine.util.JRLoader.loadObjectFromFile(reportPath);
-            // -------------------------------------------------------
-
-            // --- GRAB DATES AND ADD TO PARAMETERS ---
+            
             java.util.Date fromDate = date_historyFrom.getDate();
             java.util.Date toDate = date_historyTo.getDate();
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMMM dd, yyyy");
 
-            // If a date isn't selected, provide a default fallback string
             String fromStr = (fromDate != null) ? sdf.format(fromDate) : "Beginning";
             String toStr = (toDate != null) ? sdf.format(toDate) : "Present";
 
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("fromDateParam", fromStr);
             parameters.put("toDateParam", toStr);
-            // ---------------------------------------------------
-
-            // Pass the parameters map into the fillReport method
             JasperPrint jp = JasperFillManager.fillReport(jr, parameters, dataSource);
             JasperViewer.viewReport(jp, false);
 
@@ -1603,6 +1685,85 @@ public class Admin extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btn_histGenerateActionPerformed
+
+    private void txt_membVipgenderNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membVipgenderNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membVipgenderNew_tableActionPerformed
+
+    private void txt_membVipbdayNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membVipbdayNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membVipbdayNew_tableActionPerformed
+
+    private void btn_membeditAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_membeditAssign_ButtonActionPerformed
+       int viewRow = tbl_memb.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a member from the table first.");
+            return;
+        }
+
+        int modelRow = tbl_memb.convertRowIndexToModel(viewRow);
+        String targetVipId = tbl_memb.getModel().getValueAt(modelRow, 0).toString(); 
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        String sql = "UPDATE DBHOUSE.VIPACCOUNTS SET F_NAME=?, L_NAME=?, GENDER=?, BDAY=?, CP_NUM=?, EMAIL=?, PASS=? WHERE VIP_ID=?";
+
+        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+            pst.setString(1, txt_membFname.getText().trim());
+            pst.setString(2, txt_membLname.getText().trim());
+            pst.setString(3, txt_membVipgender.getText().trim());
+
+            pst.setString(4, txt_membVipbday.getText().trim()); 
+
+            pst.setString(5, txt_membCpnum.getText().trim());
+            pst.setString(6, txt_membEmail.getText().trim());
+            pst.setString(7, txt_membPass.getText().trim());
+            pst.setString(8, targetVipId);
+
+            int updated = pst.executeUpdate();
+            if (updated > 0) {
+                JOptionPane.showMessageDialog(this, "Member details updated successfully!");
+                loadMemberTable(); 
+                clearMemberFields(); 
+            }
+            db.con.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Update Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btn_membeditAssign_ButtonActionPerformed
+
+    private void btn_membdelRemove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_membdelRemove_buttonActionPerformed
+        int viewRow = tbl_memb.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select a member to delete.");
+            return;
+        }
+
+        int modelRow = tbl_memb.convertRowIndexToModel(viewRow);
+        String vipId = tbl_memb.getModel().getValueAt(modelRow, 0).toString();
+        String name = tbl_memb.getModel().getValueAt(modelRow, 2).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Are you sure you want to delete member: " + name + " (ID: " + vipId + ")?", 
+            "Confirm Deletion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+            try (PreparedStatement pst = db.con.prepareStatement("DELETE FROM DBHOUSE.VIPACCOUNTS WHERE VIP_ID=?")) {
+                pst.setString(1, vipId);
+                pst.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Member deleted.");
+                loadMemberTable();
+                clearMemberFields();
+                db.con.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Delete Error: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btn_membdelRemove_buttonActionPerformed
 
      private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
@@ -1630,6 +1791,19 @@ public class Admin extends javax.swing.JFrame {
         buttonGroup1.clearSelection();
         tbl_emp.clearSelection();
     }
+     
+     private void clearMemberFields() {
+    txt_membVipId.setText("");
+    txt_membDatereg.setText("");
+    txt_membFname.setText("");
+    txt_membLname.setText("");
+    txt_membVipgender.setText("");
+    txt_membVipbday.setText("");
+    txt_membCpnum.setText("");
+    txt_membEmail.setText("");
+    txt_membPass.setText("");
+    tbl_memb.clearSelection();
+}
      
      private void switchPanel(javax.swing.JPanel targetPanel) {
         pnl_today.setVisible(false);
@@ -1687,10 +1861,11 @@ public class Admin extends javax.swing.JFrame {
 
         Connect db = new Connect();
         db.DoConnect();
-        try (PreparedStatement pst = db.con.prepareStatement("SELECT USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE FROM DBHOUSE.EMPACCOUNTS");
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT EMP_ID, USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE FROM DBHOUSE.EMPACCOUNTS");
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 model.addRow(new Object[]{
+                    rs.getString("EMP_ID"),
                     rs.getString("USERNAME"), 
                     rs.getString("F_NAME"),   
                     rs.getString("L_NAME"),   
@@ -1735,7 +1910,8 @@ public class Admin extends javax.swing.JFrame {
         db.DoConnect();
 
         if (db.con != null) {
-            String query = 
+           String query = 
+                "SELECT * FROM (" +
                 "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
                 "FROM DBHOUSE.INHOUSERESERVATIONS " +
                 "UNION ALL " +
@@ -1745,8 +1921,8 @@ public class Admin extends javax.swing.JFrame {
                 "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS " +
                 "FROM DBHOUSE.ONLINERESERVATIONS o " +
                 "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
-                "ORDER BY D_DATE DESC"; // Order by most recent date first
-
+                ") t " +
+                "ORDER BY D_DATE ASC, CASE WHEN UPPER(D_TIME) = 'LUNCH' THEN 1 ELSE 2 END ASC";
             try (PreparedStatement pst = db.con.prepareStatement(query);
                  ResultSet rs = pst.executeQuery()) {
 
@@ -1842,6 +2018,8 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JButton btn_fdesk;
     private javax.swing.JButton btn_histGenerate;
     private javax.swing.JButton btn_history;
+    private javax.swing.JButton btn_membdel;
+    private javax.swing.JButton btn_membedit;
     private javax.swing.JButton btn_members;
     private javax.swing.JButton btn_navLogout;
     private javax.swing.JButton btn_upcom;
@@ -1862,6 +2040,8 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -1913,6 +2093,8 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JTextField txt_membLname;
     private javax.swing.JTextField txt_membPass;
     private javax.swing.JTextField txt_membVipId;
+    private javax.swing.JTextField txt_membVipbday;
+    private javax.swing.JTextField txt_membVipgender;
     // End of variables declaration//GEN-END:variables
 }
 
