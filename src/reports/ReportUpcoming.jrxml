@@ -21,25 +21,25 @@
 	<field name="TIME" class="java.lang.String"/>
 	<field name="PAX" class="java.lang.Integer"/>
 	<field name="REMARKS" class="java.lang.String"/>
-	<title height="99" splitType="Stretch">
+	<title height="103" splitType="Stretch">
 		<element kind="frame" uuid="6df8170d-37b7-41fb-9235-fc6fb84b5b50" mode="Opaque" x="0" y="0" width="802" height="99" forecolor="#D0B48E" backcolor="#374D5E">
-			<element kind="staticText" uuid="c8edcb4c-f0d0-404c-b02a-8e88f0a2e134" x="160" y="18" width="380" height="34" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="26.0" bold="true" hTextAlign="Center" vTextAlign="Top">
-				<text><![CDATA[BOOKING HISTORY REPORT ]]></text>
+			<element kind="staticText" uuid="c8edcb4c-f0d0-404c-b02a-8e88f0a2e134" x="150" y="20" width="380" height="34" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="26.0" bold="true" hTextAlign="Center" vTextAlign="Top">
+				<text><![CDATA[BOOKING UPCOMING REPORT ]]></text>
 			</element>
-			<element kind="textField" uuid="b8f9ebaa-b2a7-405a-aac5-e56d7927f4b8" x="130" y="52" width="210" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="17.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" uuid="b8f9ebaa-b2a7-405a-aac5-e56d7927f4b8" x="120" y="54" width="210" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="17.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$P{fromDateParam}]]></expression>
 			</element>
-			<element kind="staticText" uuid="16870be1-0f94-4fac-9873-6e86675818a9" x="340" y="52" width="20" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="17.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="staticText" uuid="16870be1-0f94-4fac-9873-6e86675818a9" x="330" y="54" width="20" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="17.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 				<text><![CDATA[-]]></text>
 			</element>
-			<element kind="textField" uuid="a0c55155-2106-40c7-b89f-ebddc63656a6" x="360" y="52" width="210" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="17.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
+			<element kind="textField" uuid="a0c55155-2106-40c7-b89f-ebddc63656a6" x="350" y="54" width="210" height="30" forecolor="#FFFFFF" fontName="Century Gothic" fontSize="17.0" bold="false" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$P{toDateParam}]]></expression>
 			</element>
-			<element kind="frame" uuid="67403347-6d7e-4f5a-81ce-0f03a7d3d058" mode="Opaque" x="688" y="0" width="112" height="99" forecolor="#D0B48E" backcolor="#FFFFFF">
-				<element kind="staticText" uuid="2db08423-c22c-49ab-91d9-a62dfa7a3c90" x="-2" y="21" width="114" height="28" forecolor="#374D5E" fontName="Century Gothic" fontSize="20.0" bold="true" hTextAlign="Center" vTextAlign="Top">
+			<element kind="frame" uuid="98a8aba9-327f-4d30-afe5-565cb20e711c" mode="Opaque" x="688" y="0" width="112" height="99" forecolor="#D0B48E" backcolor="#FFFFFF">
+				<element kind="staticText" uuid="ccf6ce90-5a58-400b-949a-525fe63f7a89" x="-2" y="21" width="114" height="28" forecolor="#374D5E" fontName="Century Gothic" fontSize="20.0" bold="true" hTextAlign="Center" vTextAlign="Top">
 					<text><![CDATA[TOTAL]]></text>
 				</element>
-				<element kind="textField" uuid="e0d642df-1d75-428a-b672-95fdc098530e" x="12" y="47" width="90" height="38" forecolor="#374D5E" fontName="Century Gothic" fontSize="25.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<element kind="textField" uuid="19606d12-4daa-42be-ba9c-e0a6744b7906" x="12" y="47" width="90" height="38" forecolor="#374D5E" fontName="Century Gothic" fontSize="25.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 					<expression><![CDATA[$P{totalRecordsParam}]]></expression>
 				</element>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">

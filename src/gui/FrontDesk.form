@@ -277,24 +277,28 @@
                       <Group type="102" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" max="-2" attributes="0">
-                              <Component id="jLabel14" alignment="3" max="32767" attributes="0"/>
-                              <Component id="jLabel35" alignment="3" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="lbl_totalReserveLUNCH" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel15" alignment="3" max="32767" attributes="0"/>
-                              <Component id="lbl_totalWalkInLUNCH" alignment="3" min="-2" pref="17" max="-2" attributes="0"/>
-                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_totalAvailSeatsLUNCH" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel14" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="jLabel35" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="jLabel15" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="lbl_totalWalkInLUNCH" alignment="3" min="-2" pref="17" max="-2" attributes="0"/>
+                                  <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbl_totalAvailSeatsLUNCH" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel37" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel36" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lbl_totalReserveDINNER" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel38" alignment="3" max="32767" attributes="0"/>
-                              <Component id="lbl_totalWalkInDINNER" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_totalAvailSeatsDINNER" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel37" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel36" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel38" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="lbl_totalWalkInDINNER" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbl_totalAvailSeatsDINNER" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <Group type="102" attributes="0">
