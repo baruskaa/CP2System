@@ -170,9 +170,9 @@ public class FrontDesk extends javax.swing.JFrame {
 
                         txt_rsvID.setText(model.getValueAt(editingRow, 0) != null ? model.getValueAt(editingRow, 0).toString() : "");
                         txt_rsvVIPID.setText(model.getValueAt(editingRow, 1) != null ? model.getValueAt(editingRow, 1).toString() : "");
-                        txt_membFname.setText(model.getValueAt(editingRow, 2) != null ? model.getValueAt(editingRow, 2).toString() : "");
-                        txt_membLname.setText(model.getValueAt(editingRow, 3) != null ? model.getValueAt(editingRow, 3).toString() : "");
-                        txt_membCPnum.setText(model.getValueAt(editingRow, 4) != null ? model.getValueAt(editingRow, 4).toString() : "");
+                        txt_membFnamersv.setText(model.getValueAt(editingRow, 2) != null ? model.getValueAt(editingRow, 2).toString() : "");
+                        txt_membLnamersv.setText(model.getValueAt(editingRow, 3) != null ? model.getValueAt(editingRow, 3).toString() : "");
+                        txt_membCPnumrsv.setText(model.getValueAt(editingRow, 4) != null ? model.getValueAt(editingRow, 4).toString() : "");
                         txt_rsvTime.setText(model.getValueAt(editingRow, 5) != null ? model.getValueAt(editingRow, 5).toString() : "");
                         txt_rsvPax.setText(model.getValueAt(editingRow, 6) != null ? model.getValueAt(editingRow, 6).toString() : "");
                         txt_rsvRemarks.setText(model.getValueAt(editingRow, 7) != null ? model.getValueAt(editingRow, 7).toString() : "");
@@ -183,29 +183,20 @@ public class FrontDesk extends javax.swing.JFrame {
         
         // TABLE HEADER
         
-        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tbl_reserve.getTableHeader().getDefaultRenderer();
-        headerRenderer.setHorizontalAlignment(JLabel.CENTER); 
+        DefaultTableCellRenderer headerRendererreserve = (DefaultTableCellRenderer) tbl_reserve.getTableHeader().getDefaultRenderer();
+        headerRendererreserve.setHorizontalAlignment(JLabel.CENTER); 
         tbl_reserve.getTableHeader().setForeground(new Color(55, 77, 94));  
         tbl_reserve.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
         
-        DefaultTableCellRenderer headerRenderer2 = (DefaultTableCellRenderer) tbl_walkin.getTableHeader().getDefaultRenderer();
-        headerRenderer2.setHorizontalAlignment(JLabel.CENTER); 
+        DefaultTableCellRenderer headerRendererwalkin = (DefaultTableCellRenderer) tbl_walkin.getTableHeader().getDefaultRenderer();
+        headerRendererwalkin.setHorizontalAlignment(JLabel.CENTER); 
         tbl_walkin.getTableHeader().setForeground(new Color(55, 77, 94));  
         tbl_walkin.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14)); 
         
-        DefaultTableCellRenderer headerRenderer3 = (DefaultTableCellRenderer) tbl_inhouse.getTableHeader().getDefaultRenderer();
-        headerRenderer3.setHorizontalAlignment(JLabel.CENTER); 
+        DefaultTableCellRenderer headerRendererinhouse = (DefaultTableCellRenderer) tbl_inhouse.getTableHeader().getDefaultRenderer();
+        headerRendererinhouse.setHorizontalAlignment(JLabel.CENTER); 
         tbl_inhouse.getTableHeader().setForeground(new Color(55, 77, 94));  
         tbl_inhouse.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14)); 
-        
-        getContentPane().addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                clearWalkInSelection();
-            }
-            private void clearWalkInSelection() { 
-            }
-           });
         
         // DATE TODAY
         LocalDate today = LocalDate.now();
@@ -253,7 +244,7 @@ public class FrontDesk extends javax.swing.JFrame {
         tbl_inhouse.getColumnModel().getColumn(i).setCellRenderer(center_inhouse);
         }
         
-        // SAFE PAX COMPARATOR 
+        // PAX COMPARATOR 
         sorter_reserve.setComparator(3, (n1, n2) -> {
             if (n1 == null) return 1;
             if (n2 == null) return -1;
@@ -323,9 +314,9 @@ public class FrontDesk extends javax.swing.JFrame {
             private void filter() {
                 String text = search_walkin.getText().trim();
                 if (text.isEmpty()) {
-                    sorter_reserve.setRowFilter(null);
+                    sorter_walkin.setRowFilter(null);
                 } else {
-                    sorter_reserve.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    sorter_walkin.setRowFilter(RowFilter.regexFilter("(?i)" + text));
                 }
             }
         });
@@ -390,13 +381,13 @@ public class FrontDesk extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
-        txt_membCPnum = new javax.swing.JTextField();
-        txt_membLname = new javax.swing.JTextField();
+        txt_membCPnumrsv = new javax.swing.JTextField();
+        txt_membLnamersv = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         txt_rsvVIPID = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
-        txt_membFname = new javax.swing.JTextField();
+        txt_membFnamersv = new javax.swing.JTextField();
         txt_rsvID = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
         txt_rsvPax = new javax.swing.JTextField();
@@ -499,7 +490,7 @@ public class FrontDesk extends javax.swing.JFrame {
             }
         });
         btn_inhouse.addActionListener(this::btn_inhouseActionPerformed);
-        pnl_nav.add(btn_inhouse, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 100, 30));
+        pnl_nav.add(btn_inhouse, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 100, 30));
 
         btn_logout.setBackground(new java.awt.Color(153, 0, 0));
         btn_logout.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -678,15 +669,14 @@ public class FrontDesk extends javax.swing.JFrame {
                                 .addComponent(jLabel6)
                                 .addComponent(lbl_totalAvailSeatsLUNCH, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_totalReserveDINNER)
-                            .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel37)
-                                .addComponent(jLabel36)
-                                .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lbl_totalWalkInDINNER)
-                                .addComponent(jLabel7)
-                                .addComponent(lbl_totalAvailSeatsDINNER, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel37)
+                            .addComponent(jLabel36)
+                            .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_totalWalkInDINNER)
+                            .addComponent(jLabel7)
+                            .addComponent(lbl_totalAvailSeatsDINNER, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_totalReserveDINNER)))
                     .addGroup(pnl_headerLayout.createSequentialGroup()
                         .addComponent(lbl_username)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -716,17 +706,17 @@ public class FrontDesk extends javax.swing.JFrame {
         jLabel29.setText("CP Num:");
         pnl_reserve.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 410, 60, 30));
 
-        txt_membCPnum.setEditable(false);
-        txt_membCPnum.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_membCPnum.setFocusable(false);
-        txt_membCPnum.addActionListener(this::txt_membCPnumNew_tableActionPerformed);
-        pnl_reserve.add(txt_membCPnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 410, 140, 30));
+        txt_membCPnumrsv.setEditable(false);
+        txt_membCPnumrsv.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membCPnumrsv.setFocusable(false);
+        txt_membCPnumrsv.addActionListener(this::txt_membCPnumrsvNew_tableActionPerformed);
+        pnl_reserve.add(txt_membCPnumrsv, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 410, 140, 30));
 
-        txt_membLname.setEditable(false);
-        txt_membLname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_membLname.setFocusable(false);
-        txt_membLname.addActionListener(this::txt_membLnameNew_tableActionPerformed);
-        pnl_reserve.add(txt_membLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 380, 140, 30));
+        txt_membLnamersv.setEditable(false);
+        txt_membLnamersv.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membLnamersv.setFocusable(false);
+        txt_membLnamersv.addActionListener(this::txt_membLnamersvNew_tableActionPerformed);
+        pnl_reserve.add(txt_membLnamersv, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 380, 140, 30));
 
         jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(55, 77, 94));
@@ -752,11 +742,11 @@ public class FrontDesk extends javax.swing.JFrame {
         jLabel31.setText("VIP ID:  ");
         pnl_reserve.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 50, 30));
 
-        txt_membFname.setEditable(false);
-        txt_membFname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_membFname.setFocusable(false);
-        txt_membFname.addActionListener(this::txt_membFnameNew_tableActionPerformed);
-        pnl_reserve.add(txt_membFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 350, 140, 30));
+        txt_membFnamersv.setEditable(false);
+        txt_membFnamersv.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membFnamersv.setFocusable(false);
+        txt_membFnamersv.addActionListener(this::txt_membFnamersvNew_tableActionPerformed);
+        pnl_reserve.add(txt_membFnamersv, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 350, 140, 30));
 
         txt_rsvID.setEditable(false);
         txt_rsvID.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
@@ -1347,9 +1337,9 @@ public class FrontDesk extends javax.swing.JFrame {
                 
                 txt_rsvID.setText(""); 
                 txt_rsvVIPID.setText(""); 
-                txt_membFname.setText("");
-                txt_membLname.setText(""); 
-                txt_membCPnum.setText(""); 
+                txt_membFnamersv.setText("");
+                txt_membLnamersv.setText(""); 
+                txt_membCPnumrsv.setText(""); 
                 txt_rsvTime.setText("");
                 txt_rsvPax.setText(""); 
                 txt_rsvRemarks.setText("");
@@ -1473,17 +1463,17 @@ public class FrontDesk extends javax.swing.JFrame {
        updateNavbarStats();
     }//GEN-LAST:event_btn_walkindelRemove_buttonActionPerformed
 
-    private void txt_membCPnumNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membCPnumNew_tableActionPerformed
+    private void txt_membCPnumrsvNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membCPnumrsvNew_tableActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_membCPnumNew_tableActionPerformed
+    }//GEN-LAST:event_txt_membCPnumrsvNew_tableActionPerformed
 
-    private void txt_membLnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membLnameNew_tableActionPerformed
+    private void txt_membLnamersvNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membLnamersvNew_tableActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_membLnameNew_tableActionPerformed
+    }//GEN-LAST:event_txt_membLnamersvNew_tableActionPerformed
 
-    private void txt_membFnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membFnameNew_tableActionPerformed
+    private void txt_membFnamersvNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membFnamersvNew_tableActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_membFnameNew_tableActionPerformed
+    }//GEN-LAST:event_txt_membFnamersvNew_tableActionPerformed
 
     private void txt_rsvIDNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_rsvIDNew_tableActionPerformed
         // TODO add your handling code here:
@@ -1960,9 +1950,9 @@ public class FrontDesk extends javax.swing.JFrame {
     private void clearReserveFields() {
         txt_rsvID.setText(""); 
         txt_rsvVIPID.setText(""); 
-        txt_membFname.setText("");
-        txt_membLname.setText(""); 
-        txt_membCPnum.setText(""); 
+        txt_membFnamersv.setText("");
+        txt_membLnamersv.setText(""); 
+        txt_membCPnumrsv.setText(""); 
         txt_rsvTime.setText("");
         txt_rsvPax.setText(""); 
         txt_rsvRemarks.setText("");
@@ -2085,9 +2075,9 @@ public class FrontDesk extends javax.swing.JFrame {
     private javax.swing.JTextField txt_IHcp;
     private javax.swing.JTextField txt_IHfname;
     private javax.swing.JTextField txt_IHlname;
-    private javax.swing.JTextField txt_membCPnum;
-    private javax.swing.JTextField txt_membFname;
-    private javax.swing.JTextField txt_membLname;
+    private javax.swing.JTextField txt_membCPnumrsv;
+    private javax.swing.JTextField txt_membFnamersv;
+    private javax.swing.JTextField txt_membLnamersv;
     private javax.swing.JTextField txt_rsvID;
     private javax.swing.JTextField txt_rsvPax;
     private javax.swing.JTextField txt_rsvRemarks;

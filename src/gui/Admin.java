@@ -14,10 +14,14 @@ import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import java.util.HashMap;
+import javax.swing.ButtonGroup;
+import javax.swing.text.DocumentFilter;
 
 /**
  *
@@ -32,15 +36,24 @@ public class Admin extends javax.swing.JFrame {
     private TableRowSorter<DefaultTableModel> sorter_upcom;
     private TableRowSorter<DefaultTableModel> sorter_emp;
     private TableRowSorter<DefaultTableModel> sorter_memb;
+    private TableRowSorter<DefaultTableModel> sorter_reserve;
+    private TableRowSorter<DefaultTableModel> sorter_walkin;
+    private TableRowSorter<DefaultTableModel> sorter_inhouse;
+    private DefaultTableModel getWalkInModel() {
+    return (DefaultTableModel) tbl_walkin.getModel();
+}
+    private DefaultTableModel getInHouseModel() {
+    return (DefaultTableModel) tbl_inhouse.getModel();
+}
+    private int editingInhouseRow = -1;
+    private int editingWalkinRow = -1;
+    private int editingRow = -1;
     
     
     public Admin() {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        buttonGroup1.add(rb_genmanager);
-        buttonGroup1.add(rb_manager);
-        buttonGroup1.add(rb_fdesk);
         
         makeFlatButton(btn_navLogout);
         makeFlatButton(btn_histGenerate);
@@ -48,6 +61,7 @@ public class Admin extends javax.swing.JFrame {
         makeFlatButton(btn_histReset);
         makeFlatButton(btn_seatsReset);
         makeFlatButton(btn_upcomReset);
+        makeFlatButton(btn_cancel);
         
         date_historyTo.setMaxSelectableDate(new java.util.Date());
         loadEmployeeTable();
@@ -55,22 +69,43 @@ public class Admin extends javax.swing.JFrame {
         loadHistoryTable();
         loadUpcomTable();
         loadSeatTrackerTable();
+        loadInhouseTable();
+        loadWalkinTable();
+        loadReserveTable();
         
-        pnl_today.setVisible(true);
+        pnl_reserve.setVisible(true);
+        pnl_today.setVisible(false);
+        pnl_inhouse.setVisible(false);
+        pnl_walkin.setVisible(false);
         pnl_history.setVisible(false);
         pnl_upcom.setVisible(false);
         pnl_emp.setVisible(false);
         pnl_memb.setVisible(false);
-        btn_fdesk.setForeground(new Color(255, 200, 120));
+        btn_reserve.setForeground(new Color(255, 200, 120));
+        
+        // BUTTON GROUPS
+        bg_walkinTime = new ButtonGroup();
+        bg_walkinTime.add(rb_walkinLunch);
+        bg_walkinTime.add(rb_walkinDinner);
+        
+        bg_IHtime = new ButtonGroup();
+        bg_IHtime.add(rb_IHlunch);
+        bg_IHtime.add(rb_IHdinner);
+        
+        buttonGroup1.add(rb_genmanager);
+        buttonGroup1.add(rb_manager);
+        buttonGroup1.add(rb_fdesk);
 
         //TABLE SORTERS
-
-        DefaultTableModel model_today = (DefaultTableModel) tbl_seatsLunch.getModel();
-        sorter_today = new TableRowSorter<>(model_today);
-        tbl_seatsLunch.setRowSorter(sorter_today);
         
-        sorter_dinner = new TableRowSorter<>((DefaultTableModel) tbl_seatsDinner.getModel());
-        tbl_seatsDinner.setRowSorter(sorter_dinner);
+        sorter_walkin  = setupSorter(tbl_walkin);
+        sorter_reserve = setupSorter(tbl_reserve);
+        sorter_inhouse = setupSorter(tbl_inhouse);
+        sorter_today   = setupSorter(tbl_seatsLunch);
+        sorter_dinner  = setupSorter(tbl_seatsDinner);
+        sorter_upcom   = setupSorter(tbl_upcom);
+        sorter_emp     = setupSorter(tbl_emp);
+        sorter_memb    = setupSorter(tbl_memb);
         
         loadSeatTrackerTable();
 
@@ -95,62 +130,32 @@ public class Admin extends javax.swing.JFrame {
         };
         tbl_history.setRowSorter(sorter_history);
         
-        java.util.List<javax.swing.RowSorter.SortKey> startupKeys = new java.util.ArrayList<>();
-        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.ASCENDING)); 
-        startupKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); 
-        sorter_history.setSortKeys(startupKeys);
         
-        DefaultTableModel model_upcom = (DefaultTableModel) tbl_upcom.getModel();
-        sorter_upcom = new TableRowSorter<>(model_upcom);
-        tbl_upcom.setRowSorter(sorter_upcom);
         
-        DefaultTableModel model_emp = (DefaultTableModel) tbl_emp.getModel();
-        sorter_emp = new TableRowSorter<>(model_emp);
-        tbl_emp.setRowSorter(sorter_emp);
         
-        DefaultTableModel model_memb = (DefaultTableModel) tbl_memb.getModel();
-        sorter_memb = new TableRowSorter<>(model_memb);
-        tbl_memb.setRowSorter(sorter_memb);
 
         //TABLE CENTER ALIGNERS
         
-        DefaultTableCellRenderer center_today = new DefaultTableCellRenderer();
-        center_today.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_seatsLunch.getColumnCount(); i++) {
-            tbl_seatsLunch.getColumnModel().getColumn(i).setCellRenderer(center_today);
-        }
-        
-        DefaultTableCellRenderer center_dinner = new DefaultTableCellRenderer();
-        center_dinner.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_seatsDinner.getColumnCount(); i++) {
-            tbl_seatsDinner.getColumnModel().getColumn(i).setCellRenderer(center_today);
-        }
-        
-        DefaultTableCellRenderer center_history = new DefaultTableCellRenderer();
-        center_history.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_history.getColumnCount(); i++) {
-            tbl_history.getColumnModel().getColumn(i).setCellRenderer(center_history);
-        }
-        
-        DefaultTableCellRenderer center_upcom = new DefaultTableCellRenderer();
-        center_upcom.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_upcom.getColumnCount(); i++) {
-            tbl_upcom.getColumnModel().getColumn(i).setCellRenderer(center_upcom);
-        }
-        
-        DefaultTableCellRenderer center_emp = new DefaultTableCellRenderer();
-        center_emp.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_emp.getColumnCount(); i++) {
-            tbl_emp.getColumnModel().getColumn(i).setCellRenderer(center_emp); 
-        }
-        
-        DefaultTableCellRenderer center_memb = new DefaultTableCellRenderer();
-        center_memb.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tbl_memb.getColumnCount(); i++) {
-            tbl_memb.getColumnModel().getColumn(i).setCellRenderer(center_memb);
-        }
+        centerTableData(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
         
          //TABLE HEADER CELL RENDERER
+         
+        styleTableHeaders(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
+         
+        /*DefaultTableCellRenderer headerRendererreserve = (DefaultTableCellRenderer) tbl_reserve.getTableHeader().getDefaultRenderer();
+        headerRendererreserve.setHorizontalAlignment(JLabel.CENTER); 
+        tbl_reserve.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_reserve.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
+        
+        DefaultTableCellRenderer headerRendererwalkin = (DefaultTableCellRenderer) tbl_walkin.getTableHeader().getDefaultRenderer();
+        headerRendererwalkin.setHorizontalAlignment(JLabel.CENTER); 
+        tbl_walkin.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_walkin.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14)); 
+        
+        DefaultTableCellRenderer headerRendererinhouse = (DefaultTableCellRenderer) tbl_inhouse.getTableHeader().getDefaultRenderer();
+        headerRendererinhouse.setHorizontalAlignment(JLabel.CENTER); 
+        tbl_inhouse.getTableHeader().setForeground(new Color(55, 77, 94));  
+        tbl_inhouse.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
         
         DefaultTableCellRenderer headerRenderertoday = (DefaultTableCellRenderer) tbl_seatsLunch.getTableHeader().getDefaultRenderer();
         headerRenderertoday.setHorizontalAlignment(JLabel.CENTER); 
@@ -161,7 +166,6 @@ public class Admin extends javax.swing.JFrame {
         headerRendererdinner.setHorizontalAlignment(JLabel.CENTER); 
         tbl_seatsDinner.getTableHeader().setForeground(new Color(55, 77, 94));  
         tbl_seatsDinner.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
         
         DefaultTableCellRenderer headerRendererhistory = (DefaultTableCellRenderer) tbl_history.getTableHeader().getDefaultRenderer();
         headerRendererhistory.setHorizontalAlignment(JLabel.CENTER); 
@@ -182,7 +186,7 @@ public class Admin extends javax.swing.JFrame {
         headerRenderermemb.setHorizontalAlignment(JLabel.CENTER);
         tbl_memb.getTableHeader().setForeground(new Color(55, 77, 94));  
         tbl_memb.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-    
+    */
         
         //COMPARATORS
         
@@ -202,9 +206,18 @@ public class Admin extends javax.swing.JFrame {
         });
 
         // PAX COMPARATOR 
-     
-
-        sorter_history.setComparator(6, (n1, n2) -> {
+        
+        java.util.Comparator<Object> paxComparator = (n1, n2) -> {
+            if (n1 == null) return 1;
+            if (n2 == null) return -1;
+            try {
+                return Integer.compare(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()));
+            } catch (NumberFormatException e) {
+                return n1.toString().compareTo(n2.toString());
+            }
+        };
+        
+       /* sorter_history.setComparator(6, (n1, n2) -> {
             if (n1 == null) return 1;
             if (n2 == null) return -1;
             try {
@@ -222,11 +235,23 @@ public class Admin extends javax.swing.JFrame {
             } catch (NumberFormatException e) {
                 return n1.toString().compareTo(n2.toString());
             }
-        });
+        });*/
 
         // TIME COMPARATOR 
+        
+        java.util.Comparator<Object> timeComparator = (t1, t2) -> {
+            if (t1 == null && t2 == null) return 0;
+            if (t1 == null) return 1;
+            if (t2 == null) return -1;
+            String time1 = t1.toString().trim();
+            String time2 = t2.toString().trim();
+            if (time1.equalsIgnoreCase(time2)) return 0;
+            if (time1.equalsIgnoreCase("Lunch")) return -1;
+            if (time2.equalsIgnoreCase("Lunch")) return 1;
+            return time1.compareToIgnoreCase(time2);
+        };
 
-        sorter_history.setComparator(5, (t1, t2) -> {  
+        /*sorter_history.setComparator(5, (t1, t2) -> {  
             if (t1 == null && t2 == null) return 0;
             if (t1 == null) return 1;
             if (t2 == null) return -1;
@@ -254,13 +279,42 @@ public class Admin extends javax.swing.JFrame {
             if (time2.equalsIgnoreCase("Lunch")) return 1;
             
             return time1.compareToIgnoreCase(time2);
-        });
+        });*/
+       
+       sorter_upcom.setComparator(5, timeComparator); 
+       sorter_reserve.setComparator(4, paxComparator); 
+       
+       sorter_history.setComparator(5, timeComparator); 
+       sorter_history.setComparator(6, paxComparator);  
+       
+       sorter_reserve.setComparator(5, timeComparator); 
+       sorter_reserve.setComparator(6, paxComparator);  
+
+       sorter_walkin.setComparator(4, timeComparator);  
+       sorter_walkin.setComparator(5, paxComparator);   
+        
+       sorter_inhouse.setComparator(4, timeComparator); 
+       sorter_inhouse.setComparator(5, paxComparator);
         
         // PRECENDENCE SORTING
-        java.util.List<javax.swing.RowSorter.SortKey> historySortKeys = new java.util.ArrayList<>();
-        historySortKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.ASCENDING)); 
-        sorter_history.setSortKeys(historySortKeys);
-        sorter_history.sort();
+        
+        java.util.List<javax.swing.RowSorter.SortKey> startupKeys = new java.util.ArrayList<>();
+        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.ASCENDING)); 
+        startupKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); 
+        sorter_history.setSortKeys(startupKeys);
+        
+        
+        java.util.List<javax.swing.RowSorter.SortKey> reserveSortKeys = new java.util.ArrayList<>();
+        reserveSortKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); 
+        reserveSortKeys.add(new javax.swing.RowSorter.SortKey(0, javax.swing.SortOrder.ASCENDING)); 
+        sorter_reserve.setSortKeys(reserveSortKeys);
+        sorter_reserve.sort();
+
+        java.util.List<javax.swing.RowSorter.SortKey> walkinSortKeys = new java.util.ArrayList<>();
+        walkinSortKeys.add(new javax.swing.RowSorter.SortKey(4, javax.swing.SortOrder.ASCENDING)); 
+        walkinSortKeys.add(new javax.swing.RowSorter.SortKey(0, javax.swing.SortOrder.ASCENDING)); 
+        sorter_walkin.setSortKeys(walkinSortKeys);
+        sorter_walkin.sort();
             
         
         // VIP_ID 
@@ -276,81 +330,26 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         
+        // SEARCHES
+        addSearchListener(search_history, sorter_history);
+        addSearchListener(search_upcom, sorter_upcom);
+        addSearchListener(search_empacc, sorter_emp);
+        addSearchListener(search_walkin, sorter_walkin);
+        addSearchListener(search_inhouse, sorter_inhouse);
+        addSearchListener(search_reserve, sorter_reserve);
+        addSearchListener(search_memb, sorter_memb);
+       
         
-        search_history.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            @Override
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-            @Override
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-            @Override
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-
-            private void filter() {
-                String text = search_history.getText().trim();
-                if (text.isEmpty()) {
-                    sorter_history.setRowFilter(null);
-                } else {
-                    sorter_history.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                }
-            }
-        });
-        
-        search_upcom.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            @Override
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-            @Override
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-            @Override
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-
-            private void filter() {
-                String text = search_upcom.getText().trim();
-                if (text.isEmpty()) {
-                    sorter_upcom.setRowFilter(null);
-                } else {
-                    sorter_upcom.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                }
-            }
-        });
-        
-        search_empacc.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            @Override
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-            @Override
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-            @Override
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-
-            private void filter() {
-                String text = search_empacc.getText().trim();
-                if (text.isEmpty()) {
-                    sorter_emp.setRowFilter(null);
-                } else {
-                    sorter_emp.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                }
-            }
-        });
-        
-        search_memb.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            @Override
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-            @Override
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-            @Override
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { filter(); }
-
-            private void filter() {
-                String text = search_memb.getText().trim();
-                if (text.isEmpty()) {
-                    sorter_memb.setRowFilter(null);
-                } else {
-                    sorter_memb.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-                }
-            }
-        });
+        //CHARAC LIMITS (FRONT DESK)
+        setTextFieldLimit(txt_IHcp,11,true);
+        setTextFieldLimit(txt_IHfname,50,false);
+        setTextFieldLimit(txt_IHlname,50,false);
+        setTextFieldLimit(txt_walkinCp,11,true);
+        setTextFieldLimit(txt_walkinFname,50,false);
+        setTextFieldLimit(txt_walkinLname,50,false);
         
         
-        //DATES
+        // DATES
         java.util.Date today = new java.util.Date();
         
         date_historyFrom.setMaxSelectableDate(today);
@@ -365,6 +364,20 @@ public class Admin extends javax.swing.JFrame {
         date_upcomFrom.addPropertyChangeListener("date", evt -> filterUpcomByDateRange());
         date_upcomTo.addPropertyChangeListener("date", evt -> filterUpcomByDateRange());
         
+        LocalDate datetoday = LocalDate.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        lbl_date.setText(datetoday.format(format));
+        
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.add(java.util.Calendar.DATE, 1); 
+        dc_inhouse.setMinSelectableDate(cal.getTime());
+
+        java.util.Calendar maxCal = java.util.Calendar.getInstance();
+        maxCal.set(java.util.Calendar.YEAR, LocalDate.now().getYear() + 1);
+        maxCal.set(java.util.Calendar.MONTH, java.util.Calendar.DECEMBER);
+        maxCal.set(java.util.Calendar.DAY_OF_MONTH, 31);
+        dc_inhouse.setMaxSelectableDate(maxCal.getTime());
+        
         date_seats.addPropertyChangeListener("date", evt -> {
             java.util.Date selected = date_seats.getDate();
             if (selected != null) {
@@ -378,6 +391,106 @@ public class Admin extends javax.swing.JFrame {
         });
         
         //MOUSE LISTENERS
+        
+        tbl_walkin.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int viewRow = tbl_walkin.getSelectedRow();
+                if (viewRow != -1) {
+                    int clickedModelRow = tbl_walkin.convertRowIndexToModel(viewRow);
+                    
+                    if (editingWalkinRow == clickedModelRow) {
+                        clearWalkinFields();
+                    } else {
+                        editingWalkinRow = clickedModelRow;
+                        DefaultTableModel model = (DefaultTableModel) tbl_walkin.getModel();
+
+                        txt_walkinFname.setText(model.getValueAt(editingWalkinRow, 1).toString());
+                        txt_walkinLname.setText(model.getValueAt(editingWalkinRow, 2).toString());
+                        
+                        String time = model.getValueAt(editingWalkinRow, 4).toString();
+                        if (time.equalsIgnoreCase("Lunch")) rb_walkinLunch.setSelected(true);
+                        else rb_walkinDinner.setSelected(true);
+                        
+                        spn_walkinpax.setValue(Integer.valueOf(model.getValueAt(editingWalkinRow, 5).toString()));
+
+                        String id = model.getValueAt(editingWalkinRow, 0).toString();
+                        Connect db = new Connect();
+                        db.DoConnect();
+                        try (PreparedStatement pst = db.con.prepareStatement("SELECT CP_NUM FROM DBHOUSE.WALKINDINE WHERE WI_ID=?")) {
+                            pst.setString(1, id);
+                            ResultSet rs = pst.executeQuery();
+                            if (rs.next()) txt_walkinCp.setText(rs.getString("CP_NUM"));
+                            db.con.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+            }
+        });
+        tbl_inhouse.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int viewRow = tbl_inhouse.getSelectedRow();
+                if (viewRow != -1) {
+                    int clickedModelRow = tbl_inhouse.convertRowIndexToModel(viewRow);
+                    
+                    if (editingInhouseRow == clickedModelRow) {
+                        clearInhouseFields();
+                    } else {
+                        editingInhouseRow = clickedModelRow;
+                        DefaultTableModel model = (DefaultTableModel) tbl_inhouse.getModel();
+
+                        String id = model.getValueAt(editingInhouseRow, 0).toString();
+                        
+                        dc_inhouse.setDate((java.util.Date) model.getValueAt(editingInhouseRow, 1));
+                        txt_IHfname.setText(model.getValueAt(editingInhouseRow, 2).toString());
+                        txt_IHlname.setText(model.getValueAt(editingInhouseRow, 3).toString());
+                        
+                        String time = model.getValueAt(editingInhouseRow, 4).toString();
+                        if (time.equalsIgnoreCase("Lunch")) rb_IHlunch.setSelected(true);
+                        else rb_IHdinner.setSelected(true);
+                        
+                        spn_inhousepax.setValue(Integer.valueOf(model.getValueAt(editingInhouseRow, 5).toString()));
+
+                        Connect db = new Connect();
+                        db.DoConnect();
+                        try (PreparedStatement pst = db.con.prepareStatement("SELECT CP_NUM FROM DBHOUSE.INHOUSERESERVATIONS WHERE IR_ID=?")) {
+                            pst.setString(1, id);
+                            ResultSet rs = pst.executeQuery();
+                            if (rs.next()) {
+                                txt_IHcp.setText(rs.getString("CP_NUM"));
+                            }
+                            db.con.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+            }
+        });
+        tbl_reserve.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int viewRow = tbl_reserve.getSelectedRow();
+                if (viewRow != -1) {
+                    int clickedModelRow = tbl_reserve.convertRowIndexToModel(viewRow);
+                    
+                    if (editingRow == clickedModelRow) {
+                        clearReserveFields(); 
+                    } else {
+                        editingRow = clickedModelRow;
+                        DefaultTableModel model = (DefaultTableModel) tbl_reserve.getModel();
+
+                        txt_rsvID.setText(model.getValueAt(editingRow, 0) != null ? model.getValueAt(editingRow, 0).toString() : "");
+                        txt_rsvVIPID.setText(model.getValueAt(editingRow, 1) != null ? model.getValueAt(editingRow, 1).toString() : "");
+                        txt_membFnamersv.setText(model.getValueAt(editingRow, 2) != null ? model.getValueAt(editingRow, 2).toString() : "");
+                        txt_membLnamersv.setText(model.getValueAt(editingRow, 3) != null ? model.getValueAt(editingRow, 3).toString() : "");
+                        txt_membCPnumrsv.setText(model.getValueAt(editingRow, 4) != null ? model.getValueAt(editingRow, 4).toString() : "");
+                        txt_rsvTime.setText(model.getValueAt(editingRow, 5) != null ? model.getValueAt(editingRow, 5).toString() : "");
+                        txt_rsvPax.setText(model.getValueAt(editingRow, 6) != null ? model.getValueAt(editingRow, 6).toString() : "");
+                        txt_rsvRemarks.setText(model.getValueAt(editingRow, 7) != null ? model.getValueAt(editingRow, 7).toString() : "");
+                    }
+                }
+            }
+        });
         
         tbl_emp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -439,6 +552,8 @@ public class Admin extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        bg_IHtime = new javax.swing.ButtonGroup();
+        bg_walkinTime = new javax.swing.ButtonGroup();
         pnl_nav = new javax.swing.JPanel();
         btn_fdesk = new javax.swing.JButton();
         btn_upcom = new javax.swing.JButton();
@@ -447,8 +562,81 @@ public class Admin extends javax.swing.JFrame {
         btn_emp = new javax.swing.JButton();
         btn_members = new javax.swing.JButton();
         btn_navLogout = new javax.swing.JButton();
+        btn_reserve = new javax.swing.JButton();
+        btn_walkin = new javax.swing.JButton();
+        btn_inhouse = new javax.swing.JButton();
         pnl_header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        lbl_date = new javax.swing.JTextField();
+        pnl_reserve = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        txt_membCPnumrsv = new javax.swing.JTextField();
+        txt_membLnamersv = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        txt_rsvVIPID = new javax.swing.JTextField();
+        jLabel39 = new javax.swing.JLabel();
+        txt_membFnamersv = new javax.swing.JTextField();
+        txt_rsvID = new javax.swing.JTextField();
+        jLabel40 = new javax.swing.JLabel();
+        txt_rsvPax = new javax.swing.JTextField();
+        jLabel41 = new javax.swing.JLabel();
+        btn_cancel = new javax.swing.JButton();
+        txt_rsvRemarks = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
+        txt_rsvTime = new javax.swing.JTextField();
+        jLabel43 = new javax.swing.JLabel();
+        search_reserve = new javax.swing.JTextField();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tbl_reserve = new javax.swing.JTable();
+        bg_today5 = new javax.swing.JLabel();
+        pnl_inhouse = new javax.swing.JPanel();
+        jLabel44 = new javax.swing.JLabel();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        jLabel47 = new javax.swing.JLabel();
+        txt_IHcp = new javax.swing.JTextField();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        jLabel50 = new javax.swing.JLabel();
+        btn_inhouseadd = new javax.swing.JButton();
+        btn_inhouseedit = new javax.swing.JButton();
+        btn_inhousedel = new javax.swing.JButton();
+        dc_inhouse = new com.toedter.calendar.JDateChooser();
+        rb_IHlunch = new javax.swing.JRadioButton();
+        jLabel51 = new javax.swing.JLabel();
+        txt_IHfname = new javax.swing.JTextField();
+        rb_IHdinner = new javax.swing.JRadioButton();
+        txt_IHlname = new javax.swing.JTextField();
+        spn_inhousepax = new javax.swing.JSpinner();
+        search_inhouse = new javax.swing.JTextField();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tbl_inhouse = new javax.swing.JTable();
+        bg_today6 = new javax.swing.JLabel();
+        pnl_walkin = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel52 = new javax.swing.JLabel();
+        jLabel53 = new javax.swing.JLabel();
+        jLabel54 = new javax.swing.JLabel();
+        txt_walkinCp = new javax.swing.JTextField();
+        jLabel55 = new javax.swing.JLabel();
+        jLabel56 = new javax.swing.JLabel();
+        rb_walkinLunch = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        txt_walkinFname = new javax.swing.JTextField();
+        btn_walkinadd = new javax.swing.JButton();
+        btn_walkinedit = new javax.swing.JButton();
+        btn_walkindel = new javax.swing.JButton();
+        spn_walkinpax = new javax.swing.JSpinner();
+        rb_walkinDinner = new javax.swing.JRadioButton();
+        txt_walkinLname = new javax.swing.JTextField();
+        search_walkin = new javax.swing.JTextField();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tbl_walkin = new javax.swing.JTable();
+        bg_today7 = new javax.swing.JLabel();
+        jLabel57 = new javax.swing.JLabel();
         pnl_today = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -560,7 +748,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         btn_fdesk.addActionListener(this::btn_fdeskActionPerformed);
-        pnl_nav.add(btn_fdesk, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 140, 30));
+        pnl_nav.add(btn_fdesk, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 140, 30));
 
         btn_upcom.setBackground(new java.awt.Color(55, 77, 94));
         btn_upcom.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
@@ -579,7 +767,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         btn_upcom.addActionListener(this::btn_upcomActionPerformed);
-        pnl_nav.add(btn_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 140, 30));
+        pnl_nav.add(btn_upcom, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 140, 30));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
         pnl_nav.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
@@ -601,7 +789,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         btn_history.addActionListener(this::btn_historyActionPerformed);
-        pnl_nav.add(btn_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 140, 30));
+        pnl_nav.add(btn_history, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 140, 30));
 
         btn_emp.setBackground(new java.awt.Color(55, 77, 94));
         btn_emp.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
@@ -620,7 +808,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         btn_emp.addActionListener(this::btn_empActionPerformed);
-        pnl_nav.add(btn_emp, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 140, 30));
+        pnl_nav.add(btn_emp, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 140, 30));
 
         btn_members.setBackground(new java.awt.Color(55, 77, 94));
         btn_members.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
@@ -639,7 +827,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         btn_members.addActionListener(this::btn_membersActionPerformed);
-        pnl_nav.add(btn_members, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 140, 30));
+        pnl_nav.add(btn_members, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 140, 30));
 
         btn_navLogout.setBackground(new java.awt.Color(153, 0, 0));
         btn_navLogout.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -649,6 +837,63 @@ public class Admin extends javax.swing.JFrame {
         btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_navLogout.addActionListener(this::btn_navLogoutActionPerformed);
         pnl_nav.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
+
+        btn_reserve.setBackground(new java.awt.Color(55, 77, 94));
+        btn_reserve.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        btn_reserve.setForeground(new java.awt.Color(255, 255, 255));
+        btn_reserve.setText("RESERVATIONS");
+        btn_reserve.setBorder(null);
+        btn_reserve.setContentAreaFilled(false);
+        btn_reserve.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_reserve.setFocusPainted(false);
+        btn_reserve.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_reserveMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_reserveMouseExited(evt);
+            }
+        });
+        btn_reserve.addActionListener(this::btn_reserveActionPerformed);
+        pnl_nav.add(btn_reserve, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 140, 30));
+
+        btn_walkin.setBackground(new java.awt.Color(55, 77, 94));
+        btn_walkin.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        btn_walkin.setForeground(new java.awt.Color(255, 255, 255));
+        btn_walkin.setText("WALK-IN");
+        btn_walkin.setBorder(null);
+        btn_walkin.setContentAreaFilled(false);
+        btn_walkin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_walkin.setFocusPainted(false);
+        btn_walkin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_walkinMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_walkinMouseExited(evt);
+            }
+        });
+        btn_walkin.addActionListener(this::btn_walkinActionPerformed);
+        pnl_nav.add(btn_walkin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 140, 30));
+
+        btn_inhouse.setBackground(new java.awt.Color(55, 77, 94));
+        btn_inhouse.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        btn_inhouse.setForeground(new java.awt.Color(255, 255, 255));
+        btn_inhouse.setText("IN-HOUSE");
+        btn_inhouse.setBorder(null);
+        btn_inhouse.setContentAreaFilled(false);
+        btn_inhouse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_inhouse.setFocusPainted(false);
+        btn_inhouse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_inhouseMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_inhouseMouseExited(evt);
+            }
+        });
+        btn_inhouse.addActionListener(this::btn_inhouseActionPerformed);
+        pnl_nav.add(btn_inhouse, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 100, 30));
 
         getContentPane().add(pnl_nav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 580));
 
@@ -660,24 +905,518 @@ public class Admin extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ADMIN DASHBOARD");
 
+        lbl_date.setBackground(new java.awt.Color(55, 91, 115));
+        lbl_date.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        lbl_date.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_date.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        lbl_date.setText("Date");
+        lbl_date.setBorder(null);
+        lbl_date.addActionListener(this::lbl_dateActionPerformed);
+
         javax.swing.GroupLayout pnl_headerLayout = new javax.swing.GroupLayout(pnl_header);
         pnl_header.setLayout(pnl_headerLayout);
         pnl_headerLayout.setHorizontalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(314, Short.MAX_VALUE))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(373, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         pnl_headerLayout.setVerticalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_headerLayout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
                 .addComponent(jLabel2)
                 .addGap(33, 33, 33))
         );
 
         getContentPane().add(pnl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 740, -1));
+
+        pnl_reserve.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_reserve.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel34.setFont(new java.awt.Font("Century Gothic", 1, 30)); // NOI18N
+        jLabel34.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel34.setText("TODAY'S RESERVATIONS");
+        pnl_reserve.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, 50));
+
+        jLabel35.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel35.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel35.setText("Search:");
+        pnl_reserve.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 40, 60, 20));
+
+        jLabel36.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel36.setText("CP Num:");
+        pnl_reserve.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 410, 60, 30));
+
+        txt_membCPnumrsv.setEditable(false);
+        txt_membCPnumrsv.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membCPnumrsv.setFocusable(false);
+        txt_membCPnumrsv.addActionListener(this::txt_membCPnumrsvNew_tableActionPerformed);
+        pnl_reserve.add(txt_membCPnumrsv, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 410, 140, 30));
+
+        txt_membLnamersv.setEditable(false);
+        txt_membLnamersv.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membLnamersv.setFocusable(false);
+        txt_membLnamersv.addActionListener(this::txt_membLnamersvNew_tableActionPerformed);
+        pnl_reserve.add(txt_membLnamersv, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 380, 140, 30));
+
+        jLabel37.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel37.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel37.setText("Last Name:");
+        pnl_reserve.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 380, 70, 30));
+
+        jLabel38.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel38.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel38.setText("First Name:");
+        pnl_reserve.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, 70, 30));
+
+        txt_rsvVIPID.setEditable(false);
+        txt_rsvVIPID.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_rsvVIPID.setFocusable(false);
+        txt_rsvVIPID.addActionListener(this::txt_rsvVIPIDNew_tableActionPerformed);
+        pnl_reserve.add(txt_rsvVIPID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 380, 90, 30));
+
+        jLabel39.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel39.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel39.setText("VIP ID:  ");
+        pnl_reserve.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 50, 30));
+
+        txt_membFnamersv.setEditable(false);
+        txt_membFnamersv.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_membFnamersv.setFocusable(false);
+        txt_membFnamersv.addActionListener(this::txt_membFnamersvNew_tableActionPerformed);
+        pnl_reserve.add(txt_membFnamersv, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 350, 140, 30));
+
+        txt_rsvID.setEditable(false);
+        txt_rsvID.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_rsvID.setFocusable(false);
+        txt_rsvID.addActionListener(this::txt_rsvIDNew_tableActionPerformed);
+        pnl_reserve.add(txt_rsvID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 350, 90, 30));
+
+        jLabel40.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel40.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel40.setText("ID:  ");
+        pnl_reserve.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 50, 30));
+
+        txt_rsvPax.setEditable(false);
+        txt_rsvPax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_rsvPax.setFocusable(false);
+        txt_rsvPax.addActionListener(this::txt_rsvPaxNew_tableActionPerformed);
+        pnl_reserve.add(txt_rsvPax, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 380, 110, 30));
+
+        jLabel41.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel41.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel41.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel41.setText("Pax:");
+        pnl_reserve.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 380, 40, 30));
+
+        btn_cancel.setBackground(new java.awt.Color(55, 91, 115));
+        btn_cancel.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_cancel.setForeground(new java.awt.Color(255, 255, 255));
+        btn_cancel.setText("CANCEL RESERVATION");
+        btn_cancel.setBorder(null);
+        btn_cancel.addActionListener(this::btn_cancelActionPerformed);
+        pnl_reserve.add(btn_cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 350, 150, 30));
+
+        txt_rsvRemarks.setEditable(false);
+        txt_rsvRemarks.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_rsvRemarks.setFocusable(false);
+        txt_rsvRemarks.addActionListener(this::txt_rsvRemarksNew_tableActionPerformed);
+        pnl_reserve.add(txt_rsvRemarks, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 90, 30));
+
+        jLabel42.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel42.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel42.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel42.setText("Remarks:  ");
+        pnl_reserve.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 70, 30));
+
+        txt_rsvTime.setEditable(false);
+        txt_rsvTime.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_rsvTime.setFocusable(false);
+        txt_rsvTime.addActionListener(this::txt_rsvTimeNew_tableActionPerformed);
+        pnl_reserve.add(txt_rsvTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 350, 110, 30));
+
+        jLabel43.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel43.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel43.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel43.setText("Time:");
+        pnl_reserve.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, 50, 30));
+
+        search_reserve.addActionListener(this::search_reserveActionPerformed);
+        search_reserve.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_reserveKeyReleased(evt);
+            }
+        });
+        pnl_reserve.add(search_reserve, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, 190, -1));
+
+        jScrollPane7.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_reserve.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        tbl_reserve.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_reserve.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "VIP_ID", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_reserve.setOpaque(false);
+        jScrollPane7.setViewportView(tbl_reserve);
+
+        pnl_reserve.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 720, 250));
+
+        bg_today5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
+        bg_today5.setText("Today");
+        pnl_reserve.add(bg_today5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+
+        getContentPane().add(pnl_reserve, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+
+        pnl_inhouse.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_inhouse.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel44.setFont(new java.awt.Font("Century Gothic", 1, 30)); // NOI18N
+        jLabel44.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel44.setText("IN HOUSE RESERVATIONS");
+        pnl_inhouse.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, 40));
+
+        jLabel45.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel45.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel45.setText("Search:");
+        pnl_inhouse.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 50, 60, 20));
+
+        jLabel46.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel46.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel46.setText("Last Name:");
+        pnl_inhouse.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 200, 110, -1));
+
+        jLabel47.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel47.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel47.setText("Pax:");
+        pnl_inhouse.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 350, 30, -1));
+
+        txt_IHcp.addActionListener(this::txt_IHcpActionPerformed);
+        txt_IHcp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_IHcpKeyReleased(evt);
+            }
+        });
+        pnl_inhouse.add(txt_IHcp, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 270, 160, 30));
+
+        jLabel48.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel48.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel48.setText("Time:");
+        pnl_inhouse.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 306, -1, 20));
+
+        jLabel49.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel49.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel49.setText("CP#:");
+        pnl_inhouse.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 250, 70, 20));
+
+        jLabel50.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel50.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel50.setText("Date:");
+        pnl_inhouse.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, 40, -1));
+
+        btn_inhouseadd.setBackground(new java.awt.Color(255, 255, 255));
+        btn_inhouseadd.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_inhouseadd.setForeground(new java.awt.Color(65, 93, 120));
+        btn_inhouseadd.setText("Add");
+        btn_inhouseadd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_inhouseadd.setContentAreaFilled(false);
+        btn_inhouseadd.setFocusPainted(false);
+        btn_inhouseadd.addActionListener(this::btn_inhouseaddAssign_ButtonActionPerformed);
+        pnl_inhouse.add(btn_inhouseadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 410, 50, 30));
+
+        btn_inhouseedit.setBackground(new java.awt.Color(255, 255, 255));
+        btn_inhouseedit.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_inhouseedit.setForeground(new java.awt.Color(65, 93, 120));
+        btn_inhouseedit.setText("Edit");
+        btn_inhouseedit.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_inhouseedit.setContentAreaFilled(false);
+        btn_inhouseedit.setFocusPainted(false);
+        btn_inhouseedit.addActionListener(this::btn_inhouseeditAssign_ButtonActionPerformed);
+        pnl_inhouse.add(btn_inhouseedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 410, 50, 30));
+
+        btn_inhousedel.setBackground(new java.awt.Color(255, 255, 255));
+        btn_inhousedel.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_inhousedel.setForeground(new java.awt.Color(65, 93, 120));
+        btn_inhousedel.setText("Delete");
+        btn_inhousedel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_inhousedel.setContentAreaFilled(false);
+        btn_inhousedel.setFocusPainted(false);
+        btn_inhousedel.setFocusable(false);
+        btn_inhousedel.setRequestFocusEnabled(false);
+        btn_inhousedel.addActionListener(this::btn_inhousedelRemove_buttonActionPerformed);
+        pnl_inhouse.add(btn_inhousedel, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 410, 60, 30));
+        pnl_inhouse.add(dc_inhouse, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 100, 160, 30));
+
+        rb_IHlunch.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        rb_IHlunch.setForeground(new java.awt.Color(55, 77, 94));
+        rb_IHlunch.setText("Lunch");
+        rb_IHlunch.addActionListener(this::rb_IHlunchActionPerformed);
+        pnl_inhouse.add(rb_IHlunch, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 321, -1, 30));
+
+        jLabel51.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel51.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel51.setText("First Name:");
+        pnl_inhouse.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(573, 140, 70, -1));
+
+        txt_IHfname.addActionListener(this::txt_IHfnameActionPerformed);
+        txt_IHfname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_IHfnameKeyReleased(evt);
+            }
+        });
+        pnl_inhouse.add(txt_IHfname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 160, 30));
+
+        rb_IHdinner.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        rb_IHdinner.setForeground(new java.awt.Color(55, 77, 94));
+        rb_IHdinner.setText("Dinner");
+        pnl_inhouse.add(rb_IHdinner, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 321, -1, 30));
+
+        txt_IHlname.addActionListener(this::txt_IHlnameActionPerformed);
+        txt_IHlname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_IHlnameKeyReleased(evt);
+            }
+        });
+        pnl_inhouse.add(txt_IHlname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 160, 30));
+
+        spn_inhousepax.setModel(new javax.swing.SpinnerNumberModel(1, null, 100, 1));
+        pnl_inhouse.add(spn_inhousepax, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 370, 100, 30));
+
+        search_inhouse.addActionListener(this::search_inhouseActionPerformed);
+        search_inhouse.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_inhouseKeyReleased(evt);
+            }
+        });
+        pnl_inhouse.add(search_inhouse, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 180, -1));
+
+        jScrollPane8.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_inhouse.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        tbl_inhouse.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_inhouse.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IR_ID", "DATE", "F_NAME", "L_NAME", "TIME", "PAX"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_inhouse.setOpaque(false);
+        jScrollPane8.setViewportView(tbl_inhouse);
+
+        pnl_inhouse.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 550, 360));
+
+        bg_today6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
+        bg_today6.setText("Today");
+        pnl_inhouse.add(bg_today6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+
+        getContentPane().add(pnl_inhouse, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+
+        pnl_walkin.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_walkin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 30)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel4.setText("TODAY'S WALK-INS");
+        pnl_walkin.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, 40));
+
+        jLabel52.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel52.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel52.setText("Search:");
+        pnl_walkin.add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 60, 20));
+
+        jLabel53.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel53.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel53.setText("Last Name:");
+        pnl_walkin.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 110, -1));
+
+        jLabel54.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel54.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel54.setText("Pax:");
+        pnl_walkin.add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 340, -1, -1));
+
+        txt_walkinCp.addActionListener(this::txt_walkinCpActionPerformed);
+        txt_walkinCp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_walkinCpKeyReleased(evt);
+            }
+        });
+        pnl_walkin.add(txt_walkinCp, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 250, 160, 30));
+
+        jLabel55.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel55.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel55.setText("Time:");
+        pnl_walkin.add(jLabel55, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 290, -1, -1));
+
+        jLabel56.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel56.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel56.setText("CP Num:");
+        pnl_walkin.add(jLabel56, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 230, 80, -1));
+
+        rb_walkinLunch.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        rb_walkinLunch.setForeground(new java.awt.Color(65, 93, 120));
+        rb_walkinLunch.setText("Lunch");
+        rb_walkinLunch.addActionListener(this::rb_walkinLunchActionPerformed);
+        pnl_walkin.add(rb_walkinLunch, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel1.setText("First Name:");
+        pnl_walkin.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 110, -1));
+
+        txt_walkinFname.addActionListener(this::txt_walkinFnameActionPerformed);
+        txt_walkinFname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_walkinFnameKeyReleased(evt);
+            }
+        });
+        pnl_walkin.add(txt_walkinFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, 160, 30));
+
+        btn_walkinadd.setBackground(new java.awt.Color(255, 255, 255));
+        btn_walkinadd.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_walkinadd.setForeground(new java.awt.Color(65, 93, 120));
+        btn_walkinadd.setText("Add");
+        btn_walkinadd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_walkinadd.setContentAreaFilled(false);
+        btn_walkinadd.setFocusPainted(false);
+        btn_walkinadd.addActionListener(this::btn_walkinaddAssign_ButtonActionPerformed);
+        pnl_walkin.add(btn_walkinadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 400, 50, 30));
+
+        btn_walkinedit.setBackground(new java.awt.Color(255, 255, 255));
+        btn_walkinedit.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_walkinedit.setForeground(new java.awt.Color(65, 93, 120));
+        btn_walkinedit.setText("Edit");
+        btn_walkinedit.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_walkinedit.setContentAreaFilled(false);
+        btn_walkinedit.setFocusPainted(false);
+        btn_walkinedit.addActionListener(this::btn_walkineditAssign_ButtonActionPerformed);
+        pnl_walkin.add(btn_walkinedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 400, 50, 30));
+
+        btn_walkindel.setBackground(new java.awt.Color(255, 255, 255));
+        btn_walkindel.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_walkindel.setForeground(new java.awt.Color(65, 93, 120));
+        btn_walkindel.setText("Delete");
+        btn_walkindel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_walkindel.setContentAreaFilled(false);
+        btn_walkindel.setFocusPainted(false);
+        btn_walkindel.setFocusable(false);
+        btn_walkindel.setRequestFocusEnabled(false);
+        btn_walkindel.addActionListener(this::btn_walkindelRemove_buttonActionPerformed);
+        pnl_walkin.add(btn_walkindel, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 400, 60, 30));
+
+        spn_walkinpax.setModel(new javax.swing.SpinnerNumberModel(1, null, 100, 1));
+        pnl_walkin.add(spn_walkinpax, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 360, 100, 30));
+
+        rb_walkinDinner.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        rb_walkinDinner.setForeground(new java.awt.Color(65, 93, 120));
+        rb_walkinDinner.setText("Dinner");
+        pnl_walkin.add(rb_walkinDinner, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 310, -1, -1));
+
+        txt_walkinLname.addActionListener(this::txt_walkinLnameActionPerformed);
+        txt_walkinLname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_walkinLnameKeyReleased(evt);
+            }
+        });
+        pnl_walkin.add(txt_walkinLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 180, 160, 30));
+
+        search_walkin.addActionListener(this::search_walkinActionPerformed);
+        search_walkin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search_walkinKeyReleased(evt);
+            }
+        });
+        pnl_walkin.add(search_walkin, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 40, 180, -1));
+
+        jScrollPane9.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_walkin.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        tbl_walkin.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_walkin.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "WI_ID", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_walkin.setOpaque(false);
+        jScrollPane9.setViewportView(tbl_walkin);
+
+        pnl_walkin.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 550, 350));
+
+        bg_today7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
+        bg_today7.setText("Today");
+        pnl_walkin.add(bg_today7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+
+        jLabel57.setText("First Name:");
+        pnl_walkin.add(jLabel57, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 80, -1, -1));
+
+        getContentPane().add(pnl_walkin, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
         pnl_today.setForeground(new java.awt.Color(202, 199, 199));
         pnl_today.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1888,6 +2627,274 @@ public class Admin extends javax.swing.JFrame {
          sorter_dinner.setRowFilter(null);
     }//GEN-LAST:event_btn_seatsResetActionPerformed
 
+    private void btn_reserveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_reserveMouseEntered
+        if (!btn_reserve.getForeground().equals(new Color(255, 200, 120))) {
+            btn_reserve.setForeground(new Color(255, 200, 120));
+        }
+        btn_reserve.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_reserveMouseEntered
+
+    private void btn_reserveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_reserveMouseExited
+        if (!pnl_reserve.isVisible()) {
+            btn_reserve.setForeground(Color.WHITE);
+        }
+    }//GEN-LAST:event_btn_reserveMouseExited
+
+    private void btn_reserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reserveActionPerformed
+        switchPanel(pnl_reserve);
+    setActiveButton(btn_reserve);
+    }//GEN-LAST:event_btn_reserveActionPerformed
+
+    private void btn_walkinMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_walkinMouseEntered
+        if (!btn_walkin.getForeground().equals(new Color(255, 200, 120))) {
+            btn_walkin.setForeground(new Color(255, 200, 120));
+        }
+        btn_walkin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_walkinMouseEntered
+
+    private void btn_walkinMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_walkinMouseExited
+        if (!pnl_walkin.isVisible()) {
+            btn_walkin.setForeground(Color.WHITE);
+        }       // TODO add your handling code here:
+    }//GEN-LAST:event_btn_walkinMouseExited
+
+    private void btn_walkinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_walkinActionPerformed
+       switchPanel(pnl_walkin);
+    setActiveButton(btn_walkin);
+    }//GEN-LAST:event_btn_walkinActionPerformed
+
+    private void btn_inhouseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_inhouseMouseEntered
+        if (!btn_inhouse.getForeground().equals(new Color(255, 200, 120))) {
+            btn_inhouse.setForeground(new Color(255, 200, 120));
+        }
+        btn_inhouse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_inhouseMouseEntered
+
+    private void btn_inhouseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_inhouseMouseExited
+        if (!pnl_inhouse.isVisible()) {
+            btn_inhouse.setForeground(Color.WHITE);
+        }
+    }//GEN-LAST:event_btn_inhouseMouseExited
+
+    private void btn_inhouseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inhouseActionPerformed
+        switchPanel(pnl_inhouse);
+    setActiveButton(btn_inhouse);
+    }//GEN-LAST:event_btn_inhouseActionPerformed
+
+    private void txt_membCPnumrsvNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membCPnumrsvNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membCPnumrsvNew_tableActionPerformed
+
+    private void txt_membLnamersvNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membLnamersvNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membLnamersvNew_tableActionPerformed
+
+    private void txt_rsvVIPIDNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_rsvVIPIDNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_rsvVIPIDNew_tableActionPerformed
+
+    private void txt_membFnamersvNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membFnamersvNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_membFnamersvNew_tableActionPerformed
+
+    private void txt_rsvIDNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_rsvIDNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_rsvIDNew_tableActionPerformed
+
+    private void txt_rsvPaxNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_rsvPaxNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_rsvPaxNew_tableActionPerformed
+
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        int selectedRow = tbl_reserve.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select a reservation from the table first!");
+            return;
+        }
+
+        int modelRow = tbl_reserve.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tbl_reserve.getModel();
+
+        String id = model.getValueAt(modelRow, 0).toString();
+        Object status = model.getValueAt(modelRow, 7);
+
+        if (status != null && status.toString().equalsIgnoreCase("Cancelled")) {
+            JOptionPane.showMessageDialog(this, "This reservation is already cancelled!");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Are you sure you want to cancel reservation " + id + "?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+
+            String sql = "";
+            if (id.startsWith("IR")) {
+                sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET REMARKS = 'Cancelled' WHERE IR_ID = ?";
+            } else if (id.startsWith("OR")) {
+                sql = "UPDATE DBHOUSE.ONLINERESERVATIONS SET REMARKS = 'Cancelled' WHERE OR_ID = ?";
+            } else {
+                JOptionPane.showMessageDialog(this, "Unknown ID format!");
+                return;
+            }
+
+            try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+                pst.setString(1, id);
+                pst.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Reservation cancelled successfully.");
+
+                txt_rsvID.setText("");
+                txt_rsvVIPID.setText("");
+                txt_membFnamersv.setText("");
+                txt_membLnamersv.setText("");
+                txt_membCPnumrsv.setText("");
+                txt_rsvTime.setText("");
+                txt_rsvPax.setText("");
+                txt_rsvRemarks.setText("");
+
+                loadReserveTable();
+                db.con.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void txt_rsvRemarksNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_rsvRemarksNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_rsvRemarksNew_tableActionPerformed
+
+    private void txt_rsvTimeNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_rsvTimeNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_rsvTimeNew_tableActionPerformed
+
+    private void search_reserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_reserveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_reserveActionPerformed
+
+    private void search_reserveKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_reserveKeyReleased
+        DefaultTableModel model = (DefaultTableModel) tbl_reserve.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        tbl_reserve.setRowSorter(sorter);
+
+        String text = search_reserve.getText();
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+    }//GEN-LAST:event_search_reserveKeyReleased
+
+    private void txt_IHcpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_IHcpActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_IHcpActionPerformed
+
+    private void txt_IHcpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_IHcpKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_IHcpKeyReleased
+
+    private void btn_inhouseaddAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inhouseaddAssign_ButtonActionPerformed
+        addInhouse();
+    }//GEN-LAST:event_btn_inhouseaddAssign_ButtonActionPerformed
+
+    private void btn_inhouseeditAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inhouseeditAssign_ButtonActionPerformed
+        editInhouse();
+    }//GEN-LAST:event_btn_inhouseeditAssign_ButtonActionPerformed
+
+    private void btn_inhousedelRemove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inhousedelRemove_buttonActionPerformed
+        deleteInhouse();
+    }//GEN-LAST:event_btn_inhousedelRemove_buttonActionPerformed
+
+    private void rb_IHlunchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_IHlunchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rb_IHlunchActionPerformed
+
+    private void txt_IHfnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_IHfnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_IHfnameActionPerformed
+
+    private void txt_IHfnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_IHfnameKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_IHfnameKeyReleased
+
+    private void txt_IHlnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_IHlnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_IHlnameActionPerformed
+
+    private void txt_IHlnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_IHlnameKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_IHlnameKeyReleased
+
+    private void search_inhouseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_inhouseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_inhouseActionPerformed
+
+    private void search_inhouseKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_inhouseKeyReleased
+        DefaultTableModel model = (DefaultTableModel) tbl_inhouse.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        tbl_inhouse.setRowSorter(sorter);
+
+        String text = search_inhouse.getText();
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));      // TODO add your handling code here:
+    }//GEN-LAST:event_search_inhouseKeyReleased
+
+    private void txt_walkinCpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_walkinCpActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_walkinCpActionPerformed
+
+    private void txt_walkinCpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_walkinCpKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_walkinCpKeyReleased
+
+    private void rb_walkinLunchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_walkinLunchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rb_walkinLunchActionPerformed
+
+    private void txt_walkinFnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_walkinFnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_walkinFnameActionPerformed
+
+    private void txt_walkinFnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_walkinFnameKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_walkinFnameKeyReleased
+
+    private void btn_walkinaddAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_walkinaddAssign_ButtonActionPerformed
+        addWalkin();
+    }//GEN-LAST:event_btn_walkinaddAssign_ButtonActionPerformed
+
+    private void btn_walkineditAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_walkineditAssign_ButtonActionPerformed
+        editWalkin();
+    }//GEN-LAST:event_btn_walkineditAssign_ButtonActionPerformed
+
+    private void btn_walkindelRemove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_walkindelRemove_buttonActionPerformed
+        deleteWalkin();
+    }//GEN-LAST:event_btn_walkindelRemove_buttonActionPerformed
+
+    private void txt_walkinLnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_walkinLnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_walkinLnameActionPerformed
+
+    private void txt_walkinLnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_walkinLnameKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_walkinLnameKeyReleased
+
+    private void search_walkinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_walkinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_walkinActionPerformed
+
+    private void search_walkinKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_walkinKeyReleased
+        DefaultTableModel model = (DefaultTableModel) tbl_walkin.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        tbl_walkin.setRowSorter(sorter);
+
+        String text = search_walkin.getText();
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+    }//GEN-LAST:event_search_walkinKeyReleased
+
+    private void lbl_dateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lbl_dateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lbl_dateActionPerformed
+
      private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
         btn.setBorder(null);
@@ -1898,7 +2905,7 @@ public class Admin extends javax.swing.JFrame {
         
 }
      private void setActiveButton(javax.swing.JButton activeBtn) {
-        javax.swing.JButton[] buttons = {btn_fdesk, btn_emp,btn_members, btn_upcom, btn_history};
+        javax.swing.JButton[] buttons = {btn_fdesk, btn_emp,btn_members, btn_upcom, btn_history, btn_reserve, btn_walkin, btn_inhouse};
 
         for (javax.swing.JButton btn : buttons) {
             btn.setForeground(Color.WHITE);
@@ -1929,6 +2936,9 @@ public class Admin extends javax.swing.JFrame {
 }
      
      private void switchPanel(javax.swing.JPanel targetPanel) {
+        pnl_inhouse.setVisible(false);
+        pnl_walkin.setVisible(false);
+        pnl_reserve.setVisible(false);
         pnl_today.setVisible(false);
         pnl_history.setVisible(false);
         pnl_upcom.setVisible(false);
@@ -1936,6 +2946,83 @@ public class Admin extends javax.swing.JFrame {
         pnl_memb.setVisible(false);
         targetPanel.setVisible(true);
     }
+     
+     private void styleTableHeaders(javax.swing.JTable... tables) {
+        for (javax.swing.JTable table : tables) {
+            DefaultTableCellRenderer hr = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
+            hr.setHorizontalAlignment(JLabel.CENTER);
+            table.getTableHeader().setForeground(new Color(55, 77, 94));
+            table.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));
+        }
+    }
+     
+     private void addSearchListener(javax.swing.JTextField textField, TableRowSorter<DefaultTableModel> sorter) {
+        textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { update(); }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { update(); }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { update(); }
+
+            private void update() {
+                String text = textField.getText().trim();
+                if (text.isEmpty()) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+        });
+    }
+     
+    private void centerTableData(javax.swing.JTable... tables) {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (javax.swing.JTable table : tables) {
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+        }
+    }
+
+    private TableRowSorter<DefaultTableModel> setupSorter(javax.swing.JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
+        return sorter;
+    }
+    
+
+    private String getSelectedTime() {
+        if (rb_walkinLunch.isSelected()) return "LUNCH";
+        if (rb_walkinDinner.isSelected()) return "DINNER";
+            return null;
+    }
+    private String getSelectedTimeIH() {
+        if (rb_IHlunch.isSelected()) return "LUNCH";
+        if (rb_IHdinner.isSelected()) return "DINNER";
+            return null;
+    }
+    private void setTextFieldLimit(javax.swing.JTextField textField, int limit, boolean numbersOnly) {
+        javax.swing.text.AbstractDocument doc = (javax.swing.text.AbstractDocument) textField.getDocument();
+        doc.setDocumentFilter(new javax.swing.text.DocumentFilter() {
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
+                    throws javax.swing.text.BadLocationException {
+
+                if (numbersOnly && !text.matches("\\d*")) {
+                    return; 
+                }
+
+                int currentLength = fb.getDocument().getLength();
+                if ((currentLength + text.length() - length) <= limit) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+    }
+
      
      private String getNextEmpId() {
         int nextNumber = 1001; 
@@ -2184,7 +3271,6 @@ public class Admin extends javax.swing.JFrame {
         db.DoConnect();
 
         if (db.con != null) {
-            // Group by both DATE and TIME
             String query = 
                 "SELECT D_DATE, D_TIME, SUM(PAX) AS TOTAL_OCCUPIED, (100 - SUM(PAX)) AS AVAILABLE " +
                 "FROM (" +
@@ -2224,6 +3310,341 @@ public class Admin extends javax.swing.JFrame {
             }
         }
     }
+    
+    
+    private void loadWalkinTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_walkin.getModel();
+        model.setRowCount(0);
+        Connect db = new Connect();
+        db.DoConnect();
+        
+        String sql = "SELECT WI_ID, F_NAME, L_NAME, CP_NUM, D_TIME, PAX FROM DBHOUSE.WALKINDINE WHERE D_DATE = CURRENT_DATE";
+        
+        try (PreparedStatement pst = db.con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("WI_ID"), rs.getString("F_NAME"), rs.getString("L_NAME"),
+                    rs.getString("CP_NUM"), rs.getString("D_TIME"), rs.getInt("PAX")
+                });
+            }
+            db.con.close();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+    private void addWalkin() {
+        if (txt_walkinFname.getText().trim().isEmpty() || txt_walkinLname.getText().trim().isEmpty() || 
+            txt_walkinCp.getText().trim().isEmpty() || getSelectedTime() == null) {
+            JOptionPane.showMessageDialog(this, "Please fill out all fields before adding!", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Connect db = new Connect();
+        db.DoConnect();
+        
+        String checkSql = "SELECT COUNT(*) FROM DBHOUSE.WALKINDINE WHERE F_NAME=? AND L_NAME=? AND D_DATE=CURRENT_DATE AND D_TIME=?";
+        try (PreparedStatement checkPst = db.con.prepareStatement(checkSql)) {
+            checkPst.setString(1, txt_walkinFname.getText().trim());
+            checkPst.setString(2, txt_walkinLname.getText().trim());
+            checkPst.setString(3, getSelectedTime());
+            ResultSet rs = checkPst.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(this, "This walk-in record already exists.", "Duplicate Record", JOptionPane.ERROR_MESSAGE);
+                db.con.close();
+                return; 
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+
+        String sql = "INSERT INTO DBHOUSE.WALKINDINE (WI_ID, D_DATE, D_TIME, PAX, F_NAME, L_NAME, CP_NUM, REMARKS) VALUES (?, CURRENT_DATE, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+            String id = getNextWalkinId(); 
+            pst.setString(1, id);
+            pst.setString(2, getSelectedTime());
+            pst.setInt(3, (Integer) spn_walkinpax.getValue()); 
+            pst.setString(4, txt_walkinFname.getText().trim());
+            pst.setString(5, txt_walkinLname.getText().trim());
+            pst.setString(6, txt_walkinCp.getText().trim());
+            pst.setString(7, "Going"); 
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Walk-in successfully added.");
+            loadWalkinTable(); 
+            clearWalkinFields();
+            db.con.close();
+        } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage()); }
+    }
+    private void editWalkin() {
+        if (editingWalkinRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a record first.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (txt_walkinFname.getText().trim().isEmpty() || txt_walkinLname.getText().trim().isEmpty() || 
+            txt_walkinCp.getText().trim().isEmpty() || getSelectedTime() == null) {
+            JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String id = tbl_walkin.getModel().getValueAt(editingWalkinRow, 0).toString();
+        Connect db = new Connect();
+        db.DoConnect();
+        String sql = "UPDATE DBHOUSE.WALKINDINE SET D_TIME=?, PAX=?, F_NAME=?, L_NAME=?, CP_NUM=? WHERE WI_ID=?";
+
+        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+            pst.setString(1, getSelectedTime());
+            pst.setInt(2, (Integer) spn_walkinpax.getValue()); 
+            pst.setString(3, txt_walkinFname.getText().trim());
+            pst.setString(4, txt_walkinLname.getText().trim());
+            pst.setString(5, txt_walkinCp.getText().trim());
+            pst.setString(6, id);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Walk-in edited successfully.");
+            loadWalkinTable();
+            clearWalkinFields();
+            db.con.close();
+        } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Update Error: " + e.getMessage()); }
+    }
+    private void deleteWalkin() {
+        int viewRow = tbl_walkin.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a record first.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int modelRow = tbl_walkin.convertRowIndexToModel(viewRow);
+        String id = tbl_walkin.getModel().getValueAt(modelRow, 0).toString();
+        
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete walk-in record " + id + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+            try (PreparedStatement pst = db.con.prepareStatement("DELETE FROM DBHOUSE.WALKINDINE WHERE WI_ID=?")) {
+                pst.setString(1, id);
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Walk-in deleted.");
+                loadWalkinTable();
+                clearWalkinFields();
+                db.con.close();
+            } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Delete Error: " + e.getMessage()); }
+        }
+    }
+    private void clearWalkinFields() {
+        txt_walkinFname.setText("");
+        txt_walkinLname.setText("");
+        txt_walkinCp.setText("");
+        spn_walkinpax.setValue(1); 
+        bg_walkinTime.clearSelection();
+        tbl_walkin.clearSelection();
+        editingWalkinRow = -1;
+    }
+    private String getNextWalkinId() {
+        int nextId = 1;
+        Connect db = new Connect();
+        db.DoConnect();
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT MAX(CAST(SUBSTR(WI_ID, 3) AS INT)) FROM DBHOUSE.WALKINDINE");
+             ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                nextId = rs.getInt(1) + 1;
+            }
+            db.con.close();
+        } catch (SQLException e) { System.out.println("ID Error: " + e.getMessage()); }
+        return String.format("WD%04d", nextId);
+    }
+
+    private void loadInhouseTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_inhouse.getModel();
+        model.setRowCount(0);
+        Connect db = new Connect();
+        db.DoConnect();
+        
+        String sql = "SELECT IR_ID, D_DATE, F_NAME, L_NAME, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE >= CURRENT_DATE";
+        
+        try (PreparedStatement pst = db.con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("IR_ID"), 
+                    rs.getDate("D_DATE"), 
+                    rs.getString("F_NAME"),
+                    rs.getString("L_NAME"), 
+                    rs.getString("D_TIME"), 
+                    rs.getInt("PAX")
+                });
+            }
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+        }
+    }
+    private void addInhouse() {
+        if (dc_inhouse.getDate() == null || txt_IHfname.getText().trim().isEmpty() || 
+            txt_IHlname.getText().trim().isEmpty() || txt_IHcp.getText().trim().isEmpty() || 
+            getSelectedTimeIH() == null) {
+            JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Connect db = new Connect();
+        db.DoConnect();
+        
+        String checkSql = "SELECT COUNT(*) FROM DBHOUSE.INHOUSERESERVATIONS WHERE F_NAME=? AND L_NAME=? AND D_DATE=? AND D_TIME=?";
+        try (PreparedStatement checkPst = db.con.prepareStatement(checkSql)) {
+            checkPst.setString(1, txt_IHfname.getText().trim());
+            checkPst.setString(2, txt_IHlname.getText().trim());
+            checkPst.setDate(3, new java.sql.Date(dc_inhouse.getDate().getTime()));
+            checkPst.setString(4, getSelectedTimeIH());
+            ResultSet rs = checkPst.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(this, "This reservation already exists.", "Duplicate Record", JOptionPane.ERROR_MESSAGE);
+                db.con.close();
+                return; 
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        
+        String sql = "INSERT INTO DBHOUSE.INHOUSERESERVATIONS (IR_ID, D_DATE, D_TIME, PAX, F_NAME, L_NAME, CP_NUM, REMARKS, DATE_BOOKED) VALUES (?,?,?,?,?,?,?,?, CURRENT_DATE)";
+
+        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+            String newId = getNextInhouseId();
+            pst.setString(1, newId);
+            pst.setDate(2, new java.sql.Date(dc_inhouse.getDate().getTime())); 
+            pst.setString(3, getSelectedTimeIH());
+            pst.setInt(4, (Integer) spn_inhousepax.getValue());
+            pst.setString(5, txt_IHfname.getText().trim());
+            pst.setString(6, txt_IHlname.getText().trim());
+            pst.setString(7, txt_IHcp.getText().trim());
+            pst.setString(8, "Going"); 
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Reservation successfully added.");
+            loadInhouseTable();
+            clearInhouseFields();
+        } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage()); }
+    }
+    private void editInhouse() {
+        if (editingInhouseRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row first.", "No Selection", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (dc_inhouse.getDate() == null || txt_IHfname.getText().trim().isEmpty() || 
+            txt_IHlname.getText().trim().isEmpty() || txt_IHcp.getText().trim().isEmpty() || 
+            getSelectedTimeIH() == null) {
+            JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String id = tbl_inhouse.getModel().getValueAt(editingInhouseRow, 0).toString();
+        Connect db = new Connect();
+        db.DoConnect();
+        String sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET D_DATE=?, D_TIME=?, PAX=?, F_NAME=?, L_NAME=?, CP_NUM=? WHERE IR_ID=?";
+
+        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+            pst.setDate(1, new java.sql.Date(dc_inhouse.getDate().getTime()));
+            pst.setString(2, getSelectedTimeIH());
+            pst.setInt(3, (Integer) spn_inhousepax.getValue());
+            pst.setString(4, txt_IHfname.getText().trim());
+            pst.setString(5, txt_IHlname.getText().trim());
+            pst.setString(6, txt_IHcp.getText().trim());
+            pst.setString(7, id);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Reservation updated successfully!");
+            loadInhouseTable();
+            clearInhouseFields();
+        } catch (SQLException e) { JOptionPane.showMessageDialog(this, "DB Error: " + e.getMessage()); }
+    }
+    private void deleteInhouse() {
+        int viewRow = tbl_inhouse.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Selection", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int modelRow = tbl_inhouse.convertRowIndexToModel(viewRow);
+        String id = tbl_inhouse.getModel().getValueAt(modelRow, 0).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete reservation " + id + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+            try (PreparedStatement pst = db.con.prepareStatement("DELETE FROM DBHOUSE.INHOUSERESERVATIONS WHERE IR_ID=?")) {
+                pst.setString(1, id);
+                pst.executeUpdate();
+                loadInhouseTable();
+                clearInhouseFields();
+                JOptionPane.showMessageDialog(this, "Reservation deleted.");
+            } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage()); }
+        }
+    }
+    private void clearInhouseFields() {
+        txt_IHfname.setText("");
+        txt_IHlname.setText("");
+        txt_IHcp.setText("");
+        dc_inhouse.setDate(null);
+        spn_inhousepax.setValue(1); 
+        bg_IHtime.clearSelection();
+        tbl_inhouse.clearSelection();
+        editingInhouseRow = -1;
+    }
+    private String getNextInhouseId() {
+        int nextId = 1;
+        Connect db = new Connect();
+        db.DoConnect();
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT MAX(CAST(SUBSTR(IR_ID, 3) AS INT)) FROM DBHOUSE.INHOUSERESERVATIONS");
+             ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                nextId = rs.getInt(1) + 1;
+            }
+        } catch (SQLException e) { System.out.println("ID Error: " + e.getMessage()); }
+        return String.format("IR%04d", nextId);
+    }
+    
+    private void loadReserveTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_reserve.getModel();
+        model.setRowCount(0);
+        Connect db = new Connect();
+        db.DoConnect();
+        
+        String sql = 
+            "SELECT IR_ID AS ID, 'N/A' AS VIP_ID, F_NAME, L_NAME, CP_NUM, D_TIME AS TIME, PAX, REMARKS " +
+            "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = CURRENT_DATE " +
+            "UNION ALL " +
+            "SELECT o.OR_ID AS ID, o.VIP_ID, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME AS TIME, o.PAX, o.REMARKS " +
+            "FROM DBHOUSE.ONLINERESERVATIONS o " +
+            "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
+            "WHERE o.D_DATE = CURRENT_DATE";
+                     
+        try (PreparedStatement pst = db.con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("ID"),
+                    rs.getString("VIP_ID"),
+                    rs.getString("F_NAME"),
+                    rs.getString("L_NAME"),
+                    rs.getString("CP_NUM"),
+                    rs.getString("TIME"),
+                    rs.getInt("PAX"),
+                    rs.getString("REMARKS")
+                });
+            }
+            db.con.close();
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+        }
+    }
+    private void clearReserveFields() {
+        txt_rsvID.setText(""); 
+        txt_rsvVIPID.setText(""); 
+        txt_membFnamersv.setText("");
+        txt_membLnamersv.setText(""); 
+        txt_membCPnumrsv.setText(""); 
+        txt_rsvTime.setText("");
+        txt_rsvPax.setText(""); 
+        txt_rsvRemarks.setText("");
+        tbl_reserve.clearSelection();
+        editingRow = -1;
+    }
     /**
  * 
      * @param args the command line arguments
@@ -2251,33 +3672,50 @@ public class Admin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bg_IHtime;
     private javax.swing.JLabel bg_today;
     private javax.swing.JLabel bg_today1;
     private javax.swing.JLabel bg_today2;
     private javax.swing.JLabel bg_today3;
     private javax.swing.JLabel bg_today4;
+    private javax.swing.JLabel bg_today5;
+    private javax.swing.JLabel bg_today6;
+    private javax.swing.JLabel bg_today7;
+    private javax.swing.ButtonGroup bg_walkinTime;
     private javax.swing.JButton btn_accadd;
     private javax.swing.JButton btn_accdel;
     private javax.swing.JButton btn_accedit;
+    private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_emp;
     private javax.swing.JButton btn_fdesk;
     private javax.swing.JButton btn_histGenerate;
     private javax.swing.JButton btn_histReset;
     private javax.swing.JButton btn_history;
+    private javax.swing.JButton btn_inhouse;
+    private javax.swing.JButton btn_inhouseadd;
+    private javax.swing.JButton btn_inhousedel;
+    private javax.swing.JButton btn_inhouseedit;
     private javax.swing.JButton btn_membdel;
     private javax.swing.JButton btn_membedit;
     private javax.swing.JButton btn_members;
     private javax.swing.JButton btn_navLogout;
+    private javax.swing.JButton btn_reserve;
     private javax.swing.JButton btn_seatsReset;
     private javax.swing.JButton btn_upcom;
     private javax.swing.JButton btn_upcomGenerate;
     private javax.swing.JButton btn_upcomReset;
+    private javax.swing.JButton btn_walkin;
+    private javax.swing.JButton btn_walkinadd;
+    private javax.swing.JButton btn_walkindel;
+    private javax.swing.JButton btn_walkinedit;
     private javax.swing.ButtonGroup buttonGroup1;
     private com.toedter.calendar.JDateChooser date_historyFrom;
     private com.toedter.calendar.JDateChooser date_historyTo;
     private com.toedter.calendar.JDateChooser date_seats;
     private com.toedter.calendar.JDateChooser date_upcomFrom;
     private com.toedter.calendar.JDateChooser date_upcomTo;
+    private com.toedter.calendar.JDateChooser dc_inhouse;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -2304,7 +3742,32 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2315,39 +3778,72 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JTextField lbl_date;
     private javax.swing.JPanel pnl_emp;
     private javax.swing.JPanel pnl_header;
     private javax.swing.JPanel pnl_history;
+    private javax.swing.JPanel pnl_inhouse;
     private javax.swing.JPanel pnl_memb;
     private javax.swing.JPanel pnl_nav;
+    private javax.swing.JPanel pnl_reserve;
     private javax.swing.JPanel pnl_today;
     private javax.swing.JPanel pnl_upcom;
+    private javax.swing.JPanel pnl_walkin;
+    private javax.swing.JRadioButton rb_IHdinner;
+    private javax.swing.JRadioButton rb_IHlunch;
     private javax.swing.JRadioButton rb_fdesk;
     private javax.swing.JRadioButton rb_genmanager;
     private javax.swing.JRadioButton rb_manager;
+    private javax.swing.JRadioButton rb_walkinDinner;
+    private javax.swing.JRadioButton rb_walkinLunch;
     private javax.swing.JTextField search_empacc;
     private javax.swing.JTextField search_history;
+    private javax.swing.JTextField search_inhouse;
     private javax.swing.JTextField search_memb;
+    private javax.swing.JTextField search_reserve;
     private javax.swing.JTextField search_upcom;
+    private javax.swing.JTextField search_walkin;
+    private javax.swing.JSpinner spn_inhousepax;
+    private javax.swing.JSpinner spn_walkinpax;
     private javax.swing.JTable tbl_emp;
     private javax.swing.JTable tbl_history;
+    private javax.swing.JTable tbl_inhouse;
     private javax.swing.JTable tbl_memb;
+    private javax.swing.JTable tbl_reserve;
     private javax.swing.JTable tbl_seatsDinner;
     private javax.swing.JTable tbl_seatsLunch;
     private javax.swing.JTable tbl_upcom;
+    private javax.swing.JTable tbl_walkin;
+    private javax.swing.JTextField txt_IHcp;
+    private javax.swing.JTextField txt_IHfname;
+    private javax.swing.JTextField txt_IHlname;
     private javax.swing.JTextField txt_empfname;
     private javax.swing.JTextField txt_emplname;
     private javax.swing.JTextField txt_emppass;
     private javax.swing.JTextField txt_empusername;
+    private javax.swing.JTextField txt_membCPnumrsv;
     private javax.swing.JTextField txt_membCpnum;
     private javax.swing.JTextField txt_membDatereg;
     private javax.swing.JTextField txt_membEmail;
     private javax.swing.JTextField txt_membFname;
+    private javax.swing.JTextField txt_membFnamersv;
     private javax.swing.JTextField txt_membLname;
+    private javax.swing.JTextField txt_membLnamersv;
     private javax.swing.JTextField txt_membPass;
     private javax.swing.JTextField txt_membVipId;
     private javax.swing.JTextField txt_membVipbday;
     private javax.swing.JTextField txt_membVipgender;
+    private javax.swing.JTextField txt_rsvID;
+    private javax.swing.JTextField txt_rsvPax;
+    private javax.swing.JTextField txt_rsvRemarks;
+    private javax.swing.JTextField txt_rsvTime;
+    private javax.swing.JTextField txt_rsvVIPID;
+    private javax.swing.JTextField txt_walkinCp;
+    private javax.swing.JTextField txt_walkinFname;
+    private javax.swing.JTextField txt_walkinLname;
     // End of variables declaration//GEN-END:variables
 }
 
