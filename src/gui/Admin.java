@@ -25,7 +25,7 @@ import javax.swing.text.DocumentFilter;
 
 /**
  *
- * @author kyshgel
+ * @author Ska
  */
 public class Admin extends javax.swing.JFrame {
 
@@ -48,6 +48,8 @@ public class Admin extends javax.swing.JFrame {
     private int editingInhouseRow = -1;
     private int editingWalkinRow = -1;
     private int editingRow = -1;
+    private int editingMembRow = -1; 
+    private int editingEmpRow = -1;
     
     
     public Admin() {
@@ -92,7 +94,6 @@ public class Admin extends javax.swing.JFrame {
         bg_IHtime.add(rb_IHlunch);
         bg_IHtime.add(rb_IHdinner);
         
-        buttonGroup1.add(rb_genmanager);
         buttonGroup1.add(rb_manager);
         buttonGroup1.add(rb_fdesk);
 
@@ -130,10 +131,6 @@ public class Admin extends javax.swing.JFrame {
         };
         tbl_history.setRowSorter(sorter_history);
         
-        
-        
-        
-
         //TABLE CENTER ALIGNERS
         
         centerTableData(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
@@ -142,52 +139,6 @@ public class Admin extends javax.swing.JFrame {
          
         styleTableHeaders(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
          
-        /*DefaultTableCellRenderer headerRendererreserve = (DefaultTableCellRenderer) tbl_reserve.getTableHeader().getDefaultRenderer();
-        headerRendererreserve.setHorizontalAlignment(JLabel.CENTER); 
-        tbl_reserve.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_reserve.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRendererwalkin = (DefaultTableCellRenderer) tbl_walkin.getTableHeader().getDefaultRenderer();
-        headerRendererwalkin.setHorizontalAlignment(JLabel.CENTER); 
-        tbl_walkin.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_walkin.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14)); 
-        
-        DefaultTableCellRenderer headerRendererinhouse = (DefaultTableCellRenderer) tbl_inhouse.getTableHeader().getDefaultRenderer();
-        headerRendererinhouse.setHorizontalAlignment(JLabel.CENTER); 
-        tbl_inhouse.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_inhouse.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRenderertoday = (DefaultTableCellRenderer) tbl_seatsLunch.getTableHeader().getDefaultRenderer();
-        headerRenderertoday.setHorizontalAlignment(JLabel.CENTER); 
-        tbl_seatsLunch.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_seatsLunch.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRendererdinner = (DefaultTableCellRenderer) tbl_seatsDinner.getTableHeader().getDefaultRenderer();
-        headerRendererdinner.setHorizontalAlignment(JLabel.CENTER); 
-        tbl_seatsDinner.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_seatsDinner.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRendererhistory = (DefaultTableCellRenderer) tbl_history.getTableHeader().getDefaultRenderer();
-        headerRendererhistory.setHorizontalAlignment(JLabel.CENTER); 
-        tbl_history.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_history.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-      
-        DefaultTableCellRenderer headerRendererupcom = (DefaultTableCellRenderer) tbl_upcom.getTableHeader().getDefaultRenderer();
-        headerRendererupcom.setHorizontalAlignment(JLabel.CENTER);
-        tbl_upcom.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_upcom.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRendereremp = (DefaultTableCellRenderer) tbl_emp.getTableHeader().getDefaultRenderer();
-        headerRendereremp.setHorizontalAlignment(JLabel.CENTER);
-        tbl_emp.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_emp.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-        
-        DefaultTableCellRenderer headerRenderermemb = (DefaultTableCellRenderer) tbl_memb.getTableHeader().getDefaultRenderer();
-        headerRenderermemb.setHorizontalAlignment(JLabel.CENTER);
-        tbl_memb.getTableHeader().setForeground(new Color(55, 77, 94));  
-        tbl_memb.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));  
-    */
-        
         //COMPARATORS
         
         // DATE COMPARATOR 
@@ -217,26 +168,6 @@ public class Admin extends javax.swing.JFrame {
             }
         };
         
-       /* sorter_history.setComparator(6, (n1, n2) -> {
-            if (n1 == null) return 1;
-            if (n2 == null) return -1;
-            try {
-                return Integer.compare(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()));
-            } catch (NumberFormatException e) {
-                return n1.toString().compareTo(n2.toString());
-            }
-        });
-
-        sorter_upcom.setComparator(4, (n1, n2) -> {
-            if (n1 == null) return 1;
-            if (n2 == null) return -1;
-            try {
-                return Integer.compare(Integer.parseInt(n1.toString()), Integer.parseInt(n2.toString()));
-            } catch (NumberFormatException e) {
-                return n1.toString().compareTo(n2.toString());
-            }
-        });*/
-
         // TIME COMPARATOR 
         
         java.util.Comparator<Object> timeComparator = (t1, t2) -> {
@@ -251,36 +182,6 @@ public class Admin extends javax.swing.JFrame {
             return time1.compareToIgnoreCase(time2);
         };
 
-        /*sorter_history.setComparator(5, (t1, t2) -> {  
-            if (t1 == null && t2 == null) return 0;
-            if (t1 == null) return 1;
-            if (t2 == null) return -1;
-            
-            String time1 = t1.toString().trim();
-            String time2 = t2.toString().trim();
-            
-            if (time1.equalsIgnoreCase(time2)) return 0;
-            if (time1.equalsIgnoreCase("Lunch")) return -1;
-            if (time2.equalsIgnoreCase("Lunch")) return 1;
-            
-            return time1.compareToIgnoreCase(time2);
-        });
-
-       sorter_upcom.setComparator(5, (t1, t2) -> {
-            if (t1 == null && t2 == null) return 0;
-            if (t1 == null) return 1;
-            if (t2 == null) return -1;
-            
-            String time1 = t1.toString().trim();
-            String time2 = t2.toString().trim();
-            
-            if (time1.equalsIgnoreCase(time2)) return 0;
-            if (time1.equalsIgnoreCase("Lunch")) return -1;
-            if (time2.equalsIgnoreCase("Lunch")) return 1;
-            
-            return time1.compareToIgnoreCase(time2);
-        });*/
-       
        sorter_upcom.setComparator(5, timeComparator); 
        sorter_reserve.setComparator(4, paxComparator); 
        
@@ -492,22 +393,26 @@ public class Admin extends javax.swing.JFrame {
             }
         });
         
-        tbl_emp.addMouseListener(new java.awt.event.MouseAdapter() {
+       tbl_emp.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int viewRow = tbl_emp.getSelectedRow();
                 if (viewRow != -1) {
                     int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
 
-                    txt_empusername.setText(tbl_emp.getModel().getValueAt(modelRow, 0).toString());
-                    txt_empfname.setText(tbl_emp.getModel().getValueAt(modelRow, 1).toString());
-                    txt_emplname.setText(tbl_emp.getModel().getValueAt(modelRow, 2).toString());
-                    txt_emppass.setText(tbl_emp.getModel().getValueAt(modelRow, 3).toString());
+                    if (editingEmpRow == modelRow) {
+                        clearAccFields();
+                    } else {
+                        editingEmpRow = modelRow;
+                        txt_empusername.setText(tbl_emp.getModel().getValueAt(modelRow, 1).toString());
+                        txt_empfname.setText(tbl_emp.getModel().getValueAt(modelRow, 2).toString());
+                        txt_emplname.setText(tbl_emp.getModel().getValueAt(modelRow, 3).toString());
+                        txt_emppass.setText(tbl_emp.getModel().getValueAt(modelRow, 4).toString());
 
-                    String role = tbl_emp.getModel().getValueAt(modelRow, 4).toString();
-                    if (role.equalsIgnoreCase("Gen. Manager")) rb_genmanager.setSelected(true);
-                    else if (role.equalsIgnoreCase("Manager")) rb_manager.setSelected(true);
-                    else if (role.equalsIgnoreCase("Front Desk")) rb_fdesk.setSelected(true);
-                    else buttonGroup1.clearSelection();
+                        String role = tbl_emp.getModel().getValueAt(modelRow, 5).toString();
+                        if (role.equalsIgnoreCase("Manager")) rb_manager.setSelected(true);
+                        else if (role.equalsIgnoreCase("Front Desk")) rb_fdesk.setSelected(true);
+                        else buttonGroup1.clearSelection();
+                    }
                 }
             }
         });
@@ -519,25 +424,30 @@ public class Admin extends javax.swing.JFrame {
                 if (viewRow != -1) {
                     int modelRow = tbl_memb.convertRowIndexToModel(viewRow);
 
-                    Object vipId   = tbl_memb.getModel().getValueAt(modelRow, 0);
-                    Object dateReg = tbl_memb.getModel().getValueAt(modelRow, 1);
-                    Object fName   = tbl_memb.getModel().getValueAt(modelRow, 2);
-                    Object lName   = tbl_memb.getModel().getValueAt(modelRow, 3);
-                    Object gender  = tbl_memb.getModel().getValueAt(modelRow, 4); 
-                    Object bday    = tbl_memb.getModel().getValueAt(modelRow, 5); 
-                    Object cpNum   = tbl_memb.getModel().getValueAt(modelRow, 6);
-                    Object email   = tbl_memb.getModel().getValueAt(modelRow, 7);
-                    Object pass    = tbl_memb.getModel().getValueAt(modelRow, 8);
+                    if (editingMembRow == modelRow) {
+                        clearMemberFields();
+                    } else {
+                        editingMembRow = modelRow;
+                        Object vipId   = tbl_memb.getModel().getValueAt(modelRow, 0);
+                        Object dateReg = tbl_memb.getModel().getValueAt(modelRow, 1);
+                        Object fName   = tbl_memb.getModel().getValueAt(modelRow, 2);
+                        Object lName   = tbl_memb.getModel().getValueAt(modelRow, 3);
+                        Object gender  = tbl_memb.getModel().getValueAt(modelRow, 4); 
+                        Object bday    = tbl_memb.getModel().getValueAt(modelRow, 5); 
+                        Object cpNum   = tbl_memb.getModel().getValueAt(modelRow, 6);
+                        Object email   = tbl_memb.getModel().getValueAt(modelRow, 7);
+                        Object pass    = tbl_memb.getModel().getValueAt(modelRow, 8);
 
-                    txt_membVipId.setText(vipId != null ? vipId.toString() : "");
-                    txt_membDatereg.setText(dateReg != null ? dateReg.toString() : "");
-                    txt_membFname.setText(fName != null ? fName.toString() : "");
-                    txt_membLname.setText(lName != null ? lName.toString() : "");
-                    txt_membVipgender.setText(gender != null ? gender.toString() : "");
-                    txt_membVipbday.setText(bday != null ? bday.toString() : "");
-                    txt_membCpnum.setText(cpNum != null ? cpNum.toString() : "");
-                    txt_membEmail.setText(email != null ? email.toString() : "");
-                    txt_membPass.setText(pass != null ? pass.toString() : "");
+                        txt_membVipId.setText(vipId != null ? vipId.toString() : "");
+                        txt_membDatereg.setText(dateReg != null ? dateReg.toString() : "");
+                        txt_membFname.setText(fName != null ? fName.toString() : "");
+                        txt_membLname.setText(lName != null ? lName.toString() : "");
+                        txt_membVipgender.setText(gender != null ? gender.toString() : "");
+                        txt_membVipbday.setText(bday != null ? bday.toString() : "");
+                        txt_membCpnum.setText(cpNum != null ? cpNum.toString() : "");
+                        txt_membEmail.setText(email != null ? email.toString() : "");
+                        txt_membPass.setText(pass != null ? pass.toString() : "");
+                    }
                 }
             }
         });
@@ -703,7 +613,6 @@ public class Admin extends javax.swing.JFrame {
         tbl_memb = new javax.swing.JTable();
         bg_today4 = new javax.swing.JLabel();
         pnl_emp = new javax.swing.JPanel();
-        rb_genmanager = new javax.swing.JRadioButton();
         rb_fdesk = new javax.swing.JRadioButton();
         rb_manager = new javax.swing.JRadioButton();
         jLabel15 = new javax.swing.JLabel();
@@ -715,6 +624,7 @@ public class Admin extends javax.swing.JFrame {
         btn_accedit = new javax.swing.JButton();
         txt_emplname = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
+        jLabel58 = new javax.swing.JLabel();
         btn_accdel = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         txt_empfname = new javax.swing.JTextField();
@@ -920,19 +830,17 @@ public class Admin extends javax.swing.JFrame {
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(373, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
                 .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         pnl_headerLayout.setVerticalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
-                .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jLabel2)
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
         );
 
@@ -1582,7 +1490,7 @@ public class Admin extends javax.swing.JFrame {
 
         jScrollPane6.setForeground(new java.awt.Color(55, 77, 94));
 
-        tbl_upcom.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_upcom.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         tbl_upcom.setForeground(new java.awt.Color(55, 77, 94));
         tbl_upcom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1707,7 +1615,7 @@ public class Admin extends javax.swing.JFrame {
 
         jScrollPane2.setForeground(new java.awt.Color(55, 77, 94));
 
-        tbl_history.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_history.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         tbl_history.setForeground(new java.awt.Color(55, 77, 94));
         tbl_history.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1952,19 +1860,14 @@ public class Admin extends javax.swing.JFrame {
         pnl_emp.setForeground(new java.awt.Color(202, 199, 199));
         pnl_emp.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        rb_genmanager.setForeground(new java.awt.Color(55, 77, 94));
-        rb_genmanager.setText("Gen. Manager");
-        rb_genmanager.addActionListener(this::rb_genmanagerActionPerformed);
-        pnl_emp.add(rb_genmanager, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 350, -1, -1));
-
         rb_fdesk.setForeground(new java.awt.Color(55, 77, 94));
         rb_fdesk.setText("Front Desk");
-        pnl_emp.add(rb_fdesk, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 330, -1, -1));
+        pnl_emp.add(rb_fdesk, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 350, -1, -1));
 
         rb_manager.setForeground(new java.awt.Color(55, 77, 94));
         rb_manager.setText("Manager");
         rb_manager.addActionListener(this::rb_managerActionPerformed);
-        pnl_emp.add(rb_manager, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 330, -1, -1));
+        pnl_emp.add(rb_manager, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 350, -1, -1));
 
         jLabel15.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(55, 77, 94));
@@ -1986,8 +1889,8 @@ public class Admin extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel13.setText("Password:");
-        pnl_emp.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 270, -1, -1));
+        jLabel13.setText("Account Type:");
+        pnl_emp.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 330, -1, -1));
 
         btn_accadd.setBackground(new java.awt.Color(65, 93, 120));
         btn_accadd.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -2017,6 +1920,11 @@ public class Admin extends javax.swing.JFrame {
         jLabel18.setForeground(new java.awt.Color(55, 77, 94));
         jLabel18.setText("Last Name:");
         pnl_emp.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 210, -1, -1));
+
+        jLabel58.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel58.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel58.setText("Password:");
+        pnl_emp.add(jLabel58, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 270, -1, -1));
 
         btn_accdel.setBackground(new java.awt.Color(65, 93, 120));
         btn_accdel.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -2131,13 +2039,15 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_upcomMouseExited
 
     private void btn_upcomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_upcomActionPerformed
-   switchPanel(pnl_upcom);
-    setActiveButton(btn_upcom);
+        switchPanel(pnl_upcom);
+        setActiveButton(btn_upcom);
+        loadUpcomTable(); 
     }//GEN-LAST:event_btn_upcomActionPerformed
 
     private void btn_fdeskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_fdeskActionPerformed
         switchPanel(pnl_today);
         setActiveButton(btn_fdesk);
+        loadSeatTrackerTable(); 
     }//GEN-LAST:event_btn_fdeskActionPerformed
 
     private void search_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_historyActionPerformed
@@ -2171,6 +2081,7 @@ public class Admin extends javax.swing.JFrame {
     private void btn_historyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_historyActionPerformed
         switchPanel(pnl_history);
         setActiveButton(btn_history);
+        loadHistoryTable(); 
     }//GEN-LAST:event_btn_historyActionPerformed
 
     private void txt_empusernameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_empusernameNew_tableActionPerformed
@@ -2186,9 +2097,9 @@ public class Admin extends javax.swing.JFrame {
         }
 
         int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
-        String originalUser = tbl_emp.getModel().getValueAt(modelRow, 0).toString(); 
+        String originalUser = tbl_emp.getModel().getValueAt(modelRow, 1).toString(); 
 
-        String role = rb_genmanager.isSelected() ? "Gen. Manager" : rb_manager.isSelected() ? "Manager" : "Front Desk";
+        String role = rb_manager.isSelected() ? "Manager" : "Front Desk";
 
         Connect db = new Connect();
         db.DoConnect();
@@ -2222,7 +2133,7 @@ public class Admin extends javax.swing.JFrame {
         }
 
         int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
-        String userToDelete = tbl_emp.getModel().getValueAt(modelRow, 0).toString(); 
+        String userToDelete = tbl_emp.getModel().getValueAt(modelRow, 1).toString(); 
 
         int confirm = JOptionPane.showConfirmDialog(this, "Delete user: " + userToDelete + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
 
@@ -2270,8 +2181,7 @@ public class Admin extends javax.swing.JFrame {
         String password = txt_emppass.getText().trim();
 
         String role = "";
-        if (rb_genmanager.isSelected()) role = "Gen. Manager";
-        else if (rb_manager.isSelected()) role = "Manager";
+        if (rb_manager.isSelected()) role = "Manager";
         else if (rb_fdesk.isSelected()) role = "Front Desk";
 
         if (user.isEmpty() || fname.isEmpty() || lname.isEmpty() || password.isEmpty() || role.isEmpty()) {
@@ -2308,10 +2218,6 @@ public class Admin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_accaddAssign_ButtonActionPerformed
 
-    private void rb_genmanagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_genmanagerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rb_genmanagerActionPerformed
-
     private void btn_empMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_empMouseEntered
         if (!btn_emp.getForeground().equals(new Color(255, 200, 120))) {
         btn_emp.setForeground(new Color(255, 200, 120));
@@ -2327,6 +2233,7 @@ public class Admin extends javax.swing.JFrame {
     private void btn_empActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_empActionPerformed
         switchPanel(pnl_emp);
         setActiveButton(btn_emp);
+        loadEmployeeTable(); 
     }//GEN-LAST:event_btn_empActionPerformed
 
     private void txt_empfnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_empfnameNew_tableActionPerformed
@@ -2352,6 +2259,7 @@ public class Admin extends javax.swing.JFrame {
     private void btn_membersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_membersActionPerformed
         switchPanel(pnl_memb);
         setActiveButton(btn_members);
+        loadMemberTable();
     }//GEN-LAST:event_btn_membersActionPerformed
 
     private void search_membActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_membActionPerformed
@@ -2642,7 +2550,8 @@ public class Admin extends javax.swing.JFrame {
 
     private void btn_reserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reserveActionPerformed
         switchPanel(pnl_reserve);
-    setActiveButton(btn_reserve);
+        setActiveButton(btn_reserve);
+        loadReserveTable();
     }//GEN-LAST:event_btn_reserveActionPerformed
 
     private void btn_walkinMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_walkinMouseEntered
@@ -2655,12 +2564,13 @@ public class Admin extends javax.swing.JFrame {
     private void btn_walkinMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_walkinMouseExited
         if (!pnl_walkin.isVisible()) {
             btn_walkin.setForeground(Color.WHITE);
-        }       // TODO add your handling code here:
+        }      
     }//GEN-LAST:event_btn_walkinMouseExited
 
     private void btn_walkinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_walkinActionPerformed
-       switchPanel(pnl_walkin);
-    setActiveButton(btn_walkin);
+        switchPanel(pnl_walkin);
+        setActiveButton(btn_walkin);
+        loadWalkinTable();
     }//GEN-LAST:event_btn_walkinActionPerformed
 
     private void btn_inhouseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_inhouseMouseEntered
@@ -2678,7 +2588,8 @@ public class Admin extends javax.swing.JFrame {
 
     private void btn_inhouseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inhouseActionPerformed
         switchPanel(pnl_inhouse);
-    setActiveButton(btn_inhouse);
+        setActiveButton(btn_inhouse);
+        loadInhouseTable();
     }//GEN-LAST:event_btn_inhouseActionPerformed
 
     private void txt_membCPnumrsvNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_membCPnumrsvNew_tableActionPerformed
@@ -2895,7 +2806,10 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_lbl_dateActionPerformed
 
-     private void makeFlatButton(javax.swing.JButton btn) {
+    //HELPER METHODS
+    
+    //STYLING, LISTENERS, GETTERS, SORTERS
+    private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
         btn.setBorder(null);
         btn.setContentAreaFilled(false);
@@ -2904,7 +2818,7 @@ public class Admin extends javax.swing.JFrame {
         
         
 }
-     private void setActiveButton(javax.swing.JButton activeBtn) {
+    private void setActiveButton(javax.swing.JButton activeBtn) {
         javax.swing.JButton[] buttons = {btn_fdesk, btn_emp,btn_members, btn_upcom, btn_history, btn_reserve, btn_walkin, btn_inhouse};
 
         for (javax.swing.JButton btn : buttons) {
@@ -2912,30 +2826,7 @@ public class Admin extends javax.swing.JFrame {
         }
         activeBtn.setForeground(new Color(255, 200, 120));
     }
-     
-     private void clearAccFields() {
-        txt_empusername.setText("");
-        txt_empfname.setText("");
-        txt_emplname.setText("");
-        txt_emppass.setText("");
-        buttonGroup1.clearSelection();
-        tbl_emp.clearSelection();
-    }
-     
-     private void clearMemberFields() {
-        txt_membVipId.setText("");
-        txt_membDatereg.setText("");
-        txt_membFname.setText("");
-        txt_membLname.setText("");
-        txt_membVipgender.setText("");
-        txt_membVipbday.setText("");
-        txt_membCpnum.setText("");
-        txt_membEmail.setText("");
-        txt_membPass.setText("");
-        tbl_memb.clearSelection();
-}
-     
-     private void switchPanel(javax.swing.JPanel targetPanel) {
+    private void switchPanel(javax.swing.JPanel targetPanel) {
         pnl_inhouse.setVisible(false);
         pnl_walkin.setVisible(false);
         pnl_reserve.setVisible(false);
@@ -2946,8 +2837,7 @@ public class Admin extends javax.swing.JFrame {
         pnl_memb.setVisible(false);
         targetPanel.setVisible(true);
     }
-     
-     private void styleTableHeaders(javax.swing.JTable... tables) {
+    private void styleTableHeaders(javax.swing.JTable... tables) {
         for (javax.swing.JTable table : tables) {
             DefaultTableCellRenderer hr = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
             hr.setHorizontalAlignment(JLabel.CENTER);
@@ -2955,8 +2845,7 @@ public class Admin extends javax.swing.JFrame {
             table.getTableHeader().setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));
         }
     }
-     
-     private void addSearchListener(javax.swing.JTextField textField, TableRowSorter<DefaultTableModel> sorter) {
+    private void addSearchListener(javax.swing.JTextField textField, TableRowSorter<DefaultTableModel> sorter) {
         textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) { update(); }
@@ -2975,7 +2864,6 @@ public class Admin extends javax.swing.JFrame {
             }
         });
     }
-     
     private void centerTableData(javax.swing.JTable... tables) {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -2985,7 +2873,6 @@ public class Admin extends javax.swing.JFrame {
             }
         }
     }
-
     private TableRowSorter<DefaultTableModel> setupSorter(javax.swing.JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
@@ -2993,7 +2880,6 @@ public class Admin extends javax.swing.JFrame {
         return sorter;
     }
     
-
     private String getSelectedTime() {
         if (rb_walkinLunch.isSelected()) return "LUNCH";
         if (rb_walkinDinner.isSelected()) return "DINNER";
@@ -3023,22 +2909,7 @@ public class Admin extends javax.swing.JFrame {
         });
     }
 
-     
-     private String getNextEmpId() {
-        int nextNumber = 1001; 
-        Connect db = new Connect();
-        db.DoConnect();
-
-        try (PreparedStatement pst = db.con.prepareStatement("SELECT MAX(CAST(SUBSTR(EMP_ID, 4) AS INT)) FROM DBHOUSE.EMPACCOUNTS");
-             ResultSet rs = pst.executeQuery()) {
-            if (rs.next()) {
-                int maxId = rs.getInt(1);
-                if (maxId > 0) nextNumber = maxId + 1;
-            }
-        } catch (SQLException e) { System.out.println("ID Error: " + e.getMessage()); }
-        return "EMP" + nextNumber; 
-    }
-     
+   // EMP
     private void loadEmployeeTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
         model.setRowCount(0); 
@@ -3060,7 +2931,31 @@ public class Admin extends javax.swing.JFrame {
             db.con.close();
         } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Error loading employees: " + e.getMessage()); }
     }
-     
+    private String getNextEmpId() {
+        int nextNumber = 1001; 
+        Connect db = new Connect();
+        db.DoConnect();
+
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT MAX(CAST(SUBSTR(EMP_ID, 4) AS INT)) FROM DBHOUSE.EMPACCOUNTS");
+             ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                int maxId = rs.getInt(1);
+                if (maxId > 0) nextNumber = maxId + 1;
+            }
+        } catch (SQLException e) { System.out.println("ID Error: " + e.getMessage()); }
+        return "EMP" + nextNumber; 
+    }
+    private void clearAccFields() {
+        txt_empusername.setText("");
+        txt_empfname.setText("");
+        txt_emplname.setText("");
+        txt_emppass.setText("");
+        buttonGroup1.clearSelection();
+        tbl_emp.clearSelection();
+        editingEmpRow = -1;
+    }
+    
+    //MEMB
     private void loadMemberTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_memb.getModel();
         model.setRowCount(0); 
@@ -3085,7 +2980,21 @@ public class Admin extends javax.swing.JFrame {
             db.con.close();
         } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Error loading members: " + e.getMessage()); }
     }
+     private void clearMemberFields() {
+        txt_membVipId.setText("");
+        txt_membDatereg.setText("");
+        txt_membFname.setText("");
+        txt_membLname.setText("");
+        txt_membVipgender.setText("");
+        txt_membVipbday.setText("");
+        txt_membCpnum.setText("");
+        txt_membEmail.setText("");
+        txt_membPass.setText("");
+        tbl_memb.clearSelection();
+        editingMembRow = -1;
+}
     
+     //HIST
     private void loadHistoryTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_history.getModel();
         model.setRowCount(0); 
@@ -3135,7 +3044,6 @@ public class Admin extends javax.swing.JFrame {
             }
         }
     }
-     
     private void filterHistoryByDateRange() {
         java.util.Date rawFrom = date_historyFrom.getDate();
         java.util.Date rawTo = date_historyTo.getDate();
@@ -3174,43 +3082,7 @@ public class Admin extends javax.swing.JFrame {
         }
     }
 
-    private void filterUpcomByDateRange() {
-        java.util.Date rawFrom = date_upcomFrom.getDate();
-        java.util.Date rawTo = date_upcomTo.getDate();
-
-        if (rawFrom == null && rawTo == null) {
-            sorter_upcom.setRowFilter(null);
-        loadUpcomTable();
-        }
-
-        try {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
-            
-            java.util.Date fromDate = (rawFrom != null) ? sdf.parse(sdf.format(rawFrom)) : null;
-            java.util.Date toDate = (rawTo != null) ? sdf.parse(sdf.format(rawTo)) : null;
-
-            RowFilter<DefaultTableModel, Object> rangeFilter = new RowFilter<DefaultTableModel, Object>() {
-                @Override
-                public boolean include(Entry<? extends DefaultTableModel, ? extends Object> entry) {
-                    String dateStr = entry.getStringValue(1); 
-                    try {
-                        java.util.Date rowDate = sdf.parse(dateStr);
-                        boolean isAfterFrom = (fromDate == null) || !rowDate.before(fromDate);
-                        
-                        boolean isBeforeTo = (toDate == null) || !rowDate.after(toDate);
-                        
-                        return isAfterFrom && isBeforeTo;
-                    } catch (Exception e) {
-                        return false; 
-                    }
-                }
-            };
-            sorter_upcom.setRowFilter(rangeFilter);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-    
+    //UPCOM
     private void loadUpcomTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_upcom.getModel();
         model.setRowCount(0); 
@@ -3260,58 +3132,44 @@ public class Admin extends javax.swing.JFrame {
             }
         }
     }
-    
-    private void loadSeatTrackerTable() {
-        DefaultTableModel lunchModel = (DefaultTableModel) tbl_seatsLunch.getModel();
-        DefaultTableModel dinnerModel = (DefaultTableModel) tbl_seatsDinner.getModel();
-        lunchModel.setRowCount(0);
-        dinnerModel.setRowCount(0);
-        
-        Connect db = new Connect();
-        db.DoConnect();
+    private void filterUpcomByDateRange() {
+        java.util.Date rawFrom = date_upcomFrom.getDate();
+        java.util.Date rawTo = date_upcomTo.getDate();
 
-        if (db.con != null) {
-            String query = 
-                "SELECT D_DATE, D_TIME, SUM(PAX) AS TOTAL_OCCUPIED, (100 - SUM(PAX)) AS AVAILABLE " +
-                "FROM (" +
-                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE REMARKS != 'Cancelled' " +
-                "  UNION ALL " +
-                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE REMARKS != 'Cancelled' " +
-                "  UNION ALL " +
-                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.WALKINDINE " +
-                ") t " +
-                "GROUP BY D_DATE, D_TIME " +
-                "ORDER BY D_DATE ASC";
+        if (rawFrom == null && rawTo == null) {
+            sorter_upcom.setRowFilter(null);
+        loadUpcomTable();
+        }
 
-            try (PreparedStatement pst = db.con.prepareStatement(query);
-                 ResultSet rs = pst.executeQuery()) {
-                
-                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
-                
-                while (rs.next()) {
-                    java.sql.Date sqlDate = rs.getDate("D_DATE");
-                    String time = rs.getString("D_TIME");
-                    Object[] rowData = new Object[]{
-                        (sqlDate != null) ? sdf.format(sqlDate) : "",
-                        rs.getInt("TOTAL_OCCUPIED"),
-                        rs.getInt("AVAILABLE")
-                    };
-                    
-                    if (time != null && time.equalsIgnoreCase("Lunch")) {
-                        lunchModel.addRow(rowData);
-                    } else if (time != null && time.equalsIgnoreCase("Dinner")) {
-                        dinnerModel.addRow(rowData);
+        try {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
+            
+            java.util.Date fromDate = (rawFrom != null) ? sdf.parse(sdf.format(rawFrom)) : null;
+            java.util.Date toDate = (rawTo != null) ? sdf.parse(sdf.format(rawTo)) : null;
+
+            RowFilter<DefaultTableModel, Object> rangeFilter = new RowFilter<DefaultTableModel, Object>() {
+                @Override
+                public boolean include(RowFilter.Entry<? extends DefaultTableModel, ? extends Object> entry) {
+                    String dateStr = entry.getStringValue(1); 
+                    try {
+                        java.util.Date rowDate = sdf.parse(dateStr);
+                        boolean isAfterFrom = (fromDate == null) || !rowDate.before(fromDate);
+                        
+                        boolean isBeforeTo = (toDate == null) || !rowDate.after(toDate);
+                        
+                        return isAfterFrom && isBeforeTo;
+                    } catch (Exception e) {
+                        return false; 
                     }
                 }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Error loading seats: " + e.getMessage());
-            } finally {
-                try { db.con.close(); } catch (SQLException ex) {}
-            }
+            };
+            sorter_upcom.setRowFilter(rangeFilter);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
     
-    
+    //WALKIN
     private void loadWalkinTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_walkin.getModel();
         model.setRowCount(0);
@@ -3453,6 +3311,7 @@ public class Admin extends javax.swing.JFrame {
         return String.format("WD%04d", nextId);
     }
 
+    //INHOUSE
     private void loadInhouseTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_inhouse.getModel();
         model.setRowCount(0);
@@ -3599,6 +3458,7 @@ public class Admin extends javax.swing.JFrame {
         return String.format("IR%04d", nextId);
     }
     
+    //RSRV
     private void loadReserveTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_reserve.getModel();
         model.setRowCount(0);
@@ -3644,6 +3504,57 @@ public class Admin extends javax.swing.JFrame {
         txt_rsvRemarks.setText("");
         tbl_reserve.clearSelection();
         editingRow = -1;
+    }
+    
+    //SEAT
+     private void loadSeatTrackerTable() {
+        DefaultTableModel lunchModel = (DefaultTableModel) tbl_seatsLunch.getModel();
+        DefaultTableModel dinnerModel = (DefaultTableModel) tbl_seatsDinner.getModel();
+        lunchModel.setRowCount(0);
+        dinnerModel.setRowCount(0);
+        
+        Connect db = new Connect();
+        db.DoConnect();
+
+        if (db.con != null) {
+            String query = 
+                "SELECT D_DATE, D_TIME, SUM(PAX) AS TOTAL_OCCUPIED, (100 - SUM(PAX)) AS AVAILABLE " +
+                "FROM (" +
+                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE REMARKS != 'Cancelled' " +
+                "  UNION ALL " +
+                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE REMARKS != 'Cancelled' " +
+                "  UNION ALL " +
+                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.WALKINDINE " +
+                ") t " +
+                "GROUP BY D_DATE, D_TIME " +
+                "ORDER BY D_DATE ASC";
+
+            try (PreparedStatement pst = db.con.prepareStatement(query);
+                 ResultSet rs = pst.executeQuery()) {
+                
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM-dd-yy");
+                
+                while (rs.next()) {
+                    java.sql.Date sqlDate = rs.getDate("D_DATE");
+                    String time = rs.getString("D_TIME");
+                    Object[] rowData = new Object[]{
+                        (sqlDate != null) ? sdf.format(sqlDate) : "",
+                        rs.getInt("TOTAL_OCCUPIED"),
+                        rs.getInt("AVAILABLE")
+                    };
+                    
+                    if (time != null && time.equalsIgnoreCase("Lunch")) {
+                        lunchModel.addRow(rowData);
+                    } else if (time != null && time.equalsIgnoreCase("Dinner")) {
+                        dinnerModel.addRow(rowData);
+                    }
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error loading seats: " + e.getMessage());
+            } finally {
+                try { db.con.close(); } catch (SQLException ex) {}
+            }
+        }
     }
     /**
  * 
@@ -3768,6 +3679,7 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel56;
     private javax.swing.JLabel jLabel57;
+    private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -3795,7 +3707,6 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JRadioButton rb_IHdinner;
     private javax.swing.JRadioButton rb_IHlunch;
     private javax.swing.JRadioButton rb_fdesk;
-    private javax.swing.JRadioButton rb_genmanager;
     private javax.swing.JRadioButton rb_manager;
     private javax.swing.JRadioButton rb_walkinDinner;
     private javax.swing.JRadioButton rb_walkinLunch;

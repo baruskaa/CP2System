@@ -20,34 +20,8 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
     private java.util.Date bookingDate;
     private int pax;
     
-    private void updatePaymentFields() {
-        boolean isCard = rb_payCard.isSelected();
-        boolean isEwallet = rb_payGcash.isSelected() || rb_payPayMaya.isSelected();
-
-        cardnum_txt_payment.setEnabled(isCard);
-        secnum_txt_payment.setEnabled(isCard);
-        cardexp_txt_payment.setEnabled(isCard);
-
-        ewalletnum_txt_payment.setEnabled(isEwallet);
-
-        if (!isCard) {
-            cardnum_txt_payment.setText("");
-            secnum_txt_payment.setText("");
-            cardexp_txt_payment.setText("");
-        }
-        if (!isEwallet) {
-            ewalletnum_txt_payment.setText("");
-        }
-    }
+    public Customer_BookingPayment(){}
     
-    public Customer_BookingPayment() {
-        initComponents();
-        buttonGroup1.add(rb_payCard);
-        buttonGroup1.add(rb_payGcash);
-        buttonGroup1.add(rb_payPayMaya);     
-    }
-    
-
     public Customer_BookingPayment(JFrame previousWindow, String firstName, String lastName, 
                                    String email, String phone, java.util.Date bookingDate, 
                                    String mealType, int pax) {
@@ -64,11 +38,45 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
 
+        setTextFieldLimit(ewalletnum_txt_payment, 11);
+        setTextFieldLimit(cardnum_txt_payment, 16);
+        
         buttonGroup1.add(rb_payCard);
         buttonGroup1.add(rb_payGcash);
         buttonGroup1.add(rb_payPayMaya);
 
         updatePaymentFields();
+    }
+    
+    private void updatePaymentFields() {
+        boolean isCard = rb_payCard.isSelected();
+        boolean isEwallet = rb_payGcash.isSelected() || rb_payPayMaya.isSelected();
+
+        cardnum_txt_payment.setEnabled(isCard);
+        ewalletnum_txt_payment.setEnabled(isEwallet);
+
+        if (!isCard) {
+            cardnum_txt_payment.setText("");
+        }
+        if (!isEwallet) {
+            ewalletnum_txt_payment.setText("");
+        }
+    }
+    
+    private void setTextFieldLimit(javax.swing.JTextField textField, int limit) {
+        ((javax.swing.text.AbstractDocument) textField.getDocument()).setDocumentFilter(new javax.swing.text.DocumentFilter() {
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
+                    throws javax.swing.text.BadLocationException {
+                int currentLength = fb.getDocument().getLength();
+                if ((currentLength + text.length() - length) <= limit) {
+                    
+                    if (text.matches("\\d*")) {
+                        super.replace(fb, offset, length, text, attrs);
+                    }
+                }
+            }
+        });
     }
     
     @SuppressWarnings("unchecked")
@@ -84,8 +92,6 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         payername_txt_payment = new javax.swing.JTextField();
         ewalletnum_txt_payment = new javax.swing.JTextField();
         cardnum_txt_payment = new javax.swing.JTextField();
-        secnum_txt_payment = new javax.swing.JTextField();
-        cardexp_txt_payment = new javax.swing.JTextField();
         btn_toconfirm = new javax.swing.JButton();
         rb_payPayMaya = new javax.swing.JRadioButton();
         btn_backbooking = new javax.swing.JButton();
@@ -95,36 +101,30 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         rb_payCard.addActionListener(this::rb_payCardActionPerformed);
-        getContentPane().add(rb_payCard, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, -1, -1));
+        getContentPane().add(rb_payCard, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 210, -1, 30));
 
         rb_payGcash.addActionListener(this::rb_payGcashActionPerformed);
-        getContentPane().add(rb_payGcash, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, -1, 40));
+        getContentPane().add(rb_payGcash, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, -1, 40));
 
         payername_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(payername_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 260, 170, 30));
+        getContentPane().add(payername_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 340, 160, 30));
 
         ewalletnum_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(ewalletnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 180, 30));
+        getContentPane().add(ewalletnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 160, 30));
 
         cardnum_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(cardnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 350, 170, 30));
-
-        secnum_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        secnum_txt_payment.addActionListener(this::secnum_txt_paymentActionPerformed);
-        getContentPane().add(secnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 170, 30));
-
-        cardexp_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(cardexp_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 170, 30));
+        getContentPane().add(cardnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 340, 160, 30));
 
         btn_toconfirm.setBackground(new java.awt.Color(57, 77, 94));
-        btn_toconfirm.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        btn_toconfirm.setText("Confirm Reservation");
+        btn_toconfirm.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_toconfirm.setForeground(new java.awt.Color(255, 255, 255));
+        btn_toconfirm.setText("Book Reservation");
         btn_toconfirm.setBorder(null);
         btn_toconfirm.addActionListener(this::btn_toconfirmActionPerformed);
-        getContentPane().add(btn_toconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 490, 150, 30));
+        getContentPane().add(btn_toconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 450, 150, 30));
 
         rb_payPayMaya.addActionListener(this::rb_payPayMayaActionPerformed);
-        getContentPane().add(rb_payPayMaya, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, -1, -1));
+        getContentPane().add(rb_payPayMaya, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, -1, 30));
 
         btn_backbooking.setBackground(new java.awt.Color(255, 255, 255));
         btn_backbooking.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
@@ -132,7 +132,7 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         btn_backbooking.setText("<");
         btn_backbooking.setBorderPainted(false);
         btn_backbooking.addActionListener(this::btn_backbookingActionPerformed);
-        getContentPane().add(btn_backbooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, -1));
+        getContentPane().add(btn_backbooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, -1));
 
         payment_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/PAYMENT.png"))); // NOI18N
         getContentPane().add(payment_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
@@ -149,8 +149,6 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         String payerName = payername_txt_payment.getText().trim();
         String ewalletNum = ewalletnum_txt_payment.getText().trim();
         String cardNum = cardnum_txt_payment.getText().trim();
-        String secNum = secnum_txt_payment.getText().trim();
-        String cardExp = cardexp_txt_payment.getText().trim();
 
         String paymentMethod = null;
         if (rb_payCard.isSelected()) paymentMethod = "CARD";
@@ -163,9 +161,7 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         }
 
         Customer_BookingConfirmation confirmationWindow = new Customer_BookingConfirmation(
-            this, fName, lName, email, phone, bookingDate, mealType, pax, 
-            paymentMethod, payerName, ewalletNum, cardNum, secNum, cardExp
-        );
+            this, fName, lName, email, phone, bookingDate, mealType, pax, paymentMethod, payerName, ewalletNum, cardNum);
         
         confirmationWindow.setVisible(true);
         this.dispose();
@@ -175,10 +171,6 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         ex.printStackTrace();
         }
     }//GEN-LAST:event_btn_toconfirmActionPerformed
-
-    private void secnum_txt_paymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secnum_txt_paymentActionPerformed
-        
-    }//GEN-LAST:event_secnum_txt_paymentActionPerformed
 
     private void rb_payGcashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_payGcashActionPerformed
         updatePaymentFields();
@@ -197,6 +189,8 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         }       // TODO add your handling code here:
     }//GEN-LAST:event_btn_backbookingActionPerformed
 
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -208,7 +202,6 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
     private javax.swing.JButton btn_backbooking;
     private javax.swing.JButton btn_toconfirm;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JTextField cardexp_txt_payment;
     private javax.swing.JTextField cardnum_txt_payment;
     private javax.swing.JTextField ewalletnum_txt_payment;
     private javax.swing.JTextField payername_txt_payment;
@@ -216,6 +209,5 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
     private javax.swing.JRadioButton rb_payCard;
     private javax.swing.JRadioButton rb_payGcash;
     private javax.swing.JRadioButton rb_payPayMaya;
-    private javax.swing.JTextField secnum_txt_payment;
     // End of variables declaration//GEN-END:variables
 }

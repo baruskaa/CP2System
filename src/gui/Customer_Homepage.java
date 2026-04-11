@@ -29,6 +29,14 @@ public class Customer_Homepage extends javax.swing.JFrame {
         makeFlatButton(btn_navReservations);
         makeFlatButton(btn_navLogout);
         
+        dc_date.setMinSelectableDate(new java.util.Date());
+
+        java.util.Calendar maxCal = java.util.Calendar.getInstance();
+        maxCal.set(java.util.Calendar.YEAR, java.time.LocalDate.now().getYear() + 1); 
+        maxCal.set(java.util.Calendar.MONTH, java.util.Calendar.DECEMBER);            
+        maxCal.set(java.util.Calendar.DAY_OF_MONTH, 31);                             
+        dc_date.setMaxSelectableDate(maxCal.getTime());
+        
     }
 
     /**

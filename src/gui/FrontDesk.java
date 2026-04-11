@@ -1241,6 +1241,8 @@ public class FrontDesk extends javax.swing.JFrame {
         btn_walkin.setForeground(new Color(255, 200, 120));  
         btn_inhouse.setForeground(Color.WHITE);           
         btn_reserve.setForeground(Color.WHITE);
+        loadWalkinTable(); 
+        updateNavbarStats();
     }//GEN-LAST:event_btn_walkinActionPerformed
 
     private void btn_inhouseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inhouseActionPerformed
@@ -1252,6 +1254,9 @@ public class FrontDesk extends javax.swing.JFrame {
         btn_inhouse.setForeground(new Color(255, 200, 120));  
         btn_walkin.setForeground(Color.WHITE);          
         btn_reserve.setForeground(Color.WHITE);
+        loadInhouseTable();
+        updateNavbarStats();
+
     }//GEN-LAST:event_btn_inhouseActionPerformed
 
     private void btn_inhouseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_inhouseMouseExited
@@ -1291,6 +1296,9 @@ public class FrontDesk extends javax.swing.JFrame {
         pnl_reserve.setForeground(new Color(255, 200, 120));  
         btn_inhouse.setForeground(Color.WHITE);           
         pnl_walkin.setForeground(Color.WHITE);
+        loadReserveTable(); 
+        updateNavbarStats();
+
     }//GEN-LAST:event_btn_reserveActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed

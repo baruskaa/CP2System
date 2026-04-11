@@ -24,6 +24,14 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         
+        dp_date.setMinSelectableDate(new java.util.Date());
+
+        java.util.Calendar maxCal = java.util.Calendar.getInstance();
+        maxCal.set(java.util.Calendar.YEAR, java.time.LocalDate.now().getYear() + 1); 
+        maxCal.set(java.util.Calendar.MONTH, java.util.Calendar.DECEMBER);            
+        maxCal.set(java.util.Calendar.DAY_OF_MONTH, 31);                             
+        dp_date.setMaxSelectableDate(maxCal.getTime());
+        
         dp_date.setDate(passedDate);
         
         SpinnerNumberModel model = new SpinnerNumberModel(passedPax, 1, 50, 1);
@@ -113,24 +121,25 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         cb_time.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
         cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNCH", "DINNER" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
-        getContentPane().add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 340, 110, 30));
-        getContentPane().add(txt_LName, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 150, 30));
-        getContentPane().add(dp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 120, 30));
-        getContentPane().add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 230, 30));
-        getContentPane().add(txt_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 230, 30));
+        getContentPane().add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 420, 110, 30));
+        getContentPane().add(txt_LName, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 150, 30));
+        getContentPane().add(dp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 420, 120, 30));
+        getContentPane().add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 230, 30));
+        getContentPane().add(txt_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 360, 230, 30));
 
         spn_pax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(spn_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 400, 80, 30));
+        getContentPane().add(spn_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 420, 80, 30));
 
         btn_topay.setBackground(new java.awt.Color(57, 77, 94));
-        btn_topay.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        btn_topay.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_topay.setForeground(new java.awt.Color(255, 255, 255));
         btn_topay.setText("Proceed to Payment");
         btn_topay.setBorder(null);
         btn_topay.addActionListener(this::btn_topayActionPerformed);
-        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 490, 170, 30));
+        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 460, 170, 30));
 
         txt_FName.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 160, 30));
+        getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 240, 160, 30));
 
         btn_backhomepage.setBackground(new java.awt.Color(255, 255, 255));
         btn_backhomepage.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
@@ -138,7 +147,7 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         btn_backhomepage.setText("<");
         btn_backhomepage.setBorderPainted(false);
         btn_backhomepage.addActionListener(this::btn_backhomepageActionPerformed);
-        getContentPane().add(btn_backhomepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, -1, 20));
+        getContentPane().add(btn_backhomepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, -1, 20));
 
         booking_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BOOKING.png"))); // NOI18N
         getContentPane().add(booking_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
