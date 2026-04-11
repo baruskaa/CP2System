@@ -1,0 +1,16 @@
+Sat Apr 11 23:22:42 PST 2026 : Could not listen on port 1527 on host 127.0.0.1:
+ java.net.BindException: Address already in use: bind
+An exception was thrown during network server startup. DRDA_ListenPort.S:Could not listen on port 1527 on host 127.0.0.1:
+ java.net.BindException: Address already in use: bind
+java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:119)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.apache.derby.iapi.jdbc.DRDAServerStarter.run(DRDAServerStarter.java:224)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.lang.Exception: DRDA_ListenPort.S:Could not listen on port 1527 on host 127.0.0.1:
+ java.net.BindException: Address already in use: bind
+	at org.apache.derby.impl.drda.NetworkServerControlImpl.consolePropertyMessageWork(NetworkServerControlImpl.java:3451)
+	at org.apache.derby.impl.drda.NetworkServerControlImpl.consolePropertyMessage(NetworkServerControlImpl.java:2059)
+	at org.apache.derby.impl.drda.NetworkServerControlImpl.blockingStart(NetworkServerControlImpl.java:836)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	... 3 more
