@@ -47,6 +47,15 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
 
         loadUserData();
         updateSeatAvailability();
+        makeFlatButton(btn_topay);
+    }
+    
+    private void makeFlatButton(javax.swing.JButton btn) {
+        btn.setFocusPainted(false);
+        btn.setBorder(null);
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
     
     private void updateSeatAvailability() {

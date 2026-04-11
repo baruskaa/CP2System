@@ -39,9 +39,6 @@ public class FrontDesk extends javax.swing.JFrame {
     private int editingWalkinRow = -1;
     private int editingRow = -1;
     
-    public FrontDesk() {
-    }
-    
     public FrontDesk(String loggedInName) {
         initComponents();
         this.setLocationRelativeTo(null);

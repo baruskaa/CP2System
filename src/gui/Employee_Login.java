@@ -193,13 +193,9 @@ public class Employee_Login extends javax.swing.JFrame {
                             case "admin":
                             new Admin().setVisible(true);
                             break;
-
-                            case "gen. manager":
-                            new GenManager().setVisible(true);
-                            break;
-
+                            
                             case "manager":
-                            new Manager().setVisible(true);
+                            new Manager(fullName).setVisible(true);
                             break;
 
                             case "front desk":

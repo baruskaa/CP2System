@@ -46,6 +46,7 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         buttonGroup1.add(rb_payPayMaya);
 
         updatePaymentFields();
+        makeFlatButton(btn_toconfirm);
     }
     
     private void updatePaymentFields() {
@@ -61,6 +62,14 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         if (!isEwallet) {
             ewalletnum_txt_payment.setText("");
         }
+    }
+    
+    private void makeFlatButton(javax.swing.JButton btn) {
+        btn.setFocusPainted(false);
+        btn.setBorder(null);
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
     
     private void setTextFieldLimit(javax.swing.JTextField textField, int limit) {

@@ -4,6 +4,7 @@
  */
 package gui;
 
+import java.awt.Color;
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,6 +29,8 @@ public class Customer_Homepage extends javax.swing.JFrame {
         makeFlatButton(btn_bookNow);
         makeFlatButton(btn_navReservations);
         makeFlatButton(btn_navLogout);
+        btn_navHome.setForeground(new Color(255, 200, 120));
+        
         
         dc_date.setMinSelectableDate(new java.util.Date());
 
@@ -214,6 +217,14 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_navReservations.setText("MY RESERVATIONS");
         btn_navReservations.setBorder(null);
         btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navReservations.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navReservationsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navReservationsMouseExited(evt);
+            }
+        });
         btn_navReservations.addActionListener(this::btn_navReservationsActionPerformed);
         pnl_nav1.add(btn_navReservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
 
@@ -223,6 +234,14 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_navLogout.setText("LOG OUT");
         btn_navLogout.setBorder(null);
         btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navLogoutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navLogoutMouseExited(evt);
+            }
+        });
         btn_navLogout.addActionListener(this::btn_navLogoutActionPerformed);
         pnl_nav1.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
 
@@ -341,11 +360,15 @@ public class Customer_Homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_today4ActionPerformed
 
     private void btn_navAboutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAboutMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navAbout.getForeground().equals(new Color(255, 200, 120))) {
+                btn_navAbout.setForeground(new Color(255, 200, 120));
+            }
+            btn_navAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navAboutMouseEntered
 
     private void btn_navAboutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAboutMouseExited
-        // TODO add your handling code here:
+        
+        btn_navAbout.setForeground(Color.WHITE);     
     }//GEN-LAST:event_btn_navAboutMouseExited
 
     private void btn_navAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navAboutActionPerformed
@@ -354,12 +377,15 @@ public class Customer_Homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navAboutActionPerformed
 
     private void btn_navHomeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navHomeMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navHome.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navHome.setForeground(new Color(255, 200, 120));
+        }
+        btn_navHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navHomeMouseEntered
 
     private void btn_navHomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navHomeMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_navHomeMouseExited
+        btn_navHome.setForeground(Color.WHITE);        
+      }//GEN-LAST:event_btn_navHomeMouseExited
 
     private void btn_navHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navHomeActionPerformed
         new Customer_Homepage().setVisible(true);
@@ -367,27 +393,35 @@ public class Customer_Homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navHomeActionPerformed
 
     private void btn_navMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navMenuMouseEntered
-        // TODO add your handling code here:
+         if (!btn_navMenu.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navMenu.setForeground(new Color(255, 200, 120));
+        }
+        btn_navMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
     }//GEN-LAST:event_btn_navMenuMouseEntered
 
     private void btn_navMenuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navMenuMouseExited
-        // TODO add your handling code here:
+        btn_navMenu.setForeground(Color.WHITE);      
     }//GEN-LAST:event_btn_navMenuMouseExited
 
     private void btn_navMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navMenuActionPerformed
-        // TODO add your handling code here:
+         new Customer_Menu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_navMenuActionPerformed
 
     private void btn_navDineMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navDineMouseEntered
-        // TODO add your handling code here:
+       if (!btn_navDine.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navDine.setForeground(new Color(255, 200, 120));
+        }
+        btn_navDine.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navDineMouseEntered
 
     private void btn_navDineMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navDineMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_navDineMouseExited
+        btn_navDine.setForeground(Color.WHITE);       }//GEN-LAST:event_btn_navDineMouseExited
 
     private void btn_navDineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navDineActionPerformed
-        // TODO add your handling code here:
+         new Customer_DineClub().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_navDineActionPerformed
 
     private void btn_navReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navReservationsActionPerformed
@@ -410,17 +444,45 @@ public class Customer_Homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navLogoutActionPerformed
 
     private void btn_navProfMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navProfMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navProf.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navProf.setForeground(new Color(255, 200, 120));
+        }
+        btn_navProf.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
     }//GEN-LAST:event_btn_navProfMouseEntered
 
     private void btn_navProfMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navProfMouseExited
-        // TODO add your handling code here:
+       btn_navProf.setForeground(Color.WHITE);        
+
     }//GEN-LAST:event_btn_navProfMouseExited
 
     private void btn_navProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navProfActionPerformed
         new Customer_AcctProfile().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_navProfActionPerformed
+
+    private void btn_navReservationsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navReservationsMouseEntered
+       if (!btn_navReservations.getBackground().equals(new Color(217,180,95))) {
+            btn_navReservations.setBackground(new Color(217,180,95));
+        }
+        btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+    }//GEN-LAST:event_btn_navReservationsMouseEntered
+
+    private void btn_navReservationsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navReservationsMouseExited
+        btn_navReservations.setBackground(new Color(185,153,79));      
+    }//GEN-LAST:event_btn_navReservationsMouseExited
+
+    private void btn_navLogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navLogoutMouseEntered
+        if (!btn_navLogout.getBackground().equals(new Color(183,14,14))) {
+            btn_navLogout.setBackground(new Color(183,14,14));
+        }
+        btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_navLogoutMouseEntered
+
+    private void btn_navLogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navLogoutMouseExited
+        btn_navLogout.setBackground(new Color(153,0,0));    
+    }//GEN-LAST:event_btn_navLogoutMouseExited
 
     private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);

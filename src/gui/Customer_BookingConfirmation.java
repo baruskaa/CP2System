@@ -43,6 +43,15 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         
         displayBookingData();
+        makeFlatButton(btn_confirm);
+    }
+    
+    private void makeFlatButton(javax.swing.JButton btn) {
+        btn.setFocusPainted(false);
+        btn.setBorder(null);
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
     
     private void displayBookingData() {
@@ -100,7 +109,7 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         btn_confirm.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         btn_confirm.setForeground(new java.awt.Color(255, 255, 255));
         btn_confirm.setText("Confirm");
-        btn_confirm.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        btn_confirm.setBorder(null);
         btn_confirm.addActionListener(this::btn_confirmActionPerformed);
         getContentPane().add(btn_confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 460, 90, 30));
 
@@ -182,8 +191,8 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
                     int rowsAffected = pstInsert.executeUpdate();
                     
                     if (rowsAffected > 0) {
-                        JOptionPane.showMessageDialog(this, "Your reservation is confirmed! Reference ID: " + newOrId, "Success", JOptionPane.INFORMATION_MESSAGE);
-                        new Customer_Homepage().setVisible(true);
+                        JOptionPane.showMessageDialog(this, "Reservation successfully booked.\nReference ID: " + newOrId, "Booking Success", JOptionPane.INFORMATION_MESSAGE);
+                        new Customer_BookingHistory().setVisible(true);
                         this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "Failed to save reservation. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -4,6 +4,7 @@
  */
 package gui;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 /**
  *
  * @author caloy
@@ -13,10 +14,26 @@ public class Customer_DineClub extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_DineClub.class.getName());
 
     /**
-     * Creates new form Menu_asia
      */
     public Customer_DineClub() {
         initComponents();
+       this.setResizable(true);
+        
+        getContentPane().setPreferredSize(new java.awt.Dimension(900, 580));
+        pack();
+        this.setResizable(false);
+        setLocationRelativeTo(null);
+        
+        makeFlatButton(btn_navReservations);
+        makeFlatButton(btn_navLogout);
+    }
+    
+    private void makeFlatButton(javax.swing.JButton btn) {
+        btn.setFocusPainted(false);
+        btn.setBorder(null);
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
 
     /**
@@ -28,11 +45,18 @@ public class Customer_DineClub extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        pnl_nav = new javax.swing.JPanel();
-        Aboutus_Label3 = new javax.swing.JLabel();
-        Aboutus_label4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        pnlMain = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        pnl_header = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        lbl_username = new javax.swing.JLabel();
+        pnl_nav1 = new javax.swing.JPanel();
+        Aboutus_Label4 = new javax.swing.JLabel();
+        Aboutus_label5 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         btn_navAbout = new javax.swing.JButton();
         btn_navHome = new javax.swing.JButton();
         btn_navMenu = new javax.swing.JButton();
@@ -40,186 +64,13 @@ public class Customer_DineClub extends javax.swing.JFrame {
         btn_navReservations = new javax.swing.JButton();
         btn_navLogout = new javax.swing.JButton();
         btn_navProf = new javax.swing.JButton();
-        pnlMain = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        pnl_header = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        lbl_username = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        pnl_nav.setBackground(new java.awt.Color(57, 77, 94));
-        pnl_nav.setMaximumSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setMinimumSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setPreferredSize(new java.awt.Dimension(158, 580));
-        pnl_nav.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Aboutus_Label3.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
-        Aboutus_Label3.setForeground(new java.awt.Color(153, 153, 153));
-        Aboutus_Label3.setText("© 2026 The House Of 7 Buffet.");
-        pnl_nav.add(Aboutus_Label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
-
-        Aboutus_label4.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
-        Aboutus_label4.setForeground(new java.awt.Color(153, 153, 153));
-        Aboutus_label4.setText("All Rights Reserved.");
-        pnl_nav.add(Aboutus_label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/logo.png"))); // NOI18N
-        pnl_nav.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
-
-        btn_navAbout.setBackground(new java.awt.Color(55, 77, 94));
-        btn_navAbout.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        btn_navAbout.setForeground(new java.awt.Color(255, 255, 255));
-        btn_navAbout.setText("About Us");
-        btn_navAbout.setBorder(null);
-        btn_navAbout.setContentAreaFilled(false);
-        btn_navAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_navAbout.setFocusPainted(false);
-        btn_navAbout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_navAboutMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_navAboutMouseExited(evt);
-            }
-        });
-        btn_navAbout.addActionListener(this::btn_navAboutActionPerformed);
-        pnl_nav.add(btn_navAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 120, 30));
-
-        btn_navHome.setBackground(new java.awt.Color(55, 77, 94));
-        btn_navHome.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        btn_navHome.setForeground(new java.awt.Color(255, 255, 255));
-        btn_navHome.setText("Home");
-        btn_navHome.setBorder(null);
-        btn_navHome.setContentAreaFilled(false);
-        btn_navHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_navHome.setFocusPainted(false);
-        btn_navHome.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_navHomeMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_navHomeMouseExited(evt);
-            }
-        });
-        btn_navHome.addActionListener(this::btn_navHomeActionPerformed);
-        pnl_nav.add(btn_navHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 120, 30));
-
-        btn_navMenu.setBackground(new java.awt.Color(55, 77, 94));
-        btn_navMenu.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        btn_navMenu.setForeground(new java.awt.Color(255, 255, 255));
-        btn_navMenu.setText("Menu & Specials");
-        btn_navMenu.setBorder(null);
-        btn_navMenu.setContentAreaFilled(false);
-        btn_navMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_navMenu.setFocusPainted(false);
-        btn_navMenu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_navMenuMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_navMenuMouseExited(evt);
-            }
-        });
-        btn_navMenu.addActionListener(this::btn_navMenuActionPerformed);
-        pnl_nav.add(btn_navMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 30));
-
-        btn_navDine.setBackground(new java.awt.Color(55, 77, 94));
-        btn_navDine.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        btn_navDine.setForeground(new java.awt.Color(255, 255, 255));
-        btn_navDine.setText("Dine Club");
-        btn_navDine.setBorder(null);
-        btn_navDine.setContentAreaFilled(false);
-        btn_navDine.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_navDine.setFocusPainted(false);
-        btn_navDine.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_navDineMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_navDineMouseExited(evt);
-            }
-        });
-        btn_navDine.addActionListener(this::btn_navDineActionPerformed);
-        pnl_nav.add(btn_navDine, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 120, 30));
-
-        btn_navReservations.setBackground(new java.awt.Color(185, 153, 79));
-        btn_navReservations.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        btn_navReservations.setForeground(new java.awt.Color(55, 91, 115));
-        btn_navReservations.setText("MY RESERVATIONS");
-        btn_navReservations.setBorder(null);
-        btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_navReservations.addActionListener(this::btn_navReservationsActionPerformed);
-        pnl_nav.add(btn_navReservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
-
-        btn_navLogout.setBackground(new java.awt.Color(153, 0, 0));
-        btn_navLogout.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        btn_navLogout.setForeground(new java.awt.Color(206, 206, 206));
-        btn_navLogout.setText("LOG OUT");
-        btn_navLogout.setBorder(null);
-        btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_navLogout.addActionListener(this::btn_navLogoutActionPerformed);
-        pnl_nav.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
-
-        btn_navProf.setBackground(new java.awt.Color(55, 77, 94));
-        btn_navProf.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        btn_navProf.setForeground(new java.awt.Color(255, 255, 255));
-        btn_navProf.setText("Profile");
-        btn_navProf.setBorder(null);
-        btn_navProf.setContentAreaFilled(false);
-        btn_navProf.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_navProf.setFocusPainted(false);
-        btn_navProf.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_navProfMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_navProfMouseExited(evt);
-            }
-        });
-        btn_navProf.addActionListener(this::btn_navProfActionPerformed);
-        pnl_nav.add(btn_navProf, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 120, 30));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 172, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnl_nav, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 608, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(pnl_nav, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE))
-        );
+        setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
         pnlMain.setBackground(new java.awt.Color(88, 119, 144));
         pnlMain.setName(""); // NOI18N
-
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("SUMMER");
-        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel6MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel6MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel6MouseExited(evt);
-            }
-        });
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -236,18 +87,18 @@ public class Customer_DineClub extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("EXCLUSIVES");
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel6.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("SUMMER");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
+                jLabel6MouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel8MouseEntered(evt);
+                jLabel6MouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel8MouseExited(evt);
+                jLabel6MouseExited(evt);
             }
         });
 
@@ -258,17 +109,14 @@ public class Customer_DineClub extends javax.swing.JFrame {
             .addGroup(pnlMainLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel8))
-                .addContainerGap(26, Short.MAX_VALUE))
+                    .addComponent(jLabel7))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jLabel8)
-                .addGap(18, 18, 18)
+                .addGap(50, 50, 50)
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
@@ -286,7 +134,7 @@ public class Customer_DineClub extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/dineclub2.png"))); // NOI18N
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dineclub2_1_598x432.png"))); // NOI18N
 
         pnl_header.setBackground(new java.awt.Color(55, 91, 115));
         pnl_header.setMaximumSize(new java.awt.Dimension(681, 115));
@@ -307,7 +155,7 @@ public class Customer_DineClub extends javax.swing.JFrame {
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 118, Short.MAX_VALUE)
                 .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
@@ -324,43 +172,195 @@ public class Customer_DineClub extends javax.swing.JFrame {
                         .addGap(50, 50, 50))))
         );
 
+        pnl_nav1.setBackground(new java.awt.Color(57, 77, 94));
+        pnl_nav1.setMaximumSize(new java.awt.Dimension(158, 580));
+        pnl_nav1.setMinimumSize(new java.awt.Dimension(158, 580));
+        pnl_nav1.setPreferredSize(new java.awt.Dimension(158, 580));
+        pnl_nav1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Aboutus_Label4.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_Label4.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_Label4.setText("© 2026 The House Of 7 Buffet.");
+        pnl_nav1.add(Aboutus_Label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
+
+        Aboutus_label5.setFont(new java.awt.Font("Segoe UI Emoji", 0, 10)); // NOI18N
+        Aboutus_label5.setForeground(new java.awt.Color(153, 153, 153));
+        Aboutus_label5.setText("All Rights Reserved.");
+        pnl_nav1.add(Aboutus_label5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
+        pnl_nav1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
+
+        btn_navAbout.setBackground(new java.awt.Color(55, 77, 94));
+        btn_navAbout.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_navAbout.setForeground(new java.awt.Color(255, 255, 255));
+        btn_navAbout.setText("About Us");
+        btn_navAbout.setBorder(null);
+        btn_navAbout.setContentAreaFilled(false);
+        btn_navAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navAbout.setFocusPainted(false);
+        btn_navAbout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navAboutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navAboutMouseExited(evt);
+            }
+        });
+        btn_navAbout.addActionListener(this::btn_navAboutActionPerformed);
+        pnl_nav1.add(btn_navAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 120, 30));
+
+        btn_navHome.setBackground(new java.awt.Color(55, 77, 94));
+        btn_navHome.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_navHome.setForeground(new java.awt.Color(255, 255, 255));
+        btn_navHome.setText("Home");
+        btn_navHome.setBorder(null);
+        btn_navHome.setContentAreaFilled(false);
+        btn_navHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navHome.setFocusPainted(false);
+        btn_navHome.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navHomeMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navHomeMouseExited(evt);
+            }
+        });
+        btn_navHome.addActionListener(this::btn_navHomeActionPerformed);
+        pnl_nav1.add(btn_navHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 120, 30));
+
+        btn_navMenu.setBackground(new java.awt.Color(55, 77, 94));
+        btn_navMenu.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_navMenu.setForeground(new java.awt.Color(255, 255, 255));
+        btn_navMenu.setText("Menu & Specials");
+        btn_navMenu.setBorder(null);
+        btn_navMenu.setContentAreaFilled(false);
+        btn_navMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navMenu.setFocusPainted(false);
+        btn_navMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navMenuMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navMenuMouseExited(evt);
+            }
+        });
+        btn_navMenu.addActionListener(this::btn_navMenuActionPerformed);
+        pnl_nav1.add(btn_navMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 120, 30));
+
+        btn_navDine.setBackground(new java.awt.Color(55, 77, 94));
+        btn_navDine.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_navDine.setForeground(new java.awt.Color(255, 255, 255));
+        btn_navDine.setText("Dine Club");
+        btn_navDine.setBorder(null);
+        btn_navDine.setContentAreaFilled(false);
+        btn_navDine.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navDine.setFocusPainted(false);
+        btn_navDine.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navDineMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navDineMouseExited(evt);
+            }
+        });
+        btn_navDine.addActionListener(this::btn_navDineActionPerformed);
+        pnl_nav1.add(btn_navDine, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 120, 30));
+
+        btn_navReservations.setBackground(new java.awt.Color(185, 153, 79));
+        btn_navReservations.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_navReservations.setForeground(new java.awt.Color(55, 91, 115));
+        btn_navReservations.setText("MY RESERVATIONS");
+        btn_navReservations.setBorder(null);
+        btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navReservations.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navReservationsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navReservationsMouseExited(evt);
+            }
+        });
+        btn_navReservations.addActionListener(this::btn_navReservationsActionPerformed);
+        pnl_nav1.add(btn_navReservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
+
+        btn_navLogout.setBackground(new java.awt.Color(153, 0, 0));
+        btn_navLogout.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_navLogout.setForeground(new java.awt.Color(206, 206, 206));
+        btn_navLogout.setText("LOG OUT");
+        btn_navLogout.setBorder(null);
+        btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navLogoutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navLogoutMouseExited(evt);
+            }
+        });
+        btn_navLogout.addActionListener(this::btn_navLogoutActionPerformed);
+        pnl_nav1.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
+
+        btn_navProf.setBackground(new java.awt.Color(55, 77, 94));
+        btn_navProf.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_navProf.setForeground(new java.awt.Color(255, 255, 255));
+        btn_navProf.setText("Profile");
+        btn_navProf.setBorder(null);
+        btn_navProf.setContentAreaFilled(false);
+        btn_navProf.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navProf.setFocusPainted(false);
+        btn_navProf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navProfMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navProfMouseExited(evt);
+            }
+        });
+        btn_navProf.addActionListener(this::btn_navProfActionPerformed);
+        pnl_nav1.add(btn_navProf, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 120, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
+                .addComponent(pnl_nav1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnl_header, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pnl_header, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)))
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnl_header, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pnl_nav1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-            jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/summer2.png")));
+            jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/summer2_598x432.png")));
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-            jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/graduation2.png")));
+            jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/graduation2_598x432.png")));
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
@@ -379,24 +379,16 @@ public class Customer_DineClub extends javax.swing.JFrame {
         jLabel7.setForeground(Color.WHITE);
     }//GEN-LAST:event_jLabel7MouseExited
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/dineclub2.png")));
-    }//GEN-LAST:event_jLabel8MouseClicked
-
-    private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
-        jLabel8.setForeground(Color.YELLOW);
-    }//GEN-LAST:event_jLabel8MouseEntered
-
-    private void jLabel8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseExited
-        jLabel8.setForeground(Color.WHITE);
-    }//GEN-LAST:event_jLabel8MouseExited
-
     private void btn_navAboutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAboutMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navAbout.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navAbout.setForeground(new Color(255, 200, 120));
+        }
+        btn_navAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navAboutMouseEntered
 
     private void btn_navAboutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAboutMouseExited
-        // TODO add your handling code here:
+
+        btn_navAbout.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navAboutMouseExited
 
     private void btn_navAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navAboutActionPerformed
@@ -405,11 +397,15 @@ public class Customer_DineClub extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navAboutActionPerformed
 
     private void btn_navHomeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navHomeMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navHome.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navHome.setForeground(new Color(255, 200, 120));
+        }
+        btn_navHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navHomeMouseEntered
 
     private void btn_navHomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navHomeMouseExited
-        // TODO add your handling code here:
+        btn_navHome.setForeground(Color.WHITE);
+
     }//GEN-LAST:event_btn_navHomeMouseExited
 
     private void btn_navHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navHomeActionPerformed
@@ -418,33 +414,63 @@ public class Customer_DineClub extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navHomeActionPerformed
 
     private void btn_navMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navMenuMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navMenu.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navMenu.setForeground(new Color(255, 200, 120));
+        }
+        btn_navMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navMenuMouseEntered
 
     private void btn_navMenuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navMenuMouseExited
-        // TODO add your handling code here:
+        btn_navMenu.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navMenuMouseExited
 
     private void btn_navMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navMenuActionPerformed
-        // TODO add your handling code here:
+        new Customer_Menu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_navMenuActionPerformed
 
     private void btn_navDineMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navDineMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navDine.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navDine.setForeground(new Color(255, 200, 120));
+        }
+        btn_navDine.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navDineMouseEntered
 
     private void btn_navDineMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navDineMouseExited
-        // TODO add your handling code here:
+        btn_navDine.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navDineMouseExited
 
     private void btn_navDineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navDineActionPerformed
-        // TODO add your handling code here:
+        new Customer_DineClub().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_navDineActionPerformed
+
+    private void btn_navReservationsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navReservationsMouseEntered
+        if (!btn_navReservations.getBackground().equals(new Color(217,180,95))) {
+            btn_navReservations.setBackground(new Color(217,180,95));
+        }
+        btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_navReservationsMouseEntered
+
+    private void btn_navReservationsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navReservationsMouseExited
+        btn_navReservations.setBackground(new Color(185,153,79));
+    }//GEN-LAST:event_btn_navReservationsMouseExited
 
     private void btn_navReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navReservationsActionPerformed
         new Customer_BookingHistory().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_navReservationsActionPerformed
+
+    private void btn_navLogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navLogoutMouseEntered
+        if (!btn_navLogout.getBackground().equals(new Color(183,14,14))) {
+            btn_navLogout.setBackground(new Color(183,14,14));
+        }
+        btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_navLogoutMouseEntered
+
+    private void btn_navLogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navLogoutMouseExited
+        btn_navLogout.setBackground(new Color(153,0,0));
+    }//GEN-LAST:event_btn_navLogoutMouseExited
 
     private void btn_navLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navLogoutActionPerformed
 
@@ -461,11 +487,14 @@ public class Customer_DineClub extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navLogoutActionPerformed
 
     private void btn_navProfMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navProfMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navProf.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navProf.setForeground(new Color(255, 200, 120));
+        }
+        btn_navProf.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navProfMouseEntered
 
     private void btn_navProfMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navProfMouseExited
-        // TODO add your handling code here:
+        btn_navProf.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navProfMouseExited
 
     private void btn_navProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navProfActionPerformed
@@ -499,8 +528,8 @@ public class Customer_DineClub extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Aboutus_Label3;
-    private javax.swing.JLabel Aboutus_label4;
+    private javax.swing.JLabel Aboutus_Label4;
+    private javax.swing.JLabel Aboutus_label5;
     private javax.swing.JButton btn_navAbout;
     private javax.swing.JButton btn_navDine;
     private javax.swing.JButton btn_navHome;
@@ -509,17 +538,15 @@ public class Customer_DineClub extends javax.swing.JFrame {
     private javax.swing.JButton btn_navProf;
     private javax.swing.JButton btn_navReservations;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lbl_username;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnl_header;
-    private javax.swing.JPanel pnl_nav;
+    private javax.swing.JPanel pnl_nav1;
     // End of variables declaration//GEN-END:variables
 public void switchPanel(javax.swing.JPanel panel) {
     pnlMain.removeAll();

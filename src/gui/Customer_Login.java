@@ -526,8 +526,14 @@ public class Customer_Login extends javax.swing.JFrame {
 
                     pst.executeUpdate();
                     JOptionPane.showMessageDialog(this, "Registration Successful. Please Log in.", "Registration Successful", JOptionPane.PLAIN_MESSAGE);
-
                     slideToLogin();
+                    txt_createFirstName.setText("");
+                    txt_createLastName.setText("");
+                    txt_createNumber.setText("");
+                    txt_createEmail.setText("");
+                    txt_createPass1.setText("");
+                    dc_createBday.setDate(null);
+                    cb_createGender.setSelectedIndex(0);
                 }
 
             } catch (SQLException ex) {

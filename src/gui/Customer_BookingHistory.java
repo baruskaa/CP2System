@@ -1,10 +1,13 @@
 package gui;
 
 
+import java.awt.Color;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -20,13 +23,115 @@ import javax.swing.table.TableRowSorter;
 public class Customer_BookingHistory extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_BookingHistory.class.getName());
-
+    private TableRowSorter<DefaultTableModel> sorter;
     /**
      * Creates new form Reservation_History2
      */
     public Customer_BookingHistory() {
         initComponents();
+        this.setLocationRelativeTo(null); 
+        
+        
+        //TABLE SORTER
+        DefaultTableModel model = (DefaultTableModel) tbl_historyuser.getModel();
+        sorter = new TableRowSorter<>(model);
+        tbl_historyuser.setRowSorter(sorter);
+
+        loadHistoryTable();
+        centerTableData(tbl_historyuser);
+        styleTableHeaders(tbl_historyuser);
+        makeFlatButton(btn_navReservations);
+        makeFlatButton(btn_navLogout);
+        makeFlatButton(btn_RESET);
+
+        date_historyuser.getDateEditor().addPropertyChangeListener(evt -> {
+            if ("date".equals(evt.getPropertyName())) {
+                filterByDate();
+            }
+        });
+        
+        
+        java.util.List<javax.swing.RowSorter.SortKey> startupKeys = new java.util.ArrayList<>();
+        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.DESCENDING)); 
+        startupKeys.add(new javax.swing.RowSorter.SortKey(2, javax.swing.SortOrder.DESCENDING)); 
+        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.DESCENDING)); 
+        sorter.setSortKeys(startupKeys);
+        
     }
+    
+    private void loadHistoryTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_historyuser.getModel();
+        model.setRowCount(0); 
+
+        if (UserSession.loggedInEmail == null || UserSession.loggedInEmail.trim().isEmpty()) {
+            return; 
+        }
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        if (db.con != null) {
+            String query = "SELECT o.OR_ID, o.D_DATE, o.D_TIME, o.PAX " +
+                           "FROM DBHOUSE.ONLINERESERVATIONS o " +
+                           "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
+                           "WHERE v.EMAIL = ? " +
+                           "ORDER BY o.D_DATE DESC";
+
+            try (java.sql.PreparedStatement pst = db.con.prepareStatement(query)) {
+                pst.setString(1, UserSession.loggedInEmail);
+                
+                try (java.sql.ResultSet rs = pst.executeQuery()) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yy"); 
+                    
+                    while (rs.next()) {
+                        java.sql.Date sqlDate = rs.getDate("D_DATE");
+                        String dateStr = (sqlDate != null) ? sdf.format(sqlDate) : "";
+
+                        model.addRow(new Object[]{
+                            rs.getString("OR_ID"),
+                            dateStr,
+                            rs.getString("D_TIME"),
+                            rs.getInt("PAX")
+                        });
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error loading history: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                try { db.con.close(); } catch (Exception ex) {}
+            }
+        }
+    }
+
+    private void filterByDate() {
+        java.util.Date selectedDate = date_historyuser.getDate();
+        
+        if (selectedDate == null) {
+            sorter.setRowFilter(null); 
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yy");
+            String dateStr = sdf.format(selectedDate);
+            sorter.setRowFilter(RowFilter.regexFilter("^" + dateStr + "$", 1)); 
+        }
+    }
+    
+   private void centerTableData(javax.swing.JTable table) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            centerRenderer.setOpaque(false); 
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+    }
+    
+     private void styleTableHeaders(javax.swing.JTable table) {
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        headerRenderer.setForeground(new Color(55, 77, 94));
+        headerRenderer.setFont(new java.awt.Font("Century Gothic", java.awt.Font.BOLD, 14));
+        table.getTableHeader().setDefaultRenderer(headerRenderer);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,20 +145,18 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         jDateChooser10 = new com.toedter.calendar.JDateChooser();
         pnl_header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        lbl_username = new javax.swing.JLabel();
         pnl_history6 = new javax.swing.JPanel();
-        date_history6 = new com.toedter.calendar.JDateChooser();
+        date_historyuser = new com.toedter.calendar.JDateChooser();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        search_history6 = new javax.swing.JTextField();
+        btn_RESET = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbl_history = new javax.swing.JTable();
+        tbl_historyuser = new javax.swing.JTable();
         bg_today1 = new javax.swing.JLabel();
         pnl_nav2 = new javax.swing.JPanel();
         Aboutus_Label5 = new javax.swing.JLabel();
         Aboutus_label6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         btn_navAbout = new javax.swing.JButton();
         btn_navHome = new javax.swing.JButton();
         btn_navMenu = new javax.swing.JButton();
@@ -74,11 +177,6 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("MY RESERVATIONS");
 
-        lbl_username.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        lbl_username.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_username.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbl_username.setText("Dela Cruz, Juan");
-
         javax.swing.GroupLayout pnl_headerLayout = new javax.swing.GroupLayout(pnl_header);
         pnl_header.setLayout(pnl_headerLayout);
         pnl_headerLayout.setHorizontalGroup(
@@ -86,17 +184,13 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
-                .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addContainerGap(354, Short.MAX_VALUE))
         );
         pnl_headerLayout.setVerticalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addContainerGap(51, Short.MAX_VALUE)
-                .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(lbl_username))
+                .addComponent(jLabel2)
                 .addGap(33, 33, 33))
         );
 
@@ -105,53 +199,59 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         pnl_history6.setForeground(new java.awt.Color(202, 199, 199));
         pnl_history6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        date_history6.setDateFormatString("MM-dd-yy");
-        pnl_history6.add(date_history6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 50, 170, -1));
+        date_historyuser.setDateFormatString("MM-dd-yy");
+        date_historyuser.setMaxSelectableDate(new java.util.Date(1924880509000L));
+        date_historyuser.setMinSelectableDate(new java.util.Date(946659709000L));
+        pnl_history6.add(date_historyuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 42, 170, 30));
 
         jLabel25.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(55, 77, 94));
         jLabel25.setText("Date:");
-        pnl_history6.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 50, 20));
+        pnl_history6.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 50, 30));
 
         jLabel26.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(55, 77, 94));
         jLabel26.setText("HISTORY");
         pnl_history6.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 170, 50));
 
-        jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel27.setForeground(new java.awt.Color(55, 77, 94));
-        jLabel27.setText("Search:");
-        pnl_history6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 60, 20));
-
-        search_history6.addActionListener(this::search_history6ActionPerformed);
-        search_history6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                search_history6KeyReleased(evt);
+        btn_RESET.setBackground(new java.awt.Color(55, 91, 115));
+        btn_RESET.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_RESET.setForeground(new java.awt.Color(255, 255, 255));
+        btn_RESET.setText("RESET");
+        btn_RESET.setBorder(null);
+        btn_RESET.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_RESET.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_RESETMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_RESETMouseExited(evt);
             }
         });
-        pnl_history6.add(search_history6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 20, 170, -1));
+        btn_RESET.addActionListener(this::btn_RESETActionPerformed);
+        pnl_history6.add(btn_RESET, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, 80, 30));
 
         jScrollPane2.setForeground(new java.awt.Color(55, 77, 94));
 
-        tbl_history.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        tbl_history.setForeground(new java.awt.Color(55, 77, 94));
-        tbl_history.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_historyuser.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_historyuser.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_historyuser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"03-26-26",  new Integer(1), "Juan Dela Cruz", "09357873489",  new Integer(4), "Lunch", "COMPLETED"},
-                {"03-01-26",  new Integer(2), "Maria Santos", "09174532356",  new Integer(3), "Lunch", "COMPLETED"},
-                {"04-19-26",  new Integer(3), "Louise Lopez", "09876541453",  new Integer(2), "Lunch", "UPCOMING"},
-                {"03-01-26",  new Integer(4), "Rhian Espinosa", "09258653421",  new Integer(6), "Dinner", "COMPLETED"},
-                {"04-19-26",  new Integer(5), "Justine Dizon", "09987823421",  new Integer(7), "Dinner", "UPCOMING"}
+                {null, "03-26-26", null,  new Integer(4)},
+                {null, "03-01-26", null,  new Integer(3)},
+                {null, "04-19-26", null,  new Integer(2)},
+                {null, "03-01-26", null,  new Integer(6)},
+                {null, "04-19-26", null,  new Integer(7)}
             },
             new String [] {
-                "DATE", "TABLE NO.", "NAME", "CONTACT", "PAX", "TIME", "STATUS"
+                "REFERENCE NUMBER", "DATE", "TIME", "PAX"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.String.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -162,8 +262,14 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbl_history.setOpaque(false);
-        jScrollPane2.setViewportView(tbl_history);
+        tbl_historyuser.setOpaque(false);
+        jScrollPane2.setViewportView(tbl_historyuser);
+        if (tbl_historyuser.getColumnModel().getColumnCount() > 0) {
+            tbl_historyuser.getColumnModel().getColumn(0).setResizable(false);
+            tbl_historyuser.getColumnModel().getColumn(1).setResizable(false);
+            tbl_historyuser.getColumnModel().getColumn(2).setResizable(false);
+            tbl_historyuser.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         pnl_history6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
@@ -188,8 +294,8 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         Aboutus_label6.setText("All Rights Reserved.");
         pnl_nav2.add(Aboutus_label6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, -1, -1));
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
-        pnl_nav2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
+        pnl_nav2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 80));
 
         btn_navAbout.setBackground(new java.awt.Color(55, 77, 94));
         btn_navAbout.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -273,6 +379,14 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         btn_navReservations.setText("MY RESERVATIONS");
         btn_navReservations.setBorder(null);
         btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navReservations.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navReservationsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navReservationsMouseExited(evt);
+            }
+        });
         btn_navReservations.addActionListener(this::btn_navReservationsActionPerformed);
         pnl_nav2.add(btn_navReservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 120, 30));
 
@@ -282,6 +396,14 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         btn_navLogout.setText("LOG OUT");
         btn_navLogout.setBorder(null);
         btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_navLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_navLogoutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_navLogoutMouseExited(evt);
+            }
+        });
         btn_navLogout.addActionListener(this::btn_navLogoutActionPerformed);
         pnl_nav2.add(btn_navLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 80, 30));
 
@@ -309,14 +431,6 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void search_history6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_history6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_history6ActionPerformed
-
-    private void search_history6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_history6KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_history6KeyReleased
 
     private void btn_navAbout1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAbout1MouseEntered
         // TODO add your handling code here:
@@ -368,10 +482,13 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_navDine1ActionPerformed
 
-    private void btn_navReservations1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navReservations1ActionPerformed
-        new Customer_BookingHistory().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btn_navReservations1ActionPerformed
+    private void btn_RESETActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RESETActionPerformed
+    date_historyuser.setDate(null);
+     if (sorter != null) {
+         sorter.setRowFilter(null);
+        }
+     loadHistoryTable();
+    }//GEN-LAST:event_btn_RESETActionPerformed
 
     private void btn_navLogout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navLogout1ActionPerformed
 
@@ -401,11 +518,15 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navProf1ActionPerformed
 
     private void btn_navAboutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAboutMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navAbout.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navAbout.setForeground(new Color(255, 200, 120));
+        }
+        btn_navAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navAboutMouseEntered
 
     private void btn_navAboutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAboutMouseExited
-        // TODO add your handling code here:
+
+        btn_navAbout.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navAboutMouseExited
 
     private void btn_navAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navAboutActionPerformed
@@ -414,11 +535,14 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navAboutActionPerformed
 
     private void btn_navHomeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navHomeMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navHome.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navHome.setForeground(new Color(255, 200, 120));
+        }
+        btn_navHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navHomeMouseEntered
 
     private void btn_navHomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navHomeMouseExited
-        // TODO add your handling code here:
+        btn_navHome.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navHomeMouseExited
 
     private void btn_navHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navHomeActionPerformed
@@ -427,33 +551,63 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navHomeActionPerformed
 
     private void btn_navMenuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navMenuMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navMenu.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navMenu.setForeground(new Color(255, 200, 120));
+        }
+        btn_navMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navMenuMouseEntered
 
     private void btn_navMenuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navMenuMouseExited
-        // TODO add your handling code here:
+        btn_navMenu.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navMenuMouseExited
 
     private void btn_navMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navMenuActionPerformed
-        // TODO add your handling code here:
+        new Customer_Menu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_navMenuActionPerformed
 
     private void btn_navDineMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navDineMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navDine.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navDine.setForeground(new Color(255, 200, 120));
+        }
+        btn_navDine.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navDineMouseEntered
 
     private void btn_navDineMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navDineMouseExited
-        // TODO add your handling code here:
+        btn_navDine.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navDineMouseExited
 
     private void btn_navDineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navDineActionPerformed
-        // TODO add your handling code here:
+        new Customer_DineClub().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_navDineActionPerformed
+
+    private void btn_navReservationsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navReservationsMouseEntered
+        if (!btn_navReservations.getBackground().equals(new Color(217,180,95))) {
+            btn_navReservations.setBackground(new Color(217,180,95));
+        }
+        btn_navReservations.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_navReservationsMouseEntered
+
+    private void btn_navReservationsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navReservationsMouseExited
+        btn_navReservations.setBackground(new Color(185,153,79));
+    }//GEN-LAST:event_btn_navReservationsMouseExited
 
     private void btn_navReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navReservationsActionPerformed
         new Customer_BookingHistory().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_navReservationsActionPerformed
+
+    private void btn_navLogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navLogoutMouseEntered
+        if (!btn_navLogout.getBackground().equals(new Color(183,14,14))) {
+            btn_navLogout.setBackground(new Color(183,14,14));
+        }
+        btn_navLogout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btn_navLogoutMouseEntered
+
+    private void btn_navLogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navLogoutMouseExited
+        btn_navLogout.setBackground(new Color(153,0,0));
+    }//GEN-LAST:event_btn_navLogoutMouseExited
 
     private void btn_navLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navLogoutActionPerformed
 
@@ -470,47 +624,56 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_navLogoutActionPerformed
 
     private void btn_navProfMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navProfMouseEntered
-        // TODO add your handling code here:
+        if (!btn_navProf.getForeground().equals(new Color(255, 200, 120))) {
+            btn_navProf.setForeground(new Color(255, 200, 120));
+        }
+        btn_navProf.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }//GEN-LAST:event_btn_navProfMouseEntered
 
     private void btn_navProfMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navProfMouseExited
-        // TODO add your handling code here:
+        btn_navProf.setForeground(Color.WHITE);
     }//GEN-LAST:event_btn_navProfMouseExited
 
     private void btn_navProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_navProfActionPerformed
         new Customer_AcctProfile().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_navProfActionPerformed
+
+    private void btn_RESETMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_RESETMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_RESETMouseEntered
+
+    private void btn_RESETMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_RESETMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_RESETMouseExited
 private JFrame frame;
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Customer_BookingHistory().setVisible(true));
+    }
+    
+    private void makeFlatButton(javax.swing.JButton btn) {
+        btn.setFocusPainted(false);
+        btn.setBorder(null);
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Aboutus_Label5;
     private javax.swing.JLabel Aboutus_label6;
     private javax.swing.JLabel bg_today1;
+    private javax.swing.JButton btn_RESET;
     private javax.swing.JButton btn_navAbout;
     private javax.swing.JButton btn_navDine;
     private javax.swing.JButton btn_navHome;
@@ -518,19 +681,16 @@ private JFrame frame;
     private javax.swing.JButton btn_navMenu;
     private javax.swing.JButton btn_navProf;
     private javax.swing.JButton btn_navReservations;
-    private com.toedter.calendar.JDateChooser date_history6;
+    private com.toedter.calendar.JDateChooser date_historyuser;
     private com.toedter.calendar.JDateChooser jDateChooser10;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lbl_username;
     private javax.swing.JPanel pnl_header;
     private javax.swing.JPanel pnl_history6;
     private javax.swing.JPanel pnl_nav2;
-    private javax.swing.JTextField search_history6;
-    private javax.swing.JTable tbl_history;
+    private javax.swing.JTable tbl_historyuser;
     // End of variables declaration//GEN-END:variables
 }

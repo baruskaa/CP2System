@@ -200,14 +200,14 @@ public class Admin extends javax.swing.JFrame {
         // PRECENDENCE SORTING
         
         java.util.List<javax.swing.RowSorter.SortKey> startupKeys = new java.util.ArrayList<>();
-        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.ASCENDING)); 
+        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.DESCENDING)); 
         startupKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); 
         sorter_history.setSortKeys(startupKeys);
         
         
         java.util.List<javax.swing.RowSorter.SortKey> reserveSortKeys = new java.util.ArrayList<>();
         reserveSortKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); 
-        reserveSortKeys.add(new javax.swing.RowSorter.SortKey(0, javax.swing.SortOrder.ASCENDING)); 
+        reserveSortKeys.add(new javax.swing.RowSorter.SortKey(0, javax.swing.SortOrder.DESCENDING)); 
         sorter_reserve.setSortKeys(reserveSortKeys);
         sorter_reserve.sort();
 
