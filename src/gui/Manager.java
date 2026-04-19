@@ -39,6 +39,9 @@ public class Manager extends javax.swing.JFrame {
     private TableRowSorter<DefaultTableModel> sorter_reserve;
     private TableRowSorter<DefaultTableModel> sorter_walkin;
     private TableRowSorter<DefaultTableModel> sorter_inhouse;
+    private TableRowSorter<DefaultTableModel> sorter_menuList;
+    private java.io.File selectedMenuImage = null;
+    private java.io.File selectedPromoImage = null;
     private DefaultTableModel getWalkInModel() {
     return (DefaultTableModel) tbl_walkin.getModel();
 }
@@ -50,6 +53,11 @@ public class Manager extends javax.swing.JFrame {
     private int editingRow = -1;
     private int editingMembRow = -1; 
     private int editingEmpRow = -1;
+    private int editingMenuRow = -1;
+    private int editingMenuItemId = -1;
+    private int editingPromoRow = -1;
+    private int editingPromoId = -1;
+    
     
     public Manager(String loggedInName) {
         initComponents();
@@ -64,6 +72,7 @@ public class Manager extends javax.swing.JFrame {
         makeFlatButton(btn_upcomReset);
         makeFlatButton(btn_cancel);
         makeFlatButton(btn_upcomCancel);
+        makeFlatButton(btn_upcomConfirm);
         
         date_historyTo.setMaxSelectableDate(new java.util.Date());
         loadEmployeeTable();
@@ -75,6 +84,7 @@ public class Manager extends javax.swing.JFrame {
         loadWalkinTable();
         loadReserveTable();
         
+        txt_dishName.setVisible(false);
         pnl_reserve.setVisible(true);
         pnl_today.setVisible(false);
         pnl_inhouse.setVisible(false);
@@ -83,6 +93,8 @@ public class Manager extends javax.swing.JFrame {
         pnl_upcom.setVisible(false);
         pnl_emp.setVisible(false);
         pnl_memb.setVisible(false);
+        pnl_menuedit.setVisible(false);
+        pnl_promoedit.setVisible(false);
         btn_reserve.setForeground(new Color(255, 200, 120));
         
         // BUTTON GROUPS
@@ -105,6 +117,7 @@ public class Manager extends javax.swing.JFrame {
         sorter_upcom   = setupSorter(tbl_upcom);
         sorter_emp     = setupSorter(tbl_emp);
         sorter_memb    = setupSorter(tbl_memb);
+        sorter_menuList = setupSorter(tbl_menuList);
         
         loadSeatTrackerTable();
 
@@ -132,6 +145,10 @@ public class Manager extends javax.swing.JFrame {
         //TABLE CENTER ALIGNERS
         
         centerTableData(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        tbl_upcom.getColumnModel().getColumn(8).setCellRenderer(centerRenderer);
         
          //TABLE HEADER CELL RENDERER
          
@@ -198,14 +215,14 @@ public class Manager extends javax.swing.JFrame {
         // PRECENDENCE SORTING
         
         java.util.List<javax.swing.RowSorter.SortKey> startupKeys = new java.util.ArrayList<>();
-        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.ASCENDING)); 
+        startupKeys.add(new javax.swing.RowSorter.SortKey(1, javax.swing.SortOrder.DESCENDING)); 
         startupKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); 
         sorter_history.setSortKeys(startupKeys);
         
         
         java.util.List<javax.swing.RowSorter.SortKey> reserveSortKeys = new java.util.ArrayList<>();
         reserveSortKeys.add(new javax.swing.RowSorter.SortKey(5, javax.swing.SortOrder.ASCENDING)); 
-        reserveSortKeys.add(new javax.swing.RowSorter.SortKey(0, javax.swing.SortOrder.ASCENDING)); 
+        reserveSortKeys.add(new javax.swing.RowSorter.SortKey(0, javax.swing.SortOrder.DESCENDING)); 
         sorter_reserve.setSortKeys(reserveSortKeys);
         sorter_reserve.sort();
 
@@ -240,12 +257,12 @@ public class Manager extends javax.swing.JFrame {
        
         
         //CHARAC LIMITS (FRONT DESK)
-        setTextFieldLimit(txt_IHcp,11,false);
-        setTextFieldLimit(txt_IHfname,50,true);
-        setTextFieldLimit(txt_IHlname,50,true);
-        setTextFieldLimit(txt_walkinCp,11,false);
-        setTextFieldLimit(txt_walkinFname,50,true);
-        setTextFieldLimit(txt_walkinLname,50,true);
+        setTextFieldLimit(txt_IHcp,11,true);
+        setTextFieldLimit(txt_IHfname,50,false);
+        setTextFieldLimit(txt_IHlname,50,false);
+        setTextFieldLimit(txt_walkinCp,11,true);
+        setTextFieldLimit(txt_walkinFname,50,false);
+        setTextFieldLimit(txt_walkinLname,50,false);
         
         
         // DATES
@@ -405,6 +422,7 @@ public class Manager extends javax.swing.JFrame {
                         txt_empfname.setText(tbl_emp.getModel().getValueAt(modelRow, 2).toString());
                         txt_emplname.setText(tbl_emp.getModel().getValueAt(modelRow, 3).toString());
                         txt_emppass.setText(tbl_emp.getModel().getValueAt(modelRow, 4).toString());
+
                     }
                 }
             }
@@ -442,6 +460,134 @@ public class Manager extends javax.swing.JFrame {
                 }
             }
         });
+        
+        tbl_upcom.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) { 
+                    int row = tbl_upcom.getSelectedRow();
+                    int col = tbl_upcom.getSelectedColumn();
+
+                    if (row != -1 && tbl_upcom.getColumnName(col).equals("PAYMENT_PROOF")) {
+                        String status = tbl_upcom.getValueAt(row, col).toString();
+
+                        if (status.equals("View Receipt")) {
+                            String id = tbl_upcom.getValueAt(row, 0).toString(); // Get the OR_ID
+                            showPaymentProof(id);
+                        } else if (status.equals("N/A")) {
+                            JOptionPane.showMessageDialog(null, "No payment proof required for Walk-ins or In-House reservations.");
+                        }
+                    }
+                }
+            }
+        });
+        
+        tbl_menuList.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int viewRow = tbl_menuList.getSelectedRow();
+                
+                if (viewRow != -1) {
+                    int modelRow = tbl_menuList.convertRowIndexToModel(viewRow);
+                    
+                    if (editingMenuRow == modelRow) {
+                        clearMenuFields(); 
+                    } 
+                    else {
+                        editingMenuRow = modelRow; 
+                        DefaultTableModel model = (DefaultTableModel) tbl_menuList.getModel();
+                        
+                        editingMenuItemId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+                        String category = model.getValueAt(modelRow, 1).toString();
+                        String dishName = model.getValueAt(modelRow, 2).toString();
+                        
+                        //cb_menuCategory.setSelectedItem(category);
+                        txt_dishName.setText(dishName);
+                        
+                        Connect db = new Connect();
+                        db.DoConnect();
+                        try (PreparedStatement pst = db.con.prepareStatement("SELECT IMAGE_DATA FROM DBHOUSE.MENU_ITEMS WHERE ITEM_ID = ?")) {
+                            pst.setInt(1, editingMenuItemId);
+                            ResultSet rs = pst.executeQuery();
+                            
+                            if (rs.next()) {
+                                java.sql.Blob blob = rs.getBlob("IMAGE_DATA");
+                                if (blob != null) {
+                                    byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+                                    javax.swing.ImageIcon icon = new javax.swing.ImageIcon(imageBytes);
+                                    
+                                    java.awt.Image scaled = icon.getImage().getScaledInstance(lbl_imagePreview.getWidth(), lbl_imagePreview.getHeight(), java.awt.Image.SCALE_SMOOTH);
+                                    lbl_imagePreview.setIcon(new javax.swing.ImageIcon(scaled));
+                                    lbl_imagePreview.setText(""); 
+                                } else {
+                                    lbl_imagePreview.setIcon(null);
+                                    lbl_imagePreview.setText("No Image");
+                                }
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        } finally {
+                            try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+                        }
+                        
+                        selectedMenuImage = null; 
+                    }
+                }
+            }
+        });
+        
+        tbl_menuList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int viewRow = tbl_menuList1.getSelectedRow();
+                
+                if (viewRow != -1) {
+                    int modelRow = tbl_menuList1.convertRowIndexToModel(viewRow);
+                    
+                    if (editingPromoRow == modelRow) {
+                        clearPromoFields(); 
+                    } else {
+                        editingPromoRow = modelRow; 
+                        DefaultTableModel model = (DefaultTableModel) tbl_menuList1.getModel();
+                        
+                        editingPromoId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+                        String promoName = model.getValueAt(modelRow, 1).toString();
+                        
+                        txt_dishName1.setText(promoName);
+                        
+                        Connect db = new Connect();
+                        db.DoConnect();
+                        try (PreparedStatement pst = db.con.prepareStatement("SELECT IMAGE_DATA FROM DBHOUSE.PROMO_ITEMS WHERE PROMO_ID = ?")) {
+                            pst.setInt(1, editingPromoId);
+                            ResultSet rs = pst.executeQuery();
+                            
+                            if (rs.next()) {
+                                java.sql.Blob blob = rs.getBlob("IMAGE_DATA");
+                                if (blob != null) {
+                                    byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+                                    javax.swing.ImageIcon icon = new javax.swing.ImageIcon(imageBytes);
+                                    
+                                    java.awt.Image scaled = icon.getImage().getScaledInstance(lbl_imagePreview1.getWidth(), lbl_imagePreview1.getHeight(), java.awt.Image.SCALE_SMOOTH);
+                                    lbl_imagePreview1.setIcon(new javax.swing.ImageIcon(scaled));
+                                    lbl_imagePreview1.setText(""); 
+                                } else {
+                                    lbl_imagePreview1.setIcon(null);
+                                    lbl_imagePreview1.setText("No Image");
+                                }
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        } finally {
+                            try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+                        }
+                        
+                        selectedPromoImage = null; 
+                    }
+                }
+            }
+        });
+        
+        // Don't forget to call this so the table loads when you open Admin!
+        loadPromoTable();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -466,6 +612,8 @@ public class Manager extends javax.swing.JFrame {
         btn_reserve = new javax.swing.JButton();
         btn_walkin = new javax.swing.JButton();
         btn_inhouse = new javax.swing.JButton();
+        btn_menu = new javax.swing.JButton();
+        btn_promos = new javax.swing.JButton();
         pnl_header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         lbl_date = new javax.swing.JTextField();
@@ -479,6 +627,7 @@ public class Manager extends javax.swing.JFrame {
         jLabel37 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
         txt_rsvVIPID = new javax.swing.JTextField();
+        btn_rsrvcomplete = new javax.swing.JButton();
         jLabel39 = new javax.swing.JLabel();
         txt_membFnamersv = new javax.swing.JTextField();
         txt_rsvID = new javax.swing.JTextField();
@@ -525,6 +674,7 @@ public class Manager extends javax.swing.JFrame {
         txt_walkinCp = new javax.swing.JTextField();
         jLabel55 = new javax.swing.JLabel();
         jLabel56 = new javax.swing.JLabel();
+        btn_walkincomplete = new javax.swing.JButton();
         rb_walkinLunch = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         txt_walkinFname = new javax.swing.JTextField();
@@ -554,11 +704,12 @@ public class Manager extends javax.swing.JFrame {
         pnl_upcom = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        btn_upcomConfirm = new javax.swing.JButton();
         date_upcomFrom = new com.toedter.calendar.JDateChooser();
         jLabel31 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
-        date_upcomTo = new com.toedter.calendar.JDateChooser();
         btn_upcomCancel = new javax.swing.JButton();
+        date_upcomTo = new com.toedter.calendar.JDateChooser();
         btn_upcomReset = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         tbl_upcom = new javax.swing.JTable();
@@ -619,6 +770,32 @@ public class Manager extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         tbl_emp = new javax.swing.JTable();
         bg_today3 = new javax.swing.JLabel();
+        pnl_promoedit = new javax.swing.JPanel();
+        jLabel65 = new javax.swing.JLabel();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        tbl_menuList1 = new javax.swing.JTable();
+        jLabel61 = new javax.swing.JLabel();
+        btn_deleteMenuItem1 = new javax.swing.JButton();
+        btn_editMenuItem1 = new javax.swing.JButton();
+        lbl_imagePreview1 = new javax.swing.JLabel();
+        txt_dishName1 = new javax.swing.JTextField();
+        btn_saveMenuItem1 = new javax.swing.JButton();
+        btn_chooseImage1 = new javax.swing.JButton();
+        bg_today9 = new javax.swing.JLabel();
+        pnl_menuedit = new javax.swing.JPanel();
+        cb_menuCategory = new javax.swing.JComboBox<>();
+        jLabel64 = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tbl_menuList = new javax.swing.JTable();
+        jLabel59 = new javax.swing.JLabel();
+        jLabel60 = new javax.swing.JLabel();
+        btn_deleteMenuItem = new javax.swing.JButton();
+        btn_editMenuItem = new javax.swing.JButton();
+        lbl_imagePreview = new javax.swing.JLabel();
+        txt_dishName = new javax.swing.JTextField();
+        btn_saveMenuItem = new javax.swing.JButton();
+        btn_chooseImage = new javax.swing.JButton();
+        bg_today8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -704,7 +881,7 @@ public class Manager extends javax.swing.JFrame {
             }
         });
         btn_emp.addActionListener(this::btn_empActionPerformed);
-        pnl_nav.add(btn_emp, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 140, 30));
+        pnl_nav.add(btn_emp, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 140, 30));
 
         btn_members.setBackground(new java.awt.Color(55, 77, 94));
         btn_members.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
@@ -723,7 +900,7 @@ public class Manager extends javax.swing.JFrame {
             }
         });
         btn_members.addActionListener(this::btn_membersActionPerformed);
-        pnl_nav.add(btn_members, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 140, 30));
+        pnl_nav.add(btn_members, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 140, 30));
 
         btn_navLogout.setBackground(new java.awt.Color(153, 0, 0));
         btn_navLogout.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -791,6 +968,44 @@ public class Manager extends javax.swing.JFrame {
         btn_inhouse.addActionListener(this::btn_inhouseActionPerformed);
         pnl_nav.add(btn_inhouse, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 100, 30));
 
+        btn_menu.setBackground(new java.awt.Color(55, 77, 94));
+        btn_menu.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        btn_menu.setForeground(new java.awt.Color(255, 255, 255));
+        btn_menu.setText("MENU");
+        btn_menu.setBorder(null);
+        btn_menu.setContentAreaFilled(false);
+        btn_menu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_menu.setFocusPainted(false);
+        btn_menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_menuMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_menuMouseExited(evt);
+            }
+        });
+        btn_menu.addActionListener(this::btn_menuActionPerformed);
+        pnl_nav.add(btn_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 140, 30));
+
+        btn_promos.setBackground(new java.awt.Color(55, 77, 94));
+        btn_promos.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        btn_promos.setForeground(new java.awt.Color(255, 255, 255));
+        btn_promos.setText("PROMOS");
+        btn_promos.setBorder(null);
+        btn_promos.setContentAreaFilled(false);
+        btn_promos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_promos.setFocusPainted(false);
+        btn_promos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_promosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_promosMouseExited(evt);
+            }
+        });
+        btn_promos.addActionListener(this::btn_promosActionPerformed);
+        pnl_nav.add(btn_promos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 140, 30));
+
         getContentPane().add(pnl_nav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 580));
 
         pnl_header.setBackground(new java.awt.Color(55, 91, 115));
@@ -819,27 +1034,27 @@ public class Manager extends javax.swing.JFrame {
         pnl_headerLayout.setHorizontalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_headerLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                 .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_headerLayout.createSequentialGroup()
-                        .addGap(181, 181, 181)
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
                         .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lbl_username, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnl_headerLayout.setVerticalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
-                .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnl_headerLayout.createSequentialGroup()
-                        .addComponent(lbl_username)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2))
-                .addGap(23, 23, 23))
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addComponent(lbl_username)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
         );
 
         getContentPane().add(pnl_header, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 740, -1));
@@ -893,6 +1108,16 @@ public class Manager extends javax.swing.JFrame {
         txt_rsvVIPID.addActionListener(this::txt_rsvVIPIDNew_tableActionPerformed);
         pnl_reserve.add(txt_rsvVIPID, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 380, 90, 30));
 
+        btn_rsrvcomplete.setBackground(new java.awt.Color(255, 255, 255));
+        btn_rsrvcomplete.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_rsrvcomplete.setForeground(new java.awt.Color(65, 93, 120));
+        btn_rsrvcomplete.setText("COMPLETE RESERVATION ");
+        btn_rsrvcomplete.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_rsrvcomplete.setContentAreaFilled(false);
+        btn_rsrvcomplete.setFocusPainted(false);
+        btn_rsrvcomplete.addActionListener(this::btn_rsrvcompleteAssign_ButtonActionPerformed);
+        pnl_reserve.add(btn_rsrvcomplete, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 350, 160, 30));
+
         jLabel39.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel39.setForeground(new java.awt.Color(55, 77, 94));
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -921,13 +1146,13 @@ public class Manager extends javax.swing.JFrame {
         txt_rsvPax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_rsvPax.setFocusable(false);
         txt_rsvPax.addActionListener(this::txt_rsvPaxNew_tableActionPerformed);
-        pnl_reserve.add(txt_rsvPax, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 380, 110, 30));
+        pnl_reserve.add(txt_rsvPax, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 380, 110, 30));
 
         jLabel41.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(55, 77, 94));
         jLabel41.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel41.setText("Pax:");
-        pnl_reserve.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 380, 40, 30));
+        pnl_reserve.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 380, 40, 30));
 
         btn_cancel.setBackground(new java.awt.Color(55, 91, 115));
         btn_cancel.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -935,7 +1160,7 @@ public class Manager extends javax.swing.JFrame {
         btn_cancel.setText("CANCEL RESERVATION");
         btn_cancel.setBorder(null);
         btn_cancel.addActionListener(this::btn_cancelActionPerformed);
-        pnl_reserve.add(btn_cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 350, 150, 30));
+        pnl_reserve.add(btn_cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 390, 160, 30));
 
         txt_rsvRemarks.setEditable(false);
         txt_rsvRemarks.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
@@ -953,13 +1178,13 @@ public class Manager extends javax.swing.JFrame {
         txt_rsvTime.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_rsvTime.setFocusable(false);
         txt_rsvTime.addActionListener(this::txt_rsvTimeNew_tableActionPerformed);
-        pnl_reserve.add(txt_rsvTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 350, 110, 30));
+        pnl_reserve.add(txt_rsvTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 110, 30));
 
         jLabel43.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel43.setForeground(new java.awt.Color(55, 77, 94));
         jLabel43.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel43.setText("Time:");
-        pnl_reserve.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, 50, 30));
+        pnl_reserve.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, 40, 30));
 
         search_reserve.addActionListener(this::search_reserveActionPerformed);
         search_reserve.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1145,7 +1370,7 @@ public class Manager extends javax.swing.JFrame {
                 java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1165,7 +1390,6 @@ public class Manager extends javax.swing.JFrame {
             tbl_inhouse.getColumnModel().getColumn(3).setResizable(false);
             tbl_inhouse.getColumnModel().getColumn(4).setResizable(false);
             tbl_inhouse.getColumnModel().getColumn(5).setResizable(false);
-            tbl_inhouse.getColumnModel().getColumn(6).setResizable(false);
         }
 
         pnl_inhouse.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 550, 360));
@@ -1192,12 +1416,12 @@ public class Manager extends javax.swing.JFrame {
         jLabel53.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel53.setForeground(new java.awt.Color(55, 77, 94));
         jLabel53.setText("Last Name:");
-        pnl_walkin.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 110, -1));
+        pnl_walkin.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 140, 110, -1));
 
         jLabel54.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel54.setForeground(new java.awt.Color(55, 77, 94));
         jLabel54.setText("Pax:");
-        pnl_walkin.add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 340, -1, -1));
+        pnl_walkin.add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, -1, -1));
 
         txt_walkinCp.addActionListener(this::txt_walkinCpActionPerformed);
         txt_walkinCp.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1205,28 +1429,38 @@ public class Manager extends javax.swing.JFrame {
                 txt_walkinCpKeyReleased(evt);
             }
         });
-        pnl_walkin.add(txt_walkinCp, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 250, 160, 30));
+        pnl_walkin.add(txt_walkinCp, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 160, 30));
 
         jLabel55.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel55.setForeground(new java.awt.Color(55, 77, 94));
         jLabel55.setText("Time:");
-        pnl_walkin.add(jLabel55, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 290, -1, -1));
+        pnl_walkin.add(jLabel55, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 260, -1, -1));
 
         jLabel56.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel56.setForeground(new java.awt.Color(55, 77, 94));
         jLabel56.setText("CP Num:");
-        pnl_walkin.add(jLabel56, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 230, 80, -1));
+        pnl_walkin.add(jLabel56, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 200, 80, -1));
+
+        btn_walkincomplete.setBackground(new java.awt.Color(255, 255, 255));
+        btn_walkincomplete.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_walkincomplete.setForeground(new java.awt.Color(65, 93, 120));
+        btn_walkincomplete.setText("Complete");
+        btn_walkincomplete.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_walkincomplete.setContentAreaFilled(false);
+        btn_walkincomplete.setFocusPainted(false);
+        btn_walkincomplete.addActionListener(this::btn_walkincompleteAssign_ButtonActionPerformed);
+        pnl_walkin.add(btn_walkincomplete, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 400, 160, 30));
 
         rb_walkinLunch.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         rb_walkinLunch.setForeground(new java.awt.Color(65, 93, 120));
         rb_walkinLunch.setText("Lunch");
         rb_walkinLunch.addActionListener(this::rb_walkinLunchActionPerformed);
-        pnl_walkin.add(rb_walkinLunch, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, -1, -1));
+        pnl_walkin.add(rb_walkinLunch, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 280, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(55, 77, 94));
         jLabel1.setText("First Name:");
-        pnl_walkin.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 110, -1));
+        pnl_walkin.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, 110, -1));
 
         txt_walkinFname.addActionListener(this::txt_walkinFnameActionPerformed);
         txt_walkinFname.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1234,7 +1468,7 @@ public class Manager extends javax.swing.JFrame {
                 txt_walkinFnameKeyReleased(evt);
             }
         });
-        pnl_walkin.add(txt_walkinFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, 160, 30));
+        pnl_walkin.add(txt_walkinFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 100, 160, 30));
 
         btn_walkinadd.setBackground(new java.awt.Color(255, 255, 255));
         btn_walkinadd.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -1244,7 +1478,7 @@ public class Manager extends javax.swing.JFrame {
         btn_walkinadd.setContentAreaFilled(false);
         btn_walkinadd.setFocusPainted(false);
         btn_walkinadd.addActionListener(this::btn_walkinaddAssign_ButtonActionPerformed);
-        pnl_walkin.add(btn_walkinadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 400, 50, 30));
+        pnl_walkin.add(btn_walkinadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 370, 50, 30));
 
         btn_walkinedit.setBackground(new java.awt.Color(255, 255, 255));
         btn_walkinedit.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -1254,7 +1488,7 @@ public class Manager extends javax.swing.JFrame {
         btn_walkinedit.setContentAreaFilled(false);
         btn_walkinedit.setFocusPainted(false);
         btn_walkinedit.addActionListener(this::btn_walkineditAssign_ButtonActionPerformed);
-        pnl_walkin.add(btn_walkinedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 400, 50, 30));
+        pnl_walkin.add(btn_walkinedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 370, 50, 30));
 
         btn_walkindel.setBackground(new java.awt.Color(255, 255, 255));
         btn_walkindel.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -1266,15 +1500,15 @@ public class Manager extends javax.swing.JFrame {
         btn_walkindel.setFocusable(false);
         btn_walkindel.setRequestFocusEnabled(false);
         btn_walkindel.addActionListener(this::btn_walkindelRemove_buttonActionPerformed);
-        pnl_walkin.add(btn_walkindel, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 400, 60, 30));
+        pnl_walkin.add(btn_walkindel, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 370, 60, 30));
 
         spn_walkinpax.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
-        pnl_walkin.add(spn_walkinpax, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 360, 100, 30));
+        pnl_walkin.add(spn_walkinpax, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 330, 100, 30));
 
         rb_walkinDinner.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         rb_walkinDinner.setForeground(new java.awt.Color(65, 93, 120));
         rb_walkinDinner.setText("Dinner");
-        pnl_walkin.add(rb_walkinDinner, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 310, -1, -1));
+        pnl_walkin.add(rb_walkinDinner, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 280, -1, -1));
 
         txt_walkinLname.addActionListener(this::txt_walkinLnameActionPerformed);
         txt_walkinLname.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1282,7 +1516,7 @@ public class Manager extends javax.swing.JFrame {
                 txt_walkinLnameKeyReleased(evt);
             }
         });
-        pnl_walkin.add(txt_walkinLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 180, 160, 30));
+        pnl_walkin.add(txt_walkinLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 160, 30));
 
         search_walkin.addActionListener(this::search_walkinActionPerformed);
         search_walkin.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1301,14 +1535,14 @@ public class Manager extends javax.swing.JFrame {
 
             },
             new String [] {
-                "WI_ID", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX"
+                "WI_ID", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1469,6 +1703,15 @@ public class Manager extends javax.swing.JFrame {
         jLabel12.setText("Search:");
         pnl_upcom.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, 60, 20));
 
+        btn_upcomConfirm.setBackground(new java.awt.Color(55, 77, 94));
+        btn_upcomConfirm.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_upcomConfirm.setForeground(new java.awt.Color(255, 255, 255));
+        btn_upcomConfirm.setText("CONFIRM RSRV");
+        btn_upcomConfirm.setBorder(null);
+        btn_upcomConfirm.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_upcomConfirm.addActionListener(this::btn_upcomConfirmActionPerformed);
+        pnl_upcom.add(btn_upcomConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 420, 120, 30));
+
         date_upcomFrom.setDateFormatString("MM-dd-yy");
         pnl_upcom.add(date_upcomFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 130, -1));
 
@@ -1483,17 +1726,17 @@ public class Manager extends javax.swing.JFrame {
         jLabel32.setText("to");
         pnl_upcom.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, 30, 20));
 
-        date_upcomTo.setDateFormatString("MM-dd-yy");
-        pnl_upcom.add(date_upcomTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 50, 130, -1));
-
         btn_upcomCancel.setBackground(new java.awt.Color(55, 77, 94));
         btn_upcomCancel.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         btn_upcomCancel.setForeground(new java.awt.Color(255, 255, 255));
-        btn_upcomCancel.setText("CANCEL RESERVATION");
+        btn_upcomCancel.setText("CANCEL RSRV");
         btn_upcomCancel.setBorder(null);
         btn_upcomCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_upcomCancel.addActionListener(this::btn_upcomCancelActionPerformed);
-        pnl_upcom.add(btn_upcomCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 420, 150, 30));
+        pnl_upcom.add(btn_upcomCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 420, 110, 30));
+
+        date_upcomTo.setDateFormatString("MM-dd-yy");
+        pnl_upcom.add(date_upcomTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 50, 130, -1));
 
         btn_upcomReset.setBackground(new java.awt.Color(55, 77, 94));
         btn_upcomReset.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -1510,21 +1753,21 @@ public class Manager extends javax.swing.JFrame {
         tbl_upcom.setForeground(new java.awt.Color(55, 77, 94));
         tbl_upcom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null},
-                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null},
-                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null},
-                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null},
-                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null}
+                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null, null},
+                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null, null},
+                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null, null},
+                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null, null},
+                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null, null}
             },
             new String [] {
-                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"
+                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS", "PAYMENT_PROOF"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1546,6 +1789,7 @@ public class Manager extends javax.swing.JFrame {
             tbl_upcom.getColumnModel().getColumn(5).setResizable(false);
             tbl_upcom.getColumnModel().getColumn(6).setResizable(false);
             tbl_upcom.getColumnModel().getColumn(7).setResizable(false);
+            tbl_upcom.getColumnModel().getColumn(8).setResizable(false);
         }
 
         pnl_upcom.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
@@ -1557,7 +1801,7 @@ public class Manager extends javax.swing.JFrame {
         btn_upcomGenerate.setBorder(null);
         btn_upcomGenerate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_upcomGenerate.addActionListener(this::btn_upcomGenerateActionPerformed);
-        pnl_upcom.add(btn_upcomGenerate, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, 140, 30));
+        pnl_upcom.add(btn_upcomGenerate, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, 130, 30));
 
         search_upcom.addActionListener(this::search_upcomActionPerformed);
         search_upcom.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1708,85 +1952,85 @@ public class Manager extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(55, 77, 94));
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel21.setText("VIP ID:  ");
-        pnl_memb.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 350, 50, 30));
+        pnl_memb.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 350, 50, 30));
 
         txt_membLname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membLname.addActionListener(this::txt_membLnameNew_tableActionPerformed);
-        pnl_memb.add(txt_membLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 380, 140, 30));
+        pnl_memb.add(txt_membLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 380, 160, 30));
 
         jLabel25.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(55, 77, 94));
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Last Name:");
-        pnl_memb.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 380, 70, 30));
+        pnl_memb.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 380, 70, 30));
 
         txt_membFname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membFname.addActionListener(this::txt_membFnameNew_tableActionPerformed);
-        pnl_memb.add(txt_membFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, 140, 30));
+        pnl_memb.add(txt_membFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, 160, 30));
 
         txt_membVipId.setEditable(false);
         txt_membVipId.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membVipId.setFocusable(false);
         txt_membVipId.addActionListener(this::txt_membVipIdNew_tableActionPerformed);
-        pnl_memb.add(txt_membVipId, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 90, 30));
+        pnl_memb.add(txt_membVipId, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 90, 30));
 
         jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(55, 77, 94));
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel29.setText("First Name:");
-        pnl_memb.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 350, 70, 30));
+        pnl_memb.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, 70, 30));
 
         txt_membDatereg.setEditable(false);
         txt_membDatereg.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membDatereg.setFocusable(false);
         txt_membDatereg.addActionListener(this::txt_membDateregNew_tableActionPerformed);
-        pnl_memb.add(txt_membDatereg, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 380, 90, 30));
+        pnl_memb.add(txt_membDatereg, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 380, 90, 30));
 
         jLabel30.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(55, 77, 94));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel30.setText("Date Reg:  ");
-        pnl_memb.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 70, 30));
+        pnl_memb.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, 70, 30));
 
         txt_membVipgender.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membVipgender.addActionListener(this::txt_membVipgenderNew_tableActionPerformed);
-        pnl_memb.add(txt_membVipgender, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 410, 90, 30));
+        pnl_memb.add(txt_membVipgender, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 410, 90, 30));
 
         jLabel22.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(55, 77, 94));
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel22.setText("Gender:  ");
-        pnl_memb.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 410, 60, 30));
+        pnl_memb.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 60, 30));
 
         txt_membVipbday.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membVipbday.addActionListener(this::txt_membVipbdayNew_tableActionPerformed);
-        pnl_memb.add(txt_membVipbday, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 410, 140, 30));
+        pnl_memb.add(txt_membVipbday, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 410, 160, 30));
 
         jLabel23.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(55, 77, 94));
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel23.setText("Birthday:");
-        pnl_memb.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 410, 50, 30));
+        pnl_memb.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 410, 50, 30));
 
         txt_membEmail.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membEmail.addActionListener(this::txt_membEmailNew_tableActionPerformed);
-        pnl_memb.add(txt_membEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 380, 140, 30));
+        pnl_memb.add(txt_membEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 380, 160, 30));
 
         jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(55, 77, 94));
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel27.setText("Email:");
-        pnl_memb.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 380, 50, 30));
+        pnl_memb.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 380, 50, 30));
 
         txt_membCpnum.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membCpnum.addActionListener(this::txt_membCpnumNew_tableActionPerformed);
-        pnl_memb.add(txt_membCpnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 350, 140, 30));
+        pnl_memb.add(txt_membCpnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 350, 160, 30));
 
         jLabel28.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(55, 77, 94));
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel28.setText("CP Num:");
-        pnl_memb.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 60, 30));
+        pnl_memb.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 350, 60, 30));
 
         jScrollPane5.setForeground(new java.awt.Color(55, 77, 94));
 
@@ -1867,7 +2111,7 @@ public class Manager extends javax.swing.JFrame {
         btn_accadd.setContentAreaFilled(false);
         btn_accadd.setFocusPainted(false);
         btn_accadd.addActionListener(this::btn_accaddAssign_ButtonActionPerformed);
-        pnl_emp.add(btn_accadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 380, 50, 30));
+        pnl_emp.add(btn_accadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 360, 50, 30));
 
         btn_accedit.setBackground(new java.awt.Color(65, 93, 120));
         btn_accedit.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -1877,7 +2121,7 @@ public class Manager extends javax.swing.JFrame {
         btn_accedit.setContentAreaFilled(false);
         btn_accedit.setFocusPainted(false);
         btn_accedit.addActionListener(this::btn_acceditAssign_ButtonActionPerformed);
-        pnl_emp.add(btn_accedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 380, 50, 30));
+        pnl_emp.add(btn_accedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 360, 50, 30));
 
         txt_emplname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_emplname.addActionListener(this::txt_emplnameNew_tableActionPerformed);
@@ -1903,7 +2147,7 @@ public class Manager extends javax.swing.JFrame {
         btn_accdel.setFocusable(false);
         btn_accdel.setRequestFocusEnabled(false);
         btn_accdel.addActionListener(this::btn_accdelRemove_buttonActionPerformed);
-        pnl_emp.add(btn_accdel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 380, 60, 30));
+        pnl_emp.add(btn_accdel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 360, 60, 30));
 
         jLabel14.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(55, 77, 94));
@@ -1960,11 +2204,17 @@ public class Manager extends javax.swing.JFrame {
         jScrollPane4.setViewportView(tbl_emp);
         if (tbl_emp.getColumnModel().getColumnCount() > 0) {
             tbl_emp.getColumnModel().getColumn(0).setResizable(false);
+            tbl_emp.getColumnModel().getColumn(0).setHeaderValue("EMP_ID");
             tbl_emp.getColumnModel().getColumn(1).setResizable(false);
+            tbl_emp.getColumnModel().getColumn(1).setHeaderValue("USERNAME");
             tbl_emp.getColumnModel().getColumn(2).setResizable(false);
+            tbl_emp.getColumnModel().getColumn(2).setHeaderValue("F_NAME");
             tbl_emp.getColumnModel().getColumn(3).setResizable(false);
+            tbl_emp.getColumnModel().getColumn(3).setHeaderValue("L_NAME");
             tbl_emp.getColumnModel().getColumn(4).setResizable(false);
+            tbl_emp.getColumnModel().getColumn(4).setHeaderValue("PASS");
             tbl_emp.getColumnModel().getColumn(5).setResizable(false);
+            tbl_emp.getColumnModel().getColumn(5).setHeaderValue("ACC_TYPE");
         }
 
         pnl_emp.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 530, 330));
@@ -1975,6 +2225,213 @@ public class Manager extends javax.swing.JFrame {
 
         getContentPane().add(pnl_emp, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
 
+        pnl_promoedit.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_promoedit.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel65.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel65.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel65.setText("PROMOS EDITOR");
+        pnl_promoedit.add(jLabel65, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 390, 50));
+
+        jScrollPane11.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_menuList1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_menuList1.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_menuList1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "PROMO_ID", "PROMO_NAME"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_menuList1.setOpaque(false);
+        jScrollPane11.setViewportView(tbl_menuList1);
+        if (tbl_menuList1.getColumnModel().getColumnCount() > 0) {
+            tbl_menuList1.getColumnModel().getColumn(0).setResizable(false);
+            tbl_menuList1.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        pnl_promoedit.add(jScrollPane11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 480, 330));
+
+        jLabel61.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel61.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel61.setText("Promo Name:");
+        pnl_promoedit.add(jLabel61, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 280, -1, -1));
+
+        btn_deleteMenuItem1.setBackground(new java.awt.Color(65, 93, 120));
+        btn_deleteMenuItem1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_deleteMenuItem1.setForeground(new java.awt.Color(65, 93, 120));
+        btn_deleteMenuItem1.setText("Delete");
+        btn_deleteMenuItem1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_deleteMenuItem1.setContentAreaFilled(false);
+        btn_deleteMenuItem1.setFocusPainted(false);
+        btn_deleteMenuItem1.addActionListener(this::btn_deleteMenuItem1Assign_ButtonActionPerformed);
+        pnl_promoedit.add(btn_deleteMenuItem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 390, 70, 30));
+
+        btn_editMenuItem1.setBackground(new java.awt.Color(65, 93, 120));
+        btn_editMenuItem1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_editMenuItem1.setForeground(new java.awt.Color(65, 93, 120));
+        btn_editMenuItem1.setText("Edit");
+        btn_editMenuItem1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_editMenuItem1.setContentAreaFilled(false);
+        btn_editMenuItem1.setFocusPainted(false);
+        btn_editMenuItem1.addActionListener(this::btn_editMenuItem1Assign_ButtonActionPerformed);
+        pnl_promoedit.add(btn_editMenuItem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 390, 60, 30));
+
+        lbl_imagePreview1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 77, 94)));
+        pnl_promoedit.add(lbl_imagePreview1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 90, 190, 180));
+
+        txt_dishName1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_dishName1.addActionListener(this::txt_dishName1New_tableActionPerformed);
+        pnl_promoedit.add(txt_dishName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 300, 190, 30));
+
+        btn_saveMenuItem1.setBackground(new java.awt.Color(65, 93, 120));
+        btn_saveMenuItem1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_saveMenuItem1.setForeground(new java.awt.Color(65, 93, 120));
+        btn_saveMenuItem1.setText("Save");
+        btn_saveMenuItem1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_saveMenuItem1.setContentAreaFilled(false);
+        btn_saveMenuItem1.setFocusPainted(false);
+        btn_saveMenuItem1.addActionListener(this::btn_saveMenuItem1Assign_ButtonActionPerformed);
+        pnl_promoedit.add(btn_saveMenuItem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 390, 60, 30));
+
+        btn_chooseImage1.setBackground(new java.awt.Color(65, 93, 120));
+        btn_chooseImage1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_chooseImage1.setForeground(new java.awt.Color(65, 93, 120));
+        btn_chooseImage1.setText("Select Image");
+        btn_chooseImage1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_chooseImage1.setContentAreaFilled(false);
+        btn_chooseImage1.setFocusPainted(false);
+        btn_chooseImage1.addActionListener(this::btn_chooseImage1Assign_ButtonActionPerformed);
+        pnl_promoedit.add(btn_chooseImage1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 340, 190, 30));
+
+        bg_today9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
+        bg_today9.setText("Today");
+        pnl_promoedit.add(bg_today9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+
+        getContentPane().add(pnl_promoedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+
+        pnl_menuedit.setForeground(new java.awt.Color(202, 199, 199));
+        pnl_menuedit.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        cb_menuCategory.setBackground(new java.awt.Color(255, 255, 255));
+        cb_menuCategory.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        cb_menuCategory.setForeground(new java.awt.Color(55, 77, 94));
+        cb_menuCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asian", "European", "Latina", "Western", "Grilled", "Salads", "Dessert" }));
+        cb_menuCategory.addActionListener(this::cb_menuCategoryActionPerformed);
+        pnl_menuedit.add(cb_menuCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 110, 190, 30));
+
+        jLabel64.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel64.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel64.setText("MENU EDITOR");
+        pnl_menuedit.add(jLabel64, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 390, 50));
+
+        jScrollPane10.setForeground(new java.awt.Color(55, 77, 94));
+
+        tbl_menuList.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        tbl_menuList.setForeground(new java.awt.Color(55, 77, 94));
+        tbl_menuList.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "ITEM_ID", "CATEGORY", "DISH_NAME"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_menuList.setOpaque(false);
+        jScrollPane10.setViewportView(tbl_menuList);
+        if (tbl_menuList.getColumnModel().getColumnCount() > 0) {
+            tbl_menuList.getColumnModel().getColumn(0).setResizable(false);
+            tbl_menuList.getColumnModel().getColumn(1).setHeaderValue("CATEGORY");
+            tbl_menuList.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        pnl_menuedit.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 480, 330));
+
+        jLabel59.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel59.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel59.setText("Dish Name:");
+        pnl_menuedit.add(jLabel59, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 280, -1, -1));
+
+        jLabel60.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel60.setForeground(new java.awt.Color(55, 77, 94));
+        jLabel60.setText("Category:");
+        pnl_menuedit.add(jLabel60, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 90, -1, -1));
+
+        btn_deleteMenuItem.setBackground(new java.awt.Color(65, 93, 120));
+        btn_deleteMenuItem.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_deleteMenuItem.setForeground(new java.awt.Color(65, 93, 120));
+        btn_deleteMenuItem.setText("Delete");
+        btn_deleteMenuItem.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_deleteMenuItem.setContentAreaFilled(false);
+        btn_deleteMenuItem.setFocusPainted(false);
+        btn_deleteMenuItem.addActionListener(this::btn_deleteMenuItemAssign_ButtonActionPerformed);
+        pnl_menuedit.add(btn_deleteMenuItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 390, 70, 30));
+
+        btn_editMenuItem.setBackground(new java.awt.Color(65, 93, 120));
+        btn_editMenuItem.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_editMenuItem.setForeground(new java.awt.Color(65, 93, 120));
+        btn_editMenuItem.setText("Edit");
+        btn_editMenuItem.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_editMenuItem.setContentAreaFilled(false);
+        btn_editMenuItem.setFocusPainted(false);
+        btn_editMenuItem.addActionListener(this::btn_editMenuItemAssign_ButtonActionPerformed);
+        pnl_menuedit.add(btn_editMenuItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 390, 60, 30));
+
+        lbl_imagePreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(55, 77, 94)));
+        pnl_menuedit.add(lbl_imagePreview, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 190, 120));
+
+        txt_dishName.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txt_dishName.addActionListener(this::txt_dishNameNew_tableActionPerformed);
+        pnl_menuedit.add(txt_dishName, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 300, 190, 30));
+
+        btn_saveMenuItem.setBackground(new java.awt.Color(65, 93, 120));
+        btn_saveMenuItem.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_saveMenuItem.setForeground(new java.awt.Color(65, 93, 120));
+        btn_saveMenuItem.setText("Save");
+        btn_saveMenuItem.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_saveMenuItem.setContentAreaFilled(false);
+        btn_saveMenuItem.setFocusPainted(false);
+        btn_saveMenuItem.addActionListener(this::btn_saveMenuItemAssign_ButtonActionPerformed);
+        pnl_menuedit.add(btn_saveMenuItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 390, 60, 30));
+
+        btn_chooseImage.setBackground(new java.awt.Color(65, 93, 120));
+        btn_chooseImage.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_chooseImage.setForeground(new java.awt.Color(65, 93, 120));
+        btn_chooseImage.setText("Select Image");
+        btn_chooseImage.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_chooseImage.setContentAreaFilled(false);
+        btn_chooseImage.setFocusPainted(false);
+        btn_chooseImage.addActionListener(this::btn_chooseImageAssign_ButtonActionPerformed);
+        pnl_menuedit.add(btn_chooseImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 340, 190, 30));
+
+        bg_today8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgfd.jpg"))); // NOI18N
+        bg_today8.setText("Today");
+        pnl_menuedit.add(bg_today8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 470));
+
+        getContentPane().add(pnl_menuedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 740, 470));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1982,7 +2439,7 @@ public class Manager extends javax.swing.JFrame {
     if (!btn_fdesk.getForeground().equals(new Color(255, 200, 120))) {
         btn_fdesk.setForeground(new Color(255, 200, 120));
     }
-    btn_fdesk.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));       // TODO add your handling code here:
+    btn_fdesk.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));       
     }//GEN-LAST:event_btn_fdeskMouseEntered
 
     private void btn_upcomMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_upcomMouseEntered
@@ -1990,7 +2447,6 @@ public class Manager extends javax.swing.JFrame {
             btn_upcom.setForeground(new Color(255, 200, 120));
         }
         btn_upcom.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-         // TODO add your handling code here:
     }//GEN-LAST:event_btn_upcomMouseEntered
 
     private void btn_fdeskMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_fdeskMouseExited
@@ -2051,136 +2507,7 @@ public class Manager extends javax.swing.JFrame {
         loadHistoryTable(); 
     }//GEN-LAST:event_btn_historyActionPerformed
 
-    private void txt_empusernameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_empusernameNew_tableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_empusernameNew_tableActionPerformed
-
-    private void btn_acceditAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceditAssign_ButtonActionPerformed
-       
-        int viewRow = tbl_emp.getSelectedRow();
-        if (viewRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select an account first.");
-            return;
-        }
-
-        int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
-        String originalUser = tbl_emp.getModel().getValueAt(modelRow, 1).toString(); 
-
-
-        Connect db = new Connect();
-        db.DoConnect();
-
-        try (PreparedStatement pst = db.con.prepareStatement("UPDATE DBHOUSE.EMPACCOUNTS SET USERNAME=?, F_NAME=?, L_NAME=?, PASS=? WHERE USERNAME=?")) {
-            pst.setString(1, txt_empusername.getText().trim());
-            pst.setString(2, txt_empfname.getText().trim());
-            pst.setString(3, txt_emplname.getText().trim());
-            pst.setString(4, txt_emppass.getText().trim());
-            pst.setString(5, originalUser);
-
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Account updated successfully!");
-
-            clearAccFields();
-            loadEmployeeTable(); 
-            db.con.close();
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
-        }
-    }//GEN-LAST:event_btn_acceditAssign_ButtonActionPerformed
-
-    private void btn_accdelRemove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accdelRemove_buttonActionPerformed
-        
-        int viewRow = tbl_emp.getSelectedRow();
-        if (viewRow == -1) {
-            JOptionPane.showMessageDialog(this, "Select an account to delete.");
-            return;
-        }
-
-        int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
-        String userToDelete = tbl_emp.getModel().getValueAt(modelRow, 1).toString(); 
-
-        int confirm = JOptionPane.showConfirmDialog(this, "Delete user: " + userToDelete + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            Connect db = new Connect();
-            db.DoConnect();
-
-            try (PreparedStatement pst = db.con.prepareStatement("DELETE FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME=?")) {
-                pst.setString(1, userToDelete);
-                pst.executeUpdate();
-
-                clearAccFields();
-                loadEmployeeTable();
-                db.con.close();
-
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
-            }
-        }
-    }//GEN-LAST:event_btn_accdelRemove_buttonActionPerformed
-
-    private void search_empaccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_empaccActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_empaccActionPerformed
-
-    private void search_empaccKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_empaccKeyReleased
-        DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
-    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-    tbl_emp.setRowSorter(sorter);
-
-    String text = search_empacc.getText();
-    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
-    }//GEN-LAST:event_search_empaccKeyReleased
-
-    private void txt_emppassNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emppassNew_tableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_emppassNew_tableActionPerformed
-
     
-    private void btn_accaddAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accaddAssign_ButtonActionPerformed
-
-        String user = txt_empusername.getText().trim();
-        String fname = txt_empfname.getText().trim();
-        String lname = txt_emplname.getText().trim();
-        String password = txt_emppass.getText().trim();
-
-        String role = "Front Desk";
-
-        if (user.isEmpty() || fname.isEmpty() || lname.isEmpty() || password.isEmpty() || role.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields.");
-            return;
-        }
-
-        Connect db = new Connect();
-        db.DoConnect();
-
-        try (PreparedStatement pst = db.con.prepareStatement("INSERT INTO DBHOUSE.EMPACCOUNTS (EMP_ID, USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE) VALUES (?, ?, ?, ?, ?, ?)")) {
-
-            String newEmpId = getNextEmpId();
-            pst.setString(1, newEmpId);
-            pst.setString(2, user);
-            pst.setString(3, fname);
-            pst.setString(4, lname);
-            pst.setString(5, password);
-            pst.setString(6, role);
-
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Employee Created! ID: " + newEmpId);
-
-            clearAccFields();
-            loadEmployeeTable();
-            db.con.close();
-
-        } catch (SQLException ex) {
-            if (ex.getSQLState() != null && ex.getSQLState().equals("23505")) {
-                JOptionPane.showMessageDialog(this, "Username '" + user + "' already exists!");
-            } else {
-                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
-            }
-        }
-    }//GEN-LAST:event_btn_accaddAssign_ButtonActionPerformed
-
     private void btn_empMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_empMouseEntered
         if (!btn_emp.getForeground().equals(new Color(255, 200, 120))) {
         btn_emp.setForeground(new Color(255, 200, 120));
@@ -2198,14 +2525,6 @@ public class Manager extends javax.swing.JFrame {
         setActiveButton(btn_emp);
         loadEmployeeTable(); 
     }//GEN-LAST:event_btn_empActionPerformed
-
-    private void txt_empfnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_empfnameNew_tableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_empfnameNew_tableActionPerformed
-
-    private void txt_emplnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emplnameNew_tableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_emplnameNew_tableActionPerformed
 
     private void btn_membersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_membersMouseEntered
         if (!btn_members.getForeground().equals(new Color(255, 200, 120))) {
@@ -2251,14 +2570,6 @@ public class Manager extends javax.swing.JFrame {
     private void txt_empfnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_empname1New_tableActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_empname1New_tableActionPerformed
-
-    private void search_membActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_empacc1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_empacc1ActionPerformed
-
-    private void search_membKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_empacc1KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search_empacc1KeyReleased
 
     private void btn_membersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_emp1MouseEntered
         // TODO add your handling code here:
@@ -2362,8 +2673,8 @@ public class Manager extends javax.swing.JFrame {
             );
 
             for (int i = 0; i < tbl_upcom.getRowCount(); i++) {
-                Object[] row = new Object[tbl_upcom.getColumnCount()];
-                for (int j = 0; j < tbl_upcom.getColumnCount(); j++) {
+               Object[] row = new Object[8]; 
+                for (int j = 0; j < 8; j++) { 
                     row[j] = tbl_upcom.getValueAt(i, j); 
                 }
                 filteredData.addRow(row);
@@ -2514,6 +2825,16 @@ public class Manager extends javax.swing.JFrame {
 
         String id = model.getValueAt(modelRow, 0).toString();
         Object status = model.getValueAt(modelRow, 7);
+        
+        if (status != null) {
+            if (status.toString().equalsIgnoreCase("Cancelled")) {
+                JOptionPane.showMessageDialog(this, "This reservation is already cancelled!");
+                return;
+            } else if (status.toString().equalsIgnoreCase("Completed")) {
+                JOptionPane.showMessageDialog(this, "You cannot cancel a reservation that is already completed!");
+                return; 
+            }
+        }
 
         if (status != null && status.toString().equalsIgnoreCase("Cancelled")) {
             JOptionPane.showMessageDialog(this, "This reservation is already cancelled!");
@@ -2703,20 +3024,23 @@ public class Manager extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tbl_upcom.getModel();
 
         String id = model.getValueAt(modelRow, 0).toString();
-        Object status = model.getValueAt(modelRow, 7); 
-
+        Object status = model.getValueAt(modelRow, 7);
+        
         if (status != null && status.toString().equalsIgnoreCase("Cancelled")) {
             JOptionPane.showMessageDialog(this, "This reservation is already cancelled!");
-            return; 
+            return;
+        } else if (status.toString().equalsIgnoreCase("Completed")) {
+            JOptionPane.showMessageDialog(this, "You cannot cancel a reservation that is already completed!");
+            return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this, 
-                "Are you sure you want to cancel reservation " + id + "?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Are you sure you want to cancel reservation " + id + "?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
             Connect db = new Connect();
             db.DoConnect();
-            
+
             String sql = "";
             if (id.startsWith("IR")) {
                 sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET REMARKS = 'Cancelled' WHERE IR_ID = ?";
@@ -2726,22 +3050,22 @@ public class Manager extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Unknown ID format!");
                 return;
             }
-            
+
             try (PreparedStatement pst = db.con.prepareStatement(sql)) {
                 pst.setString(1, id);
                 pst.executeUpdate();
-                
+
                 JOptionPane.showMessageDialog(this, "Reservation cancelled successfully.");
-                
-                txt_rsvID.setText(""); 
-                txt_rsvVIPID.setText(""); 
+
+                txt_rsvID.setText("");
+                txt_rsvVIPID.setText("");
                 txt_membFnamersv.setText("");
-                txt_membLnamersv.setText(""); 
-                txt_membCPnumrsv.setText(""); 
+                txt_membLnamersv.setText("");
+                txt_membCPnumrsv.setText("");
                 txt_rsvTime.setText("");
-                txt_rsvPax.setText(""); 
+                txt_rsvPax.setText("");
                 txt_rsvRemarks.setText("");
-                
+
                 loadUpcomTable();
                 db.con.close();
             } catch (SQLException e) {
@@ -2750,32 +3074,646 @@ public class Manager extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_upcomCancelActionPerformed
 
+    private void btn_upcomConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_upcomConfirmActionPerformed
+        int selectedRow = tbl_upcom.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a reservation from the table first.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int modelRow = tbl_upcom.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tbl_upcom.getModel();
+
+        String id = model.getValueAt(modelRow, 0).toString();
+        Object currentStatus = model.getValueAt(modelRow, 7);
+
+        if (currentStatus != null) {
+            if (currentStatus.toString().equalsIgnoreCase("Confirmed")) {
+                JOptionPane.showMessageDialog(this, "This reservation is already confirmed.");
+                return;
+            } else if (currentStatus.toString().equalsIgnoreCase("Cancelled")) {
+                JOptionPane.showMessageDialog(this, "You cannot confirm a cancelled reservation.");
+                return;
+            }
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Are you sure you want to confirm reservation " + id + "?", "Confirm Reservation", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+
+            String sql = "";
+            if (id.startsWith("IR")) {
+                sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET REMARKS = 'Confirmed' WHERE IR_ID = ?";
+            } else if (id.startsWith("OR")) {
+                sql = "UPDATE DBHOUSE.ONLINERESERVATIONS SET REMARKS = 'Confirmed' WHERE OR_ID = ?";
+            } else if (id.startsWith("WI")) {
+                sql = "UPDATE DBHOUSE.WALKINDINE SET REMARKS = 'Confirmed' WHERE WI_ID = ?";
+            } else {
+                JOptionPane.showMessageDialog(this, "Unknown ID format!");
+                return;
+            }
+
+            try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+                pst.setString(1, id);
+                int updated = pst.executeUpdate();
+
+                if (updated > 0) {
+                    JOptionPane.showMessageDialog(this, "Reservation confirmed successfully!");
+                    loadUpcomTable(); 
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to confirm. ID not found.");
+                }
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            } finally {
+                try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+            }
+        }
+    }//GEN-LAST:event_btn_upcomConfirmActionPerformed
+
+    private void btn_walkincompleteAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_walkincompleteAssign_ButtonActionPerformed
+        int selectedRow = tbl_walkin.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select a walk-in record from the table first!");
+            return;
+        }
+
+        int modelRow = tbl_walkin.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tbl_walkin.getModel();
+
+        String id = model.getValueAt(modelRow, 0).toString();
+        Object status = model.getValueAt(modelRow, 6); 
+
+        if (status != null && (status.toString().equalsIgnoreCase("Completed") || status.toString().equalsIgnoreCase("Cancelled"))) {
+            JOptionPane.showMessageDialog(this, "This record is already " + status.toString() + ".");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure the reservation is completed?", "Confirm Completion", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+
+            String sql = "UPDATE DBHOUSE.WALKINDINE SET REMARKS = 'Completed' WHERE WI_ID = ?";
+
+            try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+                pst.setString(1, id);
+                pst.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Walk-in marked as completed.");
+                loadWalkinTable();
+                clearWalkinFields();
+                db.con.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btn_walkincompleteAssign_ButtonActionPerformed
+
+    private void btn_rsrvcompleteAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_rsrvcompleteAssign_ButtonActionPerformed
+       int selectedRow = tbl_reserve.getSelectedRow();
+    
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select a reservation from the table first!");
+            return;
+        }
+
+        int modelRow = tbl_reserve.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tbl_reserve.getModel();
+
+        String id = model.getValueAt(modelRow, 0).toString();
+        Object status = model.getValueAt(modelRow, 7); 
+
+        if (status != null && (status.toString().equalsIgnoreCase("Completed") || status.toString().equalsIgnoreCase("Cancelled"))) {
+            JOptionPane.showMessageDialog(this, "This reservation is already " + status.toString() + ".");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure the reservation is completed?", "Confirm Completion", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+
+            String sql = "";
+            if (id.startsWith("IR")) {
+                sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET REMARKS = 'Completed' WHERE IR_ID = ?";
+            } else if (id.startsWith("OR")) {
+                sql = "UPDATE DBHOUSE.ONLINERESERVATIONS SET REMARKS = 'Completed' WHERE OR_ID = ?";
+            } else {
+                JOptionPane.showMessageDialog(this, "Unknown ID format!");
+                return;
+            }
+
+            try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+                pst.setString(1, id);
+                pst.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Reservation marked as completed.");
+                loadReserveTable();
+                clearReserveFields();
+                db.con.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btn_rsrvcompleteAssign_ButtonActionPerformed
+
+    private void search_empaccKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_empaccKeyReleased
+        DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        tbl_emp.setRowSorter(sorter);
+
+        String text = search_empacc.getText();
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+    }//GEN-LAST:event_search_empaccKeyReleased
+
+    private void search_empaccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_empaccActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_empaccActionPerformed
+
+    private void txt_empusernameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_empusernameNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_empusernameNew_tableActionPerformed
+
+    private void txt_empfnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_empfnameNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_empfnameNew_tableActionPerformed
+
+    private void txt_emplnameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emplnameNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_emplnameNew_tableActionPerformed
+
+    private void btn_accaddAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accaddAssign_ButtonActionPerformed
+
+        String user = txt_empusername.getText().trim();
+        String fname = txt_empfname.getText().trim();
+        String lname = txt_emplname.getText().trim();
+        String password = txt_emppass.getText().trim();
+
+        String role = "Front Desk";
+
+        if (user.isEmpty() || fname.isEmpty() || lname.isEmpty() || password.isEmpty() || role.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill all fields.");
+            return;
+        }
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        try (PreparedStatement pst = db.con.prepareStatement("INSERT INTO DBHOUSE.EMPACCOUNTS (EMP_ID, USERNAME, F_NAME, L_NAME, PASS, ACC_TYPE) VALUES (?, ?, ?, ?, ?, ?)")) {
+
+            String newEmpId = getNextEmpId();
+            pst.setString(1, newEmpId);
+            pst.setString(2, user);
+            pst.setString(3, fname);
+            pst.setString(4, lname);
+            pst.setString(5, password);
+            pst.setString(6, role);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Employee Created! ID: " + newEmpId);
+
+            clearAccFields();
+            loadEmployeeTable();
+            db.con.close();
+
+        } catch (SQLException ex) {
+            if (ex.getSQLState() != null && ex.getSQLState().equals("23505")) {
+                JOptionPane.showMessageDialog(this, "Username '" + user + "' already exists!");
+            } else {
+                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btn_accaddAssign_ButtonActionPerformed
+
+    private void btn_acceditAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceditAssign_ButtonActionPerformed
+
+        int viewRow = tbl_emp.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an account first.");
+            return;
+        }
+
+        int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
+        String originalUser = tbl_emp.getModel().getValueAt(modelRow, 1).toString();
+
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        try (PreparedStatement pst = db.con.prepareStatement("UPDATE DBHOUSE.EMPACCOUNTS SET USERNAME=?, F_NAME=?, L_NAME=?, PASS=? WHERE USERNAME=?")) {
+            pst.setString(1, txt_empusername.getText().trim());
+            pst.setString(2, txt_empfname.getText().trim());
+            pst.setString(3, txt_emplname.getText().trim());
+            pst.setString(4, txt_emppass.getText().trim());
+            pst.setString(5, originalUser);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Account updated successfully!");
+
+            clearAccFields();
+            loadEmployeeTable();
+            db.con.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btn_acceditAssign_ButtonActionPerformed
+
+    private void btn_accdelRemove_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accdelRemove_buttonActionPerformed
+
+        int viewRow = tbl_emp.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select an account to delete.");
+            return;
+        }
+
+        int modelRow = tbl_emp.convertRowIndexToModel(viewRow);
+        String userToDelete = tbl_emp.getModel().getValueAt(modelRow, 1).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Delete user: " + userToDelete + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+
+            try (PreparedStatement pst = db.con.prepareStatement("DELETE FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME=?")) {
+                pst.setString(1, userToDelete);
+                pst.executeUpdate();
+
+                clearAccFields();
+                loadEmployeeTable();
+                db.con.close();
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btn_accdelRemove_buttonActionPerformed
+
+    private void txt_emppassNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emppassNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_emppassNew_tableActionPerformed
+
+    private void txt_dishNameNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_dishNameNew_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_dishNameNew_tableActionPerformed
+
+    private void btn_chooseImageAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chooseImageAssign_ButtonActionPerformed
+       javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+    fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Images", "jpg", "png", "jpeg"));
+    
+    if (fileChooser.showOpenDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION) {
+        selectedMenuImage = fileChooser.getSelectedFile();
+        
+        javax.swing.ImageIcon icon = new javax.swing.ImageIcon(selectedMenuImage.getAbsolutePath());
+        java.awt.Image scaled = icon.getImage().getScaledInstance(lbl_imagePreview.getWidth(), lbl_imagePreview.getHeight(), java.awt.Image.SCALE_SMOOTH);
+        lbl_imagePreview.setIcon(new javax.swing.ImageIcon(scaled));
+    }
+    }//GEN-LAST:event_btn_chooseImageAssign_ButtonActionPerformed
+
+    private void btn_saveMenuItemAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveMenuItemAssign_ButtonActionPerformed
+        String category = cb_menuCategory.getSelectedItem().toString();
+    String dishName = txt_dishName.getText().trim();
+    
+    if (dishName.isEmpty() || selectedMenuImage == null) {
+        JOptionPane.showMessageDialog(this, "Please enter a dish name and select an image.", "Incomplete", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    Connect db = new Connect();
+    db.DoConnect();
+
+    try {
+        // 1. Check the 5-item limit
+        String countSql = "SELECT COUNT(*) FROM DBHOUSE.MENU_ITEMS WHERE CATEGORY = ?";
+        PreparedStatement countPst = db.con.prepareStatement(countSql);
+        countPst.setString(1, category);
+        ResultSet rs = countPst.executeQuery();
+
+        String insertSql = "INSERT INTO DBHOUSE.MENU_ITEMS (CATEGORY, DISH_NAME, IMAGE_DATA) VALUES (?, ?, ?)";
+        PreparedStatement insertPst = db.con.prepareStatement(insertSql);
+        insertPst.setString(1, category);
+        insertPst.setString(2, dishName);
+        
+        java.io.FileInputStream fis = new java.io.FileInputStream(selectedMenuImage);
+        insertPst.setBlob(3, fis);
+        
+        insertPst.executeUpdate();
+        JOptionPane.showMessageDialog(this, "Dish added successfully!");
+        
+        txt_dishName.setText("");
+        lbl_imagePreview.setIcon(null);
+        selectedMenuImage = null;
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error saving menu item: " + e.getMessage());
+    }
+    
+    loadMenuTable();
+    }//GEN-LAST:event_btn_saveMenuItemAssign_ButtonActionPerformed
+
+    private void btn_deleteMenuItemAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteMenuItemAssign_ButtonActionPerformed
+        int selectedRow = tbl_menuList.getSelectedRow();
+
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a dish from the table to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int modelRow = tbl_menuList.convertRowIndexToModel(selectedRow);
+    DefaultTableModel model = (DefaultTableModel) tbl_menuList.getModel();
+    
+    String itemId = model.getValueAt(modelRow, 0).toString();
+    String dishName = model.getValueAt(modelRow, 2).toString();
+
+    int confirm = JOptionPane.showConfirmDialog(this, 
+            "Are you sure you want to delete '" + dishName + "' from the menu?", 
+            "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        Connect db = new Connect();
+        db.DoConnect();
+
+        String sql = "DELETE FROM DBHOUSE.MENU_ITEMS WHERE ITEM_ID = ?";
+
+        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+            pst.setString(1, itemId);
+            int rowsAffected = pst.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(this, "Dish deleted successfully.");
+                loadMenuTable(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: Dish not found in the database.");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+        } finally {
+            try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+        }
+    }
+    clearMenuFields();
+    }//GEN-LAST:event_btn_deleteMenuItemAssign_ButtonActionPerformed
+
+    private void btn_menuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menuMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_menuMouseEntered
+
+    private void btn_menuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menuMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_menuMouseExited
+
+    private void btn_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_menuActionPerformed
+        txt_dishName.setVisible(true);
+        switchPanel(pnl_menuedit);
+        setActiveButton(btn_menu);
+        loadMenuTable(); 
+    }//GEN-LAST:event_btn_menuActionPerformed
+
+    private void btn_editMenuItemAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editMenuItemAssign_ButtonActionPerformed
+        if (editingMenuItemId == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a dish from the table to edit.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    String category = cb_menuCategory.getSelectedItem().toString();
+    String dishName = txt_dishName.getText().trim();
+    
+    if (dishName.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Dish name cannot be empty.", "Incomplete", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    Connect db = new Connect();
+    db.DoConnect();
+
+    try {
+        if (selectedMenuImage != null) {
+            String sql = "UPDATE DBHOUSE.MENU_ITEMS SET CATEGORY = ?, DISH_NAME = ?, IMAGE_DATA = ? WHERE ITEM_ID = ?";
+            PreparedStatement pst = db.con.prepareStatement(sql);
+            pst.setString(1, category);
+            pst.setString(2, dishName);
+            
+            java.io.FileInputStream fis = new java.io.FileInputStream(selectedMenuImage);
+            pst.setBlob(3, fis);
+            pst.setInt(4, editingMenuItemId);
+            
+            pst.executeUpdate();
+        } 
+        else {
+            String sql = "UPDATE DBHOUSE.MENU_ITEMS SET CATEGORY = ?, DISH_NAME = ? WHERE ITEM_ID = ?";
+            PreparedStatement pst = db.con.prepareStatement(sql);
+            pst.setString(1, category);
+            pst.setString(2, dishName);
+            pst.setInt(3, editingMenuItemId);
+            
+            pst.executeUpdate();
+        }
+        
+        JOptionPane.showMessageDialog(this, "Dish updated successfully!");
+        
+        txt_dishName.setText("");
+        lbl_imagePreview.setIcon(null);
+        lbl_imagePreview.setText("Image Preview"); 
+        editingMenuItemId = -1;
+        tbl_menuList.clearSelection();
+        
+        loadMenuTable(); 
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error updating menu item: " + e.getMessage());
+    } finally {
+        try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+    }
+    clearMenuFields();
+    }//GEN-LAST:event_btn_editMenuItemAssign_ButtonActionPerformed
+
+    private void cb_menuCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_menuCategoryActionPerformed
+   
+    String selectedCategory = cb_menuCategory.getSelectedItem().toString();
+    
+    if (sorter_menuList != null) {
+        sorter_menuList.setRowFilter(RowFilter.regexFilter("^" + selectedCategory + "$", 1));
+    }
+    
+    clearMenuFields();
+    }//GEN-LAST:event_cb_menuCategoryActionPerformed
+
+    private void btn_deleteMenuItem1Assign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteMenuItem1Assign_ButtonActionPerformed
+        int selectedRow = tbl_menuList1.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a promo from the table to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int modelRow = tbl_menuList1.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tbl_menuList1.getModel();
+        
+        String id = model.getValueAt(modelRow, 0).toString();
+        String promoName = model.getValueAt(modelRow, 1).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(this, 
+                "Are you sure you want to delete promo '" + promoName + "'?", 
+                "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+
+            String sql = "DELETE FROM DBHOUSE.PROMO_ITEMS WHERE PROMO_ID = ?";
+
+            try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+                pst.setString(1, id);
+                pst.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Promo deleted successfully.");
+                loadPromoTable();
+                clearPromoFields();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            } finally {
+                try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+            }
+        }
+    }//GEN-LAST:event_btn_deleteMenuItem1Assign_ButtonActionPerformed
+
+    private void btn_editMenuItem1Assign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editMenuItem1Assign_ButtonActionPerformed
+        int selectedRow = tbl_menuList1.getSelectedRow();
+        if (selectedRow == -1 || editingPromoId == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a promo from the table to edit.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String promoName = txt_dishName1.getText().trim();
+        if (promoName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Promo name cannot be empty.", "Incomplete", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        try {
+            if (selectedPromoImage != null) { 
+                String sql = "UPDATE DBHOUSE.PROMO_ITEMS SET PROMO_NAME = ?, IMAGE_DATA = ? WHERE PROMO_ID = ?";
+                PreparedStatement pst = db.con.prepareStatement(sql);
+                pst.setString(1, promoName);
+                
+                java.io.FileInputStream fis = new java.io.FileInputStream(selectedPromoImage);
+                pst.setBlob(2, fis);
+                pst.setInt(3, editingPromoId);
+                
+                pst.executeUpdate();
+            } else { 
+                String sql = "UPDATE DBHOUSE.PROMO_ITEMS SET PROMO_NAME = ? WHERE PROMO_ID = ?";
+                PreparedStatement pst = db.con.prepareStatement(sql);
+                pst.setString(1, promoName);
+                pst.setInt(2, editingPromoId);
+                
+                pst.executeUpdate();
+            }
+            
+            JOptionPane.showMessageDialog(this, "Promo updated successfully!");
+            loadPromoTable();
+            clearPromoFields();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error updating promo: " + e.getMessage());
+        } finally {
+            try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+        }
+    }//GEN-LAST:event_btn_editMenuItem1Assign_ButtonActionPerformed
+
+    private void txt_dishName1New_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_dishName1New_tableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_dishName1New_tableActionPerformed
+
+    private void btn_saveMenuItem1Assign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveMenuItem1Assign_ButtonActionPerformed
+        String promoName = txt_dishName1.getText().trim();
+        
+        if (promoName.isEmpty() || selectedPromoImage == null) {
+            JOptionPane.showMessageDialog(this, "Please enter a promo name and select an image.", "Incomplete", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        try {
+            String countSql = "SELECT COUNT(*) FROM DBHOUSE.PROMO_ITEMS";
+            PreparedStatement countPst = db.con.prepareStatement(countSql);
+            ResultSet rs = countPst.executeQuery();
+
+            if (rs.next() && rs.getInt(1) >= 2) {
+                JOptionPane.showMessageDialog(this, "Maximum limit of 2 Promos reached! Please delete one first.", "Limit Reached", JOptionPane.ERROR_MESSAGE);
+                db.con.close();
+                return;
+            }
+
+            String insertSql = "INSERT INTO DBHOUSE.PROMO_ITEMS (PROMO_NAME, IMAGE_DATA) VALUES (?, ?)";
+            PreparedStatement insertPst = db.con.prepareStatement(insertSql);
+            insertPst.setString(1, promoName);
+            
+            java.io.FileInputStream fis = new java.io.FileInputStream(selectedPromoImage);
+            insertPst.setBlob(2, fis);
+            
+            insertPst.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Promo added successfully!");
+            
+            loadPromoTable();
+            clearPromoFields();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error saving promo: " + e.getMessage());
+        } finally {
+            try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+        }
+    }//GEN-LAST:event_btn_saveMenuItem1Assign_ButtonActionPerformed
+
+    private void btn_chooseImage1Assign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chooseImage1Assign_ButtonActionPerformed
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Images", "jpg", "png", "jpeg"));
+        
+        if (fileChooser.showOpenDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION) {
+            selectedPromoImage = fileChooser.getSelectedFile();
+            
+            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(selectedPromoImage.getAbsolutePath());
+            java.awt.Image scaled = icon.getImage().getScaledInstance(lbl_imagePreview1.getWidth(), lbl_imagePreview1.getHeight(), java.awt.Image.SCALE_SMOOTH);
+            lbl_imagePreview1.setIcon(new javax.swing.ImageIcon(scaled));
+            lbl_imagePreview1.setText("");
+        }
+    
+    }//GEN-LAST:event_btn_chooseImage1Assign_ButtonActionPerformed
+
+    private void btn_promosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_promosMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_promosMouseEntered
+
+    private void btn_promosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_promosMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_promosMouseExited
+
+    private void btn_promosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_promosActionPerformed
+        
+        switchPanel(pnl_promoedit);
+        setActiveButton(btn_promos);
+        loadPromoTable();
+    }//GEN-LAST:event_btn_promosActionPerformed
+
     //HELPER METHODS
     
     //STYLING, LISTENERS, GETTERS, SORTERS
-    private void setTextFieldLimit(javax.swing.JTextField textField, int limit, boolean alphabetsOnly) {
-        javax.swing.text.AbstractDocument doc = (javax.swing.text.AbstractDocument) textField.getDocument();
-        doc.setDocumentFilter(new javax.swing.text.DocumentFilter() {
-            @Override
-            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
-                    throws javax.swing.text.BadLocationException {
-
-                if (text != null && !text.isEmpty()) {
-                    String regex = alphabetsOnly ? "^[a-zA-Z\\s]+$" : "^\\d+$";
-
-                    if (!text.matches(regex)) {
-                        return; 
-                    }
-                }
-
-                int currentLength = fb.getDocument().getLength();
-                if ((currentLength + text.length() - length) <= limit) {
-                    super.replace(fb, offset, length, text, attrs);
-                }
-            }
-        });
-     }
-    
     private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
         btn.setBorder(null);
@@ -2786,7 +3724,7 @@ public class Manager extends javax.swing.JFrame {
         
 }
     private void setActiveButton(javax.swing.JButton activeBtn) {
-        javax.swing.JButton[] buttons = {btn_fdesk, btn_emp,btn_members, btn_upcom, btn_history, btn_reserve, btn_walkin, btn_inhouse};
+        javax.swing.JButton[] buttons = {btn_fdesk, btn_emp,btn_members, btn_upcom, btn_history, btn_reserve, btn_walkin, btn_inhouse,btn_menu,btn_promos};
 
         for (javax.swing.JButton btn : buttons) {
             btn.setForeground(Color.WHITE);
@@ -2802,6 +3740,8 @@ public class Manager extends javax.swing.JFrame {
         pnl_upcom.setVisible(false);
         pnl_emp.setVisible(false);
         pnl_memb.setVisible(false);
+        pnl_menuedit.setVisible(false);
+        pnl_promoedit.setVisible(false);
         targetPanel.setVisible(true);
     }
     private void styleTableHeaders(javax.swing.JTable... tables) {
@@ -2898,9 +3838,75 @@ public class Manager extends javax.swing.JFrame {
         if (rb_IHdinner.isSelected()) return "DINNER";
             return null;
     }
-   
+    private void setTextFieldLimit(javax.swing.JTextField textField, int limit, boolean numbersOnly) {
+        javax.swing.text.AbstractDocument doc = (javax.swing.text.AbstractDocument) textField.getDocument();
+        doc.setDocumentFilter(new javax.swing.text.DocumentFilter() {
+            @Override
+            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
+                    throws javax.swing.text.BadLocationException {
 
-    // EMP
+                if (numbersOnly && !text.matches("\\d*")) {
+                    return; 
+                }
+
+                int currentLength = fb.getDocument().getLength();
+                if ((currentLength + text.length() - length) <= limit) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+    }
+    
+    
+    private void showPaymentProof(String orId) {
+        Connect db = new Connect();
+        db.DoConnect();
+
+        if (db.con != null) {
+            try (PreparedStatement pst = db.con.prepareStatement("SELECT PAYMENT_PROOF FROM DBHOUSE.ONLINERESERVATIONS WHERE OR_ID = ?")) {
+                pst.setString(1, orId);
+
+                try (ResultSet rs = pst.executeQuery()) {
+                    if (rs.next()) {
+                        java.sql.Blob blob = rs.getBlob("PAYMENT_PROOF");
+
+                        if (blob != null) {
+                            byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+                            javax.swing.ImageIcon icon = new javax.swing.ImageIcon(imageBytes);
+
+                            java.awt.Image img = icon.getImage();
+                            int origW = img.getWidth(null);
+                            int origH = img.getHeight(null);
+
+                            int maxW = 700;
+                            int maxH = 600;
+                            
+                            java.awt.Image displayImage = img;
+
+                            if (origW > maxW || origH > maxH) {
+                                double scale = Math.min((double) maxW / origW, (double) maxH / origH);
+                                int newW = (int) (origW * scale);
+                                int newH = (int) (origH * scale);
+                                displayImage = img.getScaledInstance(newW, newH, java.awt.Image.SCALE_SMOOTH);
+                            }
+
+                            icon = new javax.swing.ImageIcon(displayImage);
+
+                            JOptionPane.showMessageDialog(null, new JLabel(icon), "Payment Screenshot - " + orId, JOptionPane.PLAIN_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Image not found in the database.");
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error loading image: " + e.getMessage());
+            } finally {
+                try { db.con.close(); } catch (SQLException ex) {}
+            }
+        }
+    }
+
+   // EMP
     private void loadEmployeeTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_emp.getModel();
         model.setRowCount(0); 
@@ -2953,7 +3959,7 @@ public class Manager extends javax.swing.JFrame {
 
         Connect db = new Connect();
         db.DoConnect();
-        try (PreparedStatement pst = db.con.prepareStatement("SELECT VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL FROM DBHOUSE.VIPACCOUNTS");
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS FROM DBHOUSE.VIPACCOUNTS");
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 model.addRow(new Object[]{
@@ -2964,7 +3970,8 @@ public class Manager extends javax.swing.JFrame {
                     rs.getString("GENDER"), 
                     rs.getDate("BDAY"), 
                     rs.getString("CP_NUM"), 
-                    rs.getString("EMAIL")
+                    rs.getString("EMAIL"), 
+                    rs.getString("PASS")
                 });
             }
             db.con.close();
@@ -2983,7 +3990,7 @@ public class Manager extends javax.swing.JFrame {
         editingMembRow = -1;
 }
     
-    //HIST
+     //HIST
     private void loadHistoryTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_history.getModel();
         model.setRowCount(0); 
@@ -3072,7 +4079,7 @@ public class Manager extends javax.swing.JFrame {
     }
 
     //UPCOM
-    private void loadUpcomTable() {
+   private void loadUpcomTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_upcom.getModel();
         model.setRowCount(0); 
 
@@ -3080,20 +4087,22 @@ public class Manager extends javax.swing.JFrame {
         db.DoConnect();
 
         if (db.con != null) {
-           String query = 
+            String query = 
                 "SELECT * FROM (" +
-                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
+                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS PAYMENT_PROOF " +
                 "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE >= CURRENT_DATE " + 
                 "UNION ALL " +
-                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
+                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS PAYMENT_PROOF " +
                 "FROM DBHOUSE.WALKINDINE WHERE D_DATE >= CURRENT_DATE " + 
                 "UNION ALL " +
-                "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS " +
+                "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS, " +
+                "CASE WHEN o.PAYMENT_PROOF IS NOT NULL THEN 'View Receipt' ELSE 'N/A' END AS PAYMENT_PROOF " +
                 "FROM DBHOUSE.ONLINERESERVATIONS o " +
                 "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
                 "WHERE o.D_DATE >= CURRENT_DATE " + 
                 ") t " +
                 "ORDER BY D_DATE ASC, CASE WHEN UPPER(D_TIME) = 'LUNCH' THEN 1 ELSE 2 END ASC";
+
             try (PreparedStatement pst = db.con.prepareStatement(query);
                  ResultSet rs = pst.executeQuery()) {
 
@@ -3111,7 +4120,8 @@ public class Manager extends javax.swing.JFrame {
                         rs.getString("CP_NUM"),
                         rs.getString("D_TIME"),
                         rs.getInt("PAX"),
-                        rs.getString("REMARKS")
+                        rs.getString("REMARKS"),
+                        rs.getString("PAYMENT_PROOF") 
                     });
                 }
             } catch (SQLException e) {
@@ -3164,15 +4174,16 @@ public class Manager extends javax.swing.JFrame {
         model.setRowCount(0);
         Connect db = new Connect();
         db.DoConnect();
-        
-        String sql = "SELECT WI_ID, F_NAME, L_NAME, CP_NUM, D_TIME, PAX FROM DBHOUSE.WALKINDINE WHERE D_DATE = CURRENT_DATE";
-        
+
+        String sql = "SELECT WI_ID, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS FROM DBHOUSE.WALKINDINE WHERE D_DATE = CURRENT_DATE";
+
         try (PreparedStatement pst = db.con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 model.addRow(new Object[]{
                     rs.getString("WI_ID"), rs.getString("F_NAME"), rs.getString("L_NAME"),
-                    rs.getString("CP_NUM"), rs.getString("D_TIME"), rs.getInt("PAX")
+                    rs.getString("CP_NUM"), rs.getString("D_TIME"), rs.getInt("PAX"), 
+                    rs.getString("REMARKS") 
                 });
             }
             db.con.close();
@@ -3181,13 +4192,13 @@ public class Manager extends javax.swing.JFrame {
     private void addWalkin() {
         if (txt_walkinFname.getText().trim().isEmpty() || txt_walkinLname.getText().trim().isEmpty() || 
             txt_walkinCp.getText().trim().isEmpty() || getSelectedTime() == null) {
-            JOptionPane.showMessageDialog(this, "Please fill out all fields before adding!", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         String phone = txt_walkinCp.getText().trim();
     if (!phone.startsWith("09") || phone.length() != 11) {
-        JOptionPane.showMessageDialog(this, "Invalid Mobile Number! It must start with '09' and be 11 digits long.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Invalid Mobile Number.", "Validation Error", JOptionPane.WARNING_MESSAGE);
         return;
     }
 
@@ -3202,13 +4213,11 @@ public class Manager extends javax.swing.JFrame {
 
         if (requestedPax > availableSeats) {
             String message = String.format(
-                "Sorry, %d out of %d seats are already reserved for %s today.\n" +
-                "Current Status: (Reserved: %d, Walk-in: %d)\n\n" +
-                "Please change the pax count or advise the customer.",
+                "Sorry, %d out of %d seats are already reserved for %s today.\n" + "Current Status: (Reserved: %d, Walk-in: %d)\n\n" + "Please change the pax count or advise the customer.",
                 totalOccupied, maxCapacity, mealTime, breakdown[0], breakdown[1]
             );
             JOptionPane.showMessageDialog(this, message, "Capacity Reached", JOptionPane.WARNING_MESSAGE);
-            return; // Stops the walk-in from being saved!
+            return; 
         }
 
         Connect db = new Connect();
@@ -3237,7 +4246,7 @@ public class Manager extends javax.swing.JFrame {
             pst.setString(4, txt_walkinFname.getText().trim());
             pst.setString(5, txt_walkinLname.getText().trim());
             pst.setString(6, txt_walkinCp.getText().trim());
-            pst.setString(7, "Going"); 
+            pst.setString(7, "Confirmed"); 
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(this, "Walk-in successfully added.");
@@ -3264,13 +4273,11 @@ public class Manager extends javax.swing.JFrame {
         return;
     }
 
-    // --- SEAT CAPACITY CHECK FOR EDITING START ---
     java.util.Date today = new java.util.Date(); 
     String newTime = getSelectedTime();
     int newPax = (Integer) spn_walkinpax.getValue();
     int maxCapacity = 100;
 
-    // Get the old values from the table before the edit
     DefaultTableModel model = (DefaultTableModel) tbl_walkin.getModel();
     String oldTime = model.getValueAt(editingWalkinRow, 4).toString().trim();
     int oldPax = Integer.parseInt(model.getValueAt(editingWalkinRow, 5).toString());
@@ -3278,8 +4285,6 @@ public class Manager extends javax.swing.JFrame {
     int[] breakdown = getSeatBreakdown(today, newTime);
     int totalOccupied = breakdown[0] + breakdown[1];
 
-    // CRITICAL: If the meal time is the same, subtract their old seats from the occupied 
-    // count so we don't double-count them!
     if (newTime.equalsIgnoreCase(oldTime)) {
         totalOccupied -= oldPax;
     }
@@ -3328,7 +4333,8 @@ public class Manager extends javax.swing.JFrame {
         int modelRow = tbl_walkin.convertRowIndexToModel(viewRow);
         String id = tbl_walkin.getModel().getValueAt(modelRow, 0).toString();
         
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete walk-in record " + id + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete walk-in record " + id 
+                + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
         
         if (confirm == JOptionPane.YES_OPTION) {
             Connect db = new Connect();
@@ -3399,11 +4405,13 @@ public class Manager extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
         String phone = txt_IHcp.getText().trim();
     if (!phone.startsWith("09") || phone.length() != 11) {
         JOptionPane.showMessageDialog(this, "Invalid Mobile Number! It must start with '09' and be 11 digits long.", "Validation Error", JOptionPane.WARNING_MESSAGE);
         return;
     }
+
         java.util.Date selectedDate = dc_inhouse.getDate();
         String mealTime = getSelectedTimeIH();
         int requestedPax = (Integer) spn_inhousepax.getValue();
@@ -3460,7 +4468,7 @@ public class Manager extends javax.swing.JFrame {
             clearInhouseFields();
         } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage()); }
     }
-   private void editInhouse() {
+    private void editInhouse() {
     if (editingInhouseRow == -1) {
         JOptionPane.showMessageDialog(this, "Please select a row first.", "No Selection", JOptionPane.ERROR_MESSAGE);
         return;
@@ -3471,6 +4479,7 @@ public class Manager extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
         return;
     }
+    
     String phone = txt_IHcp.getText().trim();
     if (!phone.startsWith("09") || phone.length() != 11) {
         JOptionPane.showMessageDialog(this, "Invalid Mobile Number! It must start with '09' and be 11 digits long.", "Validation Error", JOptionPane.WARNING_MESSAGE);
@@ -3682,6 +4691,91 @@ public class Manager extends javax.swing.JFrame {
             }
         }
     }
+     
+     private void loadMenuTable() {
+    DefaultTableModel model = (DefaultTableModel) tbl_menuList.getModel();
+    model.setRowCount(0); 
+
+    Connect db = new Connect();
+    db.DoConnect();
+
+    String sql = "SELECT ITEM_ID, CATEGORY, DISH_NAME FROM DBHOUSE.MENU_ITEMS ORDER BY CATEGORY, DISH_NAME";
+
+    try (PreparedStatement pst = db.con.prepareStatement(sql);
+         ResultSet rs = pst.executeQuery()) {
+         
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("ITEM_ID"),
+                rs.getString("CATEGORY"),
+                rs.getString("DISH_NAME")
+            });
+        }
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error loading menu items: " + e.getMessage());
+    } finally {
+        try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+    }
+    cb_menuCategoryActionPerformed(null);
+}
+     private void clearMenuFields() {
+    txt_dishName.setText("");
+    //cb_menuCategory.setSelectedIndex(0); 
+    lbl_imagePreview.setIcon(null);
+    lbl_imagePreview.setText("Image Preview"); 
+    
+    selectedMenuImage = null;
+    editingMenuItemId = -1;
+    editingMenuRow = -1;
+    
+    tbl_menuList.clearSelection();
+}
+     
+     
+     private void loadPromoTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_menuList1.getModel();
+        model.setRowCount(0); 
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        String sql = "SELECT PROMO_ID, PROMO_NAME FROM DBHOUSE.PROMO_ITEMS";
+
+        try (PreparedStatement pst = db.con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+             
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("PROMO_ID"),
+                    rs.getString("PROMO_NAME")
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading promos: " + e.getMessage());
+        } finally {
+            try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+        }
+    }
+
+    private void clearPromoFields() {
+        txt_dishName1.setText("");
+        lbl_imagePreview1.setIcon(null);
+        lbl_imagePreview1.setText("Image Preview"); 
+        
+        selectedPromoImage = null;
+        editingPromoId = -1;
+        editingPromoRow = -1;
+        
+        tbl_menuList1.clearSelection();
+    }
+     
+     
+     
+     
+     
+     
+     
     /**
  * 
      * @param args the command line arguments
@@ -3718,11 +4812,19 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JLabel bg_today5;
     private javax.swing.JLabel bg_today6;
     private javax.swing.JLabel bg_today7;
+    private javax.swing.JLabel bg_today8;
+    private javax.swing.JLabel bg_today9;
     private javax.swing.ButtonGroup bg_walkinTime;
     private javax.swing.JButton btn_accadd;
     private javax.swing.JButton btn_accdel;
     private javax.swing.JButton btn_accedit;
     private javax.swing.JButton btn_cancel;
+    private javax.swing.JButton btn_chooseImage;
+    private javax.swing.JButton btn_chooseImage1;
+    private javax.swing.JButton btn_deleteMenuItem;
+    private javax.swing.JButton btn_deleteMenuItem1;
+    private javax.swing.JButton btn_editMenuItem;
+    private javax.swing.JButton btn_editMenuItem1;
     private javax.swing.JButton btn_emp;
     private javax.swing.JButton btn_fdesk;
     private javax.swing.JButton btn_histGenerate;
@@ -3733,18 +4835,26 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JButton btn_inhousedel;
     private javax.swing.JButton btn_inhouseedit;
     private javax.swing.JButton btn_members;
+    private javax.swing.JButton btn_menu;
     private javax.swing.JButton btn_navLogout;
+    private javax.swing.JButton btn_promos;
     private javax.swing.JButton btn_reserve;
+    private javax.swing.JButton btn_rsrvcomplete;
+    private javax.swing.JButton btn_saveMenuItem;
+    private javax.swing.JButton btn_saveMenuItem1;
     private javax.swing.JButton btn_seatsReset;
     private javax.swing.JButton btn_upcom;
     private javax.swing.JButton btn_upcomCancel;
+    private javax.swing.JButton btn_upcomConfirm;
     private javax.swing.JButton btn_upcomGenerate;
     private javax.swing.JButton btn_upcomReset;
     private javax.swing.JButton btn_walkin;
     private javax.swing.JButton btn_walkinadd;
+    private javax.swing.JButton btn_walkincomplete;
     private javax.swing.JButton btn_walkindel;
     private javax.swing.JButton btn_walkinedit;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cb_menuCategory;
     private com.toedter.calendar.JDateChooser date_historyFrom;
     private com.toedter.calendar.JDateChooser date_historyTo;
     private com.toedter.calendar.JDateChooser date_seats;
@@ -3803,11 +4913,18 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel56;
     private javax.swing.JLabel jLabel57;
     private javax.swing.JLabel jLabel58;
+    private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel60;
+    private javax.swing.JLabel jLabel61;
+    private javax.swing.JLabel jLabel64;
+    private javax.swing.JLabel jLabel65;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -3817,13 +4934,17 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTextField lbl_date;
+    private javax.swing.JLabel lbl_imagePreview;
+    private javax.swing.JLabel lbl_imagePreview1;
     private javax.swing.JLabel lbl_username;
     private javax.swing.JPanel pnl_emp;
     private javax.swing.JPanel pnl_header;
     private javax.swing.JPanel pnl_history;
     private javax.swing.JPanel pnl_inhouse;
     private javax.swing.JPanel pnl_memb;
+    private javax.swing.JPanel pnl_menuedit;
     private javax.swing.JPanel pnl_nav;
+    private javax.swing.JPanel pnl_promoedit;
     private javax.swing.JPanel pnl_reserve;
     private javax.swing.JPanel pnl_today;
     private javax.swing.JPanel pnl_upcom;
@@ -3845,6 +4966,8 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JTable tbl_history;
     private javax.swing.JTable tbl_inhouse;
     private javax.swing.JTable tbl_memb;
+    private javax.swing.JTable tbl_menuList;
+    private javax.swing.JTable tbl_menuList1;
     private javax.swing.JTable tbl_reserve;
     private javax.swing.JTable tbl_seatsDinner;
     private javax.swing.JTable tbl_seatsLunch;
@@ -3853,6 +4976,8 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JTextField txt_IHcp;
     private javax.swing.JTextField txt_IHfname;
     private javax.swing.JTextField txt_IHlname;
+    private javax.swing.JTextField txt_dishName;
+    private javax.swing.JTextField txt_dishName1;
     private javax.swing.JTextField txt_empfname;
     private javax.swing.JTextField txt_emplname;
     private javax.swing.JTextField txt_emppass;
