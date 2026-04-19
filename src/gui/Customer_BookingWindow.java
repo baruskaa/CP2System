@@ -24,7 +24,9 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         
-        dp_date.setMinSelectableDate(new java.util.Date());
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.add(java.util.Calendar.DATE, 1); // Adds one day to today
+        dp_date.setMinSelectableDate(cal.getTime());
 
         java.util.Calendar maxCal = java.util.Calendar.getInstance();
         maxCal.set(java.util.Calendar.YEAR, java.time.LocalDate.now().getYear() + 1); 
@@ -34,7 +36,8 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         
         dp_date.setDate(passedDate);
         
-        SpinnerNumberModel model = new SpinnerNumberModel(passedPax, 1, 50, 1);
+        int safePax = Math.max(1, Math.min(passedPax, 100)); 
+        SpinnerNumberModel model = new SpinnerNumberModel(safePax, 1, 100, 1);
         spn_pax.setModel(model);
         
         cb_time.setSelectedItem(passedTime.toUpperCase());
@@ -102,6 +105,47 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
             }
         }
     }
+    
+    private int[] getSeatBreakdown(java.util.Date date, String time) {
+        int reserved = 0;
+        int walkin = 0;
+        Connect db = new Connect();
+        db.DoConnect();
+
+        if (db.con != null) {
+            String query = 
+                "SELECT " +
+                "  SUM(CASE WHEN source != 'WALKINDINE' THEN PAX ELSE 0 END) AS RESERVED_TOTAL, " +
+                "  SUM(CASE WHEN source = 'WALKINDINE' THEN PAX ELSE 0 END) AS WALKIN_TOTAL " +
+                "FROM (" +
+                "  SELECT 'INHOUSE' as source, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = ? AND D_TIME = ? AND REMARKS != 'Cancelled' " +
+                "  UNION ALL " +
+                "  SELECT 'ONLINE' as source, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE D_DATE = ? AND D_TIME = ? AND REMARKS != 'Cancelled' " +
+                "  UNION ALL " +
+                "  SELECT 'WALKINDINE' as source, PAX FROM DBHOUSE.WALKINDINE WHERE D_DATE = ? AND D_TIME = ? " +
+                ") t";
+
+            try (PreparedStatement pst = db.con.prepareStatement(query)) {
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                for (int i = 1; i <= 5; i += 2) {
+                    pst.setDate(i, sqlDate);
+                    pst.setString(i + 1, time.toUpperCase()); 
+                }
+
+                try (ResultSet rs = pst.executeQuery()) {
+                    if (rs.next()) {
+                        reserved = rs.getInt("RESERVED_TOTAL");
+                        walkin = rs.getInt("WALKIN_TOTAL");
+                    }
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error while checking seats: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                try { db.con.close(); } catch (SQLException ex) {}
+            }
+        }
+        return new int[]{reserved, walkin};
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -130,14 +174,15 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         cb_time.setFont(new java.awt.Font("Century Gothic", 0, 11)); // NOI18N
         cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNCH", "DINNER" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
-        getContentPane().add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 420, 110, 30));
-        getContentPane().add(txt_LName, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 150, 30));
-        getContentPane().add(dp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 420, 120, 30));
-        getContentPane().add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 230, 30));
-        getContentPane().add(txt_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 360, 230, 30));
+        getContentPane().add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 410, 160, 30));
+        getContentPane().add(txt_LName, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 220, 190, 30));
+        getContentPane().add(dp_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 410, 170, 30));
+        getContentPane().add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 220, 220, 30));
+        getContentPane().add(txt_num, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 230, 30));
 
         spn_pax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(spn_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 420, 80, 30));
+        spn_pax.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        getContentPane().add(spn_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 410, 120, 30));
 
         btn_topay.setBackground(new java.awt.Color(57, 77, 94));
         btn_topay.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -145,18 +190,19 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         btn_topay.setText("Proceed to Payment");
         btn_topay.setBorder(null);
         btn_topay.addActionListener(this::btn_topayActionPerformed);
-        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 460, 170, 30));
+        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 480, 170, 30));
 
         txt_FName.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 240, 160, 30));
+        getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 190, 30));
 
         btn_backhomepage.setBackground(new java.awt.Color(255, 255, 255));
         btn_backhomepage.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         btn_backhomepage.setForeground(new java.awt.Color(23, 57, 86));
         btn_backhomepage.setText("<");
+        btn_backhomepage.setBorder(null);
         btn_backhomepage.setBorderPainted(false);
         btn_backhomepage.addActionListener(this::btn_backhomepageActionPerformed);
-        getContentPane().add(btn_backhomepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, -1, 20));
+        getContentPane().add(btn_backhomepage, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, 20));
 
         booking_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BOOKING.png"))); // NOI18N
         getContentPane().add(booking_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
@@ -200,10 +246,29 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Please enter a valid phone number!");
                 return;
             }
+            
+           
+            int maxCapacity = 100;
+            int[] breakdown = getSeatBreakdown(utilDate, mealType);
+            int totalOccupied = breakdown[0] + breakdown[1]; 
+            int availableSeats = maxCapacity - totalOccupied;
+
+            if (pax > availableSeats) {
+                String message = String.format(
+                    "Sorry, %d out of %d seats are already reserved for %s on that date.\n" +
+                    "Current Status: (Reserved: %d, Walk-in: %d)\n\n" +
+                    "Please choose a different date, time, or change your pax count.",
+                    totalOccupied, maxCapacity, mealType, breakdown[0], breakdown[1]
+                );
+
+                JOptionPane.showMessageDialog(this, message, "Capacity Reached", JOptionPane.WARNING_MESSAGE);
+                return; // Stops the process so they can't go to the payment screen!
+            }
+
 
             Customer_BookingPayment paymentWindow = new Customer_BookingPayment(this, firstName, lastName, email, phone, utilDate, mealType, pax);
             paymentWindow.setVisible(true);
-            this.setVisible(false); // hide this window
+            this.setVisible(false); 
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());

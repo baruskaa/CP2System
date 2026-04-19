@@ -19,12 +19,13 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
     private String fName, lName, email, phone, mealType, paymentMethod, payerName, ewalletNum, cardNum;
     private java.util.Date bookingDate;
     private int pax;
+    private java.io.File selectedReceiptFile;
     
     
     public Customer_BookingConfirmation(JFrame previousPaymentWindow, String fName, String lName, String email, 
                                         String phone, java.util.Date bookingDate, String mealType, int pax, 
                                         String paymentMethod, String payerName, String ewalletNum, 
-                                        String cardNum) {
+                                        String cardNum,java.io.File receiptFile) {
         
         this.previousPaymentWindow = previousPaymentWindow;
         this.fName = fName;
@@ -38,6 +39,7 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         this.payerName = payerName;
         this.ewalletNum = ewalletNum;
         this.cardNum = cardNum;
+        this.selectedReceiptFile = receiptFile;
         
         initComponents();
         setLocationRelativeTo(null);
@@ -111,42 +113,43 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
         btn_confirm.setText("Confirm");
         btn_confirm.setBorder(null);
         btn_confirm.addActionListener(this::btn_confirmActionPerformed);
-        getContentPane().add(btn_confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 460, 90, 30));
+        getContentPane().add(btn_confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 480, 90, 30));
 
-        lbl_name.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, 140, 20));
+        lbl_name.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 200, 30));
 
-        lbl_phonenum.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_phonenum, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 220, 130, 20));
+        lbl_phonenum.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_phonenum, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 180, 190, 30));
 
-        lbl_email.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 220, 150, 20));
+        lbl_email.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 180, 200, 30));
 
-        lbl_rsvdate.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_rsvdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 110, 20));
+        lbl_rsvdate.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_rsvdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 160, 30));
 
-        lbl_rsvtime.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_rsvtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 310, 100, 20));
+        lbl_rsvtime.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_rsvtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 290, 170, 30));
 
-        lbl_pax.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 310, 50, 20));
+        lbl_pax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_pax, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 290, 130, 30));
 
-        lbl_paymentmethod.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_paymentmethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 400, 100, 20));
+        lbl_paymentmethod.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_paymentmethod, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 400, 140, 30));
 
-        lbl_payername.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_payername, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 400, 100, 20));
+        lbl_payername.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_payername, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 400, 190, 30));
 
-        lbl_accnum.setFont(new java.awt.Font("Century Gothic", 0, 10)); // NOI18N
-        getContentPane().add(lbl_accnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 400, 130, 20));
+        lbl_accnum.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        getContentPane().add(lbl_accnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 400, 210, 30));
 
         btn_backpayment.setBackground(new java.awt.Color(255, 255, 255));
         btn_backpayment.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         btn_backpayment.setForeground(new java.awt.Color(23, 57, 86));
         btn_backpayment.setText("<");
+        btn_backpayment.setBorder(null);
         btn_backpayment.setBorderPainted(false);
         btn_backpayment.addActionListener(this::btn_backpaymentActionPerformed);
-        getContentPane().add(btn_backpayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, -1));
+        getContentPane().add(btn_backpayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, -1));
 
         confirmation_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/CONFIRMATION.png"))); // NOI18N
         getContentPane().add(confirmation_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
@@ -179,14 +182,21 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
 
                 String newOrId = getNextORId(con);
 
-                String insertSql = "INSERT INTO DBHOUSE.ONLINERESERVATIONS (OR_ID, VIP_ID, D_DATE, D_TIME, PAX, REMARKS) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertSql = "INSERT INTO DBHOUSE.ONLINERESERVATIONS (OR_ID, VIP_ID, D_DATE, D_TIME, PAX, REMARKS, PAYMENT_PROOF) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement pstInsert = con.prepareStatement(insertSql)) {
                     pstInsert.setString(1, newOrId);
                     pstInsert.setString(2, vipId);
                     pstInsert.setDate(3, new java.sql.Date(bookingDate.getTime())); 
                     pstInsert.setString(4, mealType); 
                     pstInsert.setInt(5, pax);
-                    pstInsert.setString(6, "Going"); 
+                    pstInsert.setString(6, "Processing"); 
+                    
+                    if (selectedReceiptFile != null) {
+                        java.io.FileInputStream fis = new java.io.FileInputStream(selectedReceiptFile);
+                        pstInsert.setBlob(7, fis);
+                    } else {
+                        pstInsert.setNull(7, java.sql.Types.BLOB); 
+                    }
 
                     int rowsAffected = pstInsert.executeUpdate();
                     
@@ -199,8 +209,8 @@ public class Customer_BookingConfirmation extends javax.swing.JFrame {
                     }
                 }
 
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
                 ex.printStackTrace();
             }
         }

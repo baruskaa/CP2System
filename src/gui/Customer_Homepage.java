@@ -32,7 +32,9 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_navHome.setForeground(new Color(255, 200, 120));
         
         
-        dc_date.setMinSelectableDate(new java.util.Date());
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.add(java.util.Calendar.DATE, 1); 
+        dc_date.setMinSelectableDate(cal.getTime());
 
         java.util.Calendar maxCal = java.util.Calendar.getInstance();
         maxCal.set(java.util.Calendar.YEAR, java.time.LocalDate.now().getYear() + 1); 
@@ -77,17 +79,17 @@ public class Customer_Homepage extends javax.swing.JFrame {
 
         dc_date.setBackground(new java.awt.Color(255, 255, 255));
         dc_date.setDateFormatString("MM-dd-yy");
-        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 410, 140, 30));
+        jPanel1.add(dc_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 140, 30));
 
         sp_guest.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         sp_guest.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
-        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 90, 30));
+        jPanel1.add(sp_guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 100, 30));
 
         cb_time.setBackground(new java.awt.Color(255, 255, 255));
         cb_time.setForeground(new java.awt.Color(255, 255, 255));
-        cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lunch", "Dinner" }));
+        cb_time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNCH", "DINNER" }));
         cb_time.addActionListener(this::cb_timeActionPerformed);
-        jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 410, 100, 30));
+        jPanel1.add(cb_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 410, 130, 30));
 
         btn_bookNow.setBackground(new java.awt.Color(153, 0, 0));
         btn_bookNow.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -101,7 +103,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_bookNow.addActionListener(this::btn_bookNowActionPerformed);
         jPanel1.add(btn_bookNow, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 400, 100, 30));
 
-        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bgRevised.png"))); // NOI18N
+        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bghomepage.png"))); // NOI18N
         bg_homepage.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         bg_homepage.setMaximumSize(new java.awt.Dimension(760, 580));
         bg_homepage.setMinimumSize(new java.awt.Dimension(760, 580));
@@ -295,16 +297,43 @@ public class Customer_Homepage extends javax.swing.JFrame {
     private void btn_bookNowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bookNowActionPerformed
       
         java.util.Date selectedDate = dc_date.getDate();
-        int pax = (Integer) sp_guest.getValue();
-        String mealTime = cb_time.getSelectedItem().toString();
 
-        if (selectedDate == null) {
-            JOptionPane.showMessageDialog(this, "Please select a date first.");
-            return;
-        }
+       if (selectedDate == null) {
+           JOptionPane.showMessageDialog(this, "Please select a date first.");
+           return;
+       }
 
-        new Customer_BookingWindow(selectedDate, pax, mealTime).setVisible(true);
-        this.dispose();
+       int requestedPax;
+       try {
+           requestedPax = (Integer) sp_guest.getValue();
+       } catch (Exception e) {
+           requestedPax = 1;
+       }
+
+       if (requestedPax < 1) requestedPax = 1;
+
+       String mealTime = cb_time.getSelectedItem().toString().toUpperCase(); 
+       int maxCapacity = 100;
+
+       int[] breakdown = getSeatBreakdown(selectedDate, mealTime);
+       int totalOccupied = breakdown[0] + breakdown[1]; 
+       int availableSeats = maxCapacity - totalOccupied;
+
+       System.out.println("Checking: " + mealTime + " | Occupied: " + totalOccupied + " | Available: " + availableSeats);
+
+       if (requestedPax > availableSeats) {
+           String message = String.format(
+               "Sorry, %d out of %d seats are already reserved for %s on that date.\n" +
+               "Current Status: (Reserved: %d, Walk-in: %d)\n\n" +
+               "Please choose a different date or change your pax count.",
+               totalOccupied, maxCapacity, mealTime, breakdown[0], breakdown[1]
+           );
+
+           JOptionPane.showMessageDialog(this, message, "Capacity Reached", JOptionPane.WARNING_MESSAGE);
+       } else {
+           new Customer_BookingWindow(selectedDate, requestedPax, mealTime).setVisible(true);
+           this.dispose();
+       }
     }//GEN-LAST:event_btn_bookNowActionPerformed
 
     private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
@@ -491,6 +520,86 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn.setOpaque(true);
         btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
+    
+    private int getOccupiedSeats(java.util.Date date, String time) {
+    int occupied = 0;
+    Connect db = new Connect();
+    db.DoConnect();
+
+    if (db.con != null) {
+        String query = 
+            "SELECT SUM(PAX) AS TOTAL_OCCUPIED FROM (" +
+            "  SELECT PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = ? AND D_TIME = ? AND REMARKS != 'Cancelled' " +
+            "  UNION ALL " +
+            "  SELECT PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE D_DATE = ? AND D_TIME = ? AND REMARKS != 'Cancelled' " +
+            "  UNION ALL " +
+            "  SELECT PAX FROM DBHOUSE.WALKINDINE WHERE D_DATE = ? AND D_TIME = ? " +
+            ") t";
+
+        try (PreparedStatement pst = db.con.prepareStatement(query)) {
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            
+            pst.setDate(1, sqlDate);
+            pst.setString(2, time);
+            pst.setDate(3, sqlDate);
+            pst.setString(4, time);
+            pst.setDate(5, sqlDate);
+            pst.setString(6, time);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    occupied = rs.getInt("TOTAL_OCCUPIED");
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+        } finally {
+            try { db.con.close(); } catch (SQLException ex) { /* ignored */ }
+        }
+    }
+    return occupied;
+}
+    
+    private int[] getSeatBreakdown(java.util.Date date, String time) {
+    int reserved = 0;
+    int walkin = 0;
+    Connect db = new Connect();
+    db.DoConnect();
+
+    if (db.con != null) {
+        String query = 
+            "SELECT " +
+            "  SUM(CASE WHEN source != 'WALKINDINE' THEN PAX ELSE 0 END) AS RESERVED_TOTAL, " +
+            "  SUM(CASE WHEN source = 'WALKINDINE' THEN PAX ELSE 0 END) AS WALKIN_TOTAL " +
+            "FROM (" +
+            "  SELECT 'INHOUSE' as source, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = ? AND D_TIME = ? AND REMARKS != 'Cancelled' " +
+            "  UNION ALL " +
+            "  SELECT 'ONLINE' as source, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE D_DATE = ? AND D_TIME = ? AND REMARKS != 'Cancelled' " +
+            "  UNION ALL " +
+            "  SELECT 'WALKINDINE' as source, PAX FROM DBHOUSE.WALKINDINE WHERE D_DATE = ? AND D_TIME = ? " +
+            ") t";
+
+        try (PreparedStatement pst = db.con.prepareStatement(query)) {
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            for (int i = 1; i <= 5; i += 2) {
+                pst.setDate(i, sqlDate);
+                pst.setString(i + 1, time);
+            }
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    reserved = rs.getInt("RESERVED_TOTAL");
+                    walkin = rs.getInt("WALKIN_TOTAL");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+        } finally {
+            try { db.con.close(); } catch (SQLException ex) {}
+        }
+    }
+    return new int[]{reserved, walkin};
+}
     
     /**
      * @param args the command line arguments

@@ -5,6 +5,11 @@
 package gui;
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import img.PromoItemPanel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.awt.FlowLayout;
 /**
  *
  * @author caloy
@@ -26,6 +31,8 @@ public class Customer_DineClub extends javax.swing.JFrame {
         
         makeFlatButton(btn_navReservations);
         makeFlatButton(btn_navLogout);
+        fetchAndDisplayPromos();
+        
     }
     
     private void makeFlatButton(javax.swing.JButton btn) {
@@ -34,6 +41,42 @@ public class Customer_DineClub extends javax.swing.JFrame {
         btn.setContentAreaFilled(false);
         btn.setOpaque(true);
         btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }
+    
+    private void fetchAndDisplayPromos() {
+        pnl_promos.removeAll(); 
+        
+        pnl_promos.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+        pnl_promos.setOpaque(false); 
+
+        Connect db = new Connect();
+        db.DoConnect();
+
+        String sql = "SELECT PROMO_NAME, IMAGE_DATA FROM DBHOUSE.PROMO_ITEMS";
+        
+        try (PreparedStatement pst = db.con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            int promoCount = 0; 
+
+            while (rs.next() && promoCount < 2) {
+                String promoName = rs.getString("PROMO_NAME");
+                java.sql.Blob imageBlob = rs.getBlob("IMAGE_DATA");
+
+                PromoItemPanel itemPanel = new PromoItemPanel(promoName, imageBlob);
+                
+                pnl_promos.add(itemPanel);
+                promoCount++; 
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error fetching promos: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try { if (db.con != null) db.con.close(); } catch (SQLException ex) {}
+        }
+
+        pnl_promos.revalidate();
+        pnl_promos.repaint();
     }
 
     /**
@@ -45,11 +88,7 @@ public class Customer_DineClub extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlMain = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
         pnl_header = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         lbl_username = new javax.swing.JLabel();
@@ -64,64 +103,11 @@ public class Customer_DineClub extends javax.swing.JFrame {
         btn_navReservations = new javax.swing.JButton();
         btn_navLogout = new javax.swing.JButton();
         btn_navProf = new javax.swing.JButton();
+        pnl_promos = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
-
-        pnlMain.setBackground(new java.awt.Color(88, 119, 144));
-        pnlMain.setName(""); // NOI18N
-
-        jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("GRADUATION");
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel7MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel7MouseExited(evt);
-            }
-        });
-
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("SUMMER");
-        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel6MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel6MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel6MouseExited(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
-        pnlMain.setLayout(pnlMainLayout);
-        pnlMainLayout.setHorizontalGroup(
-            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-        pnlMainLayout.setVerticalGroup(
-            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel6)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -133,8 +119,6 @@ public class Customer_DineClub extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dineclub2_1_598x432.png"))); // NOI18N
 
         pnl_header.setBackground(new java.awt.Color(55, 91, 115));
         pnl_header.setMaximumSize(new java.awt.Dimension(681, 115));
@@ -327,14 +311,14 @@ public class Customer_DineClub extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(pnl_nav1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnl_header, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(pnl_header, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(pnl_promos, javax.swing.GroupLayout.PREFERRED_SIZE, 726, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
@@ -343,10 +327,10 @@ public class Customer_DineClub extends javax.swing.JFrame {
                 .addComponent(pnl_header, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(6, 6, 6)
+                        .addComponent(pnl_promos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(pnl_nav1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -354,30 +338,6 @@ public class Customer_DineClub extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-            jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/summer2_598x432.png")));
-    }//GEN-LAST:event_jLabel6MouseClicked
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-            jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/graduation2_598x432.png")));
-    }//GEN-LAST:event_jLabel7MouseClicked
-
-    private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
-        jLabel6.setForeground(Color.YELLOW);
-    }//GEN-LAST:event_jLabel6MouseEntered
-
-    private void jLabel6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseExited
-        jLabel6.setForeground(Color.WHITE);
-    }//GEN-LAST:event_jLabel6MouseExited
-
-    private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
-        jLabel7.setForeground(Color.YELLOW);
-    }//GEN-LAST:event_jLabel7MouseEntered
-
-    private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseExited
-        jLabel7.setForeground(Color.WHITE);
-    }//GEN-LAST:event_jLabel7MouseExited
 
     private void btn_navAboutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_navAboutMouseEntered
         if (!btn_navAbout.getForeground().equals(new Color(255, 200, 120))) {
@@ -537,21 +497,13 @@ public class Customer_DineClub extends javax.swing.JFrame {
     private javax.swing.JButton btn_navMenu;
     private javax.swing.JButton btn_navProf;
     private javax.swing.JButton btn_navReservations;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lbl_username;
-    private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnl_header;
     private javax.swing.JPanel pnl_nav1;
+    private javax.swing.JPanel pnl_promos;
     // End of variables declaration//GEN-END:variables
-public void switchPanel(javax.swing.JPanel panel) {
-    pnlMain.removeAll();
-    pnlMain.add(panel);
-    pnlMain.repaint();
-    pnlMain.revalidate();
-}
+
 }

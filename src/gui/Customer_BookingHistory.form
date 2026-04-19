@@ -204,7 +204,7 @@
                   <Color blue="5e" green="4d" red="37" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="5">
+                  <Table columnCount="5" rowCount="5">
                     <Column editable="false" title="REFERENCE NUMBER" type="java.lang.String"/>
                     <Column editable="false" title="DATE" type="java.lang.Object">
                       <Data value="03-26-26"/>
@@ -221,10 +221,16 @@
                       <Data value="6"/>
                       <Data value="7"/>
                     </Column>
+                    <Column editable="false" title="REMARKS" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>

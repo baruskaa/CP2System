@@ -467,7 +467,6 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_profGenderActionPerformed
 
     private void btn_profSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_profSaveActionPerformed
-           // 1. Capture the NEW data from the text fields
         String newFName = txt_profFirstName.getText();
         String newLName = txt_profLastName.getText();
         String newEmail = txt_profEmail.getText();
@@ -484,15 +483,13 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
             pst.setString(3, newEmail);
             pst.setString(4, newCPNum);
             pst.setString(5, newPass);
-            pst.setString(6, UserSession.loggedInEmail); // The "Where" clause uses the session email
+            pst.setString(6, UserSession.loggedInEmail); 
 
             int rowsAffected = pst.executeUpdate();
 
             if (rowsAffected > 0) {
                 UserSession.loggedInEmail = newEmail; 
-
                 javax.swing.JOptionPane.showMessageDialog(this, "Profile updated successfully!");
-
             }
 
         } catch (java.sql.SQLException e) {
@@ -730,6 +727,7 @@ public class Customer_AcctProfile extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
     private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
         btn.setBorder(null);

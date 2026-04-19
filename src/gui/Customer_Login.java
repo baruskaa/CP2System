@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.text.DocumentFilter;
 
 /**
  *
@@ -32,9 +33,33 @@ public class Customer_Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         
         makeFlatButton(btn_login);
-        makeFlatButton(btn_createSignup);
+        makeFlatButton(btn_termsSignup);
+        
+        makeFlatButton(btn_createNext);
         dc_createBday.setVisible(false);
+        
+        setTextFieldLimit(txt_createNumber, 11, false);
+
+        setTextFieldLimit(txt_createFirstName, 50, true);
+
+        setTextFieldLimit(txt_createLastName, 50, true);
+        
+        clearAllValidationMessages();
     }
+    
+    /**
+     * Helper method to clear (but keep visible) all validation JLabels.
+     * Use this instead of setVisible(false) to prevent layout shifts.
+     */
+    private void clearAllValidationMessages() {
+        lbl_fnameValidation.setText(" ");
+        lbl_lnameValidation.setText(" ");
+        lbl_bdayValidation.setText(" ");
+        lbl_emailValidation.setText(" ");
+        lbl_CPnumValidation1.setText(" ");
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +70,10 @@ public class Customer_Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        imagePaneltermscondi1 = new img.ImagePaneltermscondi();
+        btn_termsSignup = new javax.swing.JButton();
+        chk_agree = new javax.swing.JCheckBox();
+        btn_back = new javax.swing.JLabel();
         imagePanelwelcome1 = new img.ImagePanelwelcome();
         btn_emplogin1 = new javax.swing.JLabel();
         chk_loginShowPass = new javax.swing.JCheckBox();
@@ -60,14 +89,12 @@ public class Customer_Login extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         txt_createFirstName = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        btn_createSignup = new javax.swing.JButton();
         btn_lcreateLogin = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         txt_createEmail = new javax.swing.JTextField();
         txt_createLastName = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        txt_createNumber = new javax.swing.JFormattedTextField();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         cb_createGender = new javax.swing.JComboBox<>();
@@ -75,6 +102,13 @@ public class Customer_Login extends javax.swing.JFrame {
         dc_createBday = new com.toedter.calendar.JDateChooser();
         chk_createShowPass = new javax.swing.JCheckBox();
         jLabel18 = new javax.swing.JLabel();
+        lbl_fnameValidation = new javax.swing.JLabel();
+        lbl_lnameValidation = new javax.swing.JLabel();
+        lbl_bdayValidation = new javax.swing.JLabel();
+        lbl_emailValidation = new javax.swing.JLabel();
+        lbl_CPnumValidation1 = new javax.swing.JLabel();
+        txt_createNumber = new javax.swing.JTextField();
+        btn_createNext = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("The House Of 7");
@@ -83,6 +117,60 @@ public class Customer_Login extends javax.swing.JFrame {
         setResizable(false);
         setSize(new java.awt.Dimension(900, 580));
         getContentPane().setLayout(null);
+
+        btn_termsSignup.setBackground(new java.awt.Color(47, 74, 91));
+        btn_termsSignup.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_termsSignup.setForeground(new java.awt.Color(238, 238, 238));
+        btn_termsSignup.setText("SIGN UP");
+        btn_termsSignup.setMaximumSize(new java.awt.Dimension(293, 26));
+        btn_termsSignup.setMinimumSize(new java.awt.Dimension(293, 26));
+        btn_termsSignup.addActionListener(this::btn_termsSignupActionPerformed);
+
+        chk_agree.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        chk_agree.setForeground(new java.awt.Color(47, 74, 91));
+        chk_agree.setText("   I Agree to the Terms & Conditions");
+
+        btn_back.setBackground(new java.awt.Color(204, 204, 204));
+        btn_back.setFont(new java.awt.Font("Cooper Black", 1, 24)); // NOI18N
+        btn_back.setForeground(new java.awt.Color(47, 74, 91));
+        btn_back.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btn_back.setText("<");
+        btn_back.setToolTipText("");
+        btn_back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_backMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout imagePaneltermscondi1Layout = new javax.swing.GroupLayout(imagePaneltermscondi1);
+        imagePaneltermscondi1.setLayout(imagePaneltermscondi1Layout);
+        imagePaneltermscondi1Layout.setHorizontalGroup(
+            imagePaneltermscondi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePaneltermscondi1Layout.createSequentialGroup()
+                .addContainerGap(487, Short.MAX_VALUE)
+                .addGroup(imagePaneltermscondi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_termsSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chk_agree, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(60, 60, 60))
+            .addGroup(imagePaneltermscondi1Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(btn_back)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        imagePaneltermscondi1Layout.setVerticalGroup(
+            imagePaneltermscondi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePaneltermscondi1Layout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(btn_back)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 297, Short.MAX_VALUE)
+                .addComponent(chk_agree)
+                .addGap(18, 18, 18)
+                .addComponent(btn_termsSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(84, 84, 84))
+        );
+
+        getContentPane().add(imagePaneltermscondi1);
+        imagePaneltermscondi1.setBounds(0, 580, 900, 580);
 
         btn_emplogin1.setFont(new java.awt.Font("Century Gothic", 3, 12)); // NOI18N
         btn_emplogin1.setForeground(new java.awt.Color(153, 153, 153));
@@ -232,14 +320,6 @@ public class Customer_Login extends javax.swing.JFrame {
         jLabel11.setText("Password:");
         jLabel11.setToolTipText("");
 
-        btn_createSignup.setBackground(new java.awt.Color(47, 74, 91));
-        btn_createSignup.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        btn_createSignup.setForeground(new java.awt.Color(238, 238, 238));
-        btn_createSignup.setText("SIGN UP");
-        btn_createSignup.setMaximumSize(new java.awt.Dimension(293, 26));
-        btn_createSignup.setMinimumSize(new java.awt.Dimension(293, 26));
-        btn_createSignup.addActionListener(this::btn_createSignupActionPerformed);
-
         btn_lcreateLogin.setBackground(new java.awt.Color(47, 74, 91));
         btn_lcreateLogin.setFont(new java.awt.Font("Century Gothic", 3, 12)); // NOI18N
         btn_lcreateLogin.setForeground(new java.awt.Color(47, 74, 91));
@@ -282,18 +362,6 @@ public class Customer_Login extends javax.swing.JFrame {
         jLabel15.setText("Mobile Number (+63):");
         jLabel15.setToolTipText("");
 
-        txt_createNumber.setBackground(new java.awt.Color(229, 229, 229));
-        txt_createNumber.setBorder(null);
-        txt_createNumber.setForeground(new java.awt.Color(47, 74, 91));
-        try {
-            txt_createNumber.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("  ###########")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        txt_createNumber.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txt_createNumber.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        txt_createNumber.setMargin(new java.awt.Insets(2, 12, 2, 12));
-
         jLabel16.setBackground(new java.awt.Color(47, 74, 91));
         jLabel16.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(47, 74, 91));
@@ -310,7 +378,7 @@ public class Customer_Login extends javax.swing.JFrame {
         cb_createGender.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         cb_createGender.setForeground(new java.awt.Color(47, 74, 91));
         cb_createGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Other" }));
-        cb_createGender.setBorder(null);
+        cb_createGender.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         cb_createGender.setPreferredSize(new java.awt.Dimension(72, 30));
         cb_createGender.addActionListener(this::cb_createGenderActionPerformed);
 
@@ -341,56 +409,111 @@ public class Customer_Login extends javax.swing.JFrame {
         jLabel18.setText("Show Password");
         jLabel18.setToolTipText("");
 
+        lbl_fnameValidation.setBackground(new java.awt.Color(47, 74, 91));
+        lbl_fnameValidation.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        lbl_fnameValidation.setForeground(new java.awt.Color(204, 0, 0));
+        lbl_fnameValidation.setText("Only alphabet is allowed!");
+        lbl_fnameValidation.setToolTipText("");
+
+        lbl_lnameValidation.setBackground(new java.awt.Color(47, 74, 91));
+        lbl_lnameValidation.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        lbl_lnameValidation.setForeground(new java.awt.Color(204, 0, 0));
+        lbl_lnameValidation.setText("Only alphabet is allowed!");
+        lbl_lnameValidation.setToolTipText("");
+
+        lbl_bdayValidation.setBackground(new java.awt.Color(47, 74, 91));
+        lbl_bdayValidation.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        lbl_bdayValidation.setForeground(new java.awt.Color(204, 0, 0));
+        lbl_bdayValidation.setText("Should be of legal age!");
+        lbl_bdayValidation.setToolTipText("");
+
+        lbl_emailValidation.setBackground(new java.awt.Color(47, 74, 91));
+        lbl_emailValidation.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        lbl_emailValidation.setForeground(new java.awt.Color(204, 0, 0));
+        lbl_emailValidation.setText("Invalid email address! ");
+        lbl_emailValidation.setToolTipText("");
+
+        lbl_CPnumValidation1.setBackground(new java.awt.Color(47, 74, 91));
+        lbl_CPnumValidation1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        lbl_CPnumValidation1.setForeground(new java.awt.Color(204, 0, 0));
+        lbl_CPnumValidation1.setText("Invalid mobile number! ");
+        lbl_CPnumValidation1.setToolTipText("");
+
+        txt_createNumber.setBackground(new java.awt.Color(229, 229, 229));
+        txt_createNumber.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        txt_createNumber.setForeground(new java.awt.Color(47, 74, 91));
+        txt_createNumber.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        txt_createNumber.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txt_createNumber.addActionListener(this::txt_createNumberActionPerformed);
+
+        btn_createNext.setBackground(new java.awt.Color(47, 74, 91));
+        btn_createNext.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_createNext.setForeground(new java.awt.Color(238, 238, 238));
+        btn_createNext.setText("NEXT");
+        btn_createNext.setMaximumSize(new java.awt.Dimension(293, 26));
+        btn_createNext.setMinimumSize(new java.awt.Dimension(293, 26));
+        btn_createNext.addActionListener(this::btn_createNextActionPerformed);
+
         javax.swing.GroupLayout imagePanelcreateLayout = new javax.swing.GroupLayout(imagePanelcreate);
         imagePanelcreate.setLayout(imagePanelcreateLayout);
         imagePanelcreateLayout.setHorizontalGroup(
             imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(imagePanelcreateLayout.createSequentialGroup()
                 .addGap(151, 151, 151)
-                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_createFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13)
-                    .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, imagePanelcreateLayout.createSequentialGroup()
-                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel16)
-                                .addComponent(cb_createGender, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(18, 18, 18)
-                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel17))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, imagePanelcreateLayout.createSequentialGroup()
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel16)
+                            .addComponent(btn_lcreateLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cb_createGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel17)
+                            .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_bdayValidation, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(56, 56, 56)
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel11)
-                                .addComponent(txt_createPass1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(imagePanelcreateLayout.createSequentialGroup()
-                            .addComponent(btn_lcreateLogin)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_createSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(imagePanelcreateLayout.createSequentialGroup()
-                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txt_createPass1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(imagePanelcreateLayout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chk_createShowPass))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(lbl_fnameValidation, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txt_createFirstName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
+                    .addGroup(imagePanelcreateLayout.createSequentialGroup()
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_CPnumValidation1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(imagePanelcreateLayout.createSequentialGroup()
                                 .addComponent(jLabel15)
-                                .addComponent(txt_createNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txt_createNumber))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txt_createEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(imagePanelcreateLayout.createSequentialGroup()
                                     .addGap(56, 56, 56)
                                     .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel14)
                                         .addComponent(txt_createLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel10))
-                                    .addGap(0, 0, Short.MAX_VALUE))))
-                        .addGroup(imagePanelcreateLayout.createSequentialGroup()
-                            .addComponent(jLabel18)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(chk_createShowPass))))
-                .addContainerGap(151, Short.MAX_VALUE))
+                                        .addComponent(jLabel10)
+                                        .addComponent(lbl_lnameValidation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(lbl_emailValidation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(148, 148, 148))
+            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
+                    .addContainerGap(672, Short.MAX_VALUE)
+                    .addComponent(btn_createNext, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(138, 138, 138)))
         );
         imagePanelcreateLayout.setVerticalGroup(
             imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
-                .addContainerGap(226, Short.MAX_VALUE)
+                .addContainerGap(201, Short.MAX_VALUE)
                 .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
                         .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -399,34 +522,49 @@ public class Customer_Login extends javax.swing.JFrame {
                         .addGap(3, 3, 3)
                         .addComponent(txt_createFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txt_createLastName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(imagePanelcreateLayout.createSequentialGroup()
-                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel15))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_createEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txt_createNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel17)
-                    .addComponent(jLabel11))
-                .addGap(2, 2, 2)
+                    .addComponent(lbl_fnameValidation)
+                    .addComponent(lbl_lnameValidation))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_createEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_createNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_emailValidation)
+                    .addComponent(lbl_CPnumValidation1))
+                .addGap(18, 18, 18)
                 .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_createPass1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_createGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addGap(2, 2, 2)
+                        .addComponent(txt_createPass1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17))
+                        .addGap(2, 2, 2)
+                        .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cb_createGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dc_createBday, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel18)
-                    .addComponent(chk_createShowPass))
-                .addGap(25, 25, 25)
-                .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_lcreateLogin)
-                    .addComponent(btn_createSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(82, 82, 82))
+                    .addComponent(chk_createShowPass)
+                    .addComponent(lbl_bdayValidation))
+                .addGap(39, 39, 39)
+                .addComponent(btn_lcreateLogin)
+                .addGap(69, 69, 69))
+            .addGroup(imagePanelcreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagePanelcreateLayout.createSequentialGroup()
+                    .addContainerGap(498, Short.MAX_VALUE)
+                    .addComponent(btn_createNext, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(52, 52, 52)))
         );
 
         getContentPane().add(imagePanelcreate);
@@ -463,19 +601,21 @@ public class Customer_Login extends javax.swing.JFrame {
         slideToLogin();
     }//GEN-LAST:event_btn_lcreateLoginMouseClicked
 
-    private void btn_createSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createSignupActionPerformed
-        String fName = txt_createFirstName.getText();
-        String lName = txt_createLastName.getText();
+    private void btn_termsSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_termsSignupActionPerformed
+        String fName = txt_createFirstName.getText().trim();
+        String lName = txt_createLastName.getText().trim();
         String gender = cb_createGender.getSelectedItem().toString();
         String pass = new String(txt_createPass1.getPassword());
         java.util.Date bdayInput = dc_createBday.getDate();
-        String email = txt_createEmail.getText();
-        String phone = txt_createNumber.getText().trim();
+        String email = txt_createEmail.getText().trim();
+        String phone = txt_createNumber.getText().replace(" ", "");
 
-        if (fName.isEmpty() || email.isEmpty() || pass.isEmpty() || bdayInput == null) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
-            return;
-        }
+        clearAllValidationMessages();
+
+      if (!chk_agree.isSelected()) {
+        JOptionPane.showMessageDialog(this, "You must agree to the Terms and Conditions to proceed.", "Agreement Required", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
         Connect db = new Connect();
         db.DoConnect();
 
@@ -507,6 +647,7 @@ public class Customer_Login extends javax.swing.JFrame {
                         }
                     }
                 }
+                
                 String newVipId = getNextVipId();
                 java.sql.Date dateReg = new java.sql.Date(System.currentTimeMillis());
 
@@ -540,7 +681,7 @@ public class Customer_Login extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "DB Error: " + ex.getMessage());
             }
         }
-    }//GEN-LAST:event_btn_createSignupActionPerformed
+    }//GEN-LAST:event_btn_termsSignupActionPerformed
 
     private void txt_createFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createFirstNameActionPerformed
         // TODO add your handling code here:
@@ -604,8 +745,108 @@ public class Customer_Login extends javax.swing.JFrame {
             txt_loginPass.setEchoChar('*');
         }
     }//GEN-LAST:event_chk_loginShowPassActionPerformed
+
+    private void txt_createNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_createNumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_createNumberActionPerformed
+
+    private void btn_createNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_createNextActionPerformed
+        String fName = txt_createFirstName.getText().trim();
+        String lName = txt_createLastName.getText().trim();
+        String gender = cb_createGender.getSelectedItem().toString();
+        String pass = new String(txt_createPass1.getPassword());
+        java.util.Date bdayInput = dc_createBday.getDate();
+        String email = txt_createEmail.getText().trim();
+        String phone = txt_createNumber.getText().replace(" ", "");
+
+        clearAllValidationMessages();
+
+        if (fName.isEmpty() || lName.isEmpty() || email.isEmpty() || pass.isEmpty() || phone.isEmpty() || bdayInput == null) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return;
+        }
+
+        boolean isValid = true;
+
+        if (!fName.matches("^[a-zA-Z\\s]+$")) {
+            lbl_fnameValidation.setText("Only alphabet is allowed!"); 
+            isValid = false;
+        }
+
+        if (!lName.matches("^[a-zA-Z\\s]+$")) {
+            lbl_lnameValidation.setText("Only alphabet is allowed!"); 
+            isValid = false;
+        }
+
+        if (!email.contains("@")) {
+            lbl_emailValidation.setText("Invalid email address!");
+            isValid = false;
+        }
+
+        if (!phone.matches("^09\\d{9}$")) {
+            lbl_CPnumValidation1.setText("Invalid mobile number!"); 
+            isValid = false;
+        }
+
+        java.time.LocalDate birthDate = bdayInput.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        java.time.LocalDate today = java.time.LocalDate.now();
+        int age = java.time.Period.between(birthDate, today).getYears();
+        
+        if (age < 18) {
+            lbl_bdayValidation.setText("Should be of legal age!"); 
+            isValid = false;
+        }
+        
+        if (isValid) {
+            Connect db = new Connect();
+            db.DoConnect();
+            
+            if (db.con != null) {
+                try {
+                    String checkPhoneSql = "SELECT CP_NUM FROM DBHOUSE.VIPACCOUNTS WHERE CP_NUM = ?";
+                    PreparedStatement checkPhonePst = db.con.prepareStatement(checkPhoneSql);
+                    checkPhonePst.setString(1, phone);
+                    ResultSet rsPhone = checkPhonePst.executeQuery();
+                    
+                    if (rsPhone.next()) {
+                        lbl_CPnumValidation1.setText("Number already registered!"); 
+                        isValid = false;
+                    }
+                    
+                    String checkEmailSql = "SELECT EMAIL FROM DBHOUSE.VIPACCOUNTS WHERE EMAIL = ?";
+                    PreparedStatement checkEmailPst = db.con.prepareStatement(checkEmailSql);
+                    checkEmailPst.setString(1, email);
+                    ResultSet rsEmail = checkEmailPst.executeQuery();
+                    
+                    if (rsEmail.next()) {
+                        lbl_emailValidation.setText("Email already registered!"); 
+                        isValid = false;
+                    }
+                    
+                    db.con.close();
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+                    return; 
+                }
+            }
+        }
+
+        if (!isValid) {
+            JOptionPane.showMessageDialog(this, "Please correct the highlighted errors before signing up.", "Invalid Information", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (isValid) {
+            slideToTerms(); 
+        } else {
+            JOptionPane.showMessageDialog(this, "Please correct the highlighted errors.");
+        }
+    }//GEN-LAST:event_btn_createNextActionPerformed
+
+    private void btn_backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_backMouseClicked
+        slideToLogin();
+    }//GEN-LAST:event_btn_backMouseClicked
     
-    //BUTTON DESIGNER
     private void makeFlatButton(javax.swing.JButton btn) {
         btn.setFocusPainted(false);
         btn.setBorder(null);
@@ -615,10 +856,10 @@ public class Customer_Login extends javax.swing.JFrame {
     }
     
     private void slideToCreate() {
-        //CREATE PANEL TO FRONT
+       imagePanelcreate.setVisible(true);
+       btn_createNext.setVisible(true);
         getContentPane().setComponentZOrder(imagePanelcreate, 0); 
 
-        // ANIMATION
         Timer timer = new Timer(10, null);
 
         timer.addActionListener(new java.awt.event.ActionListener() {
@@ -643,23 +884,28 @@ public class Customer_Login extends javax.swing.JFrame {
         dc_createBday.setEnabled(true);
     }
     
-    private void slideToLogin() {
-        // ANIMATION
+   private void slideToLogin() {
+        
         Timer timer = new Timer(10, null);
 
         timer.addActionListener(new java.awt.event.ActionListener() {
-            double y = 0;
+            double y = 0; 
 
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 y += (580 - y) * 0.1; 
-
                 imagePanelcreate.setLocation(0, (int)y);
+                imagePaneltermscondi1.setLocation(0, (int)y);
+                
                 getContentPane().repaint();
 
                 if (Math.abs(580 - y) < 1) { 
                     imagePanelcreate.setLocation(0, 580);
+                    imagePaneltermscondi1.setLocation(0, 580);
                     timer.stop();
                    
+                    imagePanelcreate.setVisible(false);
+                    imagePaneltermscondi1.setVisible(false);
+                    
                     getContentPane().setComponentZOrder(imagePanelwelcome1, 0);
                 }
             }
@@ -670,8 +916,28 @@ public class Customer_Login extends javax.swing.JFrame {
         dc_createBday.setEnabled(false);
     }
     
+    private void slideToTerms() {
+         imagePaneltermscondi1.setVisible(true);
+         btn_createNext.setVisible(false);
+        getContentPane().setComponentZOrder(imagePaneltermscondi1, 0); 
+        Timer timer = new Timer(10, null);
+        timer.addActionListener(new java.awt.event.ActionListener() {
+            double y = 580; 
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                y += (0 - y) * 0.1;
+                imagePaneltermscondi1.setLocation(0, (int)y);
+                getContentPane().repaint();
+                if (Math.abs(y) < 1) {
+                    imagePaneltermscondi1.setLocation(0, 0);
+                    timer.stop();
+                }
+            }
+        });
+        timer.start();
+    }
+    
     private String getNextVipId() {
-        int nextNumber = 1000; 
+        int nextNumber = 1001; 
 
         Connect db = new Connect();
         db.DoConnect();
@@ -693,6 +959,42 @@ public class Customer_Login extends javax.swing.JFrame {
         }
         return "VIP" + nextNumber; 
     }
+    
+    private void setTextFieldLimit(javax.swing.JTextField textField, int limit, boolean alphabetsOnly) {
+    javax.swing.text.AbstractDocument doc = (javax.swing.text.AbstractDocument) textField.getDocument();
+    doc.setDocumentFilter(new javax.swing.text.DocumentFilter() {
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
+                throws javax.swing.text.BadLocationException {
+            
+            if (text != null && !text.isEmpty()) {
+                // If alphabetsOnly is true, allow only letters and spaces
+                // If false, allow only digits
+                String regex = alphabetsOnly ? "^[a-zA-Z\\s]+$" : "^\\d+$";
+                
+                if (!text.matches(regex)) {
+                    return; // Block invalid characters
+                }
+            }
+
+            int currentLength = fb.getDocument().getLength();
+            if ((currentLength + text.length() - length) <= limit) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
+
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) 
+                throws javax.swing.text.BadLocationException {
+            if (string != null) {
+                String regex = alphabetsOnly ? "^[a-zA-Z\\s]+$" : "^\\d+$";
+                if (string.matches(regex)) {
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+        }
+    });
+}
     /**
      * @param args the command line arguments
      */
@@ -728,16 +1030,20 @@ public class Customer_Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_createSignup;
+    private javax.swing.JLabel btn_back;
+    private javax.swing.JButton btn_createNext;
     private javax.swing.JLabel btn_emplogin1;
     private javax.swing.JLabel btn_lcreateLogin;
     private javax.swing.JButton btn_login;
     private javax.swing.JLabel btn_loginSignup;
+    private javax.swing.JButton btn_termsSignup;
     private javax.swing.JComboBox<String> cb_createGender;
+    private javax.swing.JCheckBox chk_agree;
     private javax.swing.JCheckBox chk_createShowPass;
     private javax.swing.JCheckBox chk_loginShowPass;
     private com.toedter.calendar.JDateChooser dc_createBday;
     private img.ImagePanelcreate imagePanelcreate;
+    private img.ImagePaneltermscondi imagePaneltermscondi1;
     private img.ImagePanelwelcome imagePanelwelcome1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -751,10 +1057,15 @@ public class Customer_Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel lbl_CPnumValidation1;
+    private javax.swing.JLabel lbl_bdayValidation;
+    private javax.swing.JLabel lbl_emailValidation;
+    private javax.swing.JLabel lbl_fnameValidation;
+    private javax.swing.JLabel lbl_lnameValidation;
     private javax.swing.JTextField txt_createEmail;
     private javax.swing.JTextField txt_createFirstName;
     private javax.swing.JTextField txt_createLastName;
-    private javax.swing.JFormattedTextField txt_createNumber;
+    private javax.swing.JTextField txt_createNumber;
     private javax.swing.JPasswordField txt_createPass1;
     private javax.swing.JTextField txt_loginEmail;
     private javax.swing.JPasswordField txt_loginPass;

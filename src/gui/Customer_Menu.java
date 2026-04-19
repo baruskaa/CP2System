@@ -3,9 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package gui;
+import img.MenuItemPanel;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
  * @author caloy
@@ -27,6 +31,11 @@ public class Customer_Menu extends javax.swing.JFrame {
         
         makeFlatButton(btn_navReservations2);
         makeFlatButton(btn_navLogout2);
+        pnl_innerMenu.setLayout(new WrapLayout(java.awt.FlowLayout.CENTER, 15, 15));
+        
+        pnl_menuContainer.getVerticalScrollBar().setUnitIncrement(16);
+        
+        fetchAndDisplayMenu("Asian");
     }
     
     private void makeFlatButton(javax.swing.JButton btn) {
@@ -66,10 +75,11 @@ public class Customer_Menu extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
         pnl_header = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         lbl_username = new javax.swing.JLabel();
+        pnl_menuContainer = new javax.swing.JScrollPane();
+        pnl_innerMenu = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -364,7 +374,7 @@ public class Customer_Menu extends javax.swing.JFrame {
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel12)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -377,9 +387,6 @@ public class Customer_Menu extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        jLabel13.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/asian.png"))); // NOI18N
 
         pnl_header.setBackground(new java.awt.Color(55, 91, 115));
         pnl_header.setMaximumSize(new java.awt.Dimension(681, 115));
@@ -400,7 +407,7 @@ public class Customer_Menu extends javax.swing.JFrame {
             .addGroup(pnl_headerLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                 .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
@@ -417,6 +424,10 @@ public class Customer_Menu extends javax.swing.JFrame {
                         .addGap(52, 52, 52))))
         );
 
+        pnl_menuContainer.setBackground(new java.awt.Color(255, 255, 255));
+        pnl_menuContainer.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        pnl_menuContainer.setViewportView(pnl_innerMenu);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -426,8 +437,8 @@ public class Customer_Menu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnl_menuContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 594, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnl_header, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -440,11 +451,13 @@ public class Customer_Menu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnl_header, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnl_menuContainer)
+                        .addContainerGap())))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(pnl_nav3, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -455,31 +468,31 @@ public class Customer_Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-            jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/asian.png")));
+            fetchAndDisplayMenu("Asian");
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-            jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/europ.png")));
+            fetchAndDisplayMenu("European");
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/latina.png")));
+     fetchAndDisplayMenu("Latina");
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/western.png")));
+      fetchAndDisplayMenu("Western");
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/grill.png")));
+       fetchAndDisplayMenu("Grilled");
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/garden.png")));
+      fetchAndDisplayMenu("Salads");
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dessert.png")));
+        fetchAndDisplayMenu("Dessert");
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
@@ -810,29 +823,18 @@ public class Customer_Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Aboutus_Label4;
     private javax.swing.JLabel Aboutus_Label6;
-    private javax.swing.JLabel Aboutus_label5;
     private javax.swing.JLabel Aboutus_label7;
-    private javax.swing.JButton btn_navAbout;
     private javax.swing.JButton btn_navAbout2;
-    private javax.swing.JButton btn_navDine;
     private javax.swing.JButton btn_navDine2;
-    private javax.swing.JButton btn_navHome;
     private javax.swing.JButton btn_navHome2;
-    private javax.swing.JButton btn_navLogout;
     private javax.swing.JButton btn_navLogout2;
-    private javax.swing.JButton btn_navMenu;
     private javax.swing.JButton btn_navMenu2;
-    private javax.swing.JButton btn_navProf;
     private javax.swing.JButton btn_navProf2;
-    private javax.swing.JButton btn_navReservations;
     private javax.swing.JButton btn_navReservations2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
@@ -843,7 +845,8 @@ public class Customer_Menu extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_username;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnl_header;
-    private javax.swing.JPanel pnl_nav1;
+    private javax.swing.JPanel pnl_innerMenu;
+    private javax.swing.JScrollPane pnl_menuContainer;
     private javax.swing.JPanel pnl_nav3;
     // End of variables declaration//GEN-END:variables
 public void switchPanel(javax.swing.JPanel panel) {
@@ -851,5 +854,35 @@ public void switchPanel(javax.swing.JPanel panel) {
     pnlMain.add(panel);
     pnlMain.repaint();
     pnlMain.revalidate();
+}
+
+private void fetchAndDisplayMenu(String category) {
+    pnl_innerMenu.removeAll(); 
+
+    Connect db = new Connect();
+    db.DoConnect();
+
+    String sql = "SELECT DISH_NAME, IMAGE_DATA FROM DBHOUSE.MENU_ITEMS WHERE CATEGORY = ?";
+    
+    try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+        pst.setString(1, category);
+        
+        try (ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                String dishName = rs.getString("DISH_NAME");
+                java.sql.Blob imageBlob = rs.getBlob("IMAGE_DATA");
+
+                MenuItemPanel itemPanel = new MenuItemPanel(dishName, imageBlob);
+                
+                pnl_innerMenu.add(itemPanel);
+            }
+        }
+        
+    } catch (Exception e) {
+        System.out.println("Error fetching menu: " + e.getMessage());
+    }
+
+    pnl_innerMenu.revalidate();
+    pnl_innerMenu.repaint();
 }
 }

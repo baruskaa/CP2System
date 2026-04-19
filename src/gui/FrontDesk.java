@@ -69,12 +69,12 @@ public class FrontDesk extends javax.swing.JFrame {
         dc_inhouse.setMaxSelectableDate(maxCal.getTime());
 
         //CHARAC LIMITS  
-        setTextFieldLimit(txt_IHcp,11,true);
-        setTextFieldLimit(txt_IHfname,50,false);
-        setTextFieldLimit(txt_IHlname,50,false);
-        setTextFieldLimit(txt_walkinCp,11,true);
-        setTextFieldLimit(txt_walkinFname,50,false);
-        setTextFieldLimit(txt_walkinLname,50,false);
+        setTextFieldLimit(txt_IHcp,11,false);
+        setTextFieldLimit(txt_IHfname,50,true);
+        setTextFieldLimit(txt_IHlname,50,true);
+        setTextFieldLimit(txt_walkinCp,11,false);
+        setTextFieldLimit(txt_walkinFname,50,true);
+        setTextFieldLimit(txt_walkinLname,50,true);
         
         //TABLE MOUSE LISTENERS
         
@@ -389,6 +389,7 @@ public class FrontDesk extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         txt_rsvPax = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
+        btn_rsrvcomplete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
         txt_rsvRemarks = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
@@ -435,6 +436,7 @@ public class FrontDesk extends javax.swing.JFrame {
         btn_walkinadd = new javax.swing.JButton();
         btn_walkinedit = new javax.swing.JButton();
         btn_walkindel = new javax.swing.JButton();
+        btn_walkincomplete = new javax.swing.JButton();
         spn_walkinpax = new javax.swing.JSpinner();
         rb_walkinDinner = new javax.swing.JRadioButton();
         txt_walkinLname = new javax.swing.JTextField();
@@ -644,7 +646,7 @@ public class FrontDesk extends javax.swing.JFrame {
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lbl_totalAvailSeatsDINNER, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -761,13 +763,23 @@ public class FrontDesk extends javax.swing.JFrame {
         txt_rsvPax.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_rsvPax.setFocusable(false);
         txt_rsvPax.addActionListener(this::txt_rsvPaxNew_tableActionPerformed);
-        pnl_reserve.add(txt_rsvPax, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 380, 110, 30));
+        pnl_reserve.add(txt_rsvPax, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 380, 110, 30));
 
         jLabel34.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(55, 77, 94));
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel34.setText("Pax:");
-        pnl_reserve.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 380, 40, 30));
+        pnl_reserve.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 380, 40, 30));
+
+        btn_rsrvcomplete.setBackground(new java.awt.Color(255, 255, 255));
+        btn_rsrvcomplete.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btn_rsrvcomplete.setForeground(new java.awt.Color(65, 93, 120));
+        btn_rsrvcomplete.setText("COMPLETE RESERVATION ");
+        btn_rsrvcomplete.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_rsrvcomplete.setContentAreaFilled(false);
+        btn_rsrvcomplete.setFocusPainted(false);
+        btn_rsrvcomplete.addActionListener(this::btn_rsrvcompleteAssign_ButtonActionPerformed);
+        pnl_reserve.add(btn_rsrvcomplete, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 350, 160, 30));
 
         btn_cancel.setBackground(new java.awt.Color(55, 91, 115));
         btn_cancel.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -775,7 +787,7 @@ public class FrontDesk extends javax.swing.JFrame {
         btn_cancel.setText("CANCEL RESERVATION");
         btn_cancel.setBorder(null);
         btn_cancel.addActionListener(this::btn_cancelActionPerformed);
-        pnl_reserve.add(btn_cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 350, 150, 30));
+        pnl_reserve.add(btn_cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 390, 160, 30));
 
         txt_rsvRemarks.setEditable(false);
         txt_rsvRemarks.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
@@ -793,13 +805,13 @@ public class FrontDesk extends javax.swing.JFrame {
         txt_rsvTime.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_rsvTime.setFocusable(false);
         txt_rsvTime.addActionListener(this::txt_rsvTimeNew_tableActionPerformed);
-        pnl_reserve.add(txt_rsvTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 350, 110, 30));
+        pnl_reserve.add(txt_rsvTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 110, 30));
 
         jLabel32.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(55, 77, 94));
         jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel32.setText("Time:");
-        pnl_reserve.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, 50, 30));
+        pnl_reserve.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, 40, 30));
 
         search_reserve.addActionListener(this::search_reserveActionPerformed);
         search_reserve.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -965,7 +977,7 @@ public class FrontDesk extends javax.swing.JFrame {
         });
         pnl_inhouse.add(txt_IHlname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 160, 30));
 
-        spn_inhousepax.setModel(new javax.swing.SpinnerNumberModel(1, null, 100, 1));
+        spn_inhousepax.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
         pnl_inhouse.add(spn_inhousepax, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 370, 100, 30));
 
         search_inhouse.addActionListener(this::search_inhouseActionPerformed);
@@ -985,14 +997,14 @@ public class FrontDesk extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IR_ID", "DATE", "F_NAME", "L_NAME", "TIME", "PAX"
+                "IR_ID", "DATE", "F_NAME", "L_NAME", "TIME", "PAX", "REMARKS"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1012,6 +1024,7 @@ public class FrontDesk extends javax.swing.JFrame {
             tbl_inhouse.getColumnModel().getColumn(3).setResizable(false);
             tbl_inhouse.getColumnModel().getColumn(4).setResizable(false);
             tbl_inhouse.getColumnModel().getColumn(5).setResizable(false);
+            tbl_inhouse.getColumnModel().getColumn(6).setResizable(false);
         }
 
         pnl_inhouse.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 550, 360));
@@ -1038,12 +1051,12 @@ public class FrontDesk extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(55, 77, 94));
         jLabel11.setText("Last Name:");
-        pnl_walkin.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 110, -1));
+        pnl_walkin.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 140, 110, -1));
 
         jLabel20.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(55, 77, 94));
         jLabel20.setText("Pax:");
-        pnl_walkin.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 340, -1, -1));
+        pnl_walkin.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, -1, -1));
 
         txt_walkinCp.addActionListener(this::txt_walkinCpActionPerformed);
         txt_walkinCp.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1051,28 +1064,28 @@ public class FrontDesk extends javax.swing.JFrame {
                 txt_walkinCpKeyReleased(evt);
             }
         });
-        pnl_walkin.add(txt_walkinCp, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 250, 160, 30));
+        pnl_walkin.add(txt_walkinCp, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 160, 30));
 
         jLabel19.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(55, 77, 94));
         jLabel19.setText("Time:");
-        pnl_walkin.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 290, -1, -1));
+        pnl_walkin.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 260, -1, -1));
 
         jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(55, 77, 94));
         jLabel12.setText("CP Num:");
-        pnl_walkin.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 230, 80, -1));
+        pnl_walkin.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 200, 80, -1));
 
         rb_walkinLunch.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         rb_walkinLunch.setForeground(new java.awt.Color(65, 93, 120));
         rb_walkinLunch.setText("Lunch");
         rb_walkinLunch.addActionListener(this::rb_walkinLunchActionPerformed);
-        pnl_walkin.add(rb_walkinLunch, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, -1, -1));
+        pnl_walkin.add(rb_walkinLunch, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 280, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(55, 77, 94));
         jLabel1.setText("First Name:");
-        pnl_walkin.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 110, -1));
+        pnl_walkin.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, 110, -1));
 
         txt_walkinFname.addActionListener(this::txt_walkinFnameActionPerformed);
         txt_walkinFname.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1080,7 +1093,7 @@ public class FrontDesk extends javax.swing.JFrame {
                 txt_walkinFnameKeyReleased(evt);
             }
         });
-        pnl_walkin.add(txt_walkinFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 110, 160, 30));
+        pnl_walkin.add(txt_walkinFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 100, 160, 30));
 
         btn_walkinadd.setBackground(new java.awt.Color(255, 255, 255));
         btn_walkinadd.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -1090,7 +1103,7 @@ public class FrontDesk extends javax.swing.JFrame {
         btn_walkinadd.setContentAreaFilled(false);
         btn_walkinadd.setFocusPainted(false);
         btn_walkinadd.addActionListener(this::btn_walkinaddAssign_ButtonActionPerformed);
-        pnl_walkin.add(btn_walkinadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 400, 50, 30));
+        pnl_walkin.add(btn_walkinadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 370, 50, 30));
 
         btn_walkinedit.setBackground(new java.awt.Color(255, 255, 255));
         btn_walkinedit.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -1100,7 +1113,7 @@ public class FrontDesk extends javax.swing.JFrame {
         btn_walkinedit.setContentAreaFilled(false);
         btn_walkinedit.setFocusPainted(false);
         btn_walkinedit.addActionListener(this::btn_walkineditAssign_ButtonActionPerformed);
-        pnl_walkin.add(btn_walkinedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 400, 50, 30));
+        pnl_walkin.add(btn_walkinedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 370, 50, 30));
 
         btn_walkindel.setBackground(new java.awt.Color(255, 255, 255));
         btn_walkindel.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -1112,15 +1125,25 @@ public class FrontDesk extends javax.swing.JFrame {
         btn_walkindel.setFocusable(false);
         btn_walkindel.setRequestFocusEnabled(false);
         btn_walkindel.addActionListener(this::btn_walkindelRemove_buttonActionPerformed);
-        pnl_walkin.add(btn_walkindel, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 400, 60, 30));
+        pnl_walkin.add(btn_walkindel, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 370, 60, 30));
 
-        spn_walkinpax.setModel(new javax.swing.SpinnerNumberModel(1, null, 100, 1));
-        pnl_walkin.add(spn_walkinpax, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 360, 100, 30));
+        btn_walkincomplete.setBackground(new java.awt.Color(255, 255, 255));
+        btn_walkincomplete.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_walkincomplete.setForeground(new java.awt.Color(65, 93, 120));
+        btn_walkincomplete.setText("Complete");
+        btn_walkincomplete.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(65, 93, 120), 2, true));
+        btn_walkincomplete.setContentAreaFilled(false);
+        btn_walkincomplete.setFocusPainted(false);
+        btn_walkincomplete.addActionListener(this::btn_walkincompleteAssign_ButtonActionPerformed);
+        pnl_walkin.add(btn_walkincomplete, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 400, 160, 30));
+
+        spn_walkinpax.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        pnl_walkin.add(spn_walkinpax, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 330, 100, 30));
 
         rb_walkinDinner.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         rb_walkinDinner.setForeground(new java.awt.Color(65, 93, 120));
         rb_walkinDinner.setText("Dinner");
-        pnl_walkin.add(rb_walkinDinner, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 310, -1, -1));
+        pnl_walkin.add(rb_walkinDinner, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 280, -1, -1));
 
         txt_walkinLname.addActionListener(this::txt_walkinLnameActionPerformed);
         txt_walkinLname.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1128,7 +1151,7 @@ public class FrontDesk extends javax.swing.JFrame {
                 txt_walkinLnameKeyReleased(evt);
             }
         });
-        pnl_walkin.add(txt_walkinLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 180, 160, 30));
+        pnl_walkin.add(txt_walkinLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 160, 30));
 
         search_walkin.addActionListener(this::search_walkinActionPerformed);
         search_walkin.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1147,14 +1170,14 @@ public class FrontDesk extends javax.swing.JFrame {
 
             },
             new String [] {
-                "WI_ID", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX"
+                "WI_ID", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1305,16 +1328,20 @@ public class FrontDesk extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Select a reservation from the table first!");
             return;
         }
-
         int modelRow = tbl_reserve.convertRowIndexToModel(selectedRow);
         DefaultTableModel model = (DefaultTableModel) tbl_reserve.getModel();
 
         String id = model.getValueAt(modelRow, 0).toString();
         Object status = model.getValueAt(modelRow, 7); 
 
-        if (status != null && status.toString().equalsIgnoreCase("Cancelled")) {
-            JOptionPane.showMessageDialog(this, "This reservation is already cancelled!");
-            return; 
+        if (status != null) {
+            if (status.toString().equalsIgnoreCase("Cancelled")) {
+                JOptionPane.showMessageDialog(this, "This reservation is already cancelled!");
+                return; 
+            } else if (status.toString().equalsIgnoreCase("Completed")) {
+                JOptionPane.showMessageDialog(this, "You cannot cancel a reservation that is already completed!");
+                return; 
+            }
         }
 
         int confirm = JOptionPane.showConfirmDialog(this, 
@@ -1323,7 +1350,7 @@ public class FrontDesk extends javax.swing.JFrame {
         if (confirm == JOptionPane.YES_OPTION) {
             Connect db = new Connect();
             db.DoConnect();
-            
+
             String sql = "";
             if (id.startsWith("IR")) {
                 sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET REMARKS = 'Cancelled' WHERE IR_ID = ?";
@@ -1333,22 +1360,14 @@ public class FrontDesk extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Unknown ID format!");
                 return;
             }
-            
+
             try (PreparedStatement pst = db.con.prepareStatement(sql)) {
                 pst.setString(1, id);
                 pst.executeUpdate();
-                
+
                 JOptionPane.showMessageDialog(this, "Reservation cancelled successfully.");
-                
-                txt_rsvID.setText(""); 
-                txt_rsvVIPID.setText(""); 
-                txt_membFnamersv.setText("");
-                txt_membLnamersv.setText(""); 
-                txt_membCPnumrsv.setText(""); 
-                txt_rsvTime.setText("");
-                txt_rsvPax.setText(""); 
-                txt_rsvRemarks.setText("");
-                
+
+                clearReserveFields();
                 loadReserveTable();
                 updateNavbarStats(); 
                 db.con.close();
@@ -1499,29 +1518,125 @@ public class FrontDesk extends javax.swing.JFrame {
     private void txt_rsvPaxNew_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_rsvPaxNew_tableActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_rsvPaxNew_tableActionPerformed
+
+    private void btn_rsrvcompleteAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_rsrvcompleteAssign_ButtonActionPerformed
+        int selectedRow = tbl_reserve.getSelectedRow();
+    
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select a reservation from the table first!");
+            return;
+        }
+
+        int modelRow = tbl_reserve.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tbl_reserve.getModel();
+
+        String id = model.getValueAt(modelRow, 0).toString();
+        Object status = model.getValueAt(modelRow, 7); 
+
+        if (status != null && (status.toString().equalsIgnoreCase("Completed") || status.toString().equalsIgnoreCase("Cancelled"))) {
+            JOptionPane.showMessageDialog(this, "This reservation is already " + status.toString() + ".");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure the reservation is completed?", "Confirm Completion", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+
+            String sql = "";
+            if (id.startsWith("IR")) {
+                sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET REMARKS = 'Completed' WHERE IR_ID = ?";
+            } else if (id.startsWith("OR")) {
+                sql = "UPDATE DBHOUSE.ONLINERESERVATIONS SET REMARKS = 'Completed' WHERE OR_ID = ?";
+            } else {
+                JOptionPane.showMessageDialog(this, "Unknown ID format!");
+                return;
+            }
+
+            try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+                pst.setString(1, id);
+                pst.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Reservation marked as completed.");
+                loadReserveTable();
+                clearReserveFields();
+                updateNavbarStats();
+                db.con.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btn_rsrvcompleteAssign_ButtonActionPerformed
+
+    private void btn_walkincompleteAssign_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_walkincompleteAssign_ButtonActionPerformed
+        int selectedRow = tbl_walkin.getSelectedRow();
+    
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select a walk-in record from the table first!");
+            return;
+        }
+
+        int modelRow = tbl_walkin.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tbl_walkin.getModel();
+
+        String id = model.getValueAt(modelRow, 0).toString();
+        Object status = model.getValueAt(modelRow, 6); 
+
+        if (status != null && (status.toString().equalsIgnoreCase("Completed") || status.toString().equalsIgnoreCase("Cancelled"))) {
+            JOptionPane.showMessageDialog(this, "This record is already " + status.toString() + ".");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure the reservation is completed?", "Confirm Completion", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            Connect db = new Connect();
+            db.DoConnect();
+
+            String sql = "UPDATE DBHOUSE.WALKINDINE SET REMARKS = 'Completed' WHERE WI_ID = ?";
+
+            try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+                pst.setString(1, id);
+                pst.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Walk-in marked as completed.");
+                loadWalkinTable();
+                clearWalkinFields();
+                updateNavbarStats(); 
+                db.con.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btn_walkincompleteAssign_ButtonActionPerformed
     
     private void updateNavbarStats() {
         int walkinPaxLunch = 0;
         int walkinPaxDinner = 0;
         int reservePaxLunch = 0;
         int reservePaxDinner = 0;
-
         for (int i = 0; i < tbl_walkin.getRowCount(); i++) {
-            Object timeObj = tbl_walkin.getValueAt(i, 4);
-            Object paxObj = tbl_walkin.getValueAt(i, 5); 
-            
-            if (paxObj != null && timeObj != null) {
-                try {
-                    int pax = Integer.parseInt(paxObj.toString());
-                    String time = timeObj.toString().trim();
-                    
-                    if (time.equalsIgnoreCase("Lunch")) {
-                        walkinPaxLunch += pax;
-                    } else if (time.equalsIgnoreCase("Dinner")) {
-                        walkinPaxDinner += pax;
+            Object statusObj = tbl_walkin.getValueAt(i, 6); 
+            String status = (statusObj != null) ? statusObj.toString() : "";
+
+            if (!status.equalsIgnoreCase("Cancelled") && !status.equalsIgnoreCase("Completed")) {
+                Object timeObj = tbl_walkin.getValueAt(i, 4);
+                Object paxObj = tbl_walkin.getValueAt(i, 5); 
+
+                if (paxObj != null && timeObj != null) {
+                    try {
+                        int pax = Integer.parseInt(paxObj.toString());
+                        String time = timeObj.toString().trim();
+
+                        if (time.equalsIgnoreCase("Lunch")) {
+                            walkinPaxLunch += pax;
+                        } else if (time.equalsIgnoreCase("Dinner")) {
+                            walkinPaxDinner += pax;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Walkin Pax Error at row " + i + ": " + paxObj);
                     }
-                } catch (NumberFormatException e) {
-                    System.out.println("Walkin Pax Error at row " + i + ": " + paxObj);
                 }
             }
         }
@@ -1530,15 +1645,15 @@ public class FrontDesk extends javax.swing.JFrame {
             Object statusObj = tbl_reserve.getValueAt(i, 7); 
             String status = (statusObj != null) ? statusObj.toString() : "";
 
-            if (!status.equalsIgnoreCase("Cancelled")) {
+            if (!status.equalsIgnoreCase("Cancelled") && !status.equalsIgnoreCase("Completed")) {
                 Object timeObj = tbl_reserve.getValueAt(i, 5);
                 Object paxObj = tbl_reserve.getValueAt(i, 6); 
-                
+
                 if (paxObj != null && timeObj != null) {
                     try {
                         int pax = Integer.parseInt(paxObj.toString());
                         String time = timeObj.toString().trim();
-                        
+
                         if (time.equalsIgnoreCase("Lunch")) {
                             reservePaxLunch += pax;
                         } else if (time.equalsIgnoreCase("Dinner")) {
@@ -1552,17 +1667,17 @@ public class FrontDesk extends javax.swing.JFrame {
         }
 
         int totalSeatsPerShift = 100;
-        
+
         int occupiedLunch = walkinPaxLunch + reservePaxLunch;
         int availableLunch = totalSeatsPerShift - occupiedLunch;
-        
+
         int occupiedDinner = walkinPaxDinner + reservePaxDinner;
         int availableDinner = totalSeatsPerShift - occupiedDinner;
 
         lbl_totalWalkInLUNCH.setText(String.valueOf(walkinPaxLunch));
         lbl_totalReserveLUNCH.setText(String.valueOf(reservePaxLunch));
         lbl_totalAvailSeatsLUNCH.setText(String.valueOf(Math.max(0, availableLunch)));
-        
+
         lbl_totalWalkInDINNER.setText(String.valueOf(walkinPaxDinner));
         lbl_totalReserveDINNER.setText(String.valueOf(reservePaxDinner));
         lbl_totalAvailSeatsDINNER.setText(String.valueOf(Math.max(0, availableDinner)));
@@ -1584,50 +1699,78 @@ public class FrontDesk extends javax.swing.JFrame {
         if (rb_IHdinner.isSelected()) return "DINNER";
             return null;
     }
-    private void setTextFieldLimit(javax.swing.JTextField textField, int limit, boolean numbersOnly) {
-        javax.swing.text.AbstractDocument doc = (javax.swing.text.AbstractDocument) textField.getDocument();
-        doc.setDocumentFilter(new javax.swing.text.DocumentFilter() {
-            @Override
-            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
-                    throws javax.swing.text.BadLocationException {
-
-                if (numbersOnly && !text.matches("\\d*")) {
+    private void setTextFieldLimit(javax.swing.JTextField textField, int limit, boolean alphabetsOnly) {
+    javax.swing.text.AbstractDocument doc = (javax.swing.text.AbstractDocument) textField.getDocument();
+    doc.setDocumentFilter(new javax.swing.text.DocumentFilter() {
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) 
+                throws javax.swing.text.BadLocationException {
+            
+            if (text != null && !text.isEmpty()) {
+                String regex = alphabetsOnly ? "^[a-zA-Z\\s]+$" : "^\\d+$";
+                
+                if (!text.matches(regex)) {
                     return; 
                 }
+            }
 
-                int currentLength = fb.getDocument().getLength();
-                if ((currentLength + text.length() - length) <= limit) {
-                    super.replace(fb, offset, length, text, attrs);
+            int currentLength = fb.getDocument().getLength();
+            if ((currentLength + text.length() - length) <= limit) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
+
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) 
+                throws javax.swing.text.BadLocationException {
+            if (string != null) {
+                String regex = alphabetsOnly ? "^[a-zA-Z\\s]+$" : "^\\d+$";
+                if (string.matches(regex)) {
+                    super.insertString(fb, offset, string, attr);
                 }
             }
-        });
-    }
-    private void setLoggedInUserName() {
-        String currentUser = UserSession.loggedInEmail; 
-        if (currentUser == null || currentUser.isEmpty()) {
-            lbl_username.setText("User");
-            return;
         }
+    });
+}
+    private int[] getSeatBreakdown(java.util.Date date, String time) {
+        int reserved = 0;
+        int walkin = 0;
         Connect db = new Connect();
         db.DoConnect();
-        String sql = "SELECT F_NAME, L_NAME FROM DBHOUSE.EMPACCOUNTS WHERE USERNAME = ?";
-        
-        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
-            pst.setString(1, currentUser);
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                String firstName = rs.getString("F_NAME");
-                String lastName = rs.getString("L_NAME");
-                
-                lbl_username.setText(firstName + " " + lastName);
-            } else {
-                lbl_username.setText("User");
+
+        if (db.con != null) {
+            String query = 
+                "SELECT " +
+                "  SUM(CASE WHEN source != 'WALKINDINE' THEN PAX ELSE 0 END) AS RESERVED_TOTAL, " +
+                "  SUM(CASE WHEN source = 'WALKINDINE' THEN PAX ELSE 0 END) AS WALKIN_TOTAL " +
+                "FROM (" +
+                "  SELECT 'INHOUSE' as source, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = ? AND D_TIME = ? AND REMARKS NOT IN ('Cancelled', 'Completed') " +
+                "  UNION ALL " +
+                "  SELECT 'ONLINE' as source, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE D_DATE = ? AND D_TIME = ? AND REMARKS NOT IN ('Cancelled', 'Completed') " +
+                "  UNION ALL " +
+                "  SELECT 'WALKINDINE' as source, PAX FROM DBHOUSE.WALKINDINE WHERE D_DATE = ? AND D_TIME = ? AND REMARKS NOT IN ('Cancelled', 'Completed') " +
+                ") t";
+
+            try (PreparedStatement pst = db.con.prepareStatement(query)) {
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                for (int i = 1; i <= 5; i += 2) {
+                    pst.setDate(i, sqlDate);
+                    pst.setString(i + 1, time);
+                }
+
+                try (ResultSet rs = pst.executeQuery()) {
+                    if (rs.next()) {
+                        reserved = rs.getInt("RESERVED_TOTAL");
+                        walkin = rs.getInt("WALKIN_TOTAL");
+                    }
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "DV Error (seat checker): " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                try { db.con.close(); } catch (SQLException ex) {}
             }
-            db.con.close();
-        } catch (SQLException e) {
-            System.out.println("Error name: " + e.getMessage());
         }
+        return new int[]{reserved, walkin};
     }
     
     private void loadWalkinTable() {
@@ -1635,30 +1778,58 @@ public class FrontDesk extends javax.swing.JFrame {
         model.setRowCount(0);
         Connect db = new Connect();
         db.DoConnect();
-        
-        String sql = "SELECT WI_ID, F_NAME, L_NAME, CP_NUM, D_TIME, PAX FROM DBHOUSE.WALKINDINE WHERE D_DATE = CURRENT_DATE";
-        
+
+        String sql = "SELECT WI_ID, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS FROM DBHOUSE.WALKINDINE WHERE D_DATE = CURRENT_DATE";
+
         try (PreparedStatement pst = db.con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 model.addRow(new Object[]{
                     rs.getString("WI_ID"), rs.getString("F_NAME"), rs.getString("L_NAME"),
-                    rs.getString("CP_NUM"), rs.getString("D_TIME"), rs.getInt("PAX")
+                    rs.getString("CP_NUM"), rs.getString("D_TIME"), rs.getInt("PAX"),
+                    rs.getString("REMARKS") 
                 });
             }
             db.con.close();
         } catch (SQLException e) { e.printStackTrace(); }
     }
     private void addWalkin() {
+        
         if (txt_walkinFname.getText().trim().isEmpty() || txt_walkinLname.getText().trim().isEmpty() || 
             txt_walkinCp.getText().trim().isEmpty() || getSelectedTime() == null) {
             JOptionPane.showMessageDialog(this, "Please fill out all fields before adding!", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        String phone = txt_walkinCp.getText().trim();
+    if (!phone.startsWith("09") || phone.length() != 11) {
+        JOptionPane.showMessageDialog(this, "Invalid Mobile Number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+        java.util.Date today = new java.util.Date(); 
+        String mealTime = getSelectedTime();
+        int requestedPax = (Integer) spn_walkinpax.getValue();
+        int maxCapacity = 100;
+
+        int[] breakdown = getSeatBreakdown(today, mealTime);
+        int totalOccupied = breakdown[0] + breakdown[1]; 
+        int availableSeats = maxCapacity - totalOccupied;
+
+        if (requestedPax > availableSeats) {
+            String message = String.format(
+                "Sorry, %d out of %d seats are already reserved for %s today.\n" +
+                "Current Status: (Reserved: %d, Walk-in: %d)\n\n" +
+                "Please change the pax count or advise the customer.",
+                totalOccupied, maxCapacity, mealTime, breakdown[0], breakdown[1]
+            );
+            JOptionPane.showMessageDialog(this, message, "Capacity Reached", JOptionPane.WARNING_MESSAGE);
+            return; 
+        }
 
         Connect db = new Connect();
         db.DoConnect();
-        
+
         String checkSql = "SELECT COUNT(*) FROM DBHOUSE.WALKINDINE WHERE F_NAME=? AND L_NAME=? AND D_DATE=CURRENT_DATE AND D_TIME=?";
         try (PreparedStatement checkPst = db.con.prepareStatement(checkSql)) {
             checkPst.setString(1, txt_walkinFname.getText().trim());
@@ -1682,7 +1853,7 @@ public class FrontDesk extends javax.swing.JFrame {
             pst.setString(4, txt_walkinFname.getText().trim());
             pst.setString(5, txt_walkinLname.getText().trim());
             pst.setString(6, txt_walkinCp.getText().trim());
-            pst.setString(7, "Going"); 
+            pst.setString(7, "Confirmed"); 
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(this, "Walk-in successfully added.");
@@ -1692,37 +1863,74 @@ public class FrontDesk extends javax.swing.JFrame {
         } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage()); }
     }
     private void editWalkin() {
-        if (editingWalkinRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a record first.", "No Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
         
-        if (txt_walkinFname.getText().trim().isEmpty() || txt_walkinLname.getText().trim().isEmpty() || 
-            txt_walkinCp.getText().trim().isEmpty() || getSelectedTime() == null) {
-            JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String id = tbl_walkin.getModel().getValueAt(editingWalkinRow, 0).toString();
-        Connect db = new Connect();
-        db.DoConnect();
-        String sql = "UPDATE DBHOUSE.WALKINDINE SET D_TIME=?, PAX=?, F_NAME=?, L_NAME=?, CP_NUM=? WHERE WI_ID=?";
-
-        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
-            pst.setString(1, getSelectedTime());
-            pst.setInt(2, (Integer) spn_walkinpax.getValue()); 
-            pst.setString(3, txt_walkinFname.getText().trim());
-            pst.setString(4, txt_walkinLname.getText().trim());
-            pst.setString(5, txt_walkinCp.getText().trim());
-            pst.setString(6, id);
-
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Walk-in edited successfully.");
-            loadWalkinTable();
-            clearWalkinFields();
-            db.con.close();
-        } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Update Error: " + e.getMessage()); }
+    if (editingWalkinRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a record first.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        return;
     }
+    
+    if (txt_walkinFname.getText().trim().isEmpty() || txt_walkinLname.getText().trim().isEmpty() || 
+        txt_walkinCp.getText().trim().isEmpty() || getSelectedTime() == null) {
+        JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    String phone = txt_walkinCp.getText().trim();
+    if (!phone.startsWith("09") || phone.length() != 11) {
+        JOptionPane.showMessageDialog(this, "Invalid Mobile Number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    java.util.Date today = new java.util.Date(); 
+    String newTime = getSelectedTime();
+    int newPax = (Integer) spn_walkinpax.getValue();
+    int maxCapacity = 100;
+
+    DefaultTableModel model = (DefaultTableModel) tbl_walkin.getModel();
+    String oldTime = model.getValueAt(editingWalkinRow, 4).toString().trim();
+    int oldPax = Integer.parseInt(model.getValueAt(editingWalkinRow, 5).toString());
+
+    int[] breakdown = getSeatBreakdown(today, newTime);
+    int totalOccupied = breakdown[0] + breakdown[1];
+
+    if (newTime.equalsIgnoreCase(oldTime)) {
+        totalOccupied -= oldPax;
+    }
+
+    int availableSeats = maxCapacity - totalOccupied;
+
+    if (newPax > availableSeats) {
+        String message = String.format(
+            "Sorry, there are not enough seats to change this walk-in to %d people.\n" +
+            "Remaining seats for %s today: %d\n\n" +
+            "Please adjust the pax count.",
+            newPax, newTime, availableSeats
+        );
+        JOptionPane.showMessageDialog(this, message, "Capacity Reached", JOptionPane.WARNING_MESSAGE);
+        return; // Stops the edit from being saved!
+    }
+    // --- SEAT CAPACITY CHECK FOR EDITING END ---
+
+    String id = model.getValueAt(editingWalkinRow, 0).toString();
+    Connect db = new Connect();
+    db.DoConnect();
+    String sql = "UPDATE DBHOUSE.WALKINDINE SET D_TIME=?, PAX=?, F_NAME=?, L_NAME=?, CP_NUM=? WHERE WI_ID=?";
+
+    try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+        pst.setString(1, newTime);
+        pst.setInt(2, newPax); 
+        pst.setString(3, txt_walkinFname.getText().trim());
+        pst.setString(4, txt_walkinLname.getText().trim());
+        pst.setString(5, txt_walkinCp.getText().trim());
+        pst.setString(6, id);
+
+        pst.executeUpdate();
+        JOptionPane.showMessageDialog(this, "Walk-in edited successfully.");
+        loadWalkinTable();
+        clearWalkinFields();
+        db.con.close();
+    } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Update Error: " + e.getMessage()); }
+}
     private void deleteWalkin() {
         int viewRow = tbl_walkin.getSelectedRow();
         if (viewRow == -1) {
@@ -1777,7 +1985,7 @@ public class FrontDesk extends javax.swing.JFrame {
         Connect db = new Connect();
         db.DoConnect();
         
-        String sql = "SELECT IR_ID, D_DATE, F_NAME, L_NAME, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE >= CURRENT_DATE";
+        String sql = "SELECT IR_ID, D_DATE, F_NAME, L_NAME, D_TIME, PAX, REMARKS FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE >= CURRENT_DATE";
         
         try (PreparedStatement pst = db.con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
@@ -1788,7 +1996,8 @@ public class FrontDesk extends javax.swing.JFrame {
                     rs.getString("F_NAME"),
                     rs.getString("L_NAME"), 
                     rs.getString("D_TIME"), 
-                    rs.getInt("PAX")
+                    rs.getInt("PAX"),
+                    rs.getString("REMARKS")
                 });
             }
         } catch (SQLException e) { 
@@ -1802,10 +2011,36 @@ public class FrontDesk extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        String phone = txt_IHcp.getText().trim();
+    if (!phone.startsWith("09") || phone.length() != 11) {
+        JOptionPane.showMessageDialog(this, "Invalid Mobile Number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+        java.util.Date selectedDate = dc_inhouse.getDate();
+        String mealTime = getSelectedTimeIH();
+        int requestedPax = (Integer) spn_inhousepax.getValue();
+        int maxCapacity = 100;
+
+        int[] breakdown = getSeatBreakdown(selectedDate, mealTime);
+        int totalOccupied = breakdown[0] + breakdown[1]; 
+        int availableSeats = maxCapacity - totalOccupied;
+
+        if (requestedPax > availableSeats) {
+            String message = String.format(
+                "Sorry, %d out of %d seats are already reserved for %s on that date.\n" +
+                "Current Status: (Reserved: %d, Walk-in: %d)\n\n" +
+                "Please choose a different date or change the pax count.",
+                totalOccupied, maxCapacity, mealTime, breakdown[0], breakdown[1]
+            );
+            JOptionPane.showMessageDialog(this, message, "Capacity Reached", JOptionPane.WARNING_MESSAGE);
+            return; // Stops the reservation from being saved!
+        }
 
         Connect db = new Connect();
         db.DoConnect();
-        
+
         String checkSql = "SELECT COUNT(*) FROM DBHOUSE.INHOUSERESERVATIONS WHERE F_NAME=? AND L_NAME=? AND D_DATE=? AND D_TIME=?";
         try (PreparedStatement checkPst = db.con.prepareStatement(checkSql)) {
             checkPst.setString(1, txt_IHfname.getText().trim());
@@ -1819,7 +2054,7 @@ public class FrontDesk extends javax.swing.JFrame {
                 return; 
             }
         } catch (SQLException e) { e.printStackTrace(); }
-        
+
         String sql = "INSERT INTO DBHOUSE.INHOUSERESERVATIONS (IR_ID, D_DATE, D_TIME, PAX, F_NAME, L_NAME, CP_NUM, REMARKS, DATE_BOOKED) VALUES (?,?,?,?,?,?,?,?, CURRENT_DATE)";
 
         try (PreparedStatement pst = db.con.prepareStatement(sql)) {
@@ -1831,7 +2066,7 @@ public class FrontDesk extends javax.swing.JFrame {
             pst.setString(5, txt_IHfname.getText().trim());
             pst.setString(6, txt_IHlname.getText().trim());
             pst.setString(7, txt_IHcp.getText().trim());
-            pst.setString(8, "Going"); 
+            pst.setString(8, "Confirmed"); 
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(this, "Reservation successfully added.");
@@ -1841,37 +2076,84 @@ public class FrontDesk extends javax.swing.JFrame {
         } catch (SQLException e) { JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage()); }
     }
     private void editInhouse() {
-        if (editingInhouseRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row first.", "No Selection", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (dc_inhouse.getDate() == null || txt_IHfname.getText().trim().isEmpty() || 
-            txt_IHlname.getText().trim().isEmpty() || txt_IHcp.getText().trim().isEmpty() || 
-            getSelectedTimeIH() == null) {
-            JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String id = tbl_inhouse.getModel().getValueAt(editingInhouseRow, 0).toString();
-        Connect db = new Connect();
-        db.DoConnect();
-        String sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET D_DATE=?, D_TIME=?, PAX=?, F_NAME=?, L_NAME=?, CP_NUM=? WHERE IR_ID=?";
-
-        try (PreparedStatement pst = db.con.prepareStatement(sql)) {
-            pst.setDate(1, new java.sql.Date(dc_inhouse.getDate().getTime()));
-            pst.setString(2, getSelectedTimeIH());
-            pst.setInt(3, (Integer) spn_inhousepax.getValue());
-            pst.setString(4, txt_IHfname.getText().trim());
-            pst.setString(5, txt_IHlname.getText().trim());
-            pst.setString(6, txt_IHcp.getText().trim());
-            pst.setString(7, id);
-
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Reservation updated successfully!");
-            loadInhouseTable();
-            clearInhouseFields();
-        } catch (SQLException e) { JOptionPane.showMessageDialog(this, "DB Error: " + e.getMessage()); }
+    if (editingInhouseRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a row first.", "No Selection", JOptionPane.ERROR_MESSAGE);
+        return;
     }
+    if (dc_inhouse.getDate() == null || txt_IHfname.getText().trim().isEmpty() || 
+        txt_IHlname.getText().trim().isEmpty() || txt_IHcp.getText().trim().isEmpty() || 
+        getSelectedTimeIH() == null) {
+        JOptionPane.showMessageDialog(this, "Please fill out all fields.", "Incomplete Fields", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    String phone = txt_IHcp.getText().trim();
+    if (!phone.startsWith("09") || phone.length() != 11) {
+        JOptionPane.showMessageDialog(this, "Invalid Mobile Number!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // --- SEAT CAPACITY CHECK FOR EDITING START ---
+    java.util.Date newDate = dc_inhouse.getDate();
+    String newTime = getSelectedTimeIH();
+    int newPax = (Integer) spn_inhousepax.getValue();
+    int maxCapacity = 100;
+
+    // Get the old values from the table
+    DefaultTableModel model = (DefaultTableModel) tbl_inhouse.getModel();
+    java.util.Date oldDate = (java.util.Date) model.getValueAt(editingInhouseRow, 1);
+    String oldTime = model.getValueAt(editingInhouseRow, 4).toString().trim();
+    int oldPax = Integer.parseInt(model.getValueAt(editingInhouseRow, 5).toString());
+
+    int[] breakdown = getSeatBreakdown(newDate, newTime);
+    int totalOccupied = breakdown[0] + breakdown[1];
+
+    // Format dates to ignore exact hours/seconds when comparing them
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    boolean isSameDate = sdf.format(newDate).equals(sdf.format(oldDate));
+    boolean isSameTime = newTime.equalsIgnoreCase(oldTime);
+
+    // CRITICAL: If the date and meal time haven't changed, subtract their old seats 
+    // from the occupied count so we don't double-count them!
+    if (isSameDate && isSameTime) {
+        totalOccupied -= oldPax;
+    }
+
+    int availableSeats = maxCapacity - totalOccupied;
+
+    if (newPax > availableSeats) {
+        String message = String.format(
+            "Sorry, there are not enough seats to change this reservation to %d people.\n" +
+            "Remaining seats for %s on that date: %d\n\n" +
+            "Please adjust the pax count or choose a different slot.",
+            newPax, newTime, availableSeats
+        );
+        JOptionPane.showMessageDialog(this, message, "Capacity Reached", JOptionPane.WARNING_MESSAGE);
+        return; // Stops the edit from being saved!
+    }
+    // --- SEAT CAPACITY CHECK FOR EDITING END ---
+
+    String id = model.getValueAt(editingInhouseRow, 0).toString();
+    Connect db = new Connect();
+    db.DoConnect();
+    String sql = "UPDATE DBHOUSE.INHOUSERESERVATIONS SET D_DATE=?, D_TIME=?, PAX=?, F_NAME=?, L_NAME=?, CP_NUM=? WHERE IR_ID=?";
+
+    try (PreparedStatement pst = db.con.prepareStatement(sql)) {
+        pst.setDate(1, new java.sql.Date(newDate.getTime()));
+        pst.setString(2, newTime);
+        pst.setInt(3, newPax);
+        pst.setString(4, txt_IHfname.getText().trim());
+        pst.setString(5, txt_IHlname.getText().trim());
+        pst.setString(6, txt_IHcp.getText().trim());
+        pst.setString(7, id);
+
+        pst.executeUpdate();
+        JOptionPane.showMessageDialog(this, "Reservation updated successfully!");
+        loadInhouseTable();
+        clearInhouseFields();
+        db.con.close();
+    } catch (SQLException e) { JOptionPane.showMessageDialog(this, "DB Error: " + e.getMessage()); }
+}
     private void deleteInhouse() {
         int viewRow = tbl_inhouse.getSelectedRow();
         if (viewRow == -1) {
@@ -2008,8 +2290,10 @@ public class FrontDesk extends javax.swing.JFrame {
     private javax.swing.JButton btn_inhouseedit;
     private javax.swing.JButton btn_logout;
     private javax.swing.JButton btn_reserve;
+    private javax.swing.JButton btn_rsrvcomplete;
     private javax.swing.JButton btn_walkin;
     private javax.swing.JButton btn_walkinadd;
+    private javax.swing.JButton btn_walkincomplete;
     private javax.swing.JButton btn_walkindel;
     private javax.swing.JButton btn_walkinedit;
     private com.toedter.calendar.JDateChooser dc_inhouse;

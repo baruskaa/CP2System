@@ -14,7 +14,7 @@ import java.sql.*;
 public class Customer_BookingPayment extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer_BookingPayment.class.getName());
-    
+    private java.io.File selectedReceiptFile = null;
     private JFrame previousWindow;
     private String fName, lName, email, phone, mealType;
     private java.util.Date bookingDate;
@@ -98,7 +98,9 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         rb_payCard = new javax.swing.JRadioButton();
         rb_payGcash = new javax.swing.JRadioButton();
+        lbl_receiptName = new javax.swing.JLabel();
         payername_txt_payment = new javax.swing.JTextField();
+        btn_uploadReceipt = new javax.swing.JButton();
         ewalletnum_txt_payment = new javax.swing.JTextField();
         cardnum_txt_payment = new javax.swing.JTextField();
         btn_toconfirm = new javax.swing.JButton();
@@ -110,19 +112,35 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         rb_payCard.addActionListener(this::rb_payCardActionPerformed);
-        getContentPane().add(rb_payCard, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 210, -1, 30));
+        getContentPane().add(rb_payCard, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, -1, 30));
 
         rb_payGcash.addActionListener(this::rb_payGcashActionPerformed);
-        getContentPane().add(rb_payGcash, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, -1, 40));
+        getContentPane().add(rb_payGcash, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, -1, 50));
+
+        lbl_receiptName.setBackground(new java.awt.Color(47, 74, 91));
+        lbl_receiptName.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        lbl_receiptName.setForeground(new java.awt.Color(47, 74, 91));
+        lbl_receiptName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbl_receiptName.setText("No file selected.");
+        lbl_receiptName.setToolTipText("");
+        getContentPane().add(lbl_receiptName, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 376, 280, 40));
 
         payername_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(payername_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 340, 160, 30));
+        getContentPane().add(payername_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 190, 30));
+
+        btn_uploadReceipt.setBackground(new java.awt.Color(255, 255, 255));
+        btn_uploadReceipt.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btn_uploadReceipt.setForeground(new java.awt.Color(57, 77, 94));
+        btn_uploadReceipt.setText("Upload");
+        btn_uploadReceipt.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(57, 77, 94), 2, true));
+        btn_uploadReceipt.addActionListener(this::btn_uploadReceiptActionPerformed);
+        getContentPane().add(btn_uploadReceipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 380, 90, 30));
 
         ewalletnum_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(ewalletnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 160, 30));
+        getContentPane().add(ewalletnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 190, 30));
 
         cardnum_txt_payment.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        getContentPane().add(cardnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 340, 160, 30));
+        getContentPane().add(cardnum_txt_payment, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 290, 190, 30));
 
         btn_toconfirm.setBackground(new java.awt.Color(57, 77, 94));
         btn_toconfirm.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -130,18 +148,19 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         btn_toconfirm.setText("Book Reservation");
         btn_toconfirm.setBorder(null);
         btn_toconfirm.addActionListener(this::btn_toconfirmActionPerformed);
-        getContentPane().add(btn_toconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 450, 150, 30));
+        getContentPane().add(btn_toconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 470, 150, 30));
 
         rb_payPayMaya.addActionListener(this::rb_payPayMayaActionPerformed);
-        getContentPane().add(rb_payPayMaya, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, -1, 30));
+        getContentPane().add(rb_payPayMaya, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, -1, 30));
 
         btn_backbooking.setBackground(new java.awt.Color(255, 255, 255));
         btn_backbooking.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         btn_backbooking.setForeground(new java.awt.Color(23, 57, 86));
         btn_backbooking.setText("<");
+        btn_backbooking.setBorder(null);
         btn_backbooking.setBorderPainted(false);
         btn_backbooking.addActionListener(this::btn_backbookingActionPerformed);
-        getContentPane().add(btn_backbooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, -1));
+        getContentPane().add(btn_backbooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, -1));
 
         payment_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/PAYMENT.png"))); // NOI18N
         getContentPane().add(payment_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
@@ -165,12 +184,35 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         else if (rb_payPayMaya.isSelected()) paymentMethod = "PAYMAYA";
 
         if (payerName.isEmpty() || paymentMethod == null) {
-            JOptionPane.showMessageDialog(this, "Please complete required fields!");
+            JOptionPane.showMessageDialog(this, "Please fill out all fields.");
+            return;
+        }
+
+        if (rb_payGcash.isSelected() || rb_payPayMaya.isSelected()) {
+            if (ewalletNum.length() != 11) {
+                JOptionPane.showMessageDialog(this, "Invalid E-wallet number.");
+                return;
+            }
+            if (!ewalletNum.matches("^09\\d{9}$")) {
+                JOptionPane.showMessageDialog(this, "Invalid E-wallet number.");
+                return;
+            }
+        }
+
+        if (rb_payCard.isSelected()) {
+            if (cardNum.length() != 16) {
+                JOptionPane.showMessageDialog(this, "Invalid Credit Card number.");
+                return;
+            }
+        }
+        
+        if (selectedReceiptFile == null) {
+            JOptionPane.showMessageDialog(this, "Please upload a screenshot of your payment receipt.");
             return;
         }
 
         Customer_BookingConfirmation confirmationWindow = new Customer_BookingConfirmation(
-            this, fName, lName, email, phone, bookingDate, mealType, pax, paymentMethod, payerName, ewalletNum, cardNum);
+            this, fName, lName, email, phone, bookingDate, mealType, pax, paymentMethod, payerName, ewalletNum, cardNum, selectedReceiptFile);
         
         confirmationWindow.setVisible(true);
         this.dispose();
@@ -178,7 +220,7 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         ex.printStackTrace();
-        }
+    }
     }//GEN-LAST:event_btn_toconfirmActionPerformed
 
     private void rb_payGcashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb_payGcashActionPerformed
@@ -198,6 +240,21 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
         }       // TODO add your handling code here:
     }//GEN-LAST:event_btn_backbookingActionPerformed
 
+    private void btn_uploadReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_uploadReceiptActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select Payment Screenshot");
+
+        javax.swing.filechooser.FileNameExtensionFilter filter = new javax.swing.filechooser.FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg");
+        fileChooser.setFileFilter(filter);
+
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            selectedReceiptFile = fileChooser.getSelectedFile();
+            lbl_receiptName.setText(selectedReceiptFile.getName()); 
+        }
+    }//GEN-LAST:event_btn_uploadReceiptActionPerformed
+
     
     
     /**
@@ -210,9 +267,11 @@ public class Customer_BookingPayment extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_backbooking;
     private javax.swing.JButton btn_toconfirm;
+    private javax.swing.JButton btn_uploadReceipt;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField cardnum_txt_payment;
     private javax.swing.JTextField ewalletnum_txt_payment;
+    private javax.swing.JLabel lbl_receiptName;
     private javax.swing.JTextField payername_txt_payment;
     private javax.swing.JLabel payment_bg;
     private javax.swing.JRadioButton rb_payCard;

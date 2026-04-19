@@ -60,49 +60,50 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
     }
     
     private void loadHistoryTable() {
-        DefaultTableModel model = (DefaultTableModel) tbl_historyuser.getModel();
-        model.setRowCount(0); 
+    DefaultTableModel model = (DefaultTableModel) tbl_historyuser.getModel();
+    model.setRowCount(0); 
 
-        if (UserSession.loggedInEmail == null || UserSession.loggedInEmail.trim().isEmpty()) {
-            return; 
-        }
+    if (UserSession.loggedInEmail == null || UserSession.loggedInEmail.trim().isEmpty()) {
+        return; 
+    }
 
-        Connect db = new Connect();
-        db.DoConnect();
+    Connect db = new Connect();
+    db.DoConnect();
 
-        if (db.con != null) {
-            String query = "SELECT o.OR_ID, o.D_DATE, o.D_TIME, o.PAX " +
-                           "FROM DBHOUSE.ONLINERESERVATIONS o " +
-                           "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
-                           "WHERE v.EMAIL = ? " +
-                           "ORDER BY o.D_DATE DESC";
+    if (db.con != null) {
+        String query = "SELECT o.OR_ID, o.D_DATE, o.D_TIME, o.PAX, o.REMARKS " +
+                       "FROM DBHOUSE.ONLINERESERVATIONS o " +
+                       "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
+                       "WHERE v.EMAIL = ? " +
+                       "ORDER BY o.D_DATE DESC";
 
-            try (java.sql.PreparedStatement pst = db.con.prepareStatement(query)) {
-                pst.setString(1, UserSession.loggedInEmail);
+        try (java.sql.PreparedStatement pst = db.con.prepareStatement(query)) {
+            pst.setString(1, UserSession.loggedInEmail);
+            
+            try (java.sql.ResultSet rs = pst.executeQuery()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yy"); 
                 
-                try (java.sql.ResultSet rs = pst.executeQuery()) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yy"); 
-                    
-                    while (rs.next()) {
-                        java.sql.Date sqlDate = rs.getDate("D_DATE");
-                        String dateStr = (sqlDate != null) ? sdf.format(sqlDate) : "";
+                while (rs.next()) {
+                    java.sql.Date sqlDate = rs.getDate("D_DATE");
+                    String dateStr = (sqlDate != null) ? sdf.format(sqlDate) : "";
 
-                        model.addRow(new Object[]{
-                            rs.getString("OR_ID"),
-                            dateStr,
-                            rs.getString("D_TIME"),
-                            rs.getInt("PAX")
-                        });
-                    }
+                    model.addRow(new Object[]{
+                        rs.getString("OR_ID"),
+                        dateStr,
+                        rs.getString("D_TIME"),
+                        rs.getInt("PAX"),
+                        rs.getString("REMARKS") 
+                    });
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error loading history: " + e.getMessage());
-                e.printStackTrace();
-            } finally {
-                try { db.con.close(); } catch (Exception ex) {}
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error loading history: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try { db.con.close(); } catch (Exception ex) {}
         }
     }
+}
 
     private void filterByDate() {
         java.util.Date selectedDate = date_historyuser.getDate();
@@ -237,21 +238,21 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
         tbl_historyuser.setForeground(new java.awt.Color(55, 77, 94));
         tbl_historyuser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "03-26-26", null,  new Integer(4)},
-                {null, "03-01-26", null,  new Integer(3)},
-                {null, "04-19-26", null,  new Integer(2)},
-                {null, "03-01-26", null,  new Integer(6)},
-                {null, "04-19-26", null,  new Integer(7)}
+                {null, "03-26-26", null,  new Integer(4), null},
+                {null, "03-01-26", null,  new Integer(3), null},
+                {null, "04-19-26", null,  new Integer(2), null},
+                {null, "03-01-26", null,  new Integer(6), null},
+                {null, "04-19-26", null,  new Integer(7), null}
             },
             new String [] {
-                "REFERENCE NUMBER", "DATE", "TIME", "PAX"
+                "REFERENCE NUMBER", "DATE", "TIME", "PAX", "REMARKS"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -269,6 +270,7 @@ public class Customer_BookingHistory extends javax.swing.JFrame {
             tbl_historyuser.getColumnModel().getColumn(1).setResizable(false);
             tbl_historyuser.getColumnModel().getColumn(2).setResizable(false);
             tbl_historyuser.getColumnModel().getColumn(3).setResizable(false);
+            tbl_historyuser.getColumnModel().getColumn(4).setResizable(false);
         }
 
         pnl_history6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));

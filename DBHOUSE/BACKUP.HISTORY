@@ -1,0 +1,34 @@
+Sun Apr 12 00:00:15 PST 2026:Backup started for database located at C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE to C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE.
+Sun Apr 12 00:00:16 PST 2026:Backup of data segment to C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE\seg0 completed. 
+Sun Apr 12 00:00:16 PST 2026:Copied log directory from C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE\log to C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE\log
+Sun Apr 12 00:00:16 PST 2026:Backup completed, log instant at (1,527978) 
+
+Sun Apr 12 00:01:55 PST 2026:Backup started for database located at C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE to C:\Users\Ska\Downloads\DATABASE\DBHOUSE.
+Sun Apr 12 00:01:55 PST 2026:Backup of data segment to C:\Users\Ska\Downloads\DATABASE\DBHOUSE\seg0 completed. 
+Sun Apr 12 00:01:55 PST 2026:Copied log directory from C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE\log to C:\Users\Ska\Downloads\DATABASE\DBHOUSE\log
+Sun Apr 12 00:01:55 PST 2026:Backup completed, log instant at (1,528227) 
+
+Sun Apr 12 20:31:26 PST 2026:Backup started for database located at C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE to C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE.
+Sun Apr 12 20:31:26 PST 2026:Moved old backup copy from C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE to C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE.OLD
+Sun Apr 12 20:31:26 PST 2026:Backup of data segment to C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE\seg0 completed. 
+Sun Apr 12 20:31:26 PST 2026:Copied log directory from C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE\log to C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE\log
+Sun Apr 12 20:31:26 PST 2026:Removed old backup copy at C:\Users\Ska\Desktop\DatabaseBackup\DBHOUSE.OLD
+Sun Apr 12 20:31:26 PST 2026:Backup completed, log instant at (1,549626) 
+
+Sun Apr 12 20:31:58 PST 2026:Backup started for database located at C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE to C:\Users\Ska\Desktop\DATABASE\DBHOUSE.
+Sun Apr 12 20:31:58 PST 2026:Backup of data segment to C:\Users\Ska\Desktop\DATABASE\DBHOUSE\seg0 completed. 
+Sun Apr 12 20:31:58 PST 2026:Copied log directory from C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE\log to C:\Users\Ska\Desktop\DATABASE\DBHOUSE\log
+Sun Apr 12 20:31:58 PST 2026:Backup completed, log instant at (1,549842) 
+
+Sun Apr 12 20:32:07 PST 2026:Backup started for database located at C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE to C:\Users\Ska\Desktop\DATABASE\DBHOUSE.
+Sun Apr 12 20:32:07 PST 2026:Moved old backup copy from C:\Users\Ska\Desktop\DATABASE\DBHOUSE to C:\Users\Ska\Desktop\DATABASE\DBHOUSE.OLD
+Sun Apr 12 20:32:07 PST 2026:Backup of data segment to C:\Users\Ska\Desktop\DATABASE\DBHOUSE\seg0 completed. 
+Sun Apr 12 20:32:07 PST 2026:Copied log directory from C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE\log to C:\Users\Ska\Desktop\DATABASE\DBHOUSE\log
+Sun Apr 12 20:32:07 PST 2026:Removed old backup copy at C:\Users\Ska\Desktop\DATABASE\DBHOUSE.OLD
+Sun Apr 12 20:32:07 PST 2026:Backup completed, log instant at (1,550058) 
+
+Sun Apr 12 20:33:16 PST 2026:Backup started for database located at C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE to C:\Users\Ska\Downloads\DATABASE\DBHOUSE.
+Sun Apr 12 20:33:17 PST 2026:Backup of data segment to C:\Users\Ska\Downloads\DATABASE\DBHOUSE\seg0 completed. 
+Sun Apr 12 20:33:17 PST 2026:Copied log directory from C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE\log to C:\Users\Ska\Downloads\DATABASE\DBHOUSE\log
+Sun Apr 12 20:33:17 PST 2026:Backup completed, log instant at (1,550274) 
+

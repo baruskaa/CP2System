@@ -36,10 +36,10 @@
 				<expression><![CDATA[$P{toDateParam}]]></expression>
 			</element>
 			<element kind="frame" uuid="67403347-6d7e-4f5a-81ce-0f03a7d3d058" mode="Opaque" x="688" y="0" width="112" height="99" forecolor="#D0B48E" backcolor="#FFFFFF">
-				<element kind="staticText" uuid="2db08423-c22c-49ab-91d9-a62dfa7a3c90" x="-2" y="21" width="114" height="28" forecolor="#374D5E" fontName="Century Gothic" fontSize="20.0" bold="true" hTextAlign="Center" vTextAlign="Top">
+				<element kind="staticText" uuid="2db08423-c22c-49ab-91d9-a62dfa7a3c90" x="9" y="71" width="99" height="29" forecolor="#374D5E" fontName="Century Gothic" fontSize="20.0" bold="true" hTextAlign="Center" vTextAlign="Top">
 					<text><![CDATA[TOTAL]]></text>
 				</element>
-				<element kind="textField" uuid="e0d642df-1d75-428a-b672-95fdc098530e" x="12" y="47" width="90" height="38" forecolor="#374D5E" fontName="Century Gothic" fontSize="25.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<element kind="textField" uuid="e0d642df-1d75-428a-b672-95fdc098530e" x="12" y="19" width="90" height="38" forecolor="#374D5E" fontName="Century Gothic" fontSize="25.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 					<expression><![CDATA[$P{totalRecordsParam}]]></expression>
 				</element>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
