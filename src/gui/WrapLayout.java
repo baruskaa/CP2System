@@ -2,10 +2,6 @@ package gui;
 
 import java.awt.*;
 
-/**
- * A custom layout manager that forces components to wrap to the next line
- * when they hit the edge of the container, perfect for JScrollPanes!
- */
 public class WrapLayout extends FlowLayout {
     public WrapLayout() { super(); }
     public WrapLayout(int align) { super(align); }

@@ -146,7 +146,7 @@ public class Admin extends javax.swing.JFrame {
         
         //TABLE CENTER ALIGNERS
         
-        centerTableData(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
+        centerTableData(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb,tbl_menuList, tbl_menuList1);
         
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -154,7 +154,7 @@ public class Admin extends javax.swing.JFrame {
         
          //TABLE HEADER CELL RENDERER
          
-        styleTableHeaders(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
+        styleTableHeaders(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb,tbl_menuList, tbl_menuList1);
          
         //COMPARATORS
         
@@ -475,7 +475,7 @@ public class Admin extends javax.swing.JFrame {
                     int row = tbl_upcom.getSelectedRow();
                     int col = tbl_upcom.getSelectedColumn();
 
-                    if (row != -1 && tbl_upcom.getColumnName(col).equals("PAYMENT_PROOF")) {
+                    if (row != -1 && tbl_upcom.getColumnName(col).equals("PROOF")) {
                         String status = tbl_upcom.getValueAt(row, col).toString();
 
                         if (status.equals("View Receipt")) {
@@ -483,6 +483,27 @@ public class Admin extends javax.swing.JFrame {
                             showPaymentProof(id);
                         } else if (status.equals("N/A")) {
                             JOptionPane.showMessageDialog(null, "No payment proof required for Walk-ins or In-House reservations.");
+                        }
+                    }
+                }
+            }
+        });
+        
+        tbl_history.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Check for double-click
+                if (evt.getClickCount() == 2) { 
+                    int row = tbl_history.getSelectedRow();
+                    int col = tbl_history.getSelectedColumn();
+
+                    if (row != -1 && tbl_history.getColumnName(col).equals("PROOF")) {
+                        String status = tbl_history.getValueAt(row, col).toString();
+
+                        if (status.equals("View Receipt")) {
+                            String id = tbl_history.getValueAt(row, 0).toString(); 
+                            showPaymentProof(id);
+                        } else if (status.equals("N/A")) {
+                            JOptionPane.showMessageDialog(null, "No payment proof available or required for this reservation.");
                         }
                     }
                 }
@@ -1754,21 +1775,21 @@ public class Admin extends javax.swing.JFrame {
         tbl_upcom.setForeground(new java.awt.Color(55, 77, 94));
         tbl_upcom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null, null},
-                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null, null},
-                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null, null},
-                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null, null},
-                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null, null}
+                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null, null, null},
+                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null, null, null},
+                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null, null, null},
+                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null, null, null},
+                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null, null, null}
             },
             new String [] {
-                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS", "PAYMENT_PROOF"
+                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS", "REF_NUM", "PROOF"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1781,19 +1802,8 @@ public class Admin extends javax.swing.JFrame {
         });
         tbl_upcom.setOpaque(false);
         jScrollPane6.setViewportView(tbl_upcom);
-        if (tbl_upcom.getColumnModel().getColumnCount() > 0) {
-            tbl_upcom.getColumnModel().getColumn(0).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(1).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(2).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(3).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(4).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(5).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(6).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(7).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(8).setResizable(false);
-        }
 
-        pnl_upcom.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+        pnl_upcom.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 320));
 
         btn_upcomGenerate.setBackground(new java.awt.Color(55, 77, 94));
         btn_upcomGenerate.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -1880,21 +1890,21 @@ public class Admin extends javax.swing.JFrame {
         tbl_history.setForeground(new java.awt.Color(55, 77, 94));
         tbl_history.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null},
-                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null},
-                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null},
-                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null},
-                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null}
+                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null, null, null},
+                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null, null, null},
+                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null, null, null},
+                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null, null, null},
+                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null, null, null}
             },
             new String [] {
-                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"
+                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS", "REF_NUM", "PROOF"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1907,16 +1917,6 @@ public class Admin extends javax.swing.JFrame {
         });
         tbl_history.setOpaque(false);
         jScrollPane2.setViewportView(tbl_history);
-        if (tbl_history.getColumnModel().getColumnCount() > 0) {
-            tbl_history.getColumnModel().getColumn(0).setResizable(false);
-            tbl_history.getColumnModel().getColumn(1).setResizable(false);
-            tbl_history.getColumnModel().getColumn(2).setResizable(false);
-            tbl_history.getColumnModel().getColumn(3).setResizable(false);
-            tbl_history.getColumnModel().getColumn(4).setResizable(false);
-            tbl_history.getColumnModel().getColumn(5).setResizable(false);
-            tbl_history.getColumnModel().getColumn(6).setResizable(false);
-            tbl_history.getColumnModel().getColumn(7).setResizable(false);
-        }
 
         pnl_history.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
@@ -4106,7 +4106,7 @@ public class Admin extends javax.swing.JFrame {
 }
     
      //HIST
-    private void loadHistoryTable() {
+   private void loadHistoryTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_history.getModel();
         model.setRowCount(0); 
 
@@ -4116,18 +4116,21 @@ public class Admin extends javax.swing.JFrame {
         if (db.con != null) {
            String query = 
                 "SELECT * FROM (" +
-                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
+                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS REF_NUM, 'N/A' AS PROOF " +
                 "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE < CURRENT_DATE " + 
                 "UNION ALL " +
-                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
+                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS REF_NUM, 'N/A' AS PROOF " +
                 "FROM DBHOUSE.WALKINDINE WHERE D_DATE < CURRENT_DATE " + 
                 "UNION ALL " +
-                "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS " +
+                "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS, " +
+                "CASE WHEN o.REF_NUM IS NOT NULL AND o.REF_NUM != '' THEN o.REF_NUM ELSE 'N/A' END AS REF_NUM, " +
+                "CASE WHEN o.PAYMENT_PROOF IS NOT NULL THEN 'View Receipt' ELSE 'N/A' END AS PROOF " +
                 "FROM DBHOUSE.ONLINERESERVATIONS o " +
                 "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
                 "WHERE o.D_DATE < CURRENT_DATE " + 
                 ") t " +
                 "ORDER BY D_DATE ASC, CASE WHEN UPPER(D_TIME) = 'LUNCH' THEN 1 ELSE 2 END ASC";
+                
             try (PreparedStatement pst = db.con.prepareStatement(query);
                  ResultSet rs = pst.executeQuery()) {
 
@@ -4145,7 +4148,9 @@ public class Admin extends javax.swing.JFrame {
                         rs.getString("CP_NUM"),
                         rs.getString("D_TIME"),
                         rs.getInt("PAX"),
-                        rs.getString("REMARKS")
+                        rs.getString("REMARKS"),
+                        rs.getString("REF_NUM"),
+                        rs.getString("PROOF")
                     });
                 }
             } catch (SQLException e) {
@@ -4194,7 +4199,7 @@ public class Admin extends javax.swing.JFrame {
     }
 
     //UPCOM
-   private void loadUpcomTable() {
+  private void loadUpcomTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_upcom.getModel();
         model.setRowCount(0); 
 
@@ -4204,14 +4209,15 @@ public class Admin extends javax.swing.JFrame {
         if (db.con != null) {
             String query = 
                 "SELECT * FROM (" +
-                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS PAYMENT_PROOF " +
+                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS REF_NUM, 'N/A' AS PROOF " +
                 "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE >= CURRENT_DATE " + 
                 "UNION ALL " +
-                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS PAYMENT_PROOF " +
+                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS REF_NUM, 'N/A' AS PROOF " +
                 "FROM DBHOUSE.WALKINDINE WHERE D_DATE >= CURRENT_DATE " + 
                 "UNION ALL " +
                 "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS, " +
-                "CASE WHEN o.PAYMENT_PROOF IS NOT NULL THEN 'View Receipt' ELSE 'N/A' END AS PAYMENT_PROOF " +
+                "CASE WHEN o.REF_NUM IS NOT NULL AND o.REF_NUM != '' THEN o.REF_NUM ELSE 'N/A' END AS REF_NUM, " +
+                "CASE WHEN o.PAYMENT_PROOF IS NOT NULL THEN 'View Receipt' ELSE 'N/A' END AS PROOF " +
                 "FROM DBHOUSE.ONLINERESERVATIONS o " +
                 "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
                 "WHERE o.D_DATE >= CURRENT_DATE " + 
@@ -4236,7 +4242,8 @@ public class Admin extends javax.swing.JFrame {
                         rs.getString("D_TIME"),
                         rs.getInt("PAX"),
                         rs.getString("REMARKS"),
-                        rs.getString("PAYMENT_PROOF") 
+                        rs.getString("REF_NUM"),
+                        rs.getString("PROOF") 
                     });
                 }
             } catch (SQLException e) {
@@ -4575,7 +4582,7 @@ public class Admin extends javax.swing.JFrame {
             pst.setString(5, txt_IHfname.getText().trim());
             pst.setString(6, txt_IHlname.getText().trim());
             pst.setString(7, txt_IHcp.getText().trim());
-            pst.setString(8, "Going"); 
+            pst.setString(8, "Confirmed"); 
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(this, "Reservation successfully added.");
@@ -4717,12 +4724,12 @@ public class Admin extends javax.swing.JFrame {
         
         String sql = 
             "SELECT IR_ID AS ID, 'N/A' AS VIP_ID, F_NAME, L_NAME, CP_NUM, D_TIME AS TIME, PAX, REMARKS " +
-            "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = CURRENT_DATE " +
+            "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = CURRENT_DATE AND REMARKS != 'Processing' " +
             "UNION ALL " +
             "SELECT o.OR_ID AS ID, o.VIP_ID, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME AS TIME, o.PAX, o.REMARKS " +
             "FROM DBHOUSE.ONLINERESERVATIONS o " +
             "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
-            "WHERE o.D_DATE = CURRENT_DATE";
+            "WHERE o.D_DATE = CURRENT_DATE AND o.REMARKS != 'Processing'";
                      
         try (PreparedStatement pst = db.con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
@@ -4770,9 +4777,9 @@ public class Admin extends javax.swing.JFrame {
             String query = 
                 "SELECT D_DATE, D_TIME, SUM(PAX) AS TOTAL_OCCUPIED, (100 - SUM(PAX)) AS AVAILABLE " +
                 "FROM (" +
-                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE REMARKS != 'Cancelled' " +
+                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE REMARKS != 'Cancelled' AND REMARKS != 'Processing' " +
                 "  UNION ALL " +
-                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE REMARKS != 'Cancelled' " +
+                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE REMARKS != 'Cancelled' AND REMARKS != 'Processing'" +
                 "  UNION ALL " +
                 "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.WALKINDINE " +
                 ") t " +

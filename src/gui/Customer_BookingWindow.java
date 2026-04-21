@@ -51,6 +51,7 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         loadUserData();
         updateSeatAvailability();
         makeFlatButton(btn_topay);
+        makeFlatButton(btn_backhomepage);
     }
     
     private void makeFlatButton(javax.swing.JButton btn) {
@@ -187,10 +188,10 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
         btn_topay.setBackground(new java.awt.Color(57, 77, 94));
         btn_topay.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         btn_topay.setForeground(new java.awt.Color(255, 255, 255));
-        btn_topay.setText("Proceed to Payment");
+        btn_topay.setText("PAY");
         btn_topay.setBorder(null);
         btn_topay.addActionListener(this::btn_topayActionPerformed);
-        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 480, 170, 30));
+        getContentPane().add(btn_topay, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 480, 100, 30));
 
         txt_FName.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         getContentPane().add(txt_FName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 190, 30));
@@ -262,13 +263,14 @@ public class Customer_BookingWindow extends javax.swing.JFrame {
                 );
 
                 JOptionPane.showMessageDialog(this, message, "Capacity Reached", JOptionPane.WARNING_MESSAGE);
-                return; // Stops the process so they can't go to the payment screen!
+                return; 
             }
 
+            int totalDownpayment = pax * 200; 
 
-            Customer_BookingPayment paymentWindow = new Customer_BookingPayment(this, firstName, lastName, email, phone, utilDate, mealType, pax);
+            Customer_BookingPayment paymentWindow = new Customer_BookingPayment(this, firstName, lastName, email, phone, utilDate, mealType, pax, totalDownpayment);
             paymentWindow.setVisible(true);
-            this.setVisible(false); 
+            this.setVisible(false);
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
