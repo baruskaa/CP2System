@@ -1,4 +1,4 @@
-Tue Apr 21 19:43:38 PST 2026 : Could not listen on port 1527 on host 127.0.0.1:
+Tue Apr 21 21:36:32 PST 2026 : Could not listen on port 1527 on host 127.0.0.1:
  java.net.BindException: Address already in use: bind
 An exception was thrown during network server startup. DRDA_ListenPort.S:Could not listen on port 1527 on host 127.0.0.1:
  java.net.BindException: Address already in use: bind
@@ -9,8 +9,9 @@ java.lang.reflect.InvocationTargetException
 	at java.base/java.lang.Thread.run(Thread.java:1474)
 Caused by: java.lang.Exception: DRDA_ListenPort.S:Could not listen on port 1527 on host 127.0.0.1:
  java.net.BindException: Address already in use: bind
-	at org.apache.derby.impl.drda.NetworkServerControlImpl.consolePropertyMessageWork(NetworkServerControlImpl.java:3451)
-	at org.apache.derby.impl.drda.NetworkServerControlImpl.consolePropertyMessage(NetworkServerControlImpl.java:2059)
-	at org.apache.derby.impl.drda.NetworkServerControlImpl.blockingStart(NetworkServerControlImpl.java:836)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	... 3 more
+	at org.apache.derby.impl.drda.NetworkServerControlImpl.consolePropertyMessageWork(NetworkSe----------------------------------------------------------------
+Tue Apr 21 21:37:15 PST 2026: Shutting down Derby engine
+----------------------------------------------------------------
+Tue Apr 21 21:37:15 PST 2026:
+Shutting down instance a816c00e-019d-afbb-a7dd-000074839bab on database directory C:\Users\Ska\Documents\GitHub\CP2System\DBHOUSE with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 
+----------------------------------------------------------------

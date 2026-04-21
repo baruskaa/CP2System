@@ -144,7 +144,7 @@ public class Manager extends javax.swing.JFrame {
         
         //TABLE CENTER ALIGNERS
         
-        centerTableData(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
+        centerTableData(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb,tbl_menuList, tbl_menuList1);
         
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -152,7 +152,7 @@ public class Manager extends javax.swing.JFrame {
         
          //TABLE HEADER CELL RENDERER
          
-        styleTableHeaders(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb);
+        styleTableHeaders(tbl_reserve, tbl_walkin, tbl_inhouse, tbl_seatsLunch, tbl_seatsDinner, tbl_history, tbl_upcom, tbl_emp, tbl_memb,tbl_menuList, tbl_menuList1);
          
         //COMPARATORS
         
@@ -467,7 +467,7 @@ public class Manager extends javax.swing.JFrame {
                     int row = tbl_upcom.getSelectedRow();
                     int col = tbl_upcom.getSelectedColumn();
 
-                    if (row != -1 && tbl_upcom.getColumnName(col).equals("PAYMENT_PROOF")) {
+                    if (row != -1 && tbl_upcom.getColumnName(col).equals("PROOF")) {
                         String status = tbl_upcom.getValueAt(row, col).toString();
 
                         if (status.equals("View Receipt")) {
@@ -475,6 +475,27 @@ public class Manager extends javax.swing.JFrame {
                             showPaymentProof(id);
                         } else if (status.equals("N/A")) {
                             JOptionPane.showMessageDialog(null, "No payment proof required for Walk-ins or In-House reservations.");
+                        }
+                    }
+                }
+            }
+        });
+        
+        tbl_history.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Check for double-click
+                if (evt.getClickCount() == 2) { 
+                    int row = tbl_history.getSelectedRow();
+                    int col = tbl_history.getSelectedColumn();
+
+                    if (row != -1 && tbl_history.getColumnName(col).equals("PROOF")) {
+                        String status = tbl_history.getValueAt(row, col).toString();
+
+                        if (status.equals("View Receipt")) {
+                            String id = tbl_history.getValueAt(row, 0).toString(); 
+                            showPaymentProof(id);
+                        } else if (status.equals("N/A")) {
+                            JOptionPane.showMessageDialog(null, "No payment proof available or required for this reservation.");
                         }
                     }
                 }
@@ -1014,7 +1035,7 @@ public class Manager extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("MANAGER DASHBOARD");
+        jLabel2.setText("ADMIN DASHBOARD");
 
         lbl_date.setBackground(new java.awt.Color(55, 91, 115));
         lbl_date.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -1033,16 +1054,16 @@ public class Manager extends javax.swing.JFrame {
         pnl_header.setLayout(pnl_headerLayout);
         pnl_headerLayout.setHorizontalGroup(
             pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_headerLayout.createSequentialGroup()
-                .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
+                .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnl_headerLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnl_headerLayout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
-                        .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lbl_date, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnl_headerLayout.setVerticalGroup(
@@ -1753,21 +1774,21 @@ public class Manager extends javax.swing.JFrame {
         tbl_upcom.setForeground(new java.awt.Color(55, 77, 94));
         tbl_upcom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null, null},
-                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null, null},
-                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null, null},
-                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null, null},
-                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null, null}
+                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null, null, null},
+                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null, null, null},
+                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null, null, null},
+                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null, null, null},
+                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null, null, null}
             },
             new String [] {
-                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS", "PAYMENT_PROOF"
+                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS", "REF_NUM", "PROOF"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1780,19 +1801,8 @@ public class Manager extends javax.swing.JFrame {
         });
         tbl_upcom.setOpaque(false);
         jScrollPane6.setViewportView(tbl_upcom);
-        if (tbl_upcom.getColumnModel().getColumnCount() > 0) {
-            tbl_upcom.getColumnModel().getColumn(0).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(1).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(2).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(3).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(4).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(5).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(6).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(7).setResizable(false);
-            tbl_upcom.getColumnModel().getColumn(8).setResizable(false);
-        }
 
-        pnl_upcom.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
+        pnl_upcom.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 320));
 
         btn_upcomGenerate.setBackground(new java.awt.Color(55, 77, 94));
         btn_upcomGenerate.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -1879,21 +1889,21 @@ public class Manager extends javax.swing.JFrame {
         tbl_history.setForeground(new java.awt.Color(55, 77, 94));
         tbl_history.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null},
-                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null},
-                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null},
-                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null},
-                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null}
+                {null, "03-26-26", null, "Juan Dela Cruz", "09357873489", "Lunch",  new Integer(4), null, null, null},
+                {null, "03-01-26", null, "Maria Santos", "09174532356", "Lunch",  new Integer(3), null, null, null},
+                {null, "04-19-26", null, "Louise Lopez", "09876541453", "Lunch",  new Integer(2), null, null, null},
+                {null, "03-01-26", null, "Rhian Espinosa", "09258653421", "Dinner",  new Integer(6), null, null, null},
+                {null, "04-19-26", null, "Justine Dizon", "09987823421", "Dinner",  new Integer(7), null, null, null}
             },
             new String [] {
-                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS"
+                "ID", "DATE", "F_NAME", "L_NAME", "CP_NUM", "TIME", "PAX", "REMARKS", "REF_NUM", "PROOF"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1906,16 +1916,6 @@ public class Manager extends javax.swing.JFrame {
         });
         tbl_history.setOpaque(false);
         jScrollPane2.setViewportView(tbl_history);
-        if (tbl_history.getColumnModel().getColumnCount() > 0) {
-            tbl_history.getColumnModel().getColumn(0).setResizable(false);
-            tbl_history.getColumnModel().getColumn(1).setResizable(false);
-            tbl_history.getColumnModel().getColumn(2).setResizable(false);
-            tbl_history.getColumnModel().getColumn(3).setResizable(false);
-            tbl_history.getColumnModel().getColumn(4).setResizable(false);
-            tbl_history.getColumnModel().getColumn(5).setResizable(false);
-            tbl_history.getColumnModel().getColumn(6).setResizable(false);
-            tbl_history.getColumnModel().getColumn(7).setResizable(false);
-        }
 
         pnl_history.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 700, 330));
 
@@ -1952,85 +1952,85 @@ public class Manager extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(55, 77, 94));
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel21.setText("VIP ID:  ");
-        pnl_memb.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 350, 50, 30));
+        pnl_memb.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 350, 50, 30));
 
         txt_membLname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membLname.addActionListener(this::txt_membLnameNew_tableActionPerformed);
-        pnl_memb.add(txt_membLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 380, 160, 30));
+        pnl_memb.add(txt_membLname, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 140, 30));
 
         jLabel25.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(55, 77, 94));
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("Last Name:");
-        pnl_memb.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 380, 70, 30));
+        pnl_memb.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, 70, 30));
 
         txt_membFname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membFname.addActionListener(this::txt_membFnameNew_tableActionPerformed);
-        pnl_memb.add(txt_membFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, 160, 30));
+        pnl_memb.add(txt_membFname, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 140, 30));
 
         txt_membVipId.setEditable(false);
         txt_membVipId.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membVipId.setFocusable(false);
         txt_membVipId.addActionListener(this::txt_membVipIdNew_tableActionPerformed);
-        pnl_memb.add(txt_membVipId, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 90, 30));
+        pnl_memb.add(txt_membVipId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 90, 30));
 
         jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(55, 77, 94));
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel29.setText("First Name:");
-        pnl_memb.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, 70, 30));
+        pnl_memb.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 350, 70, 30));
 
         txt_membDatereg.setEditable(false);
         txt_membDatereg.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membDatereg.setFocusable(false);
         txt_membDatereg.addActionListener(this::txt_membDateregNew_tableActionPerformed);
-        pnl_memb.add(txt_membDatereg, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 380, 90, 30));
+        pnl_memb.add(txt_membDatereg, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 380, 90, 30));
 
         jLabel30.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(55, 77, 94));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel30.setText("Date Reg:  ");
-        pnl_memb.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, 70, 30));
+        pnl_memb.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 380, 70, 30));
 
         txt_membVipgender.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membVipgender.addActionListener(this::txt_membVipgenderNew_tableActionPerformed);
-        pnl_memb.add(txt_membVipgender, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 410, 90, 30));
+        pnl_memb.add(txt_membVipgender, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 410, 90, 30));
 
         jLabel22.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(55, 77, 94));
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel22.setText("Gender:  ");
-        pnl_memb.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, 60, 30));
+        pnl_memb.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 60, 30));
 
         txt_membVipbday.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membVipbday.addActionListener(this::txt_membVipbdayNew_tableActionPerformed);
-        pnl_memb.add(txt_membVipbday, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 410, 160, 30));
+        pnl_memb.add(txt_membVipbday, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 140, 30));
 
         jLabel23.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(55, 77, 94));
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel23.setText("Birthday:");
-        pnl_memb.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 410, 50, 30));
+        pnl_memb.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 410, 50, 30));
 
         txt_membEmail.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membEmail.addActionListener(this::txt_membEmailNew_tableActionPerformed);
-        pnl_memb.add(txt_membEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 380, 160, 30));
+        pnl_memb.add(txt_membEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 380, 140, 30));
 
         jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(55, 77, 94));
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel27.setText("Email:");
-        pnl_memb.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 380, 50, 30));
+        pnl_memb.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 380, 50, 30));
 
         txt_membCpnum.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_membCpnum.addActionListener(this::txt_membCpnumNew_tableActionPerformed);
-        pnl_memb.add(txt_membCpnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 350, 160, 30));
+        pnl_memb.add(txt_membCpnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 350, 140, 30));
 
         jLabel28.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(55, 77, 94));
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel28.setText("CP Num:");
-        pnl_memb.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 350, 60, 30));
+        pnl_memb.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 60, 30));
 
         jScrollPane5.setForeground(new java.awt.Color(55, 77, 94));
 
@@ -2111,7 +2111,7 @@ public class Manager extends javax.swing.JFrame {
         btn_accadd.setContentAreaFilled(false);
         btn_accadd.setFocusPainted(false);
         btn_accadd.addActionListener(this::btn_accaddAssign_ButtonActionPerformed);
-        pnl_emp.add(btn_accadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 360, 50, 30));
+        pnl_emp.add(btn_accadd, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 380, 50, 30));
 
         btn_accedit.setBackground(new java.awt.Color(65, 93, 120));
         btn_accedit.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -2121,7 +2121,7 @@ public class Manager extends javax.swing.JFrame {
         btn_accedit.setContentAreaFilled(false);
         btn_accedit.setFocusPainted(false);
         btn_accedit.addActionListener(this::btn_acceditAssign_ButtonActionPerformed);
-        pnl_emp.add(btn_accedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 360, 50, 30));
+        pnl_emp.add(btn_accedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 380, 50, 30));
 
         txt_emplname.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txt_emplname.addActionListener(this::txt_emplnameNew_tableActionPerformed);
@@ -2147,7 +2147,7 @@ public class Manager extends javax.swing.JFrame {
         btn_accdel.setFocusable(false);
         btn_accdel.setRequestFocusEnabled(false);
         btn_accdel.addActionListener(this::btn_accdelRemove_buttonActionPerformed);
-        pnl_emp.add(btn_accdel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 360, 60, 30));
+        pnl_emp.add(btn_accdel, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 380, 60, 30));
 
         jLabel14.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(55, 77, 94));
@@ -3959,7 +3959,7 @@ public class Manager extends javax.swing.JFrame {
 
         Connect db = new Connect();
         db.DoConnect();
-        try (PreparedStatement pst = db.con.prepareStatement("SELECT VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL, PASS FROM DBHOUSE.VIPACCOUNTS");
+        try (PreparedStatement pst = db.con.prepareStatement("SELECT VIP_ID, DATE_REG, F_NAME, L_NAME, GENDER, BDAY, CP_NUM, EMAIL FROM DBHOUSE.VIPACCOUNTS");
              ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 model.addRow(new Object[]{
@@ -3970,8 +3970,7 @@ public class Manager extends javax.swing.JFrame {
                     rs.getString("GENDER"), 
                     rs.getDate("BDAY"), 
                     rs.getString("CP_NUM"), 
-                    rs.getString("EMAIL"), 
-                    rs.getString("PASS")
+                    rs.getString("EMAIL")
                 });
             }
             db.con.close();
@@ -3991,7 +3990,7 @@ public class Manager extends javax.swing.JFrame {
 }
     
      //HIST
-    private void loadHistoryTable() {
+   private void loadHistoryTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_history.getModel();
         model.setRowCount(0); 
 
@@ -4001,18 +4000,21 @@ public class Manager extends javax.swing.JFrame {
         if (db.con != null) {
            String query = 
                 "SELECT * FROM (" +
-                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
+                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS REF_NUM, 'N/A' AS PROOF " +
                 "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE < CURRENT_DATE " + 
                 "UNION ALL " +
-                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS " +
+                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS REF_NUM, 'N/A' AS PROOF " +
                 "FROM DBHOUSE.WALKINDINE WHERE D_DATE < CURRENT_DATE " + 
                 "UNION ALL " +
-                "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS " +
+                "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS, " +
+                "CASE WHEN o.REF_NUM IS NOT NULL AND o.REF_NUM != '' THEN o.REF_NUM ELSE 'N/A' END AS REF_NUM, " +
+                "CASE WHEN o.PAYMENT_PROOF IS NOT NULL THEN 'View Receipt' ELSE 'N/A' END AS PROOF " +
                 "FROM DBHOUSE.ONLINERESERVATIONS o " +
                 "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
                 "WHERE o.D_DATE < CURRENT_DATE " + 
                 ") t " +
                 "ORDER BY D_DATE ASC, CASE WHEN UPPER(D_TIME) = 'LUNCH' THEN 1 ELSE 2 END ASC";
+                
             try (PreparedStatement pst = db.con.prepareStatement(query);
                  ResultSet rs = pst.executeQuery()) {
 
@@ -4030,7 +4032,9 @@ public class Manager extends javax.swing.JFrame {
                         rs.getString("CP_NUM"),
                         rs.getString("D_TIME"),
                         rs.getInt("PAX"),
-                        rs.getString("REMARKS")
+                        rs.getString("REMARKS"),
+                        rs.getString("REF_NUM"),
+                        rs.getString("PROOF")
                     });
                 }
             } catch (SQLException e) {
@@ -4079,7 +4083,7 @@ public class Manager extends javax.swing.JFrame {
     }
 
     //UPCOM
-   private void loadUpcomTable() {
+  private void loadUpcomTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_upcom.getModel();
         model.setRowCount(0); 
 
@@ -4089,14 +4093,15 @@ public class Manager extends javax.swing.JFrame {
         if (db.con != null) {
             String query = 
                 "SELECT * FROM (" +
-                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS PAYMENT_PROOF " +
+                "SELECT IR_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS REF_NUM, 'N/A' AS PROOF " +
                 "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE >= CURRENT_DATE " + 
                 "UNION ALL " +
-                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS PAYMENT_PROOF " +
+                "SELECT WI_ID AS ID, D_DATE, F_NAME, L_NAME, CP_NUM, D_TIME, PAX, REMARKS, 'N/A' AS REF_NUM, 'N/A' AS PROOF " +
                 "FROM DBHOUSE.WALKINDINE WHERE D_DATE >= CURRENT_DATE " + 
                 "UNION ALL " +
                 "SELECT o.OR_ID AS ID, o.D_DATE, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME, o.PAX, o.REMARKS, " +
-                "CASE WHEN o.PAYMENT_PROOF IS NOT NULL THEN 'View Receipt' ELSE 'N/A' END AS PAYMENT_PROOF " +
+                "CASE WHEN o.REF_NUM IS NOT NULL AND o.REF_NUM != '' THEN o.REF_NUM ELSE 'N/A' END AS REF_NUM, " +
+                "CASE WHEN o.PAYMENT_PROOF IS NOT NULL THEN 'View Receipt' ELSE 'N/A' END AS PROOF " +
                 "FROM DBHOUSE.ONLINERESERVATIONS o " +
                 "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
                 "WHERE o.D_DATE >= CURRENT_DATE " + 
@@ -4121,7 +4126,8 @@ public class Manager extends javax.swing.JFrame {
                         rs.getString("D_TIME"),
                         rs.getInt("PAX"),
                         rs.getString("REMARKS"),
-                        rs.getString("PAYMENT_PROOF") 
+                        rs.getString("REF_NUM"),
+                        rs.getString("PROOF") 
                     });
                 }
             } catch (SQLException e) {
@@ -4460,7 +4466,7 @@ public class Manager extends javax.swing.JFrame {
             pst.setString(5, txt_IHfname.getText().trim());
             pst.setString(6, txt_IHlname.getText().trim());
             pst.setString(7, txt_IHcp.getText().trim());
-            pst.setString(8, "Going"); 
+            pst.setString(8, "Confirmed"); 
 
             pst.executeUpdate();
             JOptionPane.showMessageDialog(this, "Reservation successfully added.");
@@ -4602,12 +4608,12 @@ public class Manager extends javax.swing.JFrame {
         
         String sql = 
             "SELECT IR_ID AS ID, 'N/A' AS VIP_ID, F_NAME, L_NAME, CP_NUM, D_TIME AS TIME, PAX, REMARKS " +
-            "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = CURRENT_DATE " +
+            "FROM DBHOUSE.INHOUSERESERVATIONS WHERE D_DATE = CURRENT_DATE AND REMARKS != 'Processing' " +
             "UNION ALL " +
             "SELECT o.OR_ID AS ID, o.VIP_ID, v.F_NAME, v.L_NAME, v.CP_NUM, o.D_TIME AS TIME, o.PAX, o.REMARKS " +
             "FROM DBHOUSE.ONLINERESERVATIONS o " +
             "JOIN DBHOUSE.VIPACCOUNTS v ON o.VIP_ID = v.VIP_ID " +
-            "WHERE o.D_DATE = CURRENT_DATE";
+            "WHERE o.D_DATE = CURRENT_DATE AND o.REMARKS != 'Processing'";
                      
         try (PreparedStatement pst = db.con.prepareStatement(sql);
              ResultSet rs = pst.executeQuery()) {
@@ -4655,9 +4661,9 @@ public class Manager extends javax.swing.JFrame {
             String query = 
                 "SELECT D_DATE, D_TIME, SUM(PAX) AS TOTAL_OCCUPIED, (100 - SUM(PAX)) AS AVAILABLE " +
                 "FROM (" +
-                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE REMARKS != 'Cancelled' " +
+                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.INHOUSERESERVATIONS WHERE REMARKS != 'Cancelled' AND REMARKS != 'Processing' " +
                 "  UNION ALL " +
-                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE REMARKS != 'Cancelled' " +
+                "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.ONLINERESERVATIONS WHERE REMARKS != 'Cancelled' AND REMARKS != 'Processing'" +
                 "  UNION ALL " +
                 "  SELECT D_DATE, D_TIME, PAX FROM DBHOUSE.WALKINDINE " +
                 ") t " +
