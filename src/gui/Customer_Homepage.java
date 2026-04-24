@@ -103,7 +103,7 @@ public class Customer_Homepage extends javax.swing.JFrame {
         btn_bookNow.addActionListener(this::btn_bookNowActionPerformed);
         jPanel1.add(btn_bookNow, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 400, 100, 30));
 
-        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bghomepage.png"))); // NOI18N
+        bg_homepage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/homepage.png"))); // NOI18N
         bg_homepage.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         bg_homepage.setMaximumSize(new java.awt.Dimension(760, 580));
         bg_homepage.setMinimumSize(new java.awt.Dimension(760, 580));
